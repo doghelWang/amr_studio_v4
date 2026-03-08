@@ -3,6 +3,8 @@ dist/
 build/
 .env
 .DS_Store
+.github_token
+github_upload.py
 
 # Python
 __pycache__/

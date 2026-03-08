@@ -39,3 +39,6 @@ npm install
 npm run dev
 ```
 Navigate to `http://localhost:3000` to start configuring your AMR.
+
+---
+*Enjoy building the future of robotics! 🤖🚀*
