@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/driveform.tsx","./src/components/ioform.tsx","./src/components/identityform.tsx","./src/components/sensorform.tsx","./src/store/usestore.ts"],"version":"5.9.3"}

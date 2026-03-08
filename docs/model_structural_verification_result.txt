@@ -1,0 +1,8 @@
+--- FuncDesc.model checks ---
+NAVI_SLAM in ref: 1
+NAVI_SLAM in target: 1
+
+--- CompDesc.model counts (Quad Steer = 4 wheels) ---
+Base Chassis (底盘参数): 1
+Motion Centers (运动中心参数) expected 4: 4
+Wheel Properties (轮组属性) expected 4: 4

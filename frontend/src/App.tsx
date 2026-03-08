@@ -1,0 +1,240 @@
+import React, { useEffect, useRef } from 'react';
+import { Layout, Menu, Button, Tooltip, Badge, Dropdown, Modal, message, Tag } from 'antd';
+import type { MenuProps } from 'antd';
+import {
+    SaveOutlined, FolderOpenOutlined, FileAddOutlined,
+    UndoOutlined, RedoOutlined, SafetyOutlined,
+    CloudDownloadOutlined,
+    RobotOutlined, ControlOutlined, DashboardOutlined,
+    RadarChartOutlined, ApiOutlined, NodeIndexOutlined, ApartmentOutlined
+} from '@ant-design/icons';
+import axios from 'axios';
+
+import { useProjectStore, useUndoRedo } from './store/useProjectStore';
+import { useUIStore } from './store/useUIStore';
+import { saveProject, openProject, autosaveDraft, clearDraft, clearFileHandle } from './services/projectFileService';
+
+import { IdentityForm } from './components/IdentityForm';
+import { ControlBoardForm } from './components/ControlBoardForm';
+import { DriveForm } from './components/DriveForm';
+import { SensorForm } from './components/SensorForm';
+import { IOForm } from './components/IOForm';
+import { RobotCanvas } from './components/RobotCanvas';
+import { WiringCanvas } from './components/WiringCanvas';
+import { DriveTypeConfirmDialog } from './components/DriveTypeConfirmDialog';
+import { HealthDashboard } from './components/HealthDashboard';
+import { StatusBar } from './layout/StatusBar';
+
+const { Header, Content, Sider } = Layout;
+
+const NAV_ITEMS = [
+    { key: 'identity', icon: <RobotOutlined />, label: '基础信息' },
+    { key: 'control', icon: <ControlOutlined />, label: '控制板配置' },
+    { key: 'drive', icon: <DashboardOutlined />, label: '轮组驱动' },
+    { key: 'sensor', icon: <RadarChartOutlined />, label: '传感器模块' },
+    { key: 'io', icon: <ApiOutlined />, label: 'IO 映射' },
+    { key: 'blueprint', icon: <NodeIndexOutlined />, label: '安装蓝图 ↗' },
+    { key: 'wiring', icon: <ApartmentOutlined />, label: '电气连接图 ↗' },
+];
+
+export default function App() {
+    const { meta, config, snapshots, isDirty, validation, loadProject, resetProject } = useProjectStore();
+    const { undo, redo, canUndo, canRedo } = useUndoRedo();
+    const { activePanel, setActivePanel, toggleHealthDashboard } = useUIStore();
+    const autosaveRef = useRef<ReturnType<typeof setInterval>>();
+
+    // Autosave every 30s
+    useEffect(() => {
+        autosaveRef.current = setInterval(() => {
+            autosaveDraft({ formatVersion: '1.0', meta, config, snapshots });
+        }, 30_000);
+        return () => clearInterval(autosaveRef.current);
+    }, [meta, config, snapshots]);
+
+    // Keyboard shortcuts
+    useEffect(() => {
+        const handler = (e: KeyboardEvent) => {
+            const mod = e.metaKey || e.ctrlKey;
+            if (mod && e.key === 'z' && !e.shiftKey && canUndo) { e.preventDefault(); undo(); }
+            if (mod && e.shiftKey && e.key === 'z' && canRedo) { e.preventDefault(); redo(); }
+            if (mod && e.key === 's') { e.preventDefault(); handleSave(); }
+            if (mod && e.key === 'b') { e.preventDefault(); handleCompile(); }
+        };
+        window.addEventListener('keydown', handler);
+        return () => window.removeEventListener('keydown', handler);
+    }, [canUndo, canRedo, meta, config, snapshots]);
+
+    const handleSave = async () => {
+        try {
+            await saveProject({ formatVersion: '1.0', meta, config, snapshots });
+            message.success('项目已保存');
+        } catch { message.error('保存失败'); }
+    };
+
+    const handleOpen = async () => {
+        if (isDirty) {
+            Modal.confirm({
+                title: '当前项目有未保存的更改',
+                content: '打开新项目将丢失未保存的内容，是否继续？',
+                okText: '继续打开', cancelText: '取消',
+                onOk: doOpen,
+            });
+        } else doOpen();
+    };
+
+    const doOpen = async () => {
+        try {
+            const project = await openProject();
+            if (project) { loadProject(project); message.success(`已打开: ${project.meta.projectName}`); }
+        } catch (e) { message.error(`打开失败: ${(e as Error).message}`); }
+    };
+
+    const handleNew = () => {
+        if (isDirty) {
+            Modal.confirm({
+                title: '当前项目有未保存的更改',
+                content: '新建项目将丢弃当前配置，是否继续？',
+                okText: '新建', cancelText: '取消',
+                onOk: () => { resetProject(); clearFileHandle(); clearDraft(); },
+            });
+        } else { resetProject(); clearFileHandle(); clearDraft(); }
+    };
+
+    const [loading, setLoading] = React.useState(false);
+
+    const handleCompile = async () => {
+        if (!validation.isCompilable) {
+            Modal.warning({ title: '配置存在错误', content: '请修复所有错误后再编译。点击顶栏"健康度"查看详情。' });
+            return;
+        }
+        setLoading(true);
+        try {
+            useProjectStore.getState().createSnapshot(`编译快照 ${new Date().toLocaleString('zh-CN')}`);
+            const res = await axios.post('/api/v1/generate', { config }, { responseType: 'blob' });
+            const url = URL.createObjectURL(new Blob([res.data]));
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${meta.projectName.replace(/\s/g, '_')}_ModelSet.zip`;
+            document.body.appendChild(a); a.click(); a.remove();
+            URL.revokeObjectURL(url);
+            message.success('ModelSet 编译完成！');
+        } catch { message.error('编译失败，请检查后端服务'); }
+        finally { setLoading(false); }
+    };
+
+    const compileMenu: MenuProps['items'] = [
+        { key: 'compile', label: '编译 ModelSet.zip', onClick: handleCompile },
+        { key: 'snapshot', label: '创建版本快照', onClick: () => useProjectStore.getState().createSnapshot(`手动快照 ${new Date().toLocaleString('zh-CN')}`) },
+    ];
+
+    const renderContent = () => {
+        switch (activePanel) {
+            case 'identity': return <IdentityForm />;
+            case 'control': return <ControlBoardForm />;
+            case 'drive': return <DriveForm />;
+            case 'sensor': return <SensorForm />;
+            case 'io': return <IOForm />;
+            case 'blueprint': return <RobotCanvas />;
+            case 'wiring': return <WiringCanvas />;
+        }
+    };
+
+    const errorCount = validation.errors.length;
+    const warnCount = validation.warnings.length;
+
+    return (
+        <Layout style={{ minHeight: '100vh', background: '#090b10' }}>
+            {/* Top App Bar */}
+            <Header style={{
+                height: 48, padding: '0 16px',
+                background: '#0f1117', borderBottom: '1px solid #1a1d28',
+                display: 'flex', alignItems: 'center', gap: 8,
+                justifyContent: 'space-between',
+            }}>
+                {/* Left: logo + file ops */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ color: '#00d2ff', fontWeight: 800, fontSize: 15, letterSpacing: 1, marginRight: 8 }}>
+                        ⚡ AMR Studio
+                    </span>
+                    <Tooltip title="新建项目 (Ctrl+N)">
+                        <Button size="small" type="text" icon={<FileAddOutlined />} onClick={handleNew} />
+                    </Tooltip>
+                    <Tooltip title="打开项目 (Ctrl+O)">
+                        <Button size="small" type="text" icon={<FolderOpenOutlined />} onClick={handleOpen} />
+                    </Tooltip>
+                    <Tooltip title="保存项目 (Ctrl+S)">
+                        <Button size="small" type="text"
+                            icon={<SaveOutlined style={{ color: isDirty ? '#faad14' : undefined }} />}
+                            onClick={handleSave}
+                        />
+                    </Tooltip>
+                    <span style={{ color: '#333', margin: '0 4px' }}>│</span>
+                    <Tooltip title="撤销 (Ctrl+Z)">
+                        <Button size="small" type="text" icon={<UndoOutlined />} disabled={!canUndo} onClick={() => undo()} />
+                    </Tooltip>
+                    <Tooltip title="重做 (Ctrl+Shift+Z)">
+                        <Button size="small" type="text" icon={<RedoOutlined />} disabled={!canRedo} onClick={() => redo()} />
+                    </Tooltip>
+                </div>
+
+                {/* Center: project name + dirty indicator */}
+                <div style={{ color: '#666', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <span style={{ color: '#aaa' }}>{meta.projectName}</span>
+                    {isDirty && <Tag color="warning" style={{ margin: 0, fontSize: 10 }}>● 未保存</Tag>}
+                </div>
+
+                {/* Right: health + compile */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Tooltip title="查看配置健康度">
+                        <Badge count={errorCount} size="small" offset={[-4, 4]}>
+                            <Button
+                                size="small" type="text"
+                                icon={<SafetyOutlined style={{ color: errorCount > 0 ? '#ff4d4f' : warnCount > 0 ? '#faad14' : '#52c41a' }} />}
+                                onClick={toggleHealthDashboard}
+                            />
+                        </Badge>
+                    </Tooltip>
+                    <Dropdown menu={{ items: compileMenu }} placement="bottomRight">
+                        <Button
+                            type="primary" size="small"
+                            icon={<CloudDownloadOutlined />}
+                            loading={loading}
+                            disabled={!validation.isCompilable}
+                            style={{ fontWeight: 700 }}
+                        >
+                            编译 ▾
+                        </Button>
+                    </Dropdown>
+                </div>
+            </Header>
+
+            <Layout style={{ flex: 1 }}>
+                {/* Sidebar */}
+                <Sider width={200} theme="dark" style={{ borderRight: '1px solid #1a1d28' }}>
+                    <Menu
+                        theme="dark" mode="inline"
+                        selectedKeys={[activePanel]}
+                        onClick={e => setActivePanel(e.key as any)}
+                        items={NAV_ITEMS}
+                        style={{ borderRight: 0, marginTop: 4 }}
+                    />
+                </Sider>
+
+                {/* Main */}
+                <Layout style={{ display: 'flex', flexDirection: 'column' }}>
+                    <Content style={{
+                        background: '#090b10', overflowY: 'auto',
+                        flex: 1, paddingBottom: 40,
+                    }}>
+                        {renderContent()}
+                    </Content>
+                    <StatusBar />
+                </Layout>
+            </Layout>
+
+            {/* Global Overlays */}
+            <DriveTypeConfirmDialog />
+            <HealthDashboard />
+        </Layout>
+    );
+}
