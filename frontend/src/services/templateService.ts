@@ -31,3 +31,33 @@ export async function loadTemplate(templateId: string): Promise<AmrProject | nul
         return null;
     }
 }
+
+// Fetch factory templates from backend
+export interface BackendTemplateInfo {
+    id: string;
+    name: string;
+    version: string;
+    files: string[];
+    description: string;
+}
+
+export async function fetchBackendTemplates(): Promise<BackendTemplateInfo[]> {
+    try {
+        const res = await fetch('http://localhost:8000/api/v1/templates');
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.templates || [];
+    } catch {
+        return [];
+    }
+}
+
+export async function loadBackendTemplate(templateId: string): Promise<AmrProject | null> {
+    try {
+        const res = await fetch(`http://localhost:8000/api/v1/templates/${templateId}`);
+        if (!res.ok) return null;
+        return await res.json() as AmrProject;
+    } catch {
+        return null;
+    }
+}

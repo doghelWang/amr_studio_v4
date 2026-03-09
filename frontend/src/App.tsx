@@ -13,6 +13,8 @@ import axios from 'axios';
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
 import { useUIStore } from './store/useUIStore';
 import { saveProject, fetchProjectList, fetchProjectFile, autosaveDraft, clearDraft, clearFileHandle } from './services/projectFileService';
+import { fetchBackendTemplates, loadBackendTemplate } from './services/templateService';
+import type { BackendTemplateInfo } from './services/templateService';
 
 import { IdentityForm } from './components/IdentityForm';
 import { ControlBoardForm } from './components/ControlBoardForm';
@@ -67,6 +69,7 @@ export default function App() {
     const [projectModalVisible, setProjectModalVisible] = React.useState(false);
     const [projectList, setProjectList] = React.useState<Array<{ filename: string, robotName: string, lastModified: number }>>([]);
     const [loadingProjects, setLoadingProjects] = React.useState(false);
+    const [factoryTemplates, setFactoryTemplates] = React.useState<BackendTemplateInfo[]>([]);
 
     const handleSave = async () => {
         try {
@@ -90,8 +93,12 @@ export default function App() {
         setProjectModalVisible(true);
         setLoadingProjects(true);
         try {
-            const list = await fetchProjectList();
+            const [list, templates] = await Promise.all([
+                fetchProjectList(),
+                fetchBackendTemplates()
+            ]);
             setProjectList(list);
+            setFactoryTemplates(templates);
         } catch (e) {
             message.error((e as Error).message);
         } finally {
@@ -111,6 +118,19 @@ export default function App() {
         } finally {
             hide();
         }
+    };
+
+    const doLoadTemplate = async (templateId: string) => {
+        setProjectModalVisible(false);
+        const hide = message.loading('正在载入工厂模板...', 0);
+        try {
+            const project = await loadBackendTemplate(templateId);
+            if (!project) { message.error('无法载入模板'); return; }
+            useProjectStore.getState().loadProject(project);
+            clearFileHandle();
+            message.success(`已载入: ${project.meta.projectName}`);
+        } catch { message.error('模板载入失败'); }
+        finally { hide(); }
     };
 
     const handleNew = () => {
@@ -135,40 +155,14 @@ export default function App() {
         try {
             useProjectStore.getState().createSnapshot(`编译快照 ${new Date().toLocaleString('zh-CN')}`);
 
-            const driveTypeMap: Record<string, string> = {
-                'DIFFERENTIAL': 'DIFF',
-                'SINGLE_STEERING_WHEEL': 'SINGLE_STEER',
-                'DUAL_STEERING_WHEEL': 'DUAL_STEER',
-                'QUAD_STEERING_WHEEL': 'QUAD_STEER',
-                'MECANUM_WHEEL': 'MECANUM',
-                'OMNI_WHEEL': 'OMNI'
-            };
-
-            const sensorTypeMap: Record<string, string> = {
-                'LASER_2D': 'LASER',
-                'LASER_3D': 'LASER',
-                'CAMERA_BINOCULAR': 'CAMERA',
-                'ULTRASONIC': 'ULTRASONIC',
-                'IMU': 'GYRO',
-            };
-
-            const mappedSensors = config.sensors.map(s => ({
-                id: s.id,
-                type: sensorTypeMap[s.type as string] || 'LASER',
-                model: s.model,
-                usageNavi: s.usageNavi,
-                usageObs: s.usageObs,
-                offsetX: s.mountX,
-                offsetY: s.mountY,
-                yaw: s.mountYaw
-            }));
-
             const payload = {
                 robotName: config.identity.robotName,
                 version: config.identity.version,
-                driveType: driveTypeMap[config.identity.driveType as string] || 'DIFF',
+                // Send raw frontend enum - backend now handles DIFFERENTIAL, MECANUM_4 etc. directly
+                driveType: config.identity.driveType,
                 wheels: config.wheels,
-                sensors: mappedSensors,
+                // Send sensors with mountX/mountY/mountYaw - backend schema now accepts these directly
+                sensors: config.sensors,
                 ioPorts: config.ioPorts
             };
 
@@ -315,7 +309,35 @@ export default function App() {
                 open={projectModalVisible}
                 onCancel={() => setProjectModalVisible(false)}
                 footer={null}
+                width={520}
             >
+                {/* Factory Templates Section */}
+                {factoryTemplates.length > 0 && (
+                    <div style={{ marginBottom: 16 }}>
+                        <div style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>🏭 工厂出厂模板</div>
+                        {factoryTemplates.map(t => (
+                            <div
+                                key={t.id}
+                                onClick={() => doLoadTemplate(t.id)}
+                                style={{
+                                    padding: '10px 14px', marginBottom: 6,
+                                    background: '#1a1d28', border: '1px solid #252836',
+                                    borderRadius: 6, cursor: 'pointer',
+                                    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+                                }}
+                            >
+                                <div>
+                                    <strong style={{ color: '#00d2ff' }}>{t.name}</strong>
+                                    <div style={{ fontSize: 11, color: '#888', marginTop: 2 }}>{t.description} • v{t.version}</div>
+                                </div>
+                                <Tag color="blue" style={{ fontSize: 10 }}>出厂模板</Tag>
+                            </div>
+                        ))}
+                        <div style={{ borderTop: '1px solid #252836', marginBottom: 12 }} />
+                    </div>
+                )}
+                {/* Saved Projects Section */}
+                <div style={{ fontSize: 11, color: '#888', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 8 }}>☁️ 云端已保存项目</div>
                 {loadingProjects ? (
                     <div style={{ padding: 20, textAlign: 'center', color: '#888' }}>正在扫描云端数据库...</div>
                 ) : projectList.length === 0 ? (
@@ -323,7 +345,7 @@ export default function App() {
                 ) : (
                     <Menu
                         mode="inline"
-                        style={{ border: '1px solid #f0f0f0', borderRadius: 8 }}
+                        style={{ border: '1px solid #252836', borderRadius: 8 }}
                         items={projectList.map(p => ({
                             key: p.filename,
                             label: (

@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
+import blackboxprotobuf
 from schemas.api import GeneratePayload
 from core.protobuf_engine import generate_industrial_modelset
 
@@ -24,6 +25,137 @@ app.add_middleware(
 # --- Configuration Persistence ---
 SAVED_PROJECTS_DIR = Path("saved_projects")
 SAVED_PROJECTS_DIR.mkdir(exist_ok=True)
+
+# --- Factory Templates ---
+TEMPLATES_DIR = Path("templates")
+
+@app.get("/api/v1/templates")
+async def list_templates():
+    """Returns a list of all factory template models with their decoded metadata."""
+    try:
+        comp_model_path = TEMPLATES_DIR / "CompDesc.model"
+        if not comp_model_path.exists():
+            return {"templates": []}
+        
+        with open(comp_model_path, 'rb') as f:
+            msg, _ = blackboxprotobuf.decode_message(f.read())
+        
+        # Try to extract name and version from the Protobuf structure
+        robot_name = "Factory Default"
+        version = "1.0"
+        try:
+            robot_name_bytes = msg["5"][0]["4"]["1"]["1"]["10"]
+            if isinstance(robot_name_bytes, bytes):
+                robot_name = robot_name_bytes.decode('utf-8')
+        except (KeyError, IndexError, TypeError):
+            pass
+        
+        try:
+            version_bytes = msg["5"][0]["4"]["1"]["5"]["10"]
+            if isinstance(version_bytes, bytes):
+                version = version_bytes.decode('utf-8')
+        except (KeyError, IndexError, TypeError):
+            pass
+        
+        manifest_path = TEMPLATES_DIR / "ModelFileDesc.json"
+        file_list = []
+        if manifest_path.exists():
+            with open(manifest_path, 'r') as f:
+                file_list = json.load(f).get("ModelFileDesc", [])
+        
+        return {
+            "templates": [{
+                "id": "factory_default",
+                "name": robot_name,
+                "version": version,
+                "files": [f["name"] for f in file_list],
+                "description": "出厂标准配置模板"
+            }]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read templates: {str(e)}")
+
+@app.get("/api/v1/templates/{template_id}")
+async def get_template(template_id: str):
+    """Returns a decoded template as an AmrProject-compatible JSON structure."""
+    if template_id != "factory_default":
+        raise HTTPException(status_code=404, detail="Template not found")
+    
+    try:
+        comp_model_path = TEMPLATES_DIR / "CompDesc.model"
+        with open(comp_model_path, 'rb') as f:
+            msg, _ = blackboxprotobuf.decode_message(f.read())
+        
+        robot_name = "Factory Default AMR"
+        version = "1.0"
+        drive_type = "DIFFERENTIAL"
+        
+        try:
+            robot_name_bytes = msg["5"][0]["4"]["1"]["1"]["10"]
+            if isinstance(robot_name_bytes, bytes):
+                robot_name = robot_name_bytes.decode('utf-8')
+        except (KeyError, IndexError, TypeError):
+            pass
+        
+        try:
+            version_bytes = msg["5"][0]["4"]["1"]["5"]["10"]
+            if isinstance(version_bytes, bytes):
+                version = version_bytes.decode('utf-8')
+        except (KeyError, IndexError, TypeError):
+            pass
+        
+        try:
+            chassis_type_bytes = msg["5"][0]["4"]["1"]["9"]["21"]["1"]
+            if isinstance(chassis_type_bytes, bytes):
+                chassis_str = chassis_type_bytes.decode('utf-8')
+                type_reverse = {
+                    "differential": "DIFFERENTIAL",
+                    "steerChassis": "SINGLE_STEER",
+                    "dualSteerChassis": "DUAL_STEER",
+                    "quadSteerChassis": "QUAD_STEER",
+                    "mecanumChassis": "MECANUM_4",
+                    "omniChassis": "OMNI_3",
+                }
+                drive_type = type_reverse.get(chassis_str, "DIFFERENTIAL")
+        except (KeyError, IndexError, TypeError):
+            pass
+        
+        import uuid, datetime
+        from pathlib import Path as P
+        now = datetime.datetime.utcnow().isoformat() + "Z"
+        
+        # Return an AmrProject-compatible structure
+        return {
+            "formatVersion": "1.0",
+            "meta": {
+                "projectId": str(uuid.uuid4()),
+                "projectName": robot_name,
+                "createdAt": now,
+                "modifiedAt": now,
+                "author": "Factory",
+                "templateOrigin": "factory_default",
+                "formatVersion": "1.0"
+            },
+            "config": {
+                "identity": {
+                    "robotName": robot_name,
+                    "version": version,
+                    "chassisLength": 1200,
+                    "chassisWidth": 800,
+                    "navigationMethod": "LIDAR_SLAM",
+                    "driveType": drive_type
+                },
+                "mcu": {"model": "RK3588_CTRL_BOARD", "canBuses": ["CAN0", "CAN1", "CAN2"], "ethPorts": ["ETH0", "ETH1"]},
+                "ioBoards": [],
+                "wheels": [],
+                "sensors": [],
+                "ioPorts": []
+            },
+            "snapshots": []
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to read template: {str(e)}")
+
 
 @app.get("/api/v1/projects")
 async def list_projects():

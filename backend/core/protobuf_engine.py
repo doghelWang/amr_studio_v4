@@ -32,11 +32,14 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
         
         # Patch Sub-Module Type Based on Drive
         type_mapping = {
+            "DIFF": "differential",
             "DIFFERENTIAL": "differential",
             "SINGLE_STEER": "steerChassis",
             "DUAL_STEER": "dualSteerChassis",
             "QUAD_STEER": "quadSteerChassis",
+            "MECANUM": "mecanumChassis",
             "MECANUM_4": "mecanumChassis",
+            "OMNI": "omniChassis",
             "OMNI_3": "omniChassis"
         }
         chassis_type = type_mapping.get(payload.driveType, "differential")
@@ -102,8 +105,9 @@ def build_func_desc(template_path: str, payload: GeneratePayload) -> bytes:
         msg, typ = blackboxprotobuf.decode_message(f.read())
     
     # Navigation Logic based on Sensors
-    has_laser_navi = any(s.type == 'LASER_2D' and s.usageNavi for s in payload.sensors)
-    has_imu = any(s.type == 'IMU' for s in payload.sensors)
+    # Use get_laser_type() to normalize LASER_2D -> LASER etc.
+    has_laser_navi = any(s.get_laser_type() == 'LASER' and s.usageNavi for s in payload.sensors)
+    has_imu = any(s.get_laser_type() == 'GYRO' for s in payload.sensors)
 
     try:
         # Patch Navigation Method safely
