@@ -1,0 +1,189 @@
+{
+    "formatVersion": "1.0",
+    "meta": {
+        "projectId": "4c22d2e6-599c-4036-9719-c426a1b7fc97",
+        "projectName": "\u672a\u547d\u540d\u9879\u76ee",
+        "createdAt": "2026-03-09T13:05:32.897Z",
+        "modifiedAt": "2026-03-09T13:24:45.506Z",
+        "author": "",
+        "templateOrigin": "blank",
+        "formatVersion": "1.0"
+    },
+    "config": {
+        "identity": {
+            "robotName": "Custom AMR1",
+            "version": "1.0",
+            "chassisLength": 1200,
+            "chassisWidth": 800,
+            "navigationMethod": "LIDAR_SLAM",
+            "driveType": "DIFFERENTIAL"
+        },
+        "mcu": {
+            "model": "RK3588_CTRL_BOARD",
+            "canBuses": [
+                "CAN0",
+                "CAN1",
+                "CAN2"
+            ],
+            "ethPorts": [
+                "ETH0",
+                "ETH1"
+            ]
+        },
+        "ioBoards": [],
+        "wheels": [
+            {
+                "id": "80064227-baad-4e4d-b8ea-02be8981d23e",
+                "label": "Left Drive Motor",
+                "mountX": 0,
+                "mountY": 350,
+                "mountYaw": 0,
+                "orientation": "FRONT_LEFT",
+                "headOffsetIdle": 100,
+                "tailOffsetIdle": 100,
+                "leftOffsetIdle": 100,
+                "rightOffsetIdle": 100,
+                "maxVelocityIdle": 1500,
+                "maxAccIdle": 800,
+                "maxDecIdle": 800,
+                "headOffsetFull": 100,
+                "tailOffsetFull": 100,
+                "leftOffsetFull": 100,
+                "rightOffsetFull": 100,
+                "maxVelocityFull": 1200,
+                "maxAccFull": 500,
+                "maxDecFull": 500,
+                "driverModel": "ELMO_GOLD",
+                "canBus": "CAN0",
+                "canNodeId": 1,
+                "motorPolarity": "FORWARD",
+                "zeroPos": 0,
+                "leftLimit": -90,
+                "rightLimit": 90
+            },
+            {
+                "id": "c0346539-7381-49bf-8b60-cf72b96324c7",
+                "label": "Right Drive Motor",
+                "mountX": 0,
+                "mountY": -350,
+                "mountYaw": 0,
+                "orientation": "FRONT_RIGHT",
+                "headOffsetIdle": 100,
+                "tailOffsetIdle": 100,
+                "leftOffsetIdle": 100,
+                "rightOffsetIdle": 100,
+                "maxVelocityIdle": 1500,
+                "maxAccIdle": 800,
+                "maxDecIdle": 800,
+                "headOffsetFull": 100,
+                "tailOffsetFull": 100,
+                "leftOffsetFull": 100,
+                "rightOffsetFull": 100,
+                "maxVelocityFull": 1200,
+                "maxAccFull": 500,
+                "maxDecFull": 500,
+                "driverModel": "ELMO_GOLD",
+                "canBus": "CAN0",
+                "canNodeId": 2,
+                "motorPolarity": "FORWARD",
+                "zeroPos": 0,
+                "leftLimit": -90,
+                "rightLimit": 90
+            }
+        ],
+        "sensors": [],
+        "ioPorts": []
+    },
+    "snapshots": [
+        {
+            "snapshotId": "f92eae56-b7ac-4871-991a-7c92c3e1fd81",
+            "label": "\u7f16\u8bd1\u5feb\u7167 2026/3/9 21:06:29",
+            "createdAt": "2026-03-09T13:06:29.908Z",
+            "config": {
+                "identity": {
+                    "robotName": "Custom AMR",
+                    "version": "1.0",
+                    "chassisLength": 1200,
+                    "chassisWidth": 800,
+                    "navigationMethod": "LIDAR_SLAM",
+                    "driveType": "DIFFERENTIAL"
+                },
+                "mcu": {
+                    "model": "RK3588_CTRL_BOARD",
+                    "canBuses": [
+                        "CAN0",
+                        "CAN1",
+                        "CAN2"
+                    ],
+                    "ethPorts": [
+                        "ETH0",
+                        "ETH1"
+                    ]
+                },
+                "ioBoards": [],
+                "wheels": [
+                    {
+                        "id": "80064227-baad-4e4d-b8ea-02be8981d23e",
+                        "label": "Left Drive Motor",
+                        "mountX": 0,
+                        "mountY": 350,
+                        "mountYaw": 0,
+                        "orientation": "FRONT_LEFT",
+                        "headOffsetIdle": 100,
+                        "tailOffsetIdle": 100,
+                        "leftOffsetIdle": 100,
+                        "rightOffsetIdle": 100,
+                        "maxVelocityIdle": 1500,
+                        "maxAccIdle": 800,
+                        "maxDecIdle": 800,
+                        "headOffsetFull": 100,
+                        "tailOffsetFull": 100,
+                        "leftOffsetFull": 100,
+                        "rightOffsetFull": 100,
+                        "maxVelocityFull": 1200,
+                        "maxAccFull": 500,
+                        "maxDecFull": 500,
+                        "driverModel": "ELMO_GOLD",
+                        "canBus": "CAN0",
+                        "canNodeId": 1,
+                        "motorPolarity": "FORWARD",
+                        "zeroPos": 0,
+                        "leftLimit": -90,
+                        "rightLimit": 90
+                    },
+                    {
+                        "id": "c0346539-7381-49bf-8b60-cf72b96324c7",
+                        "label": "Right Drive Motor",
+                        "mountX": 0,
+                        "mountY": -350,
+                        "mountYaw": 0,
+                        "orientation": "FRONT_RIGHT",
+                        "headOffsetIdle": 100,
+                        "tailOffsetIdle": 100,
+                        "leftOffsetIdle": 100,
+                        "rightOffsetIdle": 100,
+                        "maxVelocityIdle": 1500,
+                        "maxAccIdle": 800,
+                        "maxDecIdle": 800,
+                        "headOffsetFull": 100,
+                        "tailOffsetFull": 100,
+                        "leftOffsetFull": 100,
+                        "rightOffsetFull": 100,
+                        "maxVelocityFull": 1200,
+                        "maxAccFull": 500,
+                        "maxDecFull": 500,
+                        "driverModel": "ELMO_GOLD",
+                        "canBus": "CAN0",
+                        "canNodeId": 2,
+                        "motorPolarity": "FORWARD",
+                        "zeroPos": 0,
+                        "leftLimit": -90,
+                        "rightLimit": 90
+                    }
+                ],
+                "sensors": [],
+                "ioPorts": []
+            }
+        }
+    ]
+}

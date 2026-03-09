@@ -12,7 +12,7 @@ import axios from 'axios';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
 import { useUIStore } from './store/useUIStore';
-import { saveProject, openProject, autosaveDraft, clearDraft, clearFileHandle } from './services/projectFileService';
+import { saveProject, fetchProjectList, fetchProjectFile, autosaveDraft, clearDraft, clearFileHandle } from './services/projectFileService';
 
 import { IdentityForm } from './components/IdentityForm';
 import { ControlBoardForm } from './components/ControlBoardForm';
@@ -64,11 +64,15 @@ export default function App() {
         return () => window.removeEventListener('keydown', handler);
     }, [canUndo, canRedo, meta, config, snapshots]);
 
+    const [projectModalVisible, setProjectModalVisible] = React.useState(false);
+    const [projectList, setProjectList] = React.useState<Array<{ filename: string, robotName: string, lastModified: number }>>([]);
+    const [loadingProjects, setLoadingProjects] = React.useState(false);
+
     const handleSave = async () => {
         try {
             await saveProject({ formatVersion: '1.0', meta, config, snapshots });
-            message.success('项目已保存');
-        } catch { message.error('保存失败'); }
+            message.success('项目已同步保存至云端');
+        } catch { message.error('云端同步失败，请检查网络'); }
     };
 
     const handleOpen = async () => {
@@ -77,16 +81,36 @@ export default function App() {
                 title: '当前项目有未保存的更改',
                 content: '打开新项目将丢失未保存的内容，是否继续？',
                 okText: '继续打开', cancelText: '取消',
-                onOk: doOpen,
+                onOk: openProjectModal,
             });
-        } else doOpen();
+        } else openProjectModal();
     };
 
-    const doOpen = async () => {
+    const openProjectModal = async () => {
+        setProjectModalVisible(true);
+        setLoadingProjects(true);
         try {
-            const project = await openProject();
-            if (project) { loadProject(project); message.success(`已打开: ${project.meta.projectName}`); }
-        } catch (e) { message.error(`打开失败: ${(e as Error).message}`); }
+            const list = await fetchProjectList();
+            setProjectList(list);
+        } catch (e) {
+            message.error((e as Error).message);
+        } finally {
+            setLoadingProjects(false);
+        }
+    };
+
+    const doOpen = async (filename: string) => {
+        setProjectModalVisible(false);
+        const hide = message.loading('正在拉取配置...', 0);
+        try {
+            const project = await fetchProjectFile(filename);
+            loadProject(project);
+            message.success(`已装载: ${project.meta.projectName}`);
+        } catch (e) {
+            message.error(`装载失败: ${(e as Error).message}`);
+        } finally {
+            hide();
+        }
     };
 
     const handleNew = () => {
@@ -110,7 +134,45 @@ export default function App() {
         setLoading(true);
         try {
             useProjectStore.getState().createSnapshot(`编译快照 ${new Date().toLocaleString('zh-CN')}`);
-            const res = await axios.post('/api/v1/generate', { config }, { responseType: 'blob' });
+
+            const driveTypeMap: Record<string, string> = {
+                'DIFFERENTIAL': 'DIFF',
+                'SINGLE_STEERING_WHEEL': 'SINGLE_STEER',
+                'DUAL_STEERING_WHEEL': 'DUAL_STEER',
+                'QUAD_STEERING_WHEEL': 'QUAD_STEER',
+                'MECANUM_WHEEL': 'MECANUM',
+                'OMNI_WHEEL': 'OMNI'
+            };
+
+            const sensorTypeMap: Record<string, string> = {
+                'LASER_2D': 'LASER',
+                'LASER_3D': 'LASER',
+                'CAMERA_BINOCULAR': 'CAMERA',
+                'ULTRASONIC': 'ULTRASONIC',
+                'IMU': 'GYRO',
+            };
+
+            const mappedSensors = config.sensors.map(s => ({
+                id: s.id,
+                type: sensorTypeMap[s.type as string] || 'LASER',
+                model: s.model,
+                usageNavi: s.usageNavi,
+                usageObs: s.usageObs,
+                offsetX: s.mountX,
+                offsetY: s.mountY,
+                yaw: s.mountYaw
+            }));
+
+            const payload = {
+                robotName: config.identity.robotName,
+                version: config.identity.version,
+                driveType: driveTypeMap[config.identity.driveType as string] || 'DIFF',
+                wheels: config.wheels,
+                sensors: mappedSensors,
+                ioPorts: config.ioPorts
+            };
+
+            const res = await axios.post('http://localhost:8000/api/v1/generate', payload, { responseType: 'blob' });
             const url = URL.createObjectURL(new Blob([res.data]));
             const a = document.createElement('a');
             a.href = url;
@@ -118,7 +180,20 @@ export default function App() {
             document.body.appendChild(a); a.click(); a.remove();
             URL.revokeObjectURL(url);
             message.success('ModelSet 编译完成！');
-        } catch { message.error('编译失败，请检查后端服务'); }
+        } catch (e: any) {
+            let errMsg = '编译失败，请检查后端服务';
+            if (axios.isAxiosError(e) && e.response?.data) {
+                // If the response is a blob, we have to read it asynchronously to get the JSON error
+                if (e.response.data instanceof Blob) {
+                    const text = await e.response.data.text();
+                    try {
+                        const json = JSON.parse(text);
+                        if (json.detail) errMsg = `校验错误: ${JSON.stringify(json.detail)}`;
+                    } catch { }
+                }
+            }
+            message.error(errMsg, 8); // show for 8 seconds
+        }
         finally { setLoading(false); }
     };
 
@@ -235,6 +310,35 @@ export default function App() {
             {/* Global Overlays */}
             <DriveTypeConfirmDialog />
             <HealthDashboard />
+            <Modal
+                title="打开云端项目"
+                open={projectModalVisible}
+                onCancel={() => setProjectModalVisible(false)}
+                footer={null}
+            >
+                {loadingProjects ? (
+                    <div style={{ padding: 20, textAlign: 'center', color: '#888' }}>正在扫描云端数据库...</div>
+                ) : projectList.length === 0 ? (
+                    <div style={{ padding: 20, textAlign: 'center', color: '#888' }}>云端暂无已保存的项目</div>
+                ) : (
+                    <Menu
+                        mode="inline"
+                        style={{ border: '1px solid #f0f0f0', borderRadius: 8 }}
+                        items={projectList.map(p => ({
+                            key: p.filename,
+                            label: (
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <strong>{p.robotName}</strong>
+                                    <span style={{ color: '#aaa', fontSize: 12 }}>
+                                        {new Date(p.lastModified * 1000).toLocaleString('zh-CN')}
+                                    </span>
+                                </div>
+                            ),
+                            onClick: () => doOpen(p.filename)
+                        }))}
+                    />
+                )}
+            </Modal>
         </Layout>
     );
 }

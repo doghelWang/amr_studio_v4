@@ -50,7 +50,7 @@ class IOConfig(BaseModel):
 class GeneratePayload(BaseModel):
     robotName: str
     version: str
-    driveType: Literal['DIFF', 'SINGLE_STEER', 'DUAL_STEER', 'QUAD_STEER', 'MECANUM']
+    driveType: Literal['DIFF', 'SINGLE_STEER', 'DUAL_STEER', 'QUAD_STEER', 'MECANUM', 'OMNI']
     wheels: List[WheelConfig]
     sensors: List[SensorConfig]
     ioPorts: List[IOConfig]

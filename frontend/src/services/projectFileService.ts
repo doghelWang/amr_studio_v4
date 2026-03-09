@@ -1,93 +1,57 @@
-// Project File Service — .amrproj save/load/autosave
+// Project File Service — .amrproj save/load/autosave via Backend API
 import type { AmrProject, RobotConfig } from '../store/types';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 
 const DB_NAME = 'amr_studio_db';
 const STORE_NAME = 'autosave';
 const DRAFT_KEY = 'autosave_draft';
 
-// File System Access API handle (persists while app is open)
-let _fileHandle: FileSystemFileHandle | null = null;
-
-// ━━━ Main Save/Load ━━━
+// ━━━ Main Save/Load via Backend API ━━━
 
 export async function saveProject(project: AmrProject): Promise<void> {
     project.meta.modifiedAt = new Date().toISOString();
-    const json = JSON.stringify(project, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
 
-    if (_fileHandle) {
-        try {
-            const writable = await _fileHandle.createWritable();
-            await writable.write(blob);
-            await writable.close();
-            return;
-        } catch {
-            // Handle might be stale, fall through to showSaveFilePicker
-        }
-    }
-
-    // Fallback: use download if File System Access API not available
-    if (!('showSaveFilePicker' in window)) {
-        downloadBlob(blob, sanitizeFilename(project.meta.projectName) + '.amrproj');
-        return;
-    }
-
+    // Sync to backend P4 storage API
     try {
-        const handle = await (window as any).showSaveFilePicker({
-            suggestedName: sanitizeFilename(project.meta.projectName) + '.amrproj',
-            types: [{ description: 'AMR Project', accept: { 'application/json': ['.amrproj'] } }],
-        });
-        _fileHandle = handle;
-        const writable = await handle.createWritable();
-        await writable.write(blob);
-        await writable.close();
+        await axios.post('http://localhost:8000/api/v1/projects', project);
     } catch (e) {
-        // User cancelled
-        if ((e as Error).name !== 'AbortError') throw e;
+        console.error('Failed to save to backend API', e);
+        throw new Error('后段服务保存失败，请检查网络或后端是否开启');
+    }
+}
+
+// Open project now needs to be handled via a UI modal that lists backend files.
+// We'll export a helper here to fetch the list, and one to fetch a specific project.
+export async function fetchProjectList(): Promise<Array<{ filename: string, robotName: string, lastModified: number }>> {
+    try {
+        const res = await axios.get('http://localhost:8000/api/v1/projects');
+        return res.data.projects || [];
+    } catch (e) {
+        console.error(e);
+        throw new Error('无法连接后端 API 提取项目列表');
+    }
+}
+
+export async function fetchProjectFile(filename: string): Promise<AmrProject> {
+    try {
+        const res = await axios.get(`http://localhost:8000/api/v1/projects/${filename}`);
+        return res.data as AmrProject;
+    } catch (e) {
+        console.error(e);
+        throw new Error('读取后端项目配置失败');
     }
 }
 
 export async function openProject(): Promise<AmrProject | null> {
-    if (!('showOpenFilePicker' in window)) {
-        // Fallback to <input type="file">
-        return openViaInputElement();
-    }
-
-    try {
-        const [handle] = await (window as any).showOpenFilePicker({
-            types: [{ description: 'AMR Project', accept: { 'application/json': ['.amrproj'] } }],
-        });
-        _fileHandle = handle;
-        const file = await handle.getFile();
-        return parseProjectFile(await file.text());
-    } catch (e) {
-        if ((e as Error).name !== 'AbortError') throw e;
-        return null;
-    }
+    // This semantic stub is left for backward compatibility in App.tsx briefly.
+    // However, App.tsx needs to be updated to show a Modal using fetchProjectList().
+    console.warn("openProject() stub called. Use Project Modal UI instead.");
+    return null;
 }
 
-function openViaInputElement(): Promise<AmrProject | null> {
-    return new Promise((resolve) => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.amrproj,.json';
-        input.onchange = async () => {
-            const file = input.files?.[0];
-            if (!file) { resolve(null); return; }
-            resolve(parseProjectFile(await file.text()));
-        };
-        input.click();
-    });
-}
+// (Removed deprecated file upload input mechanisms)
 
-function parseProjectFile(json: string): AmrProject {
-    const data = JSON.parse(json);
-    if (!data.formatVersion || !data.config) {
-        throw new Error('Invalid .amrproj file format');
-    }
-    return data as AmrProject;
-}
 
 // ━━━ New Project Factory ━━━
 
@@ -117,7 +81,7 @@ export function createNewProject(projectName = '未命名项目', config?: Robot
 }
 
 export function clearFileHandle(): void {
-    _fileHandle = null;
+    // No-op deprecated
 }
 
 // ━━━ Autosave (IndexedDB) ━━━
@@ -163,18 +127,4 @@ export async function clearDraft(): Promise<void> {
 }
 
 // ━━━ Utilities ━━━
-
-function sanitizeFilename(name: string): string {
-    return name.replace(/[^a-zA-Z0-9_\-\u4e00-\u9fff]/g, '_');
-}
-
-function downloadBlob(blob: Blob, filename: string): void {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-}
+// (Removed deprecated blob serializers)

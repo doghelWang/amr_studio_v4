@@ -9,6 +9,7 @@ AMR Studio Pro V4 is an industrial-grade Configuration and Topology Visualizatio
 *   **Robust State Management**: Powered by a unified `Zustand` state engine equipped with `Zundo` for infinite undo/redo capability across multi-step wizard forms.
 *   **Real-time Validation Engine**: Prevents configuration disasters (e.g., CAN Node ID conflicts, missing IP addresses) before they reach the hardware.
 *   **Dual-State Drive Kinematics**: Support for mapping separate dynamic boundaries (velocities, accelerations, hardware offsets) for **Idle** vs **Full Load** robot payload states.
+*   **Cloud Config Sync (V4.1+)**: Features a persistent `/api/v1/projects` FastAPI endpoint layer, completely deprecating volatile local files in favor of robust JSON payload synchronization to a centralized local directory (`saved_projects/`).
 *   **Direct-to-Binary Compilation**: Features a Python `FastAPI` + `Blackboxprotobuf` backend engine that ingests the frontend topology payload and directly synthesizes target `.model` binaries strictly matching factory specs (supports rapid prototyping for advanced architectures like Quad Steer).
 
 ## Project Structure
