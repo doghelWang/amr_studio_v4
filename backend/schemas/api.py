@@ -92,6 +92,7 @@ class GeneratePayload(BaseModel):
     robotName: str
     version: str
     driveType: str  # Flexible - accepts both DIFFERENTIAL and DIFF etc.
+    navigationMethod: Optional[str] = None  # F4: navigation method for FuncDesc routing
     wheels: List[WheelConfig]
     sensors: List[SensorConfig]
     ioPorts: List[IOConfig]

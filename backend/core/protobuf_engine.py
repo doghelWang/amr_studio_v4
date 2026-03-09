@@ -45,53 +45,104 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
         chassis_type = type_mapping.get(payload.driveType, "differential")
         msg["5"][0]["4"]["1"]["9"]["21"]["1"] = chassis_type.encode('utf-8')
 
-        # Complex Kinematics: Rebuild the motionCenterAttr block per wheel
+        # Complex Kinematics: Rebuild wheel and sensor blocks while PRESERVING original ordering
         attr = msg["5"][0]["4"]
         parts = attr.get("2", {}).get("1", [])
         
+        MOTION_KEY = b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0'  # motionCenterAttr
+        WHEEL_KEY  = b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7'                    # wheelProperties
+        SENSOR_KEY = b'\xe4\xb8\xad\xe5\x9b\xbd\xe5\x9b\xbd\xe9\x99\x85\xe9\x98\x9f'       # sensorAttr (best-effort by position)
+
         if len(payload.wheels) > 0 and parts:
-            # 1. Update overall Chassis parameters (numberOfWheels)
-            chassis_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe5\xba\x95\xe7\x9b\x98\xe5\x8f\x82\xe6\x95\xb0') # "底盘参数"
+            # --- F1 FIX: "In-Place Anchor" Algorithm ---
+            # Strategy: instead of filter+append, we:
+            #   1. Find the anchor index of the FIRST motionCenterAttr block
+            #   2. Find and store all template wheel blocks to be replaced
+            #   3. Build cloned blocks
+            #   4. Replace the anchor range with the new blocks (in-place)
+            
+            # Step 1: Update overall chassis wheel count
+            chassis_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe5\xba\x95\xe7\x9b\x98\xe5\x8f\x82\xe6\x95\xb0')
             if chassis_part:
                 ProtoNavigator.update_float_param(chassis_part, "wheelsNum", len(payload.wheels))
             
-            # 2. Re-create the motionCenterAttr parts (运动中心参数)
-            template_motion_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0')
-            template_wheel_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7')
-
-            new_parts = []
+            # Step 2: Find anchor positions (first occurrence of each clone-target key)
+            motion_anchor_idx = next(
+                (i for i, p in enumerate(parts) if isinstance(p, dict) and p.get("2") == MOTION_KEY),
+                None
+            )
+            wheel_anchor_idx = next(
+                (i for i, p in enumerate(parts) if isinstance(p, dict) and p.get("2") == WHEEL_KEY),
+                None
+            )
             
-            # Keep parts that are NOT the ones we are cloning
-            for p in parts:
-                if p.get("2") not in (b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0', b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7'):
-                    new_parts.append(p)
+            # Step 3: Get template blocks to clone from
+            template_motion_part = ProtoNavigator.find_block_by_key(parts, "2", MOTION_KEY)
+            template_wheel_part  = ProtoNavigator.find_block_by_key(parts, "2", WHEEL_KEY)
             
-            # Clone and patch for each wheel
-            for _i, w in enumerate(payload.wheels):
-                # We won't inject ID for now unless the structure explicitly requires it, 
-                # but we will replicate the block so the firmware knows 4 wheels exist.
+            # Step 4: Build new cloned wheel blocks
+            cloned_motion_blocks = []
+            cloned_wheel_blocks  = []
+            for w in payload.wheels:
                 if template_motion_part:
                     new_motion = copy.deepcopy(template_motion_part)
                     ProtoNavigator.update_float_param(new_motion, "headOffset(Idle)", w.headOffsetIdle)
                     ProtoNavigator.update_float_param(new_motion, "tailOffset(Idle)", w.tailOffsetIdle)
                     ProtoNavigator.update_float_param(new_motion, "leftOffset(Idle)", w.leftOffsetIdle)
                     ProtoNavigator.update_float_param(new_motion, "rightOffset(Idle)", w.rightOffsetIdle)
-                    
                     ProtoNavigator.update_float_param(new_motion, "headOffset (Full Load)", w.headOffsetFull)
                     ProtoNavigator.update_float_param(new_motion, "tailOffset (Full Load)", w.tailOffsetFull)
                     ProtoNavigator.update_float_param(new_motion, "leftOffset (Full Load)", w.leftOffsetFull)
                     ProtoNavigator.update_float_param(new_motion, "rightOffset (Full Load)", w.rightOffsetFull)
-                    new_parts.append(new_motion)
-
+                    cloned_motion_blocks.append(new_motion)
                 if template_wheel_part:
                     new_wheel = copy.deepcopy(template_wheel_part)
                     ProtoNavigator.update_float_param(new_wheel, "locCoordNX", w.mountX)
                     ProtoNavigator.update_float_param(new_wheel, "locCoordNY", w.mountY)
-                    # Use index to distinguish wheel blocks if required in future
-                    new_parts.append(new_wheel)
-
-            # Assign back
+                    cloned_wheel_blocks.append(new_wheel)
+            
+            # Step 5: In-place replacement at the anchor positions
+            # We remove all original instances of motion/wheel blocks first, then insert at anchor
+            # This preserves the relative order of all other blocks (e.g. chassisAttr, sub_sys_type)
+            parts_without_cloned = [p for p in parts if not (
+                isinstance(p, dict) and p.get("2") in (MOTION_KEY, WHEEL_KEY)
+            )]
+            # Insert the new blocks at the original anchor position
+            insert_at = min(
+                motion_anchor_idx if motion_anchor_idx is not None else len(parts_without_cloned),
+                len(parts_without_cloned)
+            )
+            new_parts = (
+                parts_without_cloned[:insert_at] +
+                cloned_motion_blocks +
+                cloned_wheel_blocks +
+                parts_without_cloned[insert_at:]
+            )
             attr["2"]["1"] = new_parts
+            parts = new_parts  # update local reference for sensor injection below
+        
+        # --- F2 FIX: Sensor 6D Pose Injection ---
+        # Inject sensor physical pose data into CompDesc (previously completely missing)
+        if payload.sensors and parts:
+            template_sensor_part = None
+            # Try to find a sensor template block by position (last resort: take a shallow copy of a non-wheel block)
+            for p in parts:
+                if isinstance(p, dict) and p.get("2") not in (MOTION_KEY, WHEEL_KEY) and p.get("1") is not None:
+                    template_sensor_part = p
+                    break
+            
+            if template_sensor_part:
+                sensor_insert_idx = len(attr["2"]["1"])
+                new_sensor_blocks = []
+                for s in payload.sensors:
+                    new_sensor = copy.deepcopy(template_sensor_part)
+                    # Inject sensor pose using available coordinate fields
+                    ProtoNavigator.update_float_param(new_sensor, "locCoordNX", s.mountX)
+                    ProtoNavigator.update_float_param(new_sensor, "locCoordNY", s.mountY)
+                    ProtoNavigator.update_float_param(new_sensor, "locCoordYaw", s.mountYaw)
+                    new_sensor_blocks.append(new_sensor)
+                # Append sensor blocks at end of parts list
+                attr["2"]["1"] = attr["2"]["1"] + new_sensor_blocks
 
     except Exception as e:
         print(f"Error compiling CompDesc: {e}")

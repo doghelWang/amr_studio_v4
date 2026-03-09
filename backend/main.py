@@ -10,6 +10,7 @@ from typing import Dict, Any
 import blackboxprotobuf
 from schemas.api import GeneratePayload
 from core.protobuf_engine import generate_industrial_modelset
+import core.model_parser as model_parser
 
 app = FastAPI(title="AMR Config Studio API", version="2.0")
 
@@ -83,76 +84,14 @@ async def get_template(template_id: str):
     
     try:
         comp_model_path = TEMPLATES_DIR / "CompDesc.model"
-        with open(comp_model_path, 'rb') as f:
-            msg, _ = blackboxprotobuf.decode_message(f.read())
+        if not comp_model_path.exists():
+            raise HTTPException(status_code=404, detail="Template model files not found")
         
-        robot_name = "Factory Default AMR"
-        version = "1.0"
-        drive_type = "DIFFERENTIAL"
-        
-        try:
-            robot_name_bytes = msg["5"][0]["4"]["1"]["1"]["10"]
-            if isinstance(robot_name_bytes, bytes):
-                robot_name = robot_name_bytes.decode('utf-8')
-        except (KeyError, IndexError, TypeError):
-            pass
-        
-        try:
-            version_bytes = msg["5"][0]["4"]["1"]["5"]["10"]
-            if isinstance(version_bytes, bytes):
-                version = version_bytes.decode('utf-8')
-        except (KeyError, IndexError, TypeError):
-            pass
-        
-        try:
-            chassis_type_bytes = msg["5"][0]["4"]["1"]["9"]["21"]["1"]
-            if isinstance(chassis_type_bytes, bytes):
-                chassis_str = chassis_type_bytes.decode('utf-8')
-                type_reverse = {
-                    "differential": "DIFFERENTIAL",
-                    "steerChassis": "SINGLE_STEER",
-                    "dualSteerChassis": "DUAL_STEER",
-                    "quadSteerChassis": "QUAD_STEER",
-                    "mecanumChassis": "MECANUM_4",
-                    "omniChassis": "OMNI_3",
-                }
-                drive_type = type_reverse.get(chassis_str, "DIFFERENTIAL")
-        except (KeyError, IndexError, TypeError):
-            pass
-        
-        import uuid, datetime
-        from pathlib import Path as P
-        now = datetime.datetime.utcnow().isoformat() + "Z"
-        
-        # Return an AmrProject-compatible structure
-        return {
-            "formatVersion": "1.0",
-            "meta": {
-                "projectId": str(uuid.uuid4()),
-                "projectName": robot_name,
-                "createdAt": now,
-                "modifiedAt": now,
-                "author": "Factory",
-                "templateOrigin": "factory_default",
-                "formatVersion": "1.0"
-            },
-            "config": {
-                "identity": {
-                    "robotName": robot_name,
-                    "version": version,
-                    "chassisLength": 1200,
-                    "chassisWidth": 800,
-                    "navigationMethod": "LIDAR_SLAM",
-                    "driveType": drive_type
-                },
-                "mcu": {"model": "RK3588_CTRL_BOARD", "canBuses": ["CAN0", "CAN1", "CAN2"], "ethPorts": ["ETH0", "ETH1"]},
-                "ioBoards": [],
-                "wheels": [],
-                "sensors": [],
-                "ioPorts": []
-            },
-            "snapshots": []
-        }
+        # F6: Use model_parser for full reverse parsing (wheels, driveType, identity)
+        project = model_parser.parse_comp_desc(str(comp_model_path))
+        return project
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read template: {str(e)}")
 
