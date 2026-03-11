@@ -1,9 +1,12 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import json
+import zipfile
+import tempfile
+import hashlib
 from pathlib import Path
 from typing import Dict, Any
 
@@ -75,6 +78,109 @@ async def list_templates():
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to read templates: {str(e)}")
+
+@app.get("/api/v1/templates/download")
+async def download_factory_template():
+    """Download the factory template as a ZIP file."""
+    zip_path = TEMPLATES_DIR / ".." / "factory_template.zip"
+    
+    # Auto-create the zip if it doesn't exist
+    if not zip_path.exists():
+        files_to_include = ["AbiSet.model", "CompDesc.model", "FuncDesc.model", "ModelFileDesc.json"]
+        with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+            for fname in files_to_include:
+                fpath = TEMPLATES_DIR / fname
+                if fpath.exists():
+                    zf.writestr(fname, fpath.read_bytes())
+    
+    if not zip_path.exists():
+        raise HTTPException(status_code=404, detail="Template files not found")
+    
+    return FileResponse(
+        path=str(zip_path.resolve()),
+        media_type='application/zip',
+        filename="factory_template.zip"
+    )
+
+@app.post("/api/v1/import")
+async def import_modelset_zip(file: UploadFile = File(...)):
+    """
+    Import a ModelSet ZIP file and parse it into an AmrProject-compatible structure.
+    The ZIP must contain: CompDesc.model, FuncDesc.model, AbiSet.model, ModelFileDesc.json
+    """
+    if not file.filename.endswith('.zip'):
+        raise HTTPException(status_code=400, detail="File must be a .zip archive")
+    
+    try:
+        # Save uploaded file to a temp directory
+        with tempfile.TemporaryDirectory() as tmpdir:
+            zip_path = os.path.join(tmpdir, 'uploaded.zip')
+            contents = await file.read()
+            with open(zip_path, 'wb') as f:
+                f.write(contents)
+            
+            # Extract the zip
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                zf.extractall(tmpdir)
+                namelist = zf.namelist()
+            
+            # Find CompDesc.model
+            comp_path = None
+            for name in namelist:
+                if name.endswith('CompDesc.model'):
+                    comp_path = os.path.join(tmpdir, name)
+                    break
+            
+            if not comp_path or not os.path.exists(comp_path):
+                raise HTTPException(status_code=422, detail="ZIP does not contain CompDesc.model")
+            
+            # Full parse using model_parser
+            project = model_parser.parse_comp_desc(comp_path)
+            
+            # Also extract FuncDesc navigation info if available
+            func_path = None
+            for name in namelist:
+                if name.endswith('FuncDesc.model'):
+                    func_path = os.path.join(tmpdir, name)
+                    break
+            
+            if func_path and os.path.exists(func_path):
+                import blackboxprotobuf
+                with open(func_path, 'rb') as f:
+                    func_msg, _ = blackboxprotobuf.decode_message(f.read())
+                # Try to read navigation mode
+                try:
+                    from core.protobuf_navigator import ProtoNavigator
+                    navi_part = ProtoNavigator.find_block_by_key(func_msg, '1', b'naviUniqueKeyZx')
+                    if navi_part and navi_part.get('2'):
+                        navi_raw = navi_part['2'].decode('utf-8') if isinstance(navi_part['2'], bytes) else str(navi_part['2'])
+                        from core.model_parser import _reverse_nav_method
+                        project['config']['identity']['navigationMethod'] = _reverse_nav_method(navi_raw)
+                except Exception:
+                    pass
+            
+            # Add manifest info
+            manifest_path = None
+            for name in namelist:
+                if name.endswith('ModelFileDesc.json'):
+                    manifest_path = os.path.join(tmpdir, name)
+                    break
+            
+            if manifest_path and os.path.exists(manifest_path):
+                with open(manifest_path, 'r') as f:
+                    manifest = json.load(f)
+                project['_manifest'] = manifest
+            
+            project['_sourceFile'] = file.filename
+            return project
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Failed to parse ModelSet ZIP: {str(e)}")
+
 
 @app.get("/api/v1/templates/{template_id}")
 async def get_template(template_id: str):

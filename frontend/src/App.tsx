@@ -26,6 +26,7 @@ import { WiringCanvas } from './components/WiringCanvas';
 import { DriveTypeConfirmDialog } from './components/DriveTypeConfirmDialog';
 import { HealthDashboard } from './components/HealthDashboard';
 import { StatusBar } from './layout/StatusBar';
+import { ModelZipImportModal } from './components/ModelZipImportModal';
 
 const { Header, Content, Sider } = Layout;
 
@@ -70,6 +71,7 @@ export default function App() {
     const [projectList, setProjectList] = React.useState<Array<{ filename: string, robotName: string, lastModified: number }>>([]);
     const [loadingProjects, setLoadingProjects] = React.useState(false);
     const [factoryTemplates, setFactoryTemplates] = React.useState<BackendTemplateInfo[]>([]);
+    const [importModalVisible, setImportModalVisible] = React.useState(false);
 
     const handleSave = async () => {
         try {
@@ -237,6 +239,12 @@ export default function App() {
                             onClick={handleSave}
                         />
                     </Tooltip>
+                    <Tooltip title="导入 ModelSet ZIP">
+                        <Button size="small" type="text"
+                            icon={<CloudDownloadOutlined style={{ color: '#00d2ff' }} />}
+                            onClick={() => setImportModalVisible(true)}
+                        />
+                    </Tooltip>
                     <span style={{ color: '#333', margin: '0 4px' }}>│</span>
                     <Tooltip title="撤销 (Ctrl+Z)">
                         <Button size="small" type="text" icon={<UndoOutlined />} disabled={!canUndo} onClick={() => undo()} />
@@ -304,6 +312,7 @@ export default function App() {
             {/* Global Overlays */}
             <DriveTypeConfirmDialog />
             <HealthDashboard />
+            <ModelZipImportModal open={importModalVisible} onClose={() => setImportModalVisible(false)} />
             <Modal
                 title="打开云端项目"
                 open={projectModalVisible}
@@ -361,6 +370,6 @@ export default function App() {
                     />
                 )}
             </Modal>
-        </Layout>
+        </Layout >
     );
 }
