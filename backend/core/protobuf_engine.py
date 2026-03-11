@@ -56,17 +56,25 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
             template_motion_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0')
             template_wheel_part = ProtoNavigator.find_block_by_key(parts, "2", b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7')
 
+            anchor_idx = -1
             new_parts = []
             
-            # Keep parts that are NOT the ones we are cloning
-            for p in parts:
-                if p.get("2") not in (b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0', b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7'):
+            # Keep parts that are NOT the ones we are cloning, while finding the anchor index
+            for i, p in enumerate(parts):
+                if p.get("2") in (b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0', b'\xe8\xbd\xae\xe7\xbb\x84\xe5\xb1\x9e\xe6\x80\xa7'):
+                    if anchor_idx == -1:
+                        anchor_idx = len(new_parts)
+                else:
                     new_parts.append(p)
             
+            if anchor_idx == -1:
+                anchor_idx = len(new_parts)
+
+            injected_blocks = []
             # Clone and patch for each wheel
             for _i, w in enumerate(payload.wheels):
                 # We won't inject ID for now unless the structure explicitly requires it, 
-                # but we will replicate the block so the firmware knows 4 wheels exist.
+                # but we will replicate the block so the firmware knows multiple wheels exist.
                 if template_motion_part:
                     new_motion = copy.deepcopy(template_motion_part)
                     ProtoNavigator.update_float_param(new_motion, "headOffset(Idle)", w.headOffsetIdle)
@@ -78,17 +86,49 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
                     ProtoNavigator.update_float_param(new_motion, "tailOffset (Full Load)", w.tailOffsetFull)
                     ProtoNavigator.update_float_param(new_motion, "leftOffset (Full Load)", w.leftOffsetFull)
                     ProtoNavigator.update_float_param(new_motion, "rightOffset (Full Load)", w.rightOffsetFull)
-                    new_parts.append(new_motion)
+                    injected_blocks.append(new_motion)
 
                 if template_wheel_part:
                     new_wheel = copy.deepcopy(template_wheel_part)
                     ProtoNavigator.update_float_param(new_wheel, "locCoordNX", w.mountX)
                     ProtoNavigator.update_float_param(new_wheel, "locCoordNY", w.mountY)
-                    # Use index to distinguish wheel blocks if required in future
-                    new_parts.append(new_wheel)
+                    injected_blocks.append(new_wheel)
 
-            # Assign back
+            # Assign back at exact index to prevent structural reordering
+            new_parts[anchor_idx:anchor_idx] = injected_blocks
             attr["2"]["1"] = new_parts
+
+        # 3. Sensor 6D Pose Injection
+        if payload.sensors:
+            sensor_idx = 0
+            for entry in msg.get("5", []):
+                if not isinstance(entry, dict): continue
+                mod_data = entry.get("4", {})
+                if not isinstance(mod_data, dict): continue
+                meta = mod_data.get("1", {})
+                if not isinstance(meta, dict): continue
+                
+                main_type_bytes = meta.get("8", {}).get("21", {}).get("1")
+                if main_type_bytes == b"sensor" and sensor_idx < len(payload.sensors):
+                    s = payload.sensors[sensor_idx]
+                    blocks = mod_data.get("5", {}).get("1", [])
+                    if isinstance(blocks, dict): blocks = [blocks]
+                    # locCoord definitions for physical mount exist in mod_data['5']['1']
+                    for b in blocks:
+                        name_bytes = b.get("1")
+                        if name_bytes == b"locCoordX":
+                            b["2"] = float_to_uint64(s.offsetX)
+                        elif name_bytes == b"locCoordY":
+                            b["2"] = float_to_uint64(s.offsetY)
+                        elif name_bytes == b"locCoordZ":
+                            b["2"] = float_to_uint64(s.offsetZ)
+                        elif name_bytes == b"locCoordROLL":
+                            b["2"] = float_to_uint64(s.roll)
+                        elif name_bytes == b"locCoordPITCH":
+                            b["2"] = float_to_uint64(s.pitch)
+                        elif name_bytes == b"locCoordYAW":
+                            b["2"] = float_to_uint64(s.yaw)
+                    sensor_idx += 1
 
     except Exception as e:
         print(f"Error compiling CompDesc: {e}")
@@ -109,12 +149,23 @@ def build_func_desc(template_path: str, payload: GeneratePayload) -> bytes:
         # Patch Navigation Method safely
         navi_part = ProtoNavigator.find_block_by_key(msg, "1", b"naviUniqueKeyZx")
         if navi_part:
-            if has_laser_navi:
-                navi_part["2"] = b"NAVI_SLAM"
-            elif has_imu:
-                navi_part["2"] = b"NAVI_INERTANCE"
+            if payload.navigationMethod:
+                nav_mapping = {
+                    'LIDAR_SLAM': b'NAVI_SLAM',
+                    'REFLECTOR': b'NAVI_REFLECTOR',
+                    'NATURAL_CONTOUR': b'NAVI_NATURAL_CONTOUR',
+                    'VISUAL_SLAM': b'NAVI_VISUAL',
+                    'BARCODE_GRID': b'NAVI_BARCODE',
+                    'HYBRID': b'NAVI_HYBRID'
+                }
+                navi_part["2"] = nav_mapping.get(payload.navigationMethod, b"NAVI_SLAM")
             else:
-                navi_part["2"] = b"noNavi"
+                if has_laser_navi:
+                    navi_part["2"] = b"NAVI_SLAM"
+                elif has_imu:
+                    navi_part["2"] = b"NAVI_INERTANCE"
+                else:
+                    navi_part["2"] = b"noNavi"
 
         # Map Safety IO if present
         # In a real system, we'd find the safety EMC stop block and enable it

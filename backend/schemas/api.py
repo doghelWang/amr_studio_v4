@@ -40,7 +40,10 @@ class SensorConfig(BaseModel):
     usageObs: bool
     offsetX: float
     offsetY: float
+    offsetZ: float = 0.0
     yaw: float
+    pitch: float = 0.0
+    roll: float = 0.0
 
 class IOConfig(BaseModel):
     id: str
@@ -51,6 +54,7 @@ class GeneratePayload(BaseModel):
     robotName: str
     version: str
     driveType: Literal['DIFF', 'SINGLE_STEER', 'DUAL_STEER', 'QUAD_STEER', 'MECANUM']
+    navigationMethod: Optional[str] = None
     wheels: List[WheelConfig]
     sensors: List[SensorConfig]
     ioPorts: List[IOConfig]
