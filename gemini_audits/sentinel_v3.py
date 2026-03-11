@@ -27,6 +27,9 @@ def perform_check():
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     report_path = os.path.join(AUDIT_DIR, f"sentinel_v3_{int(time.time())}.md")
     
+    print(f"[{timestamp}] Checking for remote requirements updates...")
+    subprocess.run(["python3", os.path.join(PROJECT_ROOT, "github_upload.py"), "pull-req"], capture_output=True)
+    
     gen_res, parse_res = run_tests()
     
     # Check for success indicators
@@ -61,10 +64,10 @@ def perform_check():
         print(f"[{timestamp}] Tests failed. Waiting for fixes.")
 
 if __name__ == "__main__":
-    print("Sentinel V3 Activated. Running every 2 hours.")
+    print("Sentinel V3 Activated. Running every 30 minutes.")
     while True:
         try:
             perform_check()
         except Exception as e:
             print(f"Sentinel Error: {e}")
-        time.sleep(7200) # 2 hours
+        time.sleep(1800) # 30 minutes

@@ -135,7 +135,7 @@ async def import_modelset_zip(file: UploadFile = File(...)):
                 raise HTTPException(status_code=422, detail="ZIP does not contain CompDesc.model")
             
             # Full parse using model_parser
-            project = model_parser.parse_comp_desc(comp_path)
+            project = model_parser.ModelParser.parse_modelset(zip_path)
             
             # Also extract FuncDesc navigation info if available
             func_path = None
@@ -194,7 +194,15 @@ async def get_template(template_id: str):
             raise HTTPException(status_code=404, detail="Template model files not found")
         
         # F6: Use model_parser for full reverse parsing (wheels, driveType, identity)
-        project = model_parser.parse_comp_desc(str(comp_model_path))
+        zip_path = TEMPLATES_DIR / ".." / "factory_template.zip"
+        if not zip_path.exists():
+            files_to_include = ["AbiSet.model", "CompDesc.model", "FuncDesc.model", "ModelFileDesc.json"]
+            with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
+                for fname in files_to_include:
+                    fpath = TEMPLATES_DIR / fname
+                    if fpath.exists():
+                        zf.writestr(fname, fpath.read_bytes())
+        project = model_parser.ModelParser.parse_modelset(str(zip_path))
         return project
     except HTTPException:
         raise
