@@ -83,17 +83,32 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
     ];
 
     const sensorColumns = [
-        { title: '标签', dataIndex: 'label', key: 'label' },
-        { title: '类型', dataIndex: 'type', key: 'type' },
+        { title: '标签', dataIndex: 'label', key: 'label', width: 120 },
+        { title: '类型', dataIndex: 'type', key: 'type', width: 90 },
         { title: '型号', dataIndex: 'model', key: 'model' },
-        { title: 'X (mm)', dataIndex: 'mountX', key: 'mountX', render: (v: number) => (v ?? 0).toFixed(1) },
-        { title: 'Y (mm)', dataIndex: 'mountY', key: 'mountY', render: (v: number) => (v ?? 0).toFixed(1) },
-        { title: '导航', dataIndex: 'usageNavi', key: 'usageNavi', render: (v: boolean) => v ? <Tag color="green">✓</Tag> : <Tag color="default">-</Tag> },
+        {
+            title: '通信接口', key: 'netInfo', render: (_: any, r: any) => {
+                if (r.ip) return <Tag color="blue">IP: {r.ip}:{r.port || 80}</Tag>;
+                if (r.canNodeId) return <Tag color="purple">CAN Node: {r.canNodeId}</Tag>;
+                return '-';
+            }
+        },
+        { title: 'X (mm)', dataIndex: 'mountX', key: 'mountX', render: (v: number) => (v ?? 0).toFixed(1), width: 80 },
+        { title: 'Y (mm)', dataIndex: 'mountY', key: 'mountY', render: (v: number) => (v ?? 0).toFixed(1), width: 80 },
+        { title: '导航', dataIndex: 'usageNavi', key: 'usageNavi', render: (v: boolean) => v ? <Tag color="green">✓</Tag> : <Tag color="default">-</Tag>, width: 70 },
+    ];
+
+    const ioBoardColumns = [
+        { title: '板卡型号', dataIndex: 'model', key: 'model' },
+        { title: '总线类型', key: 'bus', render: () => <Tag color="blue">CAN</Tag> },
+        { title: '节点 ID', dataIndex: 'canNodeId', key: 'canNodeId', render: (v: number) => <Tag color="purple">{v ?? '-'}</Tag> },
+        { title: '支持通道数', dataIndex: 'channels', key: 'channels', render: (v: number) => v ?? '16 DI / 16 DO' },
     ];
 
     const ioColumns = [
-        { title: '端口', dataIndex: 'port', key: 'port' },
-        { title: '功能绑定', dataIndex: 'logicBind', key: 'logicBind' },
+        { title: '端口类型', dataIndex: 'port', key: 'port', width: 100 },
+        { title: '物理来源', dataIndex: 'originModel', key: 'originModel', render: (v: string) => v ? <Tag>{v}</Tag> : '-' },
+        { title: '业务逻辑绑定', dataIndex: 'logicBind', key: 'logicBind' },
     ];
 
     const manifestItems = parsed?.project._manifest?.ModelFileDesc ?? [];
@@ -193,8 +208,20 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
                                 ) : <Alert type="info" message="无传感器数据（AbiSet.model 中通常定义通用能力，具体传感器在项目配置中）" />,
                             },
                             {
+                                key: 'io_boards',
+                                label: `🔌 IO 板卡 (${ioBoards.length})`,
+                                children: ioBoards.length > 0 ? (
+                                    <Table
+                                        dataSource={ioBoards.map((b: any, i: number) => ({ ...b, key: i }))}
+                                        columns={ioBoardColumns}
+                                        size="small"
+                                        pagination={false}
+                                    />
+                                ) : <Alert type="info" message="无 IO 板卡扩展配置" />,
+                            },
+                            {
                                 key: 'io',
-                                label: `🔌 IO (${ioPorts.length})`,
+                                label: `💡 IO 映射/交互 (${ioPorts.length})`,
                                 children: ioPorts.length > 0 ? (
                                     <Table
                                         dataSource={ioPorts.map((p, i) => ({ ...p, key: i }))}
@@ -202,7 +229,7 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
                                         size="small"
                                         pagination={false}
                                     />
-                                ) : <Alert type="info" message="无 IO 映射配置（IO 绑定在项目配置时设置）" />,
+                                ) : <Alert type="info" message="无交互映射配置" />,
                             },
                             {
                                 key: 'manifest',

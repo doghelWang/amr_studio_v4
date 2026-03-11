@@ -1,10 +1,10 @@
 {
     "formatVersion": "1.0",
     "meta": {
-        "projectId": "3c0b7815-f35f-41cb-a6d5-f0629b3adf5d",
+        "projectId": "42a8ad67-1f4e-430c-b244-0f3946fb476e",
         "projectName": "\u672a\u547d\u540d\u9879\u76ee",
-        "createdAt": "2026-03-09T13:32:23.618Z",
-        "modifiedAt": "2026-03-09T13:32:25.544Z",
+        "createdAt": "2026-03-11T15:57:55.697Z",
+        "modifiedAt": "2026-03-11T15:58:00.759Z",
         "author": "",
         "templateOrigin": "blank",
         "formatVersion": "1.0"
@@ -33,7 +33,7 @@
         "ioBoards": [],
         "wheels": [
             {
-                "id": "9ad86046-a61f-49ee-87a9-e40de054cc7e",
+                "id": "b3c04536-a137-4594-8393-4e83fc63582e",
                 "label": "Left Drive Motor",
                 "mountX": 0,
                 "mountY": 350,
@@ -62,7 +62,7 @@
                 "rightLimit": 90
             },
             {
-                "id": "6679bd0a-3ccd-4eb3-8a2f-82baf34d8ea8",
+                "id": "91616d1e-7a3a-4e7e-9856-b17276092dee",
                 "label": "Right Drive Motor",
                 "mountX": 0,
                 "mountY": -350,

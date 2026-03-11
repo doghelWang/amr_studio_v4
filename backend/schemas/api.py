@@ -15,7 +15,6 @@ class WheelConfig(BaseModel):
     zeroPos: float
     leftLimit: float
     rightLimit: float
-    # Idle
     headOffsetIdle: float
     tailOffsetIdle: float
     leftOffsetIdle: float
@@ -23,7 +22,6 @@ class WheelConfig(BaseModel):
     maxVelocityIdle: float
     maxAccIdle: float
     maxDecIdle: float
-    # Full Load
     headOffsetFull: float
     tailOffsetFull: float
     leftOffsetFull: float
@@ -34,7 +32,7 @@ class WheelConfig(BaseModel):
 
 class SensorConfig(BaseModel):
     id: str
-    type: Literal['LASER', 'CAMERA', 'ULTRASONIC', 'GYRO']
+    type: Literal['LASER', 'CAMERA', 'ULTRASONIC', 'GYRO', 'ENCODER']
     model: str
     usageNavi: bool
     usageObs: bool
@@ -44,11 +42,22 @@ class SensorConfig(BaseModel):
     yaw: float
     pitch: float = 0.0
     roll: float = 0.0
+    ip: Optional[str] = None
+    port: Optional[int] = None
+    canNodeId: Optional[int] = None
+
+class IOBoardConfig(BaseModel):
+    model_config = {"extra": "allow"}
+    id: str
+    model: str
+    canNodeId: Optional[int] = None
+    channels: Optional[int] = None
 
 class IOConfig(BaseModel):
     id: str
     port: str
     logicBind: str
+    originModel: Optional[str] = None
 
 class GeneratePayload(BaseModel):
     robotName: str
@@ -57,4 +66,6 @@ class GeneratePayload(BaseModel):
     navigationMethod: Optional[str] = None
     wheels: List[WheelConfig]
     sensors: List[SensorConfig]
+    ioBoards: Optional[List[IOBoardConfig]] = []
     ioPorts: List[IOConfig]
+
