@@ -89,8 +89,8 @@ async def download_factory_template():
 @app.post("/api/v1/import")
 async def import_modelset_zip(file: UploadFile = File(...)):
     """Import a ModelSet ZIP and parse it."""
-    if not file.filename.endswith('.zip'):
-        raise HTTPException(status_code=400, detail="Only .zip files are supported")
+    if not (file.filename.endswith('.zip') or file.filename.endswith('.cmodel')):
+        raise HTTPException(status_code=400, detail="Only .zip or .cmodel files are supported")
     
     try:
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -129,14 +129,14 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
             {!parsed ? (
                 <div style={{ padding: '16px 0' }}>
                     <Dragger
-                        accept=".zip"
+                        accept=".zip,.cmodel"
                         showUploadList={false}
                         beforeUpload={(file) => { handleUpload(file); return false; }}
                         style={{ background: '#0a0d14', border: '1px dashed #2a2d38' }}
                     >
                         <p className="ant-upload-drag-icon"><InboxOutlined style={{ color: '#00d2ff', fontSize: 40 }} /></p>
-                        <p style={{ color: '#ccc', fontSize: 14, margin: '8px 0' }}>拖拽 ModelSet ZIP 文件到此处，或 <span style={{ color: '#00d2ff' }}>点击选择文件</span></p>
-                        <p style={{ color: '#666', fontSize: 12 }}>支持导入包含 CompDesc.model / FuncDesc.model / AbiSet.model 的 ZIP 包</p>
+                        <p style={{ color: '#ccc', fontSize: 14, margin: '8px 0' }}>拖拽 ModelSet ZIP/CMODEL 文件到此处，或 <span style={{ color: '#00d2ff' }}>点击选择文件</span></p>
+                        <p style={{ color: '#666', fontSize: 12 }}>支持导入包含 CompDesc.model / FuncDesc.model 的 .zip 或 .cmodel 包</p>
                     </Dragger>
                     {loading && <div style={{ marginTop: 16, textAlign: 'center' }}><Spin tip="正在解析 Protobuf 数据..." /></div>}
                     {error && <Alert message={`解析失败: ${error}`} type="error" style={{ marginTop: 12 }} />}

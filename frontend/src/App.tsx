@@ -160,11 +160,11 @@ export default function App() {
             const payload = {
                 robotName: config.identity.robotName,
                 version: config.identity.version,
-                // Send raw frontend enum - backend now handles DIFFERENTIAL, MECANUM_4 etc. directly
                 driveType: config.identity.driveType,
+                navigationMethod: config.identity.navigationMethod,
                 wheels: config.wheels,
-                // Send sensors with mountX/mountY/mountYaw - backend schema now accepts these directly
                 sensors: config.sensors,
+                ioBoards: config.ioBoards,
                 ioPorts: config.ioPorts
             };
 
@@ -172,7 +172,7 @@ export default function App() {
             const url = URL.createObjectURL(new Blob([res.data]));
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${meta.projectName.replace(/\s/g, '_')}_ModelSet.zip`;
+            a.download = `${meta.projectName.replace(/\s/g, '_')}_ModelSet.cmodel`;
             document.body.appendChild(a); a.click(); a.remove();
             URL.revokeObjectURL(url);
             message.success('ModelSet 编译完成！');
