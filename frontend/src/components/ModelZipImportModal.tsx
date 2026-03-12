@@ -1,6 +1,6 @@
 import React from 'react';
-import { Modal, Upload, Button, message, Descriptions, Tag, Tabs, Table, Spin, Alert } from 'antd';
-import { InboxOutlined, RobotOutlined } from '@ant-design/icons';
+import { Modal, Upload, Button, message, Descriptions, Tag, Tabs, Table, Spin, Alert, Tree } from 'antd';
+import { InboxOutlined, RobotOutlined, ClusterOutlined, DeploymentUnitOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../store/useProjectStore';
 import type { AmrProject } from '../store/types';
 
@@ -13,6 +13,7 @@ interface ModelZipImportModalProps {
 
 interface ParsedModelData {
     project: AmrProject & { _manifest?: any; _sourceFile?: string };
+    raw_tree?: any;
 }
 
 export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, onClose }) => {
@@ -38,91 +39,74 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
                 throw new Error(err.detail || 'Import failed');
             }
             const data = await res.json();
-            setParsed({ project: data });
+            setParsed({ 
+                project: data.config ? { ...data.config, meta: { ...data.config.meta, projectId: data.config.meta?.projectId || 'imported' } } : data,
+                raw_tree: data.raw_tree
+            });
         } catch (e: any) {
             setError(e.message);
         } finally {
             setLoading(false);
         }
-        return false; // prevent antd from auto-uploading
+        return false; 
+    };
+
+    const formatTreeData = (data: any, keyPrefix = '0'): any => {
+        if (typeof data !== 'object' || data === null) return [{ title: String(data), key: keyPrefix }];
+        return Object.entries(data).map(([k, v], idx) => {
+            const key = `${keyPrefix}-${idx}`;
+            if (typeof v === 'object' && v !== null) {
+                return { title: `Tag ${k}`, key, children: formatTreeData(v, key) };
+            }
+            return { title: `Tag ${k}: ${String(v)}`, key };
+        });
     };
 
     const handleLoadIntoEditor = () => {
         if (!parsed) return;
         useProjectStore.getState().loadProject(parsed.project);
-        message.success(`已载入: ${parsed.project.meta.projectName}`);
+        message.success(`已载入并建立基因底座: ${parsed.project.meta.projectName}`);
         onClose();
         reset();
     };
 
-    const cfg = parsed?.project.config;
+    const cfg = parsed?.project.config || (parsed?.project as any);
     const identity = cfg?.identity;
     const wheels = cfg?.wheels ?? [];
     const sensors = cfg?.sensors ?? [];
-    const ioPorts = cfg?.ioPorts ?? [];
     const ioBoards = cfg?.ioBoards ?? [];
+    const others = cfg?.others ?? [];
 
-    const driveTypeLabel: Record<string, string> = {
-        DIFFERENTIAL: '差速双驱 Differential',
-        SINGLE_STEER: '单舵轮 Single Steer',
-        DUAL_STEER: '双舵轮 Dual Steer',
-        QUAD_STEER: '四舵轮 Quad Steer',
-        MECANUM_4: '麦克纳姆 Mecanum-4',
-        OMNI_3: '三轮全向 Omni-3',
-    };
-
-    const wheelColumns = [
-        { title: 'ID', dataIndex: 'canNodeId', key: 'canNodeId', width: 60 },
-        { title: '标签', dataIndex: 'label', key: 'label' },
-        { title: 'X (mm)', dataIndex: 'mountX', key: 'mountX', render: (v: number) => v?.toFixed(1) },
-        { title: 'Y (mm)', dataIndex: 'mountY', key: 'mountY', render: (v: number) => v?.toFixed(1) },
-        { title: 'CAN Bus', dataIndex: 'canBus', key: 'canBus' },
-        { title: '驱动器', dataIndex: 'driverModel', key: 'driverModel' },
-        { title: 'v空载 mm/s', dataIndex: 'maxVelocityIdle', key: 'maxVelocityIdle', render: (v: number) => v?.toFixed(0) },
-        { title: 'v满载 mm/s', dataIndex: 'maxVelocityFull', key: 'maxVelocityFull', render: (v: number) => v?.toFixed(0) },
-    ];
-
-    const sensorColumns = [
-        { title: '标签', dataIndex: 'label', key: 'label', width: 120 },
-        { title: '类型', dataIndex: 'type', key: 'type', width: 90 },
-        { title: '型号', dataIndex: 'model', key: 'model' },
-        {
-            title: '通信接口', key: 'netInfo', render: (_: any, r: any) => {
-                if (r.ip) return <Tag color="blue">IP: {r.ip}:{r.port || 80}</Tag>;
-                if (r.canNodeId) return <Tag color="purple">CAN Node: {r.canNodeId}</Tag>;
-                return '-';
-            }
-        },
-        { title: 'X (mm)', dataIndex: 'mountX', key: 'mountX', render: (v: number) => (v ?? 0).toFixed(1), width: 80 },
-        { title: 'Y (mm)', dataIndex: 'mountY', key: 'mountY', render: (v: number) => (v ?? 0).toFixed(1), width: 80 },
-        { title: '导航', dataIndex: 'usageNavi', key: 'usageNavi', render: (v: boolean) => v ? <Tag color="green">✓</Tag> : <Tag color="default">-</Tag>, width: 70 },
-    ];
-
-    const ioBoardColumns = [
-        { title: '板卡型号', dataIndex: 'model', key: 'model' },
-        { title: '总线类型', key: 'bus', render: () => <Tag color="blue">CAN</Tag> },
-        { title: '节点 ID', dataIndex: 'canNodeId', key: 'canNodeId', render: (v: number) => <Tag color="purple">{v ?? '-'}</Tag> },
-        { title: '支持通道数', dataIndex: 'channels', key: 'channels', render: (v: number) => v ?? '16 DI / 16 DO' },
-    ];
-
-    const ioColumns = [
-        { title: '端口类型', dataIndex: 'port', key: 'port', width: 100 },
-        { title: '物理来源', dataIndex: 'originModel', key: 'originModel', render: (v: string) => v ? <Tag>{v}</Tag> : '-' },
-        { title: '业务逻辑绑定', dataIndex: 'logicBind', key: 'logicBind' },
-    ];
-
-    const manifestItems = parsed?.project._manifest?.ModelFileDesc ?? [];
+    const renderOtherCard = (item: any) => (
+        <div key={item.id} style={{ background: '#141a21', padding: 12, borderRadius: 6, marginBottom: 12, border: '1px solid #2a2d38' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
+                <span style={{ color: '#00d2ff', fontWeight: 'bold' }}>
+                    <DeploymentUnitOutlined style={{ marginRight: 8 }} />
+                    {item.label}
+                </span>
+                <Tag color="orange">{item.type}</Tag>
+            </div>
+            <div style={{ fontSize: 11, color: '#888', marginBottom: 8 }}>UUID: {item.id}</div>
+            <Descriptions column={2} size="small" colon={false}>
+                {Object.entries(item.details || {}).map(([k, v]: [string, any]) => (
+                    <Descriptions.Item key={k} label={<span style={{color: '#666'}}>{k}</span>}>
+                        <span style={{color: '#bbb'}}>{typeof v === 'number' ? v.toFixed(2) : String(v)}</span>
+                    </Descriptions.Item>
+                ))}
+            </Descriptions>
+        </div>
+    );
 
     return (
         <Modal
-            title="📂 导入 ModelSet ZIP"
+            title="📂 深度导入 & 动态结构熔接 (V4 Hybrid)"
             open={open}
             onCancel={() => { onClose(); reset(); }}
-            width={820}
+            width={1000}
             footer={parsed ? [
-                <Button key="cancel" onClick={() => { onClose(); reset(); }}>关闭</Button>,
+                <Button key="cancel" onClick={() => { onClose(); reset(); }}>取消</Button>,
                 <Button key="load" type="primary" icon={<RobotOutlined />} onClick={handleLoadIntoEditor}>
-                    载入到编辑器
+                    建立基因底座并载入
                 </Button>
             ] : null}
         >
@@ -135,119 +119,54 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
                         style={{ background: '#0a0d14', border: '1px dashed #2a2d38' }}
                     >
                         <p className="ant-upload-drag-icon"><InboxOutlined style={{ color: '#00d2ff', fontSize: 40 }} /></p>
-                        <p style={{ color: '#ccc', fontSize: 14, margin: '8px 0' }}>拖拽 ModelSet ZIP/CMODEL 文件到此处，或 <span style={{ color: '#00d2ff' }}>点击选择文件</span></p>
-                        <p style={{ color: '#666', fontSize: 12 }}>支持导入包含 CompDesc.model / FuncDesc.model 的 .zip 或 .cmodel 包</p>
+                        <p style={{ color: '#ccc', fontSize: 14, margin: '8px 0' }}>拖拽工业模型文件到此处</p>
+                        <p style={{ color: '#666', fontSize: 12 }}>系统将自动提取“基因底座”，确保后续增删组件时的模型完整性</p>
                     </Dragger>
-                    {loading && <div style={{ marginTop: 16, textAlign: 'center' }}><Spin tip="正在解析 Protobuf 数据..." /></div>}
+                    {loading && <div style={{ marginTop: 16, textAlign: 'center' }}><Spin tip="正在穿透二进制结构..." /></div>}
                     {error && <Alert message={`解析失败: ${error}`} type="error" style={{ marginTop: 12 }} />}
-                    <div style={{ marginTop: 16, textAlign: 'center' }}>
-                        <Button
-                            type="link"
-                            href="http://localhost:8000/api/v1/templates/download"
-                            target="_blank"
-                        >
-                            ⬇ 下载工厂出厂模板 ZIP
-                        </Button>
-                    </div>
                 </div>
             ) : (
-                <div>
-                    <Alert
-                        type="success"
-                        message={`✅ 解析成功: ${parsed.project._sourceFile}`}
-                        style={{ marginBottom: 12 }}
-                    />
-                    <Tabs
-                        size="small"
-                        items={[
-                            {
-                                key: 'identity',
-                                label: '📋 基础信息',
-                                children: (
-                                    <Descriptions bordered column={2} size="small">
-                                        <Descriptions.Item label="机器人名称">{identity?.robotName}</Descriptions.Item>
-                                        <Descriptions.Item label="版本">{identity?.version}</Descriptions.Item>
-                                        <Descriptions.Item label="驱动类型">
-                                            <Tag color="blue">{driveTypeLabel[identity?.driveType ?? ''] || identity?.driveType}</Tag>
-                                        </Descriptions.Item>
-                                        <Descriptions.Item label="导航方式">
-                                            <Tag color="cyan">{identity?.navigationMethod}</Tag>
-                                        </Descriptions.Item>
-                                        <Descriptions.Item label="底盘长度">{identity?.chassisLength} mm</Descriptions.Item>
-                                        <Descriptions.Item label="底盘宽度">{identity?.chassisWidth} mm</Descriptions.Item>
-                                        <Descriptions.Item label="轮组数量"><Tag color="orange">{wheels.length} 组</Tag></Descriptions.Item>
-                                        <Descriptions.Item label="传感器数量"><Tag color="green">{sensors.length} 个</Tag></Descriptions.Item>
-                                        <Descriptions.Item label="IO 映射"><Tag>{ioPorts.length} 条</Tag></Descriptions.Item>
-                                        <Descriptions.Item label="IO 板"><Tag>{ioBoards.length} 块</Tag></Descriptions.Item>
-                                    </Descriptions>
-                                ),
-                            },
-                            {
-                                key: 'wheels',
-                                label: `⚙️ 轮组 (${wheels.length})`,
-                                children: wheels.length > 0 ? (
-                                    <Table
-                                        dataSource={wheels.map((w, i) => ({ ...w, key: i }))}
-                                        columns={wheelColumns}
-                                        size="small"
-                                        pagination={false}
-                                        scroll={{ x: true }}
+                <Tabs
+                    items={[
+                        {
+                            key: 'parsed',
+                            label: '🤖 核心组件',
+                            children: (
+                                <Descriptions bordered column={2} size="small" style={{ background: '#0a0d14' }}>
+                                    <Descriptions.Item label="机器人名称">{identity?.robotName}</Descriptions.Item>
+                                    <Descriptions.Item label="驱动类型"><Tag color="blue">{identity?.driveType}</Tag></Descriptions.Item>
+                                    <Descriptions.Item label="轮组计数">{wheels.length} 组</Descriptions.Item>
+                                    <Descriptions.Item label="传感器">{sensors.length} 个</Descriptions.Item>
+                                    <Descriptions.Item label="IO 模块">{ioBoards.length} 块</Descriptions.Item>
+                                </Descriptions>
+                            )
+                        },
+                        {
+                            key: 'others',
+                            label: `📦 厂设/非标部件 (${others.length})`,
+                            children: (
+                                <div style={{ maxHeight: 400, overflow: 'auto', padding: '0 8px' }}>
+                                    {others.length > 0 ? others.map(renderOtherCard) : <Alert message="该模型仅包含标准组件" />}
+                                </div>
+                            )
+                        },
+                        {
+                            key: 'raw',
+                            label: '🌳 原始报文树',
+                            children: (
+                                <div style={{ maxHeight: 400, overflow: 'auto', background: '#05070a', padding: 8, borderRadius: 4 }}>
+                                    <Tree
+                                        showIcon
+                                        defaultExpandAll={false}
+                                        treeData={formatTreeData(parsed.raw_tree)}
+                                        icon={<ClusterOutlined style={{ color: '#00d2ff' }} />}
+                                        style={{ background: 'transparent', color: '#aaa' }}
                                     />
-                                ) : <Alert type="info" message="无轮组数据（模板可能未包含轮组配置块）" />,
-                            },
-                            {
-                                key: 'sensors',
-                                label: `📡 传感器 (${sensors.length})`,
-                                children: sensors.length > 0 ? (
-                                    <Table
-                                        dataSource={sensors.map((s, i) => ({ ...s, key: i }))}
-                                        columns={sensorColumns}
-                                        size="small"
-                                        pagination={false}
-                                    />
-                                ) : <Alert type="info" message="无传感器数据（AbiSet.model 中通常定义通用能力，具体传感器在项目配置中）" />,
-                            },
-                            {
-                                key: 'io_boards',
-                                label: `🔌 IO 板卡 (${ioBoards.length})`,
-                                children: ioBoards.length > 0 ? (
-                                    <Table
-                                        dataSource={ioBoards.map((b: any, i: number) => ({ ...b, key: i }))}
-                                        columns={ioBoardColumns}
-                                        size="small"
-                                        pagination={false}
-                                    />
-                                ) : <Alert type="info" message="无 IO 板卡扩展配置" />,
-                            },
-                            {
-                                key: 'io',
-                                label: `💡 IO 映射/交互 (${ioPorts.length})`,
-                                children: ioPorts.length > 0 ? (
-                                    <Table
-                                        dataSource={ioPorts.map((p, i) => ({ ...p, key: i }))}
-                                        columns={ioColumns}
-                                        size="small"
-                                        pagination={false}
-                                    />
-                                ) : <Alert type="info" message="无交互映射配置" />,
-                            },
-                            {
-                                key: 'manifest',
-                                label: '📦 文件清单',
-                                children: (
-                                    <Descriptions bordered size="small" column={1}>
-                                        {manifestItems.map((item: any) => (
-                                            <Descriptions.Item key={item.name} label={item.name}>
-                                                <Tag>{item.type}</Tag>
-                                                <span style={{ color: '#888', fontSize: 11, marginLeft: 8 }}>MD5: {item.md5}</span>
-                                            </Descriptions.Item>
-                                        ))}
-                                    </Descriptions>
-                                ),
-                            },
-                        ]}
-                    />
-                </div>
+                                </div>
+                            )
+                        }
+                    ]}
+                />
             )}
         </Modal>
     );

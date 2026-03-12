@@ -6,18 +6,17 @@ import os
 import json
 import zipfile
 import tempfile
-import hashlib
+import shutil
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import blackboxprotobuf
 from schemas.api import GeneratePayload
 from core.protobuf_engine import generate_industrial_modelset
 import core.model_parser as model_parser
 
-app = FastAPI(title="AMR Config Studio API", version="2.0")
+app = FastAPI(title="AMR Studio Pro V4", version="4.0")
 
-# Enable CORS for local Vite development
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,131 +25,101 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# --- Configuration Persistence ---
+# Paths
 SAVED_PROJECTS_DIR = Path("saved_projects")
-SAVED_PROJECTS_DIR.mkdir(exist_ok=True)
-
-# --- Factory Templates ---
+PROJECT_BASES_DIR = Path("project_bases")
 TEMPLATES_DIR = Path("templates")
 
-@app.get("/api/v1/templates")
-async def list_templates():
-    """Returns a list of all factory template models with their decoded metadata."""
-    try:
-        comp_model_path = TEMPLATES_DIR / "CompDesc.model"
-        if not comp_model_path.exists():
-            return {"templates": []}
-        
-        with open(comp_model_path, 'rb') as f:
-            msg, _ = blackboxprotobuf.decode_message(f.read())
-        
-        robot_name = "Factory Default"
-        version = "1.0"
-        try:
-            from core.protobuf_navigator import ProtoNavigator
-            raw_name = ProtoNavigator.safe_get_path(msg, ["5", "4", "1", "1", "10"])
-            if raw_name: robot_name = raw_name.decode('utf-8')
-            raw_version = ProtoNavigator.safe_get_path(msg, ["5", "4", "1", "5", "10"])
-            if raw_version: version = raw_version.decode('utf-8')
-        except:
-            pass
-        
-        return {
-            "templates": [{
-                "id": "factory_default",
-                "name": robot_name,
-                "version": version,
-                "description": "出厂标准配置模板"
-            }]
-        }
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to read templates: {str(e)}")
-
-@app.get("/api/v1/templates/download")
-async def download_factory_template():
-    """Download the factory template as a ZIP file."""
-    base_dir = Path(__file__).parent.resolve()
-    zip_path = base_dir / "factory_template.zip"
-    templates_dir = base_dir / "templates"
-    
-    if not zip_path.exists():
-        files_to_include = ["AbiSet.model", "CompDesc.model", "FuncDesc.model", "ModelFileDesc.json"]
-        with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
-            for fname in files_to_include:
-                fpath = templates_dir / fname
-                if fpath.exists():
-                    zf.writestr(fname, fpath.read_bytes())
-    
-    if not zip_path.exists():
-        raise HTTPException(status_code=404, detail="Template files not found")
-    
-    return FileResponse(path=str(zip_path.resolve()), media_type='application/zip', filename="factory_template.zip")
+for d in [SAVED_PROJECTS_DIR, PROJECT_BASES_DIR]: d.mkdir(exist_ok=True)
 
 @app.post("/api/v1/import")
-async def import_modelset_zip(file: UploadFile = File(...)):
-    """Import a ModelSet ZIP and parse it."""
+async def import_modelset(file: UploadFile = File(...)):
+    """
+    Import and establish a 'Gene Base' for the project.
+    """
     if not (file.filename.endswith('.zip') or file.filename.endswith('.cmodel')):
-        raise HTTPException(status_code=400, detail="Only .zip or .cmodel files are supported")
+        raise HTTPException(status_code=400, detail="Unsupported format")
     
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
-            zip_path = os.path.join(tmpdir, 'uploaded.zip')
+            temp_zip = os.path.join(tmpdir, "base.zip")
             contents = await file.read()
-            with open(zip_path, 'wb') as f:
+            with open(temp_zip, "wb") as f:
                 f.write(contents)
             
-            project = model_parser.ModelParser.parse_modelset(zip_path)
-            project['_sourceFile'] = file.filename
-            return project
+            # 1. Parse for Frontend Config & Raw Tree
+            # We add return_raw=True to ModelParser later
+            parse_result = model_parser.ModelParser.parse_modelset(temp_zip, return_raw=True)
+            
+            project_id = parse_result['config']['meta']['projectId']
+            
+            # 2. Persist the binary 'Gene Base'
+            base_storage_path = PROJECT_BASES_DIR / f"{project_id}.base.cmodel"
+            with open(base_storage_path, "wb") as f:
+                f.write(contents)
+            
+            # 3. Add internal tracking
+            parse_result['config']['meta']['baseModelPath'] = str(base_storage_path)
+            parse_result['_sourceFile'] = file.filename
+            
+            return parse_result
+            
     except Exception as e:
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}")
 
-@app.get("/api/v1/projects")
-async def list_projects():
+@app.post("/api/v1/generate")
+async def generate_model(payload: GeneratePayload):
+    """
+    Clone-and-Patch generation.
+    """
     try:
-        projects = []
-        for file_path in SAVED_PROJECTS_DIR.glob("*.json"):
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                config = data.get("config", {})
-                identity = config.get("identity", {})
-                projects.append({
-                    "filename": file_path.name,
-                    "robotName": identity.get("robotName", "Unknown"),
-                    "lastModified": os.path.getmtime(file_path)
-                })
-        projects.sort(key=lambda x: x["lastModified"], reverse=True)
-        return {"projects": projects}
+        # Check if a custom gene base exists for this project
+        # In V4, we use robotName or a hidden projectId from payload
+        # For this implementation, we look for project_id in robotName fallback or extra field
+        project_id = getattr(payload, 'projectId', 'default')
+        base_path = PROJECT_BASES_DIR / f"{project_id}.base.cmodel"
+        
+        if not base_path.exists():
+            # Fallback to standard template
+            base_path = TEMPLATES_DIR / "CompDesc.model" # This needs to be handled by engine
+            print(f"[*] No gene base found for {project_id}, using factory templates.")
+            custom_base = None
+        else:
+            custom_base = str(base_path)
+            print(f"[*] Using Gene Base: {custom_base}")
+
+        zip_path = generate_industrial_modelset(payload, base_modelset_zip=custom_base)
+        
+        return FileResponse(
+            path=zip_path,
+            media_type='application/zip',
+            filename=f"{payload.robotName}_V4_Export.cmodel"
+        )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/api/v1/projects/{filename}")
-async def get_project(filename: str):
-    try:
-        file_path = SAVED_PROJECTS_DIR / filename
-        if not file_path.exists(): raise HTTPException(status_code=404)
-        with open(file_path, "r", encoding="utf-8") as f: return json.load(f)
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
+# ... [Standard CRUD for projects below] ...
+
+@app.get("/api/v1/projects")
+async def list_projects():
+    projects = []
+    for f in SAVED_PROJECTS_DIR.glob("*.json"):
+        with open(f, "r") as j:
+            data = json.load(j)
+            meta = data.get("meta", {})
+            projects.append({"id": meta.get("projectId"), "name": meta.get("projectName"), "mtime": f.stat().st_mtime})
+    return sorted(projects, key=lambda x: x['mtime'], reverse=True)
 
 @app.post("/api/v1/projects")
 async def save_project(payload: Dict[str, Any]):
-    try:
-        config = payload.get("config", {})
-        robotName = config.get("identity", {}).get("robotName", "Untitled")
-        filename = f"{robotName.replace(' ', '_')}.json"
-        with open(SAVED_PROJECTS_DIR / filename, "w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=4)
-        return {"filename": filename}
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/api/v1/generate")
-async def generate_model_set(payload: GeneratePayload):
-    try:
-        zip_path = generate_industrial_modelset(payload)
-        return FileResponse(path=zip_path, filename=f"{payload.robotName}_ModelSet.zip", media_type="application/zip")
-    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
+    p_id = payload.get("meta", {}).get("projectId", "unknown")
+    with open(SAVED_PROJECTS_DIR / f"{p_id}.json", "w") as f:
+        json.dump(payload, f, indent=4)
+    return {"status": "ok"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
