@@ -51,21 +51,25 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
         return false; 
     };
 
-    const formatTreeData = (data: any, keyPrefix = '0'): any => {
+    const formatTreeData = (data: any, keyPrefix = '0', depth = 0): any => {
+        if (depth > 4) return [{ title: '{... 深度隐藏 ...}', key: `${keyPrefix}-hidden` }];
         if (typeof data !== 'object' || data === null) return [{ title: String(data), key: keyPrefix }];
-        return Object.entries(data).map(([k, v], idx) => {
+        
+        return Object.entries(data).slice(0, 50).map(([k, v], idx) => {
             const key = `${keyPrefix}-${idx}`;
             if (typeof v === 'object' && v !== null) {
-                return { title: `Tag ${k}`, key, children: formatTreeData(v, key) };
+                return { title: `Tag ${k}`, key, children: formatTreeData(v, key, depth + 1) };
             }
-            return { title: `Tag ${k}: ${String(v)}`, key };
+            return { title: `Tag ${k}: ${String(v).slice(0, 100)}`, key };
         });
     };
 
     const handleLoadIntoEditor = () => {
         if (!parsed) return;
-        useProjectStore.getState().loadProject(parsed.project);
-        message.success(`已载入并建立基因底座: ${parsed.project.meta.projectName}`);
+        // Ensure snapshots array exists before loading into Zustand to prevent crashes
+        const finalProject = { ...parsed.project, snapshots: parsed.project.snapshots || [] };
+        useProjectStore.getState().loadProject(finalProject);
+        message.success(`已载入并建立基因底座: ${finalProject.meta.projectName}`);
         onClose();
         reset();
     };
