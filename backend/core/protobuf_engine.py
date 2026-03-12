@@ -149,7 +149,7 @@ def generate_industrial_modelset(payload: GeneratePayload) -> str:
     }
     
     temp_dir = tempfile.mkdtemp()
-    zip_path = os.path.join(temp_dir, f'{payload.robotName.replace(" ", "_")}_ModelSet.zip')
+    zip_path = os.path.join(temp_dir, f'{payload.robotName.replace(" ", "_")}_ModelSet.cmodel')
     with zipfile.ZipFile(zip_path, 'w') as zf:
         zf.writestr('AbiSet.model', abi_bytes)
         zf.writestr('FuncDesc.model', func_bytes)

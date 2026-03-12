@@ -94,7 +94,7 @@ def process_team_cycle(reason="Mandatory Review"):
     with open(SUMMARY_FILE, "w") as f: f.write(report)
 
     # 5. Push (P5: Intelligent commit message)
-    commit_msg = f"Sentinel V7: {reason} | Task: {last_task} | All Artifacts Synced"
+    commit_msg = f"Sentinel V7: {reason} | Task: {last_task} | .cmodel Artifacts Synced"
     run_step("Deploy", ["python3", UPLOAD_SCRIPT, "push", commit_msg])
     
     print(f"[*] Cycle complete. Interpretation and Artifacts pushed.\n")

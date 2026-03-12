@@ -107,10 +107,10 @@ def build_all():
         ]
     )
 
-    build_amr(payload1, "AMR_Differential.zip")
-    build_amr(payload2, "AMR_SingleSteer.zip")
-    build_amr(payload3, "AMR_DualSteer.zip")
-    build_amr(payload4, "AMR_QuadSteer.zip")
+    build_amr(payload1, "AMR_Differential.cmodel")
+    build_amr(payload2, "AMR_SingleSteer.cmodel")
+    build_amr(payload3, "AMR_DualSteer.cmodel")
+    build_amr(payload4, "AMR_QuadSteer.cmodel")
 
 if __name__ == "__main__":
     build_all()
