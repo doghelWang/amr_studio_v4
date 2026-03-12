@@ -44,35 +44,22 @@ async def list_templates():
         with open(comp_model_path, 'rb') as f:
             msg, _ = blackboxprotobuf.decode_message(f.read())
         
-        # Try to extract name and version from the Protobuf structure
         robot_name = "Factory Default"
         version = "1.0"
         try:
-            robot_name_bytes = msg["5"][0]["4"]["1"]["1"]["10"]
-            if isinstance(robot_name_bytes, bytes):
-                robot_name = robot_name_bytes.decode('utf-8')
-        except (KeyError, IndexError, TypeError):
+            from core.protobuf_navigator import ProtoNavigator
+            raw_name = ProtoNavigator.safe_get_path(msg, ["5", "4", "1", "1", "10"])
+            if raw_name: robot_name = raw_name.decode('utf-8')
+            raw_version = ProtoNavigator.safe_get_path(msg, ["5", "4", "1", "5", "10"])
+            if raw_version: version = raw_version.decode('utf-8')
+        except:
             pass
-        
-        try:
-            version_bytes = msg["5"][0]["4"]["1"]["5"]["10"]
-            if isinstance(version_bytes, bytes):
-                version = version_bytes.decode('utf-8')
-        except (KeyError, IndexError, TypeError):
-            pass
-        
-        manifest_path = TEMPLATES_DIR / "ModelFileDesc.json"
-        file_list = []
-        if manifest_path.exists():
-            with open(manifest_path, 'r') as f:
-                file_list = json.load(f).get("ModelFileDesc", [])
         
         return {
             "templates": [{
                 "id": "factory_default",
                 "name": robot_name,
                 "version": version,
-                "files": [f["name"] for f in file_list],
                 "description": "出厂标准配置模板"
             }]
         }
@@ -82,152 +69,58 @@ async def list_templates():
 @app.get("/api/v1/templates/download")
 async def download_factory_template():
     """Download the factory template as a ZIP file."""
-    zip_path = TEMPLATES_DIR / ".." / "factory_template.zip"
+    base_dir = Path(__file__).parent.resolve()
+    zip_path = base_dir / "factory_template.zip"
+    templates_dir = base_dir / "templates"
     
-    # Auto-create the zip if it doesn't exist
     if not zip_path.exists():
         files_to_include = ["AbiSet.model", "CompDesc.model", "FuncDesc.model", "ModelFileDesc.json"]
         with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
             for fname in files_to_include:
-                fpath = TEMPLATES_DIR / fname
+                fpath = templates_dir / fname
                 if fpath.exists():
                     zf.writestr(fname, fpath.read_bytes())
     
     if not zip_path.exists():
         raise HTTPException(status_code=404, detail="Template files not found")
     
-    return FileResponse(
-        path=str(zip_path.resolve()),
-        media_type='application/zip',
-        filename="factory_template.zip"
-    )
+    return FileResponse(path=str(zip_path.resolve()), media_type='application/zip', filename="factory_template.zip")
 
 @app.post("/api/v1/import")
 async def import_modelset_zip(file: UploadFile = File(...)):
-    """
-    Import a ModelSet ZIP file and parse it into an AmrProject-compatible structure.
-    The ZIP must contain: CompDesc.model, FuncDesc.model, AbiSet.model, ModelFileDesc.json
-    """
+    """Import a ModelSet ZIP and parse it."""
     if not file.filename.endswith('.zip'):
-        raise HTTPException(status_code=400, detail="File must be a .zip archive")
+        raise HTTPException(status_code=400, detail="Only .zip files are supported")
     
     try:
-        # Save uploaded file to a temp directory
         with tempfile.TemporaryDirectory() as tmpdir:
             zip_path = os.path.join(tmpdir, 'uploaded.zip')
             contents = await file.read()
             with open(zip_path, 'wb') as f:
                 f.write(contents)
             
-            # Extract the zip
-            with zipfile.ZipFile(zip_path, 'r') as zf:
-                zf.extractall(tmpdir)
-                namelist = zf.namelist()
-            
-            # Find CompDesc.model
-            comp_path = None
-            for name in namelist:
-                if name.endswith('CompDesc.model'):
-                    comp_path = os.path.join(tmpdir, name)
-                    break
-            
-            if not comp_path or not os.path.exists(comp_path):
-                raise HTTPException(status_code=422, detail="ZIP does not contain CompDesc.model")
-            
-            # Full parse using model_parser
             project = model_parser.ModelParser.parse_modelset(zip_path)
-            
-            # Also extract FuncDesc navigation info if available
-            func_path = None
-            for name in namelist:
-                if name.endswith('FuncDesc.model'):
-                    func_path = os.path.join(tmpdir, name)
-                    break
-            
-            if func_path and os.path.exists(func_path):
-                import blackboxprotobuf
-                with open(func_path, 'rb') as f:
-                    func_msg, _ = blackboxprotobuf.decode_message(f.read())
-                # Try to read navigation mode
-                try:
-                    from core.protobuf_navigator import ProtoNavigator
-                    navi_part = ProtoNavigator.find_block_by_key(func_msg, '1', b'naviUniqueKeyZx')
-                    if navi_part and navi_part.get('2'):
-                        navi_raw = navi_part['2'].decode('utf-8') if isinstance(navi_part['2'], bytes) else str(navi_part['2'])
-                        from core.model_parser import _reverse_nav_method
-                        project['config']['identity']['navigationMethod'] = _reverse_nav_method(navi_raw)
-                except Exception:
-                    pass
-            
-            # Add manifest info
-            manifest_path = None
-            for name in namelist:
-                if name.endswith('ModelFileDesc.json'):
-                    manifest_path = os.path.join(tmpdir, name)
-                    break
-            
-            if manifest_path and os.path.exists(manifest_path):
-                with open(manifest_path, 'r') as f:
-                    manifest = json.load(f)
-                project['_manifest'] = manifest
-            
             project['_sourceFile'] = file.filename
             return project
-    
-    except HTTPException:
-        raise
     except Exception as e:
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Failed to parse ModelSet ZIP: {str(e)}")
-
-
-@app.get("/api/v1/templates/{template_id}")
-async def get_template(template_id: str):
-    """Returns a decoded template as an AmrProject-compatible JSON structure."""
-    if template_id != "factory_default":
-        raise HTTPException(status_code=404, detail="Template not found")
-    
-    try:
-        comp_model_path = TEMPLATES_DIR / "CompDesc.model"
-        if not comp_model_path.exists():
-            raise HTTPException(status_code=404, detail="Template model files not found")
-        
-        # F6: Use model_parser for full reverse parsing (wheels, driveType, identity)
-        zip_path = TEMPLATES_DIR / ".." / "factory_template.zip"
-        if not zip_path.exists():
-            files_to_include = ["AbiSet.model", "CompDesc.model", "FuncDesc.model", "ModelFileDesc.json"]
-            with zipfile.ZipFile(zip_path, 'w', compression=zipfile.ZIP_DEFLATED) as zf:
-                for fname in files_to_include:
-                    fpath = TEMPLATES_DIR / fname
-                    if fpath.exists():
-                        zf.writestr(fname, fpath.read_bytes())
-        project = model_parser.ModelParser.parse_modelset(str(zip_path))
-        return project
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to read template: {str(e)}")
-
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}")
 
 @app.get("/api/v1/projects")
 async def list_projects():
-    """Returns a list of all saved project configurations."""
     try:
         projects = []
         for file_path in SAVED_PROJECTS_DIR.glob("*.json"):
-            # Minimal parsing just to get the identity out, could optimize
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 config = data.get("config", {})
                 identity = config.get("identity", {})
-                
                 projects.append({
                     "filename": file_path.name,
                     "robotName": identity.get("robotName", "Unknown"),
                     "lastModified": os.path.getmtime(file_path)
                 })
-        # Sort by most recently modified
         projects.sort(key=lambda x: x["lastModified"], reverse=True)
         return {"projects": projects}
     except Exception as e:
@@ -235,62 +128,29 @@ async def list_projects():
 
 @app.get("/api/v1/projects/{filename}")
 async def get_project(filename: str):
-    """Retrieves a specific project configuration payload."""
     try:
         file_path = SAVED_PROJECTS_DIR / filename
-        if not file_path.exists() or file_path.suffix != '.json':
-            raise HTTPException(status_code=404, detail="Project not found")
-        
-        with open(file_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return data
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        if not file_path.exists(): raise HTTPException(status_code=404)
+        with open(file_path, "r", encoding="utf-8") as f: return json.load(f)
+    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/v1/projects")
 async def save_project(payload: Dict[str, Any]):
-    """Saves an entire AmrProject configuration payload to disk."""
     try:
         config = payload.get("config", {})
-        identity = config.get("identity", {})
-        robotName = identity.get("robotName", "Untitled_Project")
-        
-        # Sanitize filename
-        safe_name = robotName.replace(' ', '_').replace('/', '_').replace('\\', '_')
-        if not safe_name:
-            safe_name = "Untitled_Project"
-            
-        filename = f"{safe_name}.json"
-        file_path = SAVED_PROJECTS_DIR / filename
-        
-        # Dump the dictionary to json
-        with open(file_path, "w", encoding="utf-8") as f:
+        robotName = config.get("identity", {}).get("robotName", "Untitled")
+        filename = f"{robotName.replace(' ', '_')}.json"
+        with open(SAVED_PROJECTS_DIR / filename, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=4)
-            
-        return {"message": "Project saved successfully", "filename": filename}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"filename": filename}
+    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
 
-# --- Model Generation ---
 @app.post("/api/v1/generate")
 async def generate_model_set(payload: GeneratePayload):
     try:
-        # Pass the strict Pydantic payload directly to the engine
         zip_path = generate_industrial_modelset(payload)
-        
-        # Determine original model name for filename
-        filename = f"{payload.robotName.replace(' ', '_')}_ModelSet.zip"
-        
-        return FileResponse(
-            path=zip_path,
-            filename=filename,
-            media_type="application/zip"
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return FileResponse(path=zip_path, filename=f"{payload.robotName}_ModelSet.zip", media_type="application/zip")
+    except Exception as e: raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    print("Starting Industrial AMR Studio API on port 8000...")
     uvicorn.run(app, host="127.0.0.1", port=8000)

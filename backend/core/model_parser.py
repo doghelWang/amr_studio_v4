@@ -120,9 +120,34 @@ class ModelParser:
                             "connType": "ETHERNET" if params.get("ipAddress") else "CAN"
                         })
 
+            wheels = []
+            wheel_idx = 1
+            for entry in msg.get("5", []):
+                params = cls.deep_extract_all(entry)
+                m_data = entry.get("4", {})
+                raw_name = ProtoNavigator.safe_get_path(entry, ["4", "1", "1", "10"])
+                m_name = (raw_name.decode('utf-8', errors='ignore') if isinstance(raw_name, bytes) else "").lower()
+                main_type = ProtoNavigator.safe_get_path(entry, ["4", "1", "8", "21", "1"])
+                main_type = (main_type.decode('utf-8') if isinstance(main_type, bytes) else "").lower()
+
+                if "wheel" in m_name or "wheel" in main_type:
+                    wheels.append({
+                        "id": str(uuid.uuid4()),
+                        "label": f"Wheel #{wheel_idx}",
+                        "mountX": params.get("locCoordX", 0.0),
+                        "mountY": params.get("locCoordY", 0.0),
+                        "orientation": "FRONT_LEFT" if wheel_idx % 2 != 0 else "REAR_RIGHT",
+                        "driverModel": params.get("driverModel", "ZAPI"),
+                        "canBus": "CAN0",
+                        "canNodeId": params.get("canNodeId", 8),
+                        "leftLimit": params.get("angleLmtNeg", -90.0),
+                        "rightLimit": params.get("angleLmtPos", 90.0)
+                    })
+                    wheel_idx += 1
+
             return {
                 "config": {
-                    "identity": {"robotName": "Imported V4"},
+                    "identity": {"robotName": robot_name if 'robot_name' in locals() else "Imported V4", "driveType": "DIFF"},
                     "mcu": {
                         "model": "MainController",
                         "canBuses": mcu_interfaces["can"],
@@ -130,6 +155,6 @@ class ModelParser:
                     },
                     "sensors": sensors,
                     "ioBoards": io_boards,
-                    "wheels": [] # ... same as before ...
+                    "wheels": wheels
                 }
             }

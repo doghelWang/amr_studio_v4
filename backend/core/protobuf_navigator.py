@@ -42,10 +42,29 @@ class ProtoNavigator:
                     cls.deep_patch(v, target_key, value, val_tag)
 
     @classmethod
+    def find_block_by_key(cls, data: Any, key_tag: str, expected_key: bytes) -> Optional[dict]:
+        if isinstance(data, list):
+            for item in data:
+                res = cls.find_block_by_key(item, key_tag, expected_key)
+                if res: return res
+        elif isinstance(data, dict):
+            if data.get(key_tag) == expected_key: return data
+            for v in data.values():
+                if isinstance(v, (dict, list)):
+                    res = cls.find_block_by_key(v, key_tag, expected_key)
+                    if res: return res
+        return None
+
+    @classmethod
+    def update_int_param(cls, data: Any, target_key: str, value: int):
+        return cls.deep_patch(data, target_key, value, "12")
+
+    @classmethod
     def safe_get_path(cls, data: Any, path: List[str]) -> Any:
         curr = data
         for tag in path:
             if isinstance(curr, list) and len(curr) > 0: curr = curr[0]
-            if isinstance(curr, dict): curr = curr.get(tag)
+            if isinstance(curr, dict):
+                curr = curr.get(tag) or curr.get(int(tag) if tag.isdigit() else None)
             else: return None
         return curr
