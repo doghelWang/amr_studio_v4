@@ -20,14 +20,31 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
     const [loading, setLoading] = React.useState(false);
     const [parsed, setParsed] = React.useState<ParsedModelData | null>(null);
     const [error, setError] = React.useState<string | null>(null);
+    const [debugLogs, setDebugLogs] = React.useState<string[]>([]);
+    const pollIntervalRef = React.useRef<any>(null);
 
-    const reset = () => { setParsed(null); setError(null); };
+    const reset = () => { setParsed(null); setError(null); setDebugLogs([]); };
 
     const handleUpload = async (file: File) => {
         console.log("[Debug] 🟢 上传开始:", file.name, "大小:", (file.size / 1024).toFixed(2), "KB");
         setLoading(true);
         setError(null);
         setParsed(null);
+        setDebugLogs(["[Frontend] 🟢 上传开始，等待后端提取..."]);
+        
+        // Start polling logs
+        pollIntervalRef.current = setInterval(async () => {
+            try {
+                const logRes = await fetch('http://localhost:8000/api/v1/debug/logs');
+                if (logRes.ok) {
+                    const logData = await logRes.json();
+                    if (logData.logs && logData.logs.length > 0) {
+                        setDebugLogs(prev => [...prev, ...logData.logs]);
+                    }
+                }
+            } catch (e) { /* ignore polling errors */ }
+        }, 800);
+        
         try {
             const formData = new FormData();
             formData.append('file', file);
@@ -57,6 +74,7 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
             console.error("[Debug] 🔴 导入异常:", e);
             setError(e.message);
         } finally {
+            if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
             setLoading(false);
         }
         return false; 
@@ -120,7 +138,14 @@ export const ModelZipImportModal: React.FC<ModelZipImportModalProps> = ({ open, 
                     {loading ? (
                         <div style={{ textAlign: 'center' }}>
                             <Spin size="large" />
-                            <div style={{ marginTop: 16, color: '#00d2ff' }}>正在分析二进制结构，请稍候...</div>
+                            <div style={{ marginTop: 16, color: '#00d2ff' }}>正在深度解析二进制结构，请稍候...</div>
+                            <div style={{ marginTop: 20, textAlign: 'left', background: '#05070a', padding: 12, borderRadius: 6, maxHeight: 150, overflowY: 'auto', border: '1px solid #2a2d38', display: 'flex', flexDirection: 'column' }}>
+                                {debugLogs.map((log, i) => (
+                                    <span key={i} style={{ color: '#00d2ff', fontSize: 13, fontFamily: 'monospace', marginBottom: 4 }}>
+                                        {log}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     ) : (
                         <Dragger

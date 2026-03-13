@@ -12,6 +12,7 @@ from typing import Dict, Any, Optional
 
 import blackboxprotobuf
 from schemas.api import GeneratePayload
+from fastapi.concurrency import run_in_threadpool
 from core.protobuf_engine import generate_industrial_modelset
 import core.model_parser as model_parser
 
@@ -24,6 +25,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+DEBUG_LOGS = []
+
+@app.get("/api/v1/debug/logs")
+async def get_debug_logs():
+    global DEBUG_LOGS
+    logs = list(DEBUG_LOGS)
+    DEBUG_LOGS.clear()
+    return {"logs": logs}
 
 # Paths
 SAVED_PROJECTS_DIR = Path("saved_projects")
@@ -48,8 +58,16 @@ async def import_modelset(file: UploadFile = File(...)):
                 f.write(contents)
             
             # 1. Parse for Frontend Config & Raw Tree
-            # We add return_raw=True to ModelParser later
-            parse_result = model_parser.ModelParser.parse_modelset(temp_zip, return_raw=True)
+            DEBUG_LOGS.clear()
+            def trace_log(msg):
+                DEBUG_LOGS.append(msg)
+                
+            parse_result = await run_in_threadpool(
+                model_parser.ModelParser.parse_modelset,
+                temp_zip,
+                True,
+                trace_log
+            )
             
             project_id = parse_result['config']['meta']['projectId']
             

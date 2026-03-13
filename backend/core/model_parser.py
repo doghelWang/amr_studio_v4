@@ -34,7 +34,8 @@ class ModelParser:
             if depth > cls.MAX_DEPTH: continue
             
             if isinstance(curr, list):
-                for item in curr:
+                # Process up to 200 items to capture 64-channel IO boards without freezing on point clouds
+                for item in curr[:200]:
                     queue.append((item, depth + 1))
             elif isinstance(curr, dict):
                 k = curr.get("1") or curr.get(1)
@@ -58,30 +59,35 @@ class ModelParser:
     @classmethod
     def get_raw_tree_safe(cls, data, depth=0):
         """Pruned tree strictly for Frontend UI Raw Rendering."""
-        if depth > 4: return "..." 
+        if depth > 3: return "..." 
         
         if isinstance(data, list):
             count = len(data)
-            base = [cls.get_raw_tree_safe(i, depth + 1) for i in data[:10]]
-            if count > 10: base.append(f"({count - 10} more items...)")
+            base = [cls.get_raw_tree_safe(i, depth + 1) for i in data[:5]]
+            if count > 5: base.append(f"({count - 5} more items...)")
             return base
         elif isinstance(data, dict):
             res = {}
             all_keys = list(data.keys())
-            display_keys = [k for k in all_keys if str(k) not in ["16", "18", "19"]][:15]
+            display_keys = [k for k in all_keys if str(k) not in ["16", "18", "19"]][:10]
             for k in display_keys:
                 v = data[k]
                 if isinstance(v, bytes):
-                    try: res[str(k)] = v.decode('utf-8')[:64] + "..." if len(v) > 64 else v.decode('utf-8')
-                    except: res[str(k)] = f"HEX:{v.hex()[:16]}..."
+                    try: res[str(k)] = v.decode('utf-8')[:32] + "..." if len(v) > 32 else v.decode('utf-8')
+                    except: res[str(k)] = f"HEX:{v.hex()[:10]}..."
                 else:
                     res[str(k)] = cls.get_raw_tree_safe(v, depth + 1)
-            if len(all_keys) > 15: res["_"] = "..."
+            if len(all_keys) > 10: res["_"] = "..."
             return res
         return data
 
     @classmethod
-    def parse_modelset(cls, zip_path: str, return_raw=False) -> dict:
+    def parse_modelset(cls, zip_path: str, return_raw=False, logger=None) -> dict:
+        def log(msg):
+            if logger: logger(msg)
+            else: print(msg)
+            
+        log("[Backend 🏭] 收到解析请求，正在解包...")
         with tempfile.TemporaryDirectory() as tmp_dir:
             with zipfile.ZipFile(zip_path, 'r') as zf:
                 zf.extractall(tmp_dir)
@@ -89,8 +95,17 @@ class ModelParser:
             comp_path = os.path.join(tmp_dir, 'CompDesc.model')
             with open(comp_path, 'rb') as f:
                 content = f.read()
-                if len(content) > 50 * 1024 * 1024: raise ValueError("File exceeds 50MB limit")
+                size_mb = len(content) / (1024 * 1024)
+                log(f"[Backend 🏭] 核心模块读取成功 (大小: {size_mb:.2f} MB)")
+                if size_mb > 50: raise ValueError("File exceeds 50MB limit")
+                
+                log("[Backend 🏭] ⚠️ 开始执行深度二进制解码 (如果卡死，则说明是 blackboxprotobuf 遇到超大点云陷入死循环)...")
+                import time
+                st = time.time()
                 comp_msg, _ = blackboxprotobuf.decode_message(content)
+                log(f"[Backend 🏭] ✅ 二进制解码完成！耗时: {time.time() - st:.2f} 秒")
+            
+            log("[Backend 🏭] 开始执行工业树提取...")
             
             sensors = []
             io_boards = []
@@ -106,7 +121,9 @@ class ModelParser:
             module_list = comp_msg.get("5", [])
             if isinstance(module_list, dict): module_list = [module_list]
 
-            for entry in module_list: 
+            log(f"[Backend 🏭] 发现总计 {len(module_list)} 个 Tag 5 模块，开始执行边界裁剪提取...")
+
+            for entry in module_list[:200]: # Cap modules to prevent runaway parsing
                 m_data = entry.get("4", {})
                 m_name = (ProtoNavigator.safe_get_path(entry, ["4", "1", "1", "10"]) or b"").decode('utf-8', errors='ignore')
                 m_uuid = (ProtoNavigator.safe_get_path(entry, ["4", "1", "4", "10"]) or b"").decode('utf-8', errors='ignore')
@@ -122,7 +139,7 @@ class ModelParser:
                     robot_name = m_name
                     parts = ProtoNavigator.safe_get_path(m_data, ["2", "1"]) or []
                     if isinstance(parts, dict): parts = [parts]
-                    for i, p in enumerate(parts):
+                    for i, p in enumerate(parts[:200]): # Cap wheel scan
                         if isinstance(p, dict) and p.get("2") == b'\xe8\xbf\x90\xe5\x8a\xa8\xe4\xb8\xad\xe5\xbf\x83\xe5\x8f\x82\xe6\x95\xb0':
                             ext = cls.smart_extract(p)
                             wheels.append({"id": f"wheel_{i+1}", "label": f"Wheel {i+1}", "mountX": ext.get("locCoordNX", 0.0)})
@@ -142,6 +159,8 @@ class ModelParser:
                 else:
                     others.append({"id": m_uuid, "label": m_name, "type": "MODULE"})
 
+            log(f"[Backend 🏭] 🏁 组装完毕: 提取了 {len(wheels)} 轮组, {len(sensors)} 传感器, {len(io_boards)} IO板, {len(others)} 其他组件.")
+
             result = {
                 "config": {
                     "meta": { "projectId": str(uuid.uuid4()), "projectName": robot_name },
@@ -150,5 +169,5 @@ class ModelParser:
                 }
             }
             if return_raw:
-                result["raw_tree"] = cls.get_raw_tree_safe(comp_msg)
+                result["raw_tree"] = cls.get_raw_tree_safe(comp_msg.get("5", []))
             return result
