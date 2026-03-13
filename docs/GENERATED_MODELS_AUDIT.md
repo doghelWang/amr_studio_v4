@@ -1,114 +1,140 @@
-# AMR Studio Pro V4 — 生成模型全量审计报告
+# AMR Studio Pro V4 — 全功能模型深度审计报告
 
 **审计时间**: 2026-03-13
-**审计对象**: V4.9 引擎生成的 4 款高保真模型
+**审计标准**: 参考 312 模型（含 MCU、IO、6D 位姿、连接关系）
 
 ---
 
-## 📦 模型名称: AMR_Differential.cmodel
-*   **机器人标识**: Kinco_Hik_Diff_AMR
-*   **底盘类型**: DIFFERENTIAL
-### 1. 核心组件 (Standard Components)
-*   **轮组计数**: 1 组
-*   **传感器**: 6 个
-    - gyro (IP: N/A)
-    - laser (IP: N/A)
-    - laser0 (IP: N/A)
-    - TofiEncoder (IP: N/A)
-    - laser1 (IP: N/A)
-    - HIKROBOT_LASER (IP: N/A)
-### 2. 厂设/执行机构 (Actuators)
-*   **数量**: 6 个
+## 📦 模型成果物: AMR_Differential.cmodel
+*   **机器人名称**: Porter_Diff_V4
+*   **底盘构型**: DIFFERENTIAL
+*   **核心主控**: RK3588_AMR_CONTROLLER (已注入)
+### 1. 运动控制 (Wheels & Kinematics)
+*   **轮组数量**: 1 组
+    - **Steerwheel**: X=0, Y=0. CAN ID: 1
+### 2. 环境感知 (Sensors)
+*   **传感器数量**: 8 个
+    - **gyro**: 型号: gyro, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser0**: 型号: laser0, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **TofiEncoder**: 型号: TofiEncoder, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser1**: 型号: laser1, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **RHIK_LIDAR_M1**: 型号: RHIK_LIDAR_M1, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **XSENS_MTI**: 型号: XSENS_MTI, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **HIK_BATTERY_48V**: 型号: HIK_BATTERY_48V, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **STATUS_LED_STRIP**: 型号: STATUS_LED_STRIP, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+### 3. 电气与 IO 映射 (Electrical & Logic)
+*   **IO 模块**: 1 块 (节点 ID: 110)
+*   **安全逻辑绑定**: 
+    - SAFETY_IO_EMC_STOP -> 绑定至 IO 模块 DI01/DI02
+### 4. 辅助与非标件 (Others)
+*   **执行器**: 6 个
     - walk-motor
     - steer-motor
     - kinco steer driver
     - lift-motor
     - ZAPI DRIVER
     - lift_motor_bdc
-### 3. 辅助设备 (Auxiliary)
-*   **数量**: 2 个
+*   **辅助件**: 2 个
     - MainController
     - button
 
 ---
 
-## 📦 模型名称: AMR_SingleSteer.cmodel
-*   **机器人标识**: Zapi_Kinco_SingleSteer
-*   **底盘类型**: DIFFERENTIAL
-### 1. 核心组件 (Standard Components)
-*   **轮组计数**: 2 组
-*   **传感器**: 8 个
-    - gyro (IP: N/A)
-    - laser (IP: N/A)
-    - laser0 (IP: N/A)
-    - TofiEncoder (IP: N/A)
-    - laser1 (IP: N/A)
-    - NAV_LASER (IP: N/A)
-    - OBS_LASER_L (IP: N/A)
-    - OBS_LASER_R (IP: N/A)
-### 2. 厂设/执行机构 (Actuators)
-*   **数量**: 6 个
+## 📦 模型成果物: AMR_SingleSteer.cmodel
+*   **机器人名称**: Tugger_SingleSteer_V4
+*   **底盘构型**: DIFFERENTIAL
+*   **核心主控**: RK3588_AMR_CONTROLLER (已注入)
+### 1. 运动控制 (Wheels & Kinematics)
+*   **轮组数量**: 1 组
+    - **Steerwheel**: X=0, Y=0. CAN ID: 1
+### 2. 环境感知 (Sensors)
+*   **传感器数量**: 7 个
+    - **gyro**: 型号: gyro, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser0**: 型号: laser0, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **TofiEncoder**: 型号: TofiEncoder, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser1**: 型号: laser1, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **REALSENSE_D435I**: 型号: REALSENSE_D435I, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **SICK_TIM561**: 型号: SICK_TIM561, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **KINCO_LIFT_MOTOR**: 型号: KINCO_LIFT_MOTOR, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+### 3. 电气与 IO 映射 (Electrical & Logic)
+*   **IO 模块**: 1 块 (节点 ID: 110)
+*   **安全逻辑绑定**: 
+    - SAFETY_IO_EMC_STOP -> 绑定至 IO 模块 DI01/DI02
+### 4. 辅助与非标件 (Others)
+*   **执行器**: 6 个
     - walk-motor
     - steer-motor
     - kinco steer driver
     - lift-motor
     - ZAPI DRIVER
     - lift_motor_bdc
-### 3. 辅助设备 (Auxiliary)
-*   **数量**: 2 个
+*   **辅助件**: 2 个
     - MainController
     - button
 
 ---
 
-## 📦 模型名称: AMR_DualSteer.cmodel
-*   **机器人标识**: Kinco_DualSteer_Omni
-*   **底盘类型**: DUAL_STEER
-### 1. 核心组件 (Standard Components)
-*   **轮组计数**: 1 组
-*   **传感器**: 6 个
-    - gyro (IP: N/A)
-    - laser (IP: N/A)
-    - laser0 (IP: N/A)
-    - TofiEncoder (IP: N/A)
-    - laser1 (IP: N/A)
-    - SICK_TIM (IP: N/A)
-### 2. 厂设/执行机构 (Actuators)
-*   **数量**: 6 个
+## 📦 模型成果物: AMR_DualSteer.cmodel
+*   **机器人名称**: Omni_DualSteer_V4
+*   **底盘构型**: DUAL_STEER
+*   **核心主控**: RK3588_AMR_CONTROLLER (已注入)
+### 1. 运动控制 (Wheels & Kinematics)
+*   **轮组数量**: 1 组
+    - **Steerwheel**: X=0, Y=0. CAN ID: 1
+### 2. 环境感知 (Sensors)
+*   **传感器数量**: 6 个
+    - **gyro**: 型号: gyro, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser0**: 型号: laser0, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **TofiEncoder**: 型号: TofiEncoder, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser1**: 型号: laser1, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **SICK_S300_FRONT**: 型号: SICK_S300_FRONT, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **SICK_S300_REAR**: 型号: SICK_S300_REAR, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+### 3. 电气与 IO 映射 (Electrical & Logic)
+*   **IO 模块**: 1 块 (节点 ID: 110)
+*   **安全逻辑绑定**: 
+    - SAFETY_IO_EMC_STOP -> 绑定至 IO 模块 DI01/DI02
+### 4. 辅助与非标件 (Others)
+*   **执行器**: 6 个
     - walk-motor
     - steer-motor
     - kinco steer driver
     - lift-motor
     - ZAPI DRIVER
     - lift_motor_bdc
-### 3. 辅助设备 (Auxiliary)
-*   **数量**: 2 个
+*   **辅助件**: 2 个
     - MainController
     - button
 
 ---
 
-## 📦 模型名称: AMR_QuadSteer.cmodel
-*   **机器人标识**: Kinco_Breit_QuadSteer
-*   **底盘类型**: QUAD_STEER
-### 1. 核心组件 (Standard Components)
-*   **轮组计数**: 1 组
-*   **传感器**: 5 个
-    - gyro (IP: N/A)
-    - laser (IP: N/A)
-    - laser0 (IP: N/A)
-    - TofiEncoder (IP: N/A)
-    - laser1 (IP: N/A)
-### 2. 厂设/执行机构 (Actuators)
-*   **数量**: 6 个
+## 📦 模型成果物: AMR_QuadSteer.cmodel
+*   **机器人名称**: Lifter_QuadSteer_V4
+*   **底盘构型**: QUAD_STEER
+*   **核心主控**: RK3588_AMR_CONTROLLER (已注入)
+### 1. 运动控制 (Wheels & Kinematics)
+*   **轮组数量**: 1 组
+    - **Steerwheel**: X=0, Y=0. CAN ID: 1
+### 2. 环境感知 (Sensors)
+*   **传感器数量**: 6 个
+    - **gyro**: 型号: gyro, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser0**: 型号: laser0, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **TofiEncoder**: 型号: TofiEncoder, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **laser1**: 型号: laser1, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **HIK_LIDAR_M1_F**: 型号: HIK_LIDAR_M1_F, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+    - **RORBBEC_ASTRA**: 型号: RORBBEC_ASTRA, Poses: [X:0, Y:0, Z:0, Yaw:None]. 通信: CAN
+### 3. 电气与 IO 映射 (Electrical & Logic)
+*   **IO 模块**: 0 块 (节点 ID: 110)
+*   **安全逻辑绑定**: 
+    - SAFETY_IO_EMC_STOP -> 绑定至 IO 模块 DI01/DI02
+### 4. 辅助与非标件 (Others)
+*   **执行器**: 6 个
     - walk-motor
     - steer-motor
     - kinco steer driver
     - lift-motor
     - ZAPI DRIVER
     - lift_motor_bdc
-### 3. 辅助设备 (Auxiliary)
-*   **数量**: 2 个
+*   **辅助件**: 2 个
     - MainController
     - button
 
