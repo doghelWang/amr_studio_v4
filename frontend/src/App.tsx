@@ -158,6 +158,7 @@ export default function App() {
             useProjectStore.getState().createSnapshot(`编译快照 ${new Date().toLocaleString('zh-CN')}`);
 
             const payload = {
+                projectId: meta.projectId,
                 robotName: config.identity.robotName,
                 version: config.identity.version,
                 driveType: config.identity.driveType,
@@ -165,10 +166,13 @@ export default function App() {
                 wheels: config.wheels,
                 sensors: config.sensors,
                 ioBoards: config.ioBoards,
-                ioPorts: config.ioPorts
+                ioPorts: config.ioPorts,
+                actuators: config.actuators || [],
+                auxiliary: config.auxiliary || [],
+                others: config.others || []
             };
 
-            const res = await axios.post('http://localhost:8000/api/v1/generate', payload, { responseType: 'blob' });
+            const res = await axios.post('http://localhost:8002/api/v1/generate', payload, { responseType: 'blob' });
             const url = URL.createObjectURL(new Blob([res.data]));
             const a = document.createElement('a');
             a.href = url;
@@ -256,7 +260,7 @@ export default function App() {
 
                 {/* Center: project name + dirty indicator */}
                 <div style={{ color: '#666', fontSize: 13, display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ color: '#aaa' }}>{meta.projectName}</span>
+                    <span style={{ color: '#aaa' }}>{meta?.projectName || '加载中...'}</span>
                     {isDirty && <Tag color="warning" style={{ margin: 0, fontSize: 10 }}>● 未保存</Tag>}
                 </div>
 

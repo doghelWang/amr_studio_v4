@@ -15,19 +15,6 @@ def float_to_uint64(f: float) -> int:
 
 _uuid_cache = {}
 
-def get_factory_prototype(category: str) -> dict:
-    """Extracts a clean prototype from the factory default template to solve Template Starvation."""
-    templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates')
-    comp_path = os.path.join(templates_dir, 'CompDesc.model')
-    if not os.path.exists(comp_path): return None
-    with open(comp_path, 'rb') as f:
-        msg, _ = blackboxprotobuf.decode_message(f.read())
-        for mod in msg.get("5", []):
-            name = (ProtoNavigator.safe_get_path(mod, ["4", "1", "1", "10"]) or b"").decode('utf-8', errors='ignore')
-            if category == "laser" and name == "laser": return copy.deepcopy(mod)
-            if category == "IO" and "IO" in name: return copy.deepcopy(mod)
-    return None
-
 def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
     global _uuid_cache
     _uuid_cache = {}
@@ -40,18 +27,14 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
         root_meta = ProtoNavigator.safe_get_path(msg, ["5", "4", "1"])
         if isinstance(root_meta, dict):
             if "1" in root_meta: root_meta["1"]["10"] = payload.robotName.encode('utf-8')
-            
             if "9" in root_meta and "21" in root_meta["9"]:
                 type_mapping = {
-                    "QUAD_STEER": "quadSteerChassis", 
-                    "DUAL_STEER": "dualSteerChassis",
-                    "SINGLE_STEER": "steerChassis",
-                    "DIFF": "differential", 
-                    "MECANUM": "mecanumChassis"
+                    "QUAD_STEER": "quadSteerChassis", "DUAL_STEER": "dualSteerChassis",
+                    "SINGLE_STEER": "steerChassis", "DIFF": "differential", "MECANUM": "mecanumChassis"
                 }
                 root_meta["9"]["21"]["1"] = type_mapping.get(payload.driveType, "differential").encode('utf-8')
 
-        # 2. Wheels Matrix: V5 Expansion Sync
+        # 2. Wheels Matrix: Dynamic Sync
         root_attr = ProtoNavigator.safe_get_path(msg, ["5", "4"])
         if isinstance(root_attr, dict):
             parts = root_attr.get("2", {}).get("1", [])
@@ -60,7 +43,6 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
             
             template_motion = next((p for p in parts if isinstance(p, dict) and p.get("2") == MOTION_KEY), None)
             template_wheel = next((p for p in parts if isinstance(p, dict) and p.get("2") == WHEEL_KEY), None)
-            
             static_parts = [p for p in parts if not (isinstance(p, dict) and p.get("2") in (MOTION_KEY, WHEEL_KEY))]
             
             injected_wheels = []
@@ -76,66 +58,60 @@ def build_comp_desc(template_path: str, payload: GeneratePayload) -> bytes:
                     injected_wheels.append(nw)
             root_attr["2"]["1"] = static_parts + injected_wheels
 
-        # 3. Component Sync (Sensors & IO) V5 Gene-Anchored Recombination
+        # 3. Component Sync (Sensors & IO)
         all_modules = msg.get("5", [])
-        if isinstance(all_modules, dict): all_modules = [all_modules]
-        
-        # Extract Prototypes
-        sensor_proto = next((copy.deepcopy(m) for m in all_modules if (ProtoNavigator.safe_get_path(m, ["4", "1", "1", "10"]) or b"") == b"laser"), None)
-        io_proto = next((copy.deepcopy(m) for m in all_modules if b"IO" in (ProtoNavigator.safe_get_path(m, ["4", "1", "1", "10"]) or b"")), None)
-        
-        if not sensor_proto: sensor_proto = get_factory_prototype("laser")
-        if not io_proto: io_proto = get_factory_prototype("IO")
+        sensor_proto = None
+        io_proto = None
+        for mod in all_modules:
+            m_name = ProtoNavigator.safe_get_path(mod, ["4", "1", "1", "10"])
+            if m_name == b"laser" and not sensor_proto: sensor_proto = copy.deepcopy(mod)
+            if b"IO" in (m_name or b"") and not io_proto: io_proto = copy.deepcopy(mod)
+
+        # Fallback to Factory Prototypes if base is empty
+        if not sensor_proto or not io_proto:
+            factory_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'templates', 'CompDesc.model')
+            if os.path.exists(factory_path):
+                with open(factory_path, 'rb') as ff:
+                    fmsg, _ = blackboxprotobuf.decode_message(ff.read())
+                    for fmod in fmsg.get("5", []):
+                        fn = ProtoNavigator.safe_get_path(fmod, ["4", "1", "1", "10"])
+                        if fn == b"laser" and not sensor_proto: sensor_proto = copy.deepcopy(fmod)
+                        if b"IO" in (fn or b"") and not io_proto: io_proto = copy.deepcopy(fmod)
 
         managed_uuids = [s.id for s in payload.sensors] + [b.id for b in payload.ioBoards]
-        
         final_module_list = []
         
-        # Keep non-managed modules UNTOUCHED
+        # Preserve unmanaged ones
         for mod in all_modules:
-            m_uuid = ProtoNavigator.safe_get_path(mod, ["4", "1", "4", "10"])
-            m_uuid_str = m_uuid.decode('utf-8', errors='ignore') if isinstance(m_uuid, bytes) else ""
-            m_name = (ProtoNavigator.safe_get_path(mod, ["4", "1", "1", "10"]) or b"").decode('utf-8', errors='ignore')
-            
-            is_managed_type = "laser" in m_name.lower() or "camera" in m_name.lower() or "io" in m_name.lower() or "button" in m_name.lower()
-            
-            if not is_managed_type and m_uuid_str not in managed_uuids:
+            m_name = ProtoNavigator.safe_get_path(mod, ["4", "1", "1", "10"])
+            m_uuid = (ProtoNavigator.safe_get_path(mod, ["4", "1", "4", "10"]) or b"").decode('utf-8')
+            if m_name != b"laser" and b"IO" not in (m_name or b"") and m_uuid not in managed_uuids:
                 final_module_list.append(mod)
 
-        # Inject/Update Sensors from Payload
+        # Sync Sensors
         for s in payload.sensors:
-            existing = next((m for m in all_modules if (ProtoNavigator.safe_get_path(m, ["4", "1", "4", "10"]) or b"").decode('utf-8', errors='ignore') == s.id), None)
+            existing = next((m for m in all_modules if (ProtoNavigator.safe_get_path(m, ["4", "1", "4", "10"]) or b"").decode('utf-8') == s.id), None)
             target = copy.deepcopy(existing) if existing else copy.deepcopy(sensor_proto)
-            
             if target:
                 m_data = target.get("4", {})
-                # Ensure stable UUID
-                gen_uuid = s.id if s.id and not s.id.startswith('virtual-uuid-') else str(uuid.uuid4()).replace("-", "")
+                gen_uuid = s.id if s.id and len(s.id) > 8 else str(uuid.uuid4()).replace("-", "")
                 _uuid_cache[s.id] = gen_uuid
-                
-                ProtoNavigator.deep_patch(m_data, "module_name", s.model, "10")
                 ProtoNavigator.deep_patch(m_data, "module_uuid", gen_uuid, "10")
-                ProtoNavigator.deep_patch(m_data, "locCoordX", s.offsetX, "17")
-                ProtoNavigator.deep_patch(m_data, "locCoordY", s.offsetY, "17")
-                ProtoNavigator.deep_patch(m_data, "locCoordZ", s.offsetZ, "17")
-                ProtoNavigator.deep_patch(m_data, "locCoordYAW", s.yaw, "17")
-                
-                if getattr(s, 'ip', None): ProtoNavigator.deep_patch(m_data, "ipAddress", s.ip, "10")
-                if getattr(s, 'port', None): ProtoNavigator.deep_patch(m_data, "port", s.port, "12")
-                
+                ProtoNavigator.deep_patch(m_data, "locCoordX", s.mountX, "17")
+                ProtoNavigator.deep_patch(m_data, "locCoordY", s.mountY, "17")
+                ProtoNavigator.deep_patch(m_data, "locCoordZ", s.mountZ, "17")
+                ProtoNavigator.deep_patch(m_data, "locCoordYAW", s.mountYaw, "17")
+                if s.ipAddress: ProtoNavigator.deep_patch(m_data, "ipAddress", s.ipAddress, "10")
                 final_module_list.append(target)
 
-        # Inject/Update IO Boards
+        # Sync IO Boards
         for b in payload.ioBoards:
-            existing = next((m for m in all_modules if (ProtoNavigator.safe_get_path(m, ["4", "1", "4", "10"]) or b"").decode('utf-8', errors='ignore') == b.id), None)
+            existing = next((m for m in all_modules if (ProtoNavigator.safe_get_path(m, ["4", "1", "4", "10"]) or b"").decode('utf-8') == b.id), None)
             target = copy.deepcopy(existing) if existing else copy.deepcopy(io_proto)
-            
             if target:
                 m_data = target.get("4", {})
-                gen_uuid = b.id if b.id and not b.id.startswith('virtual-uuid-') else str(uuid.uuid4()).replace("-", "")
+                gen_uuid = b.id if b.id and len(b.id) > 8 else str(uuid.uuid4()).replace("-", "")
                 _uuid_cache[b.id] = gen_uuid
-                
-                ProtoNavigator.deep_patch(m_data, "module_name", b.model, "10")
                 ProtoNavigator.deep_patch(m_data, "module_uuid", gen_uuid, "10")
                 ProtoNavigator.deep_patch(m_data, "nodeId", b.canNodeId, "12")
                 final_module_list.append(target)
@@ -151,15 +127,14 @@ def build_func_desc(template_path: str, payload: GeneratePayload) -> bytes:
     with open(template_path, 'rb') as f:
         msg, typ = blackboxprotobuf.decode_message(f.read())
     try:
-        # Re-establish logical bindings
         for io in payload.ioPorts:
             if io.logicBind == "SAFETY_IO_EMC_STOP":
                 items = msg.get("12", [])
                 if isinstance(items, dict): items = [items]
                 for item in items:
                     if ProtoNavigator.safe_get_path(item, ["1", "10"]) == b"safetyEstopKey":
-                        item["3"] = 1 # Enable
-                        target_uuid = _uuid_cache.get(io.originModel)
+                        item["3"] = 1
+                        target_uuid = _uuid_cache.get(io.ioBoardId)
                         if target_uuid:
                             item["10"] = target_uuid.encode('utf-8')
     except Exception as e:
@@ -187,24 +162,19 @@ def generate_industrial_modelset(payload: GeneratePayload, base_modelset_zip: st
         func_base = os.path.join(templates_dir, 'FuncDesc.model')
         abi_base = os.path.join(templates_dir, 'AbiSet.model')
 
-    # Apply Gene-Anchored Recombination Sync
     comp_bytes = build_comp_desc(comp_base, payload)
-    func_bytes = build_func_desc(func_base, payload) 
-    
+    func_bytes = build_func_desc(func_base, payload)
     with open(abi_base, 'rb') as f: abi_bytes = f.read()
     
     manifest = {
         "ModelFileDesc": [
-            {"md5": hashlib.md5(abi_bytes).hexdigest(), "name": "AbiSet.model", "type": "CAPABILITY", "version": payload.version},
-            {"md5": hashlib.md5(func_bytes).hexdigest(), "name": "FuncDesc.model", "type": "MODEL_FUNC", "version": payload.version},
-            {"md5": hashlib.md5(comp_bytes).hexdigest(), "name": "CompDesc.model", "type": "MODEL_COMP", "version": payload.version}
+            {"md5": hashlib.md5(comp_bytes).hexdigest(), "name": "CompDesc.model", "type": "MODEL_COMP", "version": payload.version},
+            {"md5": hashlib.md5(func_bytes).hexdigest(), "name": "FuncDesc.model", "type": "MODEL_FUNC", "version": payload.version}
         ]
     }
     
     temp_export_dir = tempfile.mkdtemp()
-    # Replace spaces cleanly for the filename
-    safe_name = payload.robotName.replace(" ", "_") if payload.robotName else "Export"
-    zip_path = os.path.join(temp_export_dir, f'{safe_name}_ModelSet.cmodel')
+    zip_path = os.path.join(temp_export_dir, f'{payload.robotName.replace(" ", "_")}_ModelSet.cmodel')
     with zipfile.ZipFile(zip_path, 'w') as zf:
         zf.writestr('AbiSet.model', abi_bytes)
         zf.writestr('CompDesc.model', comp_bytes)

@@ -189,6 +189,9 @@ export interface RobotConfig {
     wheels: WheelConfig[];
     sensors: SensorConfig[];
     ioPorts: IOConfig[];
+    actuators?: any[];
+    auxiliary?: any[];
+    others?: any[];
 }
 
 export interface ProjectSnapshot {
@@ -252,4 +255,7 @@ export const defaultRobotConfig = (): RobotConfig => ({
     wheels: [],
     sensors: [],
     ioPorts: [],
+    actuators: [],
+    auxiliary: [],
+    others: [],
 });
