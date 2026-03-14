@@ -1,0 +1,11 @@
+
+> amr-studio-frontend@1.0.0 dev
+> vite --port 3001
+
+
+  VITE v5.4.21  ready in 139 ms
+
+  ➜  Local:   http://localhost:3001/
+  ➜  Network: use --host to expose
+08:59:26 [vite] hmr update /src/components/ModelZipImportModal.tsx
+08:59:34 [vite] hmr update /src/App.tsx

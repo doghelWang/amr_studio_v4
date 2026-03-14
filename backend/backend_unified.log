@@ -1,0 +1,22 @@
+INFO:     Started server process [62425]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:64617 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64617 - "GET /assets/index-8xbrIB7Q.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:64618 - "GET /assets/index-BZV40eAE.css HTTP/1.1" 304 Not Modified
+[Parser] 🚀 Parsing: base.zip
+INFO:     127.0.0.1:64821 - "POST /api/v1/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62683 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:62683 - "GET / HTTP/1.1" 304 Not Modified
+[Parser] 🚀 Parsing: base.zip
+INFO:     127.0.0.1:62684 - "POST /api/v1/import HTTP/1.1" 200 OK
+[Parser] 🚀 Parsing: base.zip
+INFO:     127.0.0.1:63764 - "POST /api/v1/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53436 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:53436 - "GET / HTTP/1.1" 304 Not Modified
+[Parser] 🚀 Parsing: base.zip
+INFO:     127.0.0.1:53437 - "POST /api/v1/import HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57128 - "GET / HTTP/1.1" 304 Not Modified
+[Parser] 🚀 Parsing: base.zip
+INFO:     127.0.0.1:57129 - "POST /api/v1/import HTTP/1.1" 200 OK
