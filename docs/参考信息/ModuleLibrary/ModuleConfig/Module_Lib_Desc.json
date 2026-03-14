@@ -1,0 +1,617 @@
+{
+    "Module_Lib_Desc": [
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/block-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/clamp-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/lift-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/lift-Q3.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/linear-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/rotate-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/rotate-Q3.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ActorSys/Internal/translation-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "ActorSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/AutobodySys/Internal/carrier-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/AutobodySys/Internal/covers-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "AutobodySys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffChassis-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffSteerWheel-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffWheel-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/DWD-R-Q3.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/horizontalSteerWheel-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/Q3-600LE-DIF.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/steerChassis-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/SteerChassis_DoubleWheel.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/SteerChassis_SingleWheel.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/verticalSteerWheel-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/weakSteerWheel-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ChassisSys/Internal/weakTurnWheel-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "ChassisSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/5G-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/5G-TE310.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/bluetooth-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/PIO-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/RFID-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/WAPI-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/WIFI-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "CommunicateSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/binocularCameraProcessor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/encoderProcessor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/ethernetSwitch-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/IC-R-fourth-sensor processor-NS.02.R-A1.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/IM-R-R-Commen-Upper board-PC.COM.-A1.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/interfaceModule.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/intergratedController-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/IO module 4in4out.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/IO-lnterface board.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/IOModule-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/mainCPU-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R318AT.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R318BN.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R349AD-21BH0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/Power Controller board.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/powerController-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/prechargeController-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/RA-IC_I-F-1R6BH0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/RA-SP_E-A-11AH0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/safetyController-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/safetyIOModule-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/SC-R-fourth-safety controller-NS.02.R-A1.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/TOFProcessor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/ultrasonicProcessor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/ControlSys/Internal/weighProcessor-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "ControlSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/BDCMotor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/BLDCMotor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_STEER_WHEEL(单差速舵轮).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_STEER_WHEELS_DOUBL(双差速舵轮).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_WHEELS(差速轮组).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/EC-SV11D1-100M01NB-C01.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 _motor(RUN).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 servo_driver.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 SteerWheel.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/H8-Steerwheel.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/IxLII 20.40.48.C.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/IxLII 30.60.48.C .json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-00SV04202-0750K-012.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-MCXL501TAF3KM.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-MCXL501TAFUKM.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/PMSMMotor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/RA-DRD-4825DB.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SD-R-Q3-DriveVV1.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SD-RA-DRD-4814SA.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM020BA-45.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM020BB-50.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM15030BA-18.9.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM15030BA-20.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/subDriver-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/TYD150-SM07530BA-18.9-10020-SM020BB-50.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/TYD150-SM07530BA-20-11020-SM020BA-45.H173.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/DriverSys/Internal/VER_STEER_WHEELS_DOUBL(双立式舵轮).json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "DriverSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/EnergySys/Internal/BAT-LSM18-J050LB-T0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/EnergySys/Internal/BAT-U-MR-LFP-480024-F1-C-Aa0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/EnergySys/Internal/battery-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/EnergySys/Internal/charge-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/EnergySys/Internal/power-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "EnergySys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioIn-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioOut-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioOutWithCan-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/AUO-R-MV-83139-Speak.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-Cable-Mizu2F-to-Switch-70mm-RD-BK.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-Emergency.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-NoEmergency.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/button-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/lamp-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/LAMP-MV-85016-REV1.0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/RemoteControl.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/screen-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/screenHDMI-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/SDSP-MV-85017(V1.0)-GD.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/segDisplays-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/SSC-RS-HMI-LED.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/WARLIGHT-RS-PLS-L563T01.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/warningLight-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "InteractiveSys"
+        },
+        {
+            "ModuleInfo": [
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/3DLaser-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/3DTOF-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABS_ENCODE.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/AbsEncoder-H8.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/absoluteValueEncode-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABZEncode-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABZEncode.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/CAMERA-MV_SC2000AM.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/codeReader-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/collisionBaro-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/collisionPize-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/comDo-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/gyro-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/GYRO-GENERAL.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/INCEncoder.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/incrementalEncode-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/infrared-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/laser-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MID_360.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01F-S1533.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01F.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01H-N2725.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-05H-N4017.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-06H-N3025(1-6A).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-06H-N3025N.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-07H-S2025(1-6C).json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/proximitySensor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/PT-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/pullWireEncode-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/PX-SN18-08BNAE-1.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/PX-SP12-04BNA.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/PZTB-WMN-A539-850-A0.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/stereo-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/STEREO-MV-EB435i.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/tempSensor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/TOF-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/ultrasonicSensor-Common.json",
+                    "bCollect": false
+                },
+                {
+                    "ModulePath": "/ModuleLibrary/ModuleEntity/SensorSys/Internal/weighSensor-Common.json",
+                    "bCollect": false
+                }
+            ],
+            "SubSysUniqueKey": "SensorSys"
+        }
+    ]
+}

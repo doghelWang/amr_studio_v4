@@ -1,0 +1,58 @@
+{
+	"privateAttrs": [
+		{
+			"key": "lightAttr",
+			"desc": "灯光属性",
+			"arrayBaseEle": [
+				{
+					"key": "lightType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "projectionLights",
+						"typeDesc": "投影灯",
+						"typeGroups": [
+							{
+								"key": "projectionLights",
+								"desc": "投影灯"
+							},
+							{
+								"key": "towerLights",
+								"desc": "塔灯"
+							},
+							{
+								"key": "ballLights",
+								"desc": "球灯"
+							}
+						]
+					},
+					"desc": "指示灯类型",
+					"boolHide": true
+				},
+				{
+					"key": "lightColor",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "blue",
+						"typeDesc": "蓝色",
+						"typeGroups": [
+							{
+								"key": "blue",
+								"desc": "蓝色"
+							},
+							{
+								"key": "RYG",
+								"desc": "三色"
+							},
+							{
+								"key": "red&bule",
+								"desc": "红蓝(一字线型)"
+							}
+						]
+					},
+					"desc": "指示灯颜色",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

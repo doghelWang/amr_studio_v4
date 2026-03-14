@@ -1,0 +1,32 @@
+{
+  "RA-EI_F-C-1S1AH0": {
+    "基本信息": {
+      "name": "R-四代-接口板-RS3-A1",
+      "desc": "安全控制器，CE型，光电接口，CAN总线带终端电阻",
+      "type": "MV_83167",
+	  "ver": "V1.0.0",
+	  "id_dip":"ID_DIP_NULL",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+      "board_type": ["BOARD_UPPER_IF"],
+	  "mcu":[
+		{"chip":"R130"}
+	  ]
+    },
+    "通信接口": {
+      "can": [
+        {
+            "name": "CAN_1",
+            "protocol": "PROTOCOL_UCAN",
+            "ucan_id":[
+              { 
+                "mcu":0,
+                "peripheral": "hcan1",
+                "id_map":[88]
+              }
+            ]
+        }
+      ]
+    }
+}
+}

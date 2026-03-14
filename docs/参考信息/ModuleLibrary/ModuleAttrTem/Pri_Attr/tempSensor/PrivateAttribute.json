@@ -1,0 +1,37 @@
+{
+	"privateAttrs": [
+		{
+			"key": "sensorAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "threshold",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "℃",
+					"desc": "检测阈值"
+				},
+				{
+					"key": "temperatureRangeMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": -999,
+					"unit": "℃",
+					"desc": "温度最小值"
+				},
+				{
+					"key": "temperatureRangeMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": -999,
+					"unit": "℃",
+					"desc": "温度最大值"
+				}
+			]
+		}
+	]
+}

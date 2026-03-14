@@ -1,0 +1,22 @@
+{
+    "Attr_Range_Check": [
+        {
+            "Attr_Range_Key": [
+			"scanRangeHorizonStart",
+			"scanRangeHorizonEnd"
+			]               
+        },
+		{
+            "Attr_Range_Key": [
+			"actualScanRangeHorizonStart",
+			"actualScanRangeHorizonEnd"
+			]               
+        },
+		{
+            "Attr_Range_Key": [
+			"scanDistence@10%",
+			"scanDistence@90%"
+			]            
+        }
+    ]
+}

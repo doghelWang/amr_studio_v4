@@ -1,0 +1,35 @@
+{
+    "Bus_Contain_SubType": [
+	    {
+			"TypeName":"ModuleSubKey",
+			"TypeDetail": [
+				"subMainCPU",
+				"intergratedController",
+				"safetyController",
+				"powerController",
+				"prechargeController",
+				"binocularCameraProcessor",
+				"ultrasonicProcessor",
+				"TOFProcessor",
+				"airPressureProcessor",
+				"weighProcessor",
+				"encoderProcessor",
+				"IOModule",
+				"safetyIOModule",
+				"ethernetSwitch",
+				"interfaceModule",
+				"servo",
+				"HYD",
+				"gyro",
+				"segDisplays"
+			]
+		},
+		{
+			"TypeName":"InterfaceKey",
+			"TypeDetail": [
+				"CAN",
+				"ETH"
+			]
+		}
+    ]
+}

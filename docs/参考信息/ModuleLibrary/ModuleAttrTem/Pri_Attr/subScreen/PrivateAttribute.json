@@ -1,0 +1,43 @@
+{
+	"privateAttrs": [
+		{
+			"key": "screenAttr",
+			"desc": "屏幕属性",
+			"arrayBaseEle": [
+				{
+					"key": "resolutionWidth",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "PPI",
+					"desc": "分辨率宽",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "resolutionHeight",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "PPI",
+					"desc": "分辨率高",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "screenSize",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "inch",
+					"desc": "屏幕尺寸",
+					"boolBasic": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

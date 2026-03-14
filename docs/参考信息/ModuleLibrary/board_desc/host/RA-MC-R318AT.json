@@ -1,0 +1,62 @@
+{
+  "RA-MC-R318AT": {
+    "基本信息": {
+      "name": "R-四代-安全控制器-S.02.R-A1",
+      "desc": "安全控制器，CE型，光电接口，CAN总线带终端电阻",
+      "type": "MV-83120",
+      "chip": "123aaa",
+      "board_type": ["BOARD_SAFE_CTRL_MASTER", "BOARD_SAFE_CTRL_SLAVE"],
+      "ver": "V1.0.0"
+    },
+    "通信接口": {
+      "can": [
+        {
+          "name": "CAN_1",
+		  "source": "SOURCE_HOST"
+        },
+        {
+          "name": "CAN_2",
+		  "source": "SOURCE_RCU"
+        },
+		{
+          "name": "CAN_3",
+		  "source": "SOURCE_RCU"
+        }
+      ],
+      "uart": [
+        {
+          "name": "uart0",
+          "chan": 0,
+          "peripheral": "huart3"
+        },
+        {
+          "name": "uart1",
+          "chan": 1,
+          "peripheral": "huart4"
+        }
+      ],
+	  "rs485": [
+        {
+          "name": "RS485_1",
+          "hard_define": "/dev/uart1"
+        },
+        {
+          "name": "RS485_2",
+          "hard_define": "/dev/uart10"
+        }
+      ]
+    },
+    "功能接口": {
+      "pneu_col": [
+        {
+          "name": "pneu_col_sen0",
+          "chan": 0
+        },
+        {
+          "name": "pneu_col_sen1",
+          "chan": 1
+        }
+      ]
+    }
+  }
+}

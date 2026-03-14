@@ -1,0 +1,274 @@
+{
+	"moduleGroupName": "PZTB-WMN-A539-850-A0",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "PZTB-WMN-A539-850-A0",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "安全触边开关,双管,25.5KΩ,850mm,1*Mof2*1F",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-08-04 15:22:49.259",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "D:/内置库/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SensorSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "sensor",
+						"typeDesc": "\n"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "collisionPize",
+						"typeDesc": "\r"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 650,
+						"sizeWidth": 22,
+						"sizeHeight": 28
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "PZTB-WMN-A539-850-A0",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "collisionAttr",
+						"desc": "传感属性",
+						"arrayBaseEle": [
+							{
+								"key": "normalVol",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1.1,
+								"doubleMaxvalue": 220,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "正常电压值",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "thresholdVol",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0.4,
+								"doubleMaxvalue": 220,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "浮动阈值",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "triggerVol",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 220,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "触发电压值",
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PZTB",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PZTB_1",
+						"type": "PZTB",
+						"desc": "PZTB_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Resistive",
+										"typeDesc": "电阻型",
+										"typeGroups": [
+											{
+												"key": "Resistive",
+												"desc": "电阻型"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "Voltage",
+												"desc": "电压型"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWITCHCHAR",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NC",
+										"typeDesc": "NC",
+										"typeGroups": [
+											{
+												"key": "NC",
+												"desc": "NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "开关特性",
+									"boolParse": true
+								},
+								{
+									"key": "RESIST",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "Ω",
+									"desc": "电阻值",
+									"boolParse": true
+								},
+								{
+									"key": "RELATION",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "parallel",
+										"typeDesc": "并联",
+										"typeGroups": [
+											{
+												"key": "parallel",
+												"desc": "并联"
+											},
+											{
+												"key": "series",
+												"desc": "串联"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "关系",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				]
+			}
+		}
+	]
+}

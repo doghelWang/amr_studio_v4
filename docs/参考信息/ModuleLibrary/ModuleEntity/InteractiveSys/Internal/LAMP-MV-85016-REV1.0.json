@@ -1,0 +1,620 @@
+{
+	"moduleGroupName": "LAMP-MV-85016-REV1.0",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "LAMP-MV-85016-REV1.0",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "Q5转向灯板；柔性(FPC)二层板,两端补强，6串3并共18颗RGY三色灯",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:39:28.157",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "InteractiveSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "light",
+						"typeDesc": "\r"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "lamp"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 270,
+						"sizeWidth": 120,
+						"sizeHeight": 20
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "LAMP-MV-85016-REV1.0",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "lightAttr",
+						"desc": "灯光属性",
+						"arrayBaseEle": [
+							{
+								"key": "lightType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "projectionLights",
+									"typeDesc": "投影灯",
+									"typeGroups": [
+										{
+											"key": "projectionLights",
+											"desc": "投影灯"
+										},
+										{
+											"key": "towerLights",
+											"desc": "塔灯"
+										},
+										{
+											"key": "ballLights",
+											"desc": "球灯"
+										}
+									]
+								},
+								"desc": "指示灯类型",
+								"boolHide": true
+							},
+							{
+								"key": "lightColor",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "blue",
+									"typeDesc": "蓝色",
+									"typeGroups": [
+										{
+											"key": "blue",
+											"desc": "蓝色"
+										},
+										{
+											"key": "RYG",
+											"desc": "三色"
+										},
+										{
+											"key": "red&bule",
+											"desc": "红蓝(一字线型)"
+										}
+									]
+								},
+								"desc": "指示灯颜色",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "DI",
+						"busInterfaceNums": 3
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "DI_1",
+						"type": "DI",
+						"desc": "DI_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LED",
+										"typeDesc": "LED",
+										"typeGroups": [
+											{
+												"key": "LED",
+												"desc": "LED"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "COLOR",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LAMP_COLOR_RED",
+										"typeDesc": "LAMP_COLOR_RED",
+										"typeGroups": [
+											{
+												"key": "LAMP_COLOR_YELLOW",
+												"desc": "LAMP_COLOR_YELLOW"
+											},
+											{
+												"key": "LAMP_COLOR_RED",
+												"desc": "LAMP_COLOR_RED"
+											},
+											{
+												"key": "LAMP_COLOR_BULE",
+												"desc": "LAMP_COLOR_BULE"
+											},
+											{
+												"key": "LAMP_COLOR_GREEN",
+												"desc": "LAMP_COLOR_GREEN"
+											},
+											{
+												"key": "LAMP_COLOR_WHITE",
+												"desc": "LAMP_COLOR_WHITE"
+											}
+										]
+									},
+									"desc": "颜色",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_2",
+						"type": "DI",
+						"desc": "DI_2",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PWM",
+										"typeDesc": "PWM",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LED",
+										"typeDesc": "LED",
+										"typeGroups": [
+											{
+												"key": "LED",
+												"desc": "LED"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "COLOR",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LAMP_COLOR_GREEN",
+										"typeDesc": "LAMP_COLOR_GREEN",
+										"typeGroups": [
+											{
+												"key": "LAMP_COLOR_GREEN",
+												"desc": "LAMP_COLOR_GREEN"
+											},
+											{
+												"key": "LAMP_COLOR_RED",
+												"desc": "LAMP_COLOR_RED"
+											},
+											{
+												"key": "LAMP_COLOR_BULE",
+												"desc": "LAMP_COLOR_BULE"
+											},
+											{
+												"key": "LAMP_COLOR_YELLOW",
+												"desc": "LAMP_COLOR_YELLOW"
+											},
+											{
+												"key": "LAMP_COLOR_WHITE",
+												"desc": "LAMP_COLOR_WHITE"
+											}
+										]
+									},
+									"desc": "颜色",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_3",
+						"type": "DI",
+						"desc": "DI_3",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PWM",
+										"typeDesc": "PWM",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LED",
+										"typeDesc": "LED",
+										"typeGroups": [
+											{
+												"key": "LED",
+												"desc": "LED"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "COLOR",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LAMP_COLOR_YELLOW",
+										"typeDesc": "LAMP_COLOR_YELLOW",
+										"typeGroups": [
+											{
+												"key": "LAMP_COLOR_GREEN",
+												"desc": "LAMP_COLOR_GREEN"
+											},
+											{
+												"key": "LAMP_COLOR_RED",
+												"desc": "LAMP_COLOR_RED"
+											},
+											{
+												"key": "LAMP_COLOR_BULE",
+												"desc": "LAMP_COLOR_BULE"
+											},
+											{
+												"key": "LAMP_COLOR_YELLOW",
+												"desc": "LAMP_COLOR_YELLOW"
+											},
+											{
+												"key": "LAMP_COLOR_WHITE",
+												"desc": "LAMP_COLOR_WHITE"
+											}
+										]
+									},
+									"desc": "颜色",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

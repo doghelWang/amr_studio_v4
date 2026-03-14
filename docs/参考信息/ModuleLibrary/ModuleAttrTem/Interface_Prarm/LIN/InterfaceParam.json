@@ -1,0 +1,42 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "mode",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true,
+			"boolHide": true
+		},
+		{
+			"key": "protocol",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "HIK_US_V1",
+				"typeDesc": "HIK_US_V1",
+				"typeGroups": [
+					{
+						"key": "HIK_US_V1",
+						"desc": "HIK_US_V1"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "协议",
+			"boolParse": true,
+			"boolHide": true
+		}
+	]
+}

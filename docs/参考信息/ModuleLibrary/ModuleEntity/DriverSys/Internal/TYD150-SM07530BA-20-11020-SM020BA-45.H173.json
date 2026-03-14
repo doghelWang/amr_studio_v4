@@ -1,0 +1,316 @@
+{
+	"moduleGroupName": "TYD150-SM07530BA-20-11020-SM020BA-45.H173",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "TYD150-SM07530BA-20-11020-SM020BA-45.H173",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "TYD_Horizontal_Steerwheel ",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-09-01 16:01:36.620",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "./ModuleLibrary/3dModelRes/HorizontalSteeringWheel.obj",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driveWheel",
+						"typeDesc": "\u0001"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "horizontalSteerWheel",
+						"typeDesc": "\u0004"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 210,
+						"sizeWidth": 210,
+						"sizeHeight": 173
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "TYD150-SM07530BA-20-11020-SM020BA-45.H173",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "wheelAttr",
+						"desc": "轮属性",
+						"arrayBaseEle": [
+							{
+								"key": "wheelRadius",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 75,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 1,
+								"unit": "mm",
+								"desc": "轮半径",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "angleLmtPos",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 120,
+								"doubleMaxvalue": 175,
+								"doubleMinvalue": 0,
+								"unit": "°",
+								"desc": "正限位角度"
+							},
+							{
+								"key": "angleLmtNeg",
+								"type": "DATA_DOUBLE",
+								"doubleValue": -120,
+								"doubleMaxvalue": 0,
+								"doubleMinvalue": -175,
+								"unit": "°",
+								"desc": "负限位角度"
+							},
+							{
+								"key": "rotOmgLmt",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 72.73,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "°/s",
+								"desc": "转向能力(最大)",
+								"boolHide": true
+							}
+						]
+					},
+					{
+						"key": "angleSensor",
+						"desc": "角度传感参数",
+						"arrayBaseEle": [
+							{
+								"key": "angleSensorType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "GROUP_CALI_HELM_IO",
+									"typeDesc": "增量编码器(内置)",
+									"typeGroups": [
+										{
+											"key": "GROUP_CALI_ABS_INTERNAL",
+											"desc": "绝对式编码器(内置)"
+										},
+										{
+											"key": "GROUP_CALI_ABS_EXTERNAL",
+											"desc": "绝对式编码器(外置)",
+											"arrayCmobEle": [
+												{
+													"key": "relatedEncode",
+													"type": "DATA_FIXED_E",
+													"stringFix": "",
+													"desc": "关联编码器",
+													"fixedSource": [
+														"sensor/absoluteValueEncode"
+													]
+												},
+												{
+													"key": "gearRatio",
+													"type": "DATA_DOUBLE",
+													"doubleValue": 1,
+													"doubleMaxvalue": 9999,
+													"doubleMinvalue": 1,
+													"desc": "减速比(齿轮比)"
+												}
+											]
+										},
+										{
+											"key": "GROUP_CALI_HELM_IO",
+											"desc": "增量编码器(内置)",
+											"arrayCmobEle": [
+												
+												{
+													"key": "relatePosIo",
+													"type": "DATA_FIXED_E",
+													"stringFix": "proximitySensor L1",
+													"desc": "正限位关联io",
+													"fixedSource": [
+														"sensor/proximitySensor",
+														"sensor/PT"
+													]
+												},
+												{
+													"key": "relateNegIo",
+													"type": "DATA_FIXED_E",
+													"stringFix": "proximitySensor_L2",
+													"desc": "负限位关联io",
+													"fixedSource": [
+														"sensor/proximitySensor",
+														"sensor/PT"
+													]
+												},
+												{
+													"key": "relateAngleZero",
+													"type": "DATA_FIXED_E",
+													"stringFix": "FIXED_RELATED_NONE",
+													"desc": "零位关联io",
+													"fixedSource": [
+														"sensor/proximitySensor",
+														"sensor/PT"
+													]
+												},
+												{
+													"key": "detectModeZero",
+													"type": "DATA_COMBOX",
+													"comboType": {
+														"typeKey": "DETECT_MODE_NONE",
+														"typeDesc": "无",
+														"typeGroups": [
+															{
+																"key": "DETECT_MODE_NONE",
+																"desc": "无"
+															},
+															{
+																"key": "ZERO_TRIG_MODE_POINT",
+																"desc": "单点检测"
+															},
+															{
+																"key": "ZERO_TRIG_MODE_POS_AREA",
+																"desc": "正向区域检测"
+															},
+															{
+																"key": "ZERO_TRIG_MODE_NEG_AREA",
+																"desc": "负向区域检测"
+															}
+														]
+													},
+													"desc": "零位检测模式",
+													"boolHide": true
+												}
+											]
+										}
+									]
+								},
+								"desc": "类型"
+							}
+						]
+					},
+					{
+						"key": "linkMotorAttr",
+						"desc": "电机",
+						"arrayBaseEle": [
+							{
+								"key": "relateRotMotor",
+								"type": "DATA_FIXED_E",
+								"stringFix": "motor_FL_Rotate",
+								"desc": "转向电机",
+								"fixedSource": [
+									"driver/PMSMMotor"
+								]
+							},
+							{
+								"key": "relateWalkMotor",
+								"type": "DATA_FIXED_E",
+								"stringFix": "motor_FL_RUN",
+								"desc": "行走电机",
+								"fixedSource": [
+									"driver/PMSMMotor"
+								]
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}

@@ -1,0 +1,57 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "NO",
+				"typeDesc": "NO",
+				"typeGroups": [
+					{
+						"key": "NO",
+						"desc": "NO"
+					},
+					{
+						"key": "NC",
+						"desc": "NC"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true,
+			"boolHide": true
+		},
+		{
+			"key": "HWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "EMO",
+				"typeDesc": "EMO",
+				"typeGroups": [
+					{
+						"key": "EMO",
+						"desc": "EMO"
+					},
+					{
+						"key": "BUTT",
+						"desc": "BUTT"
+					},
+					{
+						"key": "SWITCH",
+						"desc": "SWITCH"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "硬件标签属性",
+			"boolParse": true
+		}
+	]
+}

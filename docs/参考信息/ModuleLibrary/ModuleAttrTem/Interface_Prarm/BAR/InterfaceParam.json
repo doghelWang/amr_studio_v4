@@ -1,0 +1,14 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "pressureThreshold",
+			"type": "DATA_INT32",
+			"int32Value": 100,
+			"int32Maxvalue": 300,
+			"int32Minvalue": 100,
+			"desc": "气压阈值",
+			"boolParse": true,
+			"boolHide": true
+		}
+	]
+}

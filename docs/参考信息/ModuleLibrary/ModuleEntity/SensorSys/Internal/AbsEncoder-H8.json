@@ -1,0 +1,436 @@
+{
+	"moduleGroupName": "AbsEncoder-H8",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "AbsEncoder-H8",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "H8编码器",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-09-01 09:54:04.748",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SensorSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "sensor",
+						"typeDesc": "\n"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "absoluteValueEncode",
+						"typeDesc": "\t"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 100,
+						"sizeWidth": 100,
+						"sizeHeight": 100
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "AbsEncoder-H8",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "encodeAttr",
+						"desc": "编码器属性",
+						"arrayBaseEle": [
+							{
+								"key": "gearRatio",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 5,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 1,
+								"desc": "减速比"
+							},
+							{
+								"key": "absEncodeType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "CANOPEN_ENCODER",
+									"typeDesc": "CANOPEN编码器",
+									"typeGroups": [
+										{
+											"key": "SSI_ENCODER",
+											"desc": "SSI编码器",
+											"arrayCmobEle": [
+												{
+													"key": "codeType",
+													"type": "DATA_COMBOX",
+													"comboType": {
+														"typeKey": "ENCODER_GRAY_CODE",
+														"typeDesc": "格雷码编码",
+														"typeGroups": [
+															{
+																"key": "ENCODER_GRAY_CODE",
+																"desc": "格雷码编码"
+															},
+															{
+																"key": "ENCODER_BINARY_CODE",
+																"desc": "二进制编码"
+															}
+														]
+													},
+													"desc": "编码格式"
+												}
+											]
+										},
+										{
+											"key": "MOTOR_ENCODER",
+											"desc": "电机编码器"
+										},
+										{
+											"key": "CANOPEN_ENCODER",
+											"desc": "CANOPEN编码器"
+										},
+										{
+											"key": "CAN_BRT_ENCODER",
+											"desc": "CAN自定义(BRT)"
+										}
+									]
+								},
+								"desc": "编码器类型"
+							},
+							{
+								"key": "resolutionMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "RES_BIT_MODE",
+									"typeDesc": "位数模式",
+									"typeGroups": [
+										{
+											"key": "RES_BIT_MODE",
+											"desc": "位数模式",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 12,
+													"int32Maxvalue": 99999,
+													"int32Minvalue": 0,
+													"desc": "单圈位数"
+												},
+												{
+													"key": "mutiTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 10,
+													"int32Maxvalue": 99999,
+													"int32Minvalue": 0,
+													"desc": "多圈位数"
+												}
+											]
+										},
+										{
+											"key": "RES_NUM_MODE",
+											"desc": "数值模式",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnCount",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 99999,
+													"int32Minvalue": 0,
+													"desc": "单圈分辨率"
+												},
+												{
+													"key": "mutiTurnCount",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 99999,
+													"int32Minvalue": 0,
+													"desc": "多圈圈数"
+												}
+											]
+										}
+									]
+								},
+								"desc": "分辨率模式"
+							},
+							{
+								"key": "isInvert",
+								"type": "DATA_BOOL",
+								"boolValue": true,
+								"desc": "是否反向",
+								"boolMustfill": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "CAN",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "CAN_1",
+						"type": "CAN",
+						"desc": "CAN_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "resistor",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "RESISTOR_HAVE",
+										"typeDesc": "是",
+										"typeGroups": [
+											{
+												"key": "RESISTOR_HAVE",
+												"desc": "是"
+											},
+											{
+												"key": "RESISTOR_NO",
+												"desc": "否"
+											}
+										]
+									},
+									"desc": "带终端电阻",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1M",
+										"typeDesc": "1M",
+										"typeGroups": [
+											{
+												"key": "1M",
+												"desc": "1M"
+											},
+											{
+												"key": "500K",
+												"desc": "500K"
+											},
+											{
+												"key": "250K",
+												"desc": "250K"
+											},
+											{
+												"key": "125K",
+												"desc": "125K"
+											},
+											{
+												"key": "100K",
+												"desc": "100K"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolNoeditable": true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PROTOCOL_EXT_CAN",
+										"typeDesc": "PROTOCOL_EXT_CAN",
+										"typeGroups": [
+											{
+												"key": "PROTOCOL_EXT_CAN",
+												"desc": "PROTOCOL_EXT_CAN"
+											},
+											{
+												"key": "PROTOCOL_CANOPEN",
+												"desc": "PROTOCOL_CANOPEN"
+											},
+											{
+												"key": "PROTOCOL_UCAN",
+												"desc": "PROTOCOL_UCAN"
+											},
+											{
+												"key": "PROTOCOL_STD_CAN",
+												"desc": "PROTOCOL_STD_CAN"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true
+								},
+								{
+									"key": "dialValue",
+									"type": "DATA_STRING",
+									"stringValue": "",
+									"desc": "拨码值",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "nodeId",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 127,
+									"int32Minvalue": 1,
+									"desc": "节点Id",
+									"boolParse": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

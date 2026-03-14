@@ -1,0 +1,447 @@
+{
+	"moduleGroupName": "5G-TE310",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "5G-TE310",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "利尔达5G终端,TE310.NE16U-CN模组,24V",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:34:29.910",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "D:/内置库/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "CommunicateSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "communication",
+						"typeDesc": "\u000B"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "fifthGeneration",
+						"typeDesc": "\u0004"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "LIERDA"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "5G"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 113,
+						"sizeWidth": 28,
+						"sizeHeight": 80
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "5G-TE310",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "SMA",
+						"busInterfaceNums": 5
+					},
+					{
+						"busInterfaceType": "ETH",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "SMA_1",
+						"type": "SMA",
+						"desc": "SMA_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "SMA_2",
+						"type": "SMA",
+						"desc": "SMA_2",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "SMA_3",
+						"type": "SMA",
+						"desc": "SMA_3",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "SMA_4",
+						"type": "SMA",
+						"desc": "SMA_4",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "SMA_5",
+						"type": "SMA",
+						"desc": "SMA_5",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "ETH_1",
+						"type": "ETH",
+						"desc": "ETH_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "100M",
+										"typeDesc": "100M",
+										"typeGroups": [
+											{
+												"key": "1000M",
+												"desc": "1000M"
+											},
+											{
+												"key": "100M",
+												"desc": "100M"
+											},
+											{
+												"key": "10M",
+												"desc": "10M"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "DHCP",
+									"type": "DATA_BOOL",
+									"boolValue": false,
+									"desc": "DHCP",
+									"boolHide": true
+								},
+								{
+									"key": "ip",
+									"type": "DATA_STRING",
+									"stringValue": "192.168.1.1",
+									"desc": "ip参数",
+									"boolParse": true,
+									"boolNoeditable": true
+								},
+								{
+									"key": "gate",
+									"type": "DATA_STRING",
+									"stringValue": "",
+									"desc": "网关",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "port",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 65536,
+									"int32Minvalue": 1,
+									"desc": "端口",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "speed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "100M",
+										"typeDesc": "100M",
+										"typeGroups": [
+											{
+												"key": "1000M",
+												"desc": "1000M"
+											},
+											{
+												"key": "100M",
+												"desc": "100M"
+											},
+											{
+												"key": "10M",
+												"desc": "10M"
+											}
+										]
+									},
+									"desc": "速度",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

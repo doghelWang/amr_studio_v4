@@ -1,0 +1,69 @@
+{
+	"privateAttrs": [
+		{
+			"key": "boardAttr",
+			"desc": "控制板属性",
+			"arrayBaseEle": [
+				{
+					"key": "chipPlatform",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "芯片平台",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "softwareSpec",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "软件规格",
+					"boolMustfill": true,
+					"boolBasic": true,
+				},
+				{
+					"key": "inputVoltage",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "输入电压",
+					"boolHide": true
+				},
+				{
+					"key": "inputCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "输入电流",
+					"boolHide": true
+				},
+				{
+					"key": "overloadCapacity",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "倍",
+					"desc": "过载能力",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "overloadTime",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "S",
+					"desc": "过载时长",
+					"boolMustfill": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,143 @@
+{
+	"privateAttrs": [
+		{
+			"key": "batteryAttr",
+			"desc": "电池属性",
+			"arrayBaseEle": [
+				{
+					"key": "capacity",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "Ah",
+					"desc": "电池容量",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "stdChargeCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "标准充电电流",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "maxChargeCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "最大充电电流",
+					"boolHide": true
+				},
+				{
+					"key": "stdDischargeCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "标准放电电流",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "maxDischargeCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "最大放电电流",
+					"boolHide": true
+				},
+				{
+					"key": "voltage",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "额定电压",
+					"boolHide": true
+				},
+				{
+					"key": "maxPower",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "W",
+					"desc": "最大功率",
+					"boolHide": true
+				},
+				{
+					"key": "resistance",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mΩ",
+					"desc": "内阻",
+					"boolHide": true
+				},
+				{
+					"key": "cycleLife",
+					"type": "DATA_INT32",
+					"int32Value": 0,
+					"int32Maxvalue": 99999,
+					"int32Minvalue": 0,
+					"unit": "次",
+					"desc": "循环寿命",
+					"boolHide": true
+				},
+				{
+					"key": "chargeTempMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 135,
+					"doubleMinvalue": -50,
+					"unit": "℃",
+					"desc": "最低充电温度",
+					"boolHide": true
+				},
+				{
+					"key": "chargeTempMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 135,
+					"doubleMinvalue": -50,
+					"unit": "℃",
+					"desc": "最高充电温度",
+					"boolHide": true
+				},
+				{
+					"key": "dischargeTempMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 135,
+					"doubleMinvalue": -50,
+					"unit": "℃",
+					"desc": "最低放电温度",
+					"boolHide": true
+				},
+				{
+					"key": "dischargeTempMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 135,
+					"doubleMinvalue": -50,
+					"unit": "℃",
+					"desc": "最高放电温度",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

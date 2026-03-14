@@ -1,0 +1,52 @@
+{
+  "RA-SP_A-A-2CBH0": {
+    "基本信息": {
+	  "name": "气动碰撞小板",
+	  "desc": "",
+	  "type": "MV83099",
+	  "ver": "V1.0.0",
+	  "id_dip":"ID_DIP_2_BIT",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+	  "board_type": ["BOARD_BARO_COLLISION"],
+	  "mcu":[
+		  {
+			  "chip":"R106"
+		  }
+	  ]
+    },
+    "通信接口": {
+      "can": [
+        {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN",
+			"ucan_id":[
+			  { 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[83,84,85,86]
+			  }
+			]
+        }
+      ]
+    },
+    "功能接口": {
+      "bar": [
+        {
+			"name": "BAR_1",
+			"desc": "",
+			"mcu": 0,
+			"chan": 0,
+			"dft_threshold":200
+        },
+        {
+			"name": "BAR_2",
+			"desc": "",
+			"mcu": 0,
+			"chan": 1,
+			"dft_threshold":200
+        }
+      ]
+    }
+  }
+}

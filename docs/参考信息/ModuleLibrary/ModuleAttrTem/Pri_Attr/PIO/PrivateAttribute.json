@@ -1,0 +1,53 @@
+{
+	"privateAttrs": [
+		{
+			"key": "PIOAttr",
+			"desc": "PIO属性",
+			"arrayBaseEle": [
+				{
+					"key": "transType",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "传输方式",
+					"boolHide": true
+				},
+				{
+					"key": "transCounts",
+					"type": "DATA_INT32",
+					"int32Value": 0,
+					"int32Maxvalue": 99,
+					"int32Minvalue": 0,
+					"desc": "传输点数",
+					"boolHide": true
+				},
+				{
+					"key": "transDis",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "传输距离",
+					"boolHide": true
+				},
+				{
+					"key": "transTime",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "s",
+					"desc": "传输时间",
+					"boolHide": true
+				},
+				{
+					"key": "modulateType",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "调制方式",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

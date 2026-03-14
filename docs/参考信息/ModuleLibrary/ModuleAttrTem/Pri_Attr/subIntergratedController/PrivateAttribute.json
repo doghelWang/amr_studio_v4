@@ -1,0 +1,36 @@
+{
+	"privateAttrs": [
+		{
+			"key": "boardAttr",
+			"desc": "控制板属性",
+			"arrayBaseEle": [
+				{
+					"key": "chipPlatform",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "芯片平台",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "softwareSpec",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "软件规格",
+					"boolMustfill": true,
+					"boolBasic": true
+				},
+				{
+					"key": "offsetAddress",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "偏移地址拨码",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

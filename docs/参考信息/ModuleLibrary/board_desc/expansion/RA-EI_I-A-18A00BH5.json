@@ -1,0 +1,246 @@
+{
+  "RA-EI_I-A-18A00BH5": {
+    "基本信息": {
+      "name": "R-CAN-IO",
+      "desc": "CAN IO",
+      "type": "MV-83072",
+      "ver": "V1.0.0",
+      "id_dip":"ID_DIP_3_BIT",
+      "ce_mode_set":0,
+      "di_hd_mode_set":1,
+      "board_type": ["BOARD_UCAN_IO"],
+      "mcu":[
+        {
+          "chip":"R106"
+        }
+      ]
+    },
+    "通信接口": {
+      "can": [
+        {
+          "name": "CAN_1",
+          "protocol": ["PROTOCOL_UCAN"],
+          "ucan_id":[
+            { 
+              "mcu":0,
+              "peripheral": "hcan1",
+              "id_map":[110,111,112,113,114,115,116,117]
+            }
+          ]
+        }
+      ]
+    },
+    "io接口": {
+      "di": [
+		{
+			"name": "DI_1",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 12,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+        },
+		{
+			"name": "DI_2",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 13,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+        },
+		{
+			"name": "DI_3",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 14,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+        },
+		{
+			"name": "DI_4",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 15,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+		},
+		{
+			"name": "DI_5",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 8,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+        },
+        {
+			"name": "DI_6",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 0,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "" 
+        },
+        {
+			"name": "DI_7",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 1,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": ""
+        },
+		{
+			"name": "DI_8",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 2,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": ""
+        }
+      ],
+      "do": [
+        {
+			"name": "DO_1",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 15,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_2",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 3,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_3",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 4,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_4",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 5,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_5",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 6,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_6",
+			"desc": "",
+			"mcu":0,
+			"group": "GPC",
+			"pin": 13,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_7",
+			"desc": "",
+			"mcu":0,
+			"group": "GPC",
+			"pin": 14,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+        {
+			"name": "DO_8",
+			"desc": "",
+			"mcu":0,
+			"group": "GPC",
+			"pin": 15,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+		{
+			"name": "DO_9",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 10,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        },
+		{
+			"name": "DO_10",
+			"desc": "",
+			"mcu":0,
+			"group": "GPB",
+			"pin": 11,
+			"io_mode": 1,
+			"freq": 0,
+			"pull_mode": 0,
+			"enable_level": 0
+        }
+      ]
+    }
+  }
+}

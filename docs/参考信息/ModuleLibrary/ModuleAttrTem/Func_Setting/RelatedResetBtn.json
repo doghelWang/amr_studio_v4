@@ -1,0 +1,23 @@
+{
+	"key": "btnUniqueKey",
+	"comboxParam": {
+		"combName": "btnType",
+		"key": "BUTTON_RESET",
+		"desc": "复位按钮",
+		"arrayAttr": [
+			{
+				"attrParams": [
+					{
+						"key": "relatedBtn",
+						"type": "FIXED_E",
+						"stringFix": "",
+						"fixedSource": [
+							"button/subButton"
+						]
+					}
+				]
+			}
+		]
+	},
+	"cloneEnable": true
+}

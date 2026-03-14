@@ -1,0 +1,56 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "HALL",
+				"typeDesc": "HALL",
+				"typeGroups": [
+					{
+						"key": "HALL",
+						"desc": "HALL"
+					},
+					{
+						"key": "ABZ",
+						"desc": "ABZ"
+					},
+					{
+						"key": "RS422",
+						"desc": "RS422"
+					},
+					{
+						"key": "RS485",
+						"desc": "RS485"
+					},
+					{
+						"key": "ABZ+HALL",
+						"desc": "ABZ+HALL"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "SWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "软件标签属性",
+			"boolParse": true
+		}
+	]
+}

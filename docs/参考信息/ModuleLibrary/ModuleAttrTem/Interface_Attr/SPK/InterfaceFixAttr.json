@@ -1,0 +1,1 @@
+{"interfaceParamsArray":[{"key":"Power","type":"DATA_DOUBLE","doubleValue":0,"doubleMaxvalue":99,"doubleMinvalue":0,"unit":"W","desc":"输出功率","boolParse":true}]}

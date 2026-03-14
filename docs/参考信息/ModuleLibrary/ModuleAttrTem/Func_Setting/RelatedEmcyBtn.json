@@ -1,0 +1,30 @@
+{
+	"key": "safetyIOUniqueKey",
+	"comboxParam": {
+		"combName": "safeIOType",
+		"key": "SAFETY_IO_EMC_STOP",
+		"desc": "急停按钮",
+		"arrayAttr": [
+			{
+				"attrParams": [
+					{
+						"key": "relatedEmcBtn",
+						"type": "FIXED_E",
+						"stringFix": "",
+						"fixedSource": [
+							"button/subButton"
+						]
+					}
+				]
+			}
+		],
+		"comboxAttr": [
+			{
+				"combName": "emcMode",
+				"key": "freerun",
+				"desc": "进入freerun模式"
+			}
+		]
+	},
+	"cloneEnable": true
+}

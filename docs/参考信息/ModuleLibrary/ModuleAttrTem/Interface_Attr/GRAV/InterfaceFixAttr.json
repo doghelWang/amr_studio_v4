@@ -1,0 +1,1 @@
+{"interfaceParamsArray":[{"key":"MODE","type":"DATA_COMBOX","comboType":{"typeKey":"Resistive","typeDesc":"电阻型","typeGroups":[{"key":"Resistive","desc":"电阻型"},{"key":"*","desc":"*"}]},"desc":"模式","boolParse":true}]}

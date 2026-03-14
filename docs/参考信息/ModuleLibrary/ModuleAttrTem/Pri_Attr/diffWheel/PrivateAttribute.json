@@ -1,0 +1,36 @@
+{
+	"privateAttrs": [
+		{
+			"key": "wheelAttr",
+			"desc": "基本属性",
+			"arrayBaseEle": [
+				{
+					"key": "wheelRadius",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 1,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 1,
+					"unit": "mm",
+					"desc": "轮半径",
+					"boolMustfill": true,
+					"boolBasic": true
+				}
+			]
+		},
+		{
+            "key": "linkMotorAttr",
+            "desc": "关联电机",
+            "arrayBaseEle": [
+                {
+                    "key": "relateMotor",
+                    "type": "DATA_FIXED_E",
+                    "stringFix": "",
+                    "desc": "行走电机",
+					"fixedSource": [
+						"driver/PMSMMotor"
+						]
+                }
+            ]
+        }
+	]
+}

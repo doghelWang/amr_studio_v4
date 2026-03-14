@@ -1,0 +1,45 @@
+{
+  "RA-SP_E-A-11AH0": {
+    "基本信息": {
+	  "name": "编码器板",
+	  "desc": "",
+	  "type": "MV83117",
+	  "ver": "V1.0.0",
+	  "id_dip":"ID_DIP_2_BIT",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+	  "board_type": ["BOARD_ABS_INC_ENCODER"],
+	  "mcu":[
+		  {
+			  "chip":"R111"
+		  }
+	  ]
+    },
+    "通信接口": {
+      "can": [
+        {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN",
+			"ucan_id":[
+			  { 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[11,12,13,14]
+			  }
+			]
+        }
+      ]
+    },
+    "功能接口": {
+      "encr": [
+        {
+			"name": "ENCR_1",
+			"desc": "",
+			"mcu": 0,
+			"if_type":"ABZ",
+			"chan": 0
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+    "Actor_MotionMode_Assign": [
+        {
+			"MotionModeKey":"translate",
+			"ContainModuleSubType":[
+				 "lift",
+				 "translation",
+				 "linear",
+				 "clamp",
+				 "block"
+				]
+        },
+		{
+			"MotionModeKey":"rotate",
+			"ContainModuleSubType":[
+				"rotate"
+				]
+		}		
+    ]
+}

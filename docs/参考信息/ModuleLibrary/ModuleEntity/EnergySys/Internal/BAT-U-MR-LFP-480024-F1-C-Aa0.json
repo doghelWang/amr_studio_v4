@@ -1,0 +1,594 @@
+{
+	"moduleGroupName": "BAT-U-MR-LFP-480024-F1-C-Aa0",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "BAT-U-MR-LFP-480024-F1-C-Aa0",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "U-BAT-LFP-480024-F1-Aa-C0",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:34:34.115",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "EnergySys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "battery",
+						"typeDesc": "\f"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "subBattery"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "CBAK"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "U_MR_LFP_480024_F1_C_AA0"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 190,
+						"sizeWidth": 130,
+						"sizeHeight": 162
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "BAT-U-MR-LFP-480024-F1-C-Aa0",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "batteryAttr",
+						"desc": "电池属性",
+						"arrayBaseEle": [
+							{
+								"key": "capacity",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 24,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "Ah",
+								"desc": "电池容量",
+								"boolHide": true,
+								"boolBasic": true
+							},
+							{
+								"key": "stdChargeCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 15,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "标准充电电流",
+								"boolHide": true,
+								"boolBasic": true
+							},
+							{
+								"key": "maxChargeCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 30,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "最大充电电流",
+								"boolHide": true
+							},
+							{
+								"key": "stdDischargeCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 15,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "标准放电电流",
+								"boolHide": true,
+								"boolBasic": true
+							},
+							{
+								"key": "maxDischargeCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 30,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "最大放电电流",
+								"boolHide": true
+							},
+							{
+								"key": "voltage",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 48,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "额定电压",
+								"boolHide": true
+							},
+							{
+								"key": "maxPower",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1152,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "W",
+								"desc": "最大功率",
+								"boolHide": true
+							},
+							{
+								"key": "resistance",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 3,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "mΩ",
+								"desc": "内阻",
+								"boolHide": true
+							},
+							{
+								"key": "cycleLife",
+								"type": "DATA_INT32",
+								"int32Value": 2500,
+								"int32Maxvalue": 99999,
+								"int32Minvalue": 0,
+								"unit": "次",
+								"desc": "循环寿命",
+								"boolHide": true
+							},
+							{
+								"key": "chargeTempMin",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 135,
+								"doubleMinvalue": -50,
+								"unit": "℃",
+								"desc": "最低充电温度",
+								"boolHide": true
+							},
+							{
+								"key": "chargeTempMax",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 60,
+								"doubleMaxvalue": 135,
+								"doubleMinvalue": -50,
+								"unit": "℃",
+								"desc": "最高充电温度",
+								"boolHide": true
+							},
+							{
+								"key": "dischargeTempMin",
+								"type": "DATA_DOUBLE",
+								"doubleValue": -20,
+								"doubleMaxvalue": 135,
+								"doubleMinvalue": -50,
+								"unit": "℃",
+								"desc": "最低放电温度",
+								"boolHide": true
+							},
+							{
+								"key": "dischargeTempMax",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 60,
+								"doubleMaxvalue": 135,
+								"doubleMinvalue": -50,
+								"unit": "℃",
+								"desc": "最高放电温度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "BAT",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "RS485",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "DO",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "BAT_1",
+						"type": "BAT",
+						"desc": "BAT_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输出电压",
+									"boolParse": true
+								},
+								{
+									"key": "CAPACITY",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "AH",
+									"desc": "容量",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "RS485_1",
+						"type": "RS485",
+						"desc": "RS485_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "HIK-BAT-01",
+										"typeDesc": "HIK-BAT-01",
+										"typeGroups": [
+											{
+												"key": "HIK-BAT-01",
+												"desc": "HIK-BAT-01"
+											},
+											{
+												"key": "HIK-BAT-02",
+												"desc": "HIK-BAT-02"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "ModbusRTU",
+										"typeDesc": "ModbusRTU",
+										"typeGroups": [
+											{
+												"key": "ModbusRTU",
+												"desc": "ModbusRTU"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "siteType",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "SITE_MASTER",
+										"typeDesc": "主站",
+										"typeGroups": [
+											{
+												"key": "SITE_MASTER",
+												"desc": "主站"
+											},
+											{
+												"key": "SITE_SLAVE",
+												"desc": "从站"
+											}
+										]
+									},
+									"desc": "类型",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DO_1",
+						"type": "DO",
+						"desc": "DO_1",
+						"interfaceAttrs": {},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "mode",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NO",
+										"typeDesc": "常开",
+										"typeGroups": [
+											{
+												"key": "NO",
+												"desc": "常开"
+											},
+											{
+												"key": "NC",
+												"desc": "常闭"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

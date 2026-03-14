@@ -1,0 +1,191 @@
+{
+	"privateAttrs": [
+		{
+			"key": "linearAttr",
+			"desc": "线性属性",
+			"arrayBaseEle": [
+				{
+					"key": "structureForm",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "clampStretch",
+						"typeDesc": "夹抱伸缩",
+						"typeGroups": [
+							{
+								"key": "clampStretch",
+								"desc": "夹抱伸缩"
+							},
+							{
+								"key": "liftStretch",
+								"desc": " 托举伸缩"
+							}
+						]
+					},
+					"desc": "结构形式",
+					"boolHide": true
+				},
+				{
+					"key": "drivingForm",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "servo",
+						"typeDesc": "伺服",
+						"typeGroups": [
+							{
+								"key": "servo",
+								"desc": "伺服"
+							}
+						]
+					},
+					"desc": "驱动形式",
+					"boolHide": true
+				},
+				{
+					"key": "transmissionRelationship",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "linear",
+						"typeDesc": "线性",
+						"typeGroups": [
+							{
+								"key": "linear",
+								"desc": "线性"
+							},
+							{
+								"key": "nolinear",
+								"desc": "非线性"
+							}
+						]
+					},
+					"desc": "传动关系",
+					"boolHide": true
+				},
+				{
+					"key": "sensorMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "zeroSensor",
+						"typeDesc": "零位",
+						"typeGroups": [
+							{
+								"key": "zeroSensor",
+								"desc": "零位"
+							},
+							{
+								"key": "zeroAndInPlaceSensor",
+								"desc": "零位+到位传感器"
+							},
+							{
+								"key": "pullWireSensor",
+								"desc": "拉线传感器"
+							},
+							{
+								"key": "ABSEncoderSensor",
+								"desc": "绝对编码器"
+							}
+						]
+					},
+					"desc": "传感模式",
+					"boolHide": true
+				},
+				{
+					"key": "totalSpeedRatio",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"desc": "总速比",
+					"boolMustfill": false,
+					"boolHide": true
+				},
+				{
+					"key": "maximumSpeed (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s",
+					"desc": "最大线速度（空载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumAcceleration (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s^2",
+					"desc": "最大线加速度（空载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumDeceleration (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s^2",
+					"desc": "最大线减速度（空载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumSpeed (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s",
+					"desc": "最大线速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumAcceleration  (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s^2",
+					"desc": "最大线加速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumDeceleration  (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm/s^2",
+					"desc": "最大线减速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "stroke",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "行程",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "load",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "kg",
+					"desc": "负载",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

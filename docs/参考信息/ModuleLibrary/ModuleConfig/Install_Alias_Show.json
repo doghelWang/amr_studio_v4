@@ -1,0 +1,316 @@
+{
+    "ModuleList": [
+        {
+			"ModuleTypeKey": "carrier",
+            "ModuleAlias":"载台"
+        },
+		{
+			"ModuleTypeKey": "covers",
+            "ModuleAlias":"覆盖件"
+        },
+        {
+			"ModuleTypeKey": "diffChassis",
+            "ModuleAlias":"差速底盘"
+        },
+		{
+			"ModuleTypeKey": "steerChassis",
+            "ModuleAlias":"舵轮底盘"
+        },
+		{
+			"ModuleTypeKey": "diffWheel",
+            "ModuleAlias":"差速轮"
+        },
+		{
+			"ModuleTypeKey": "diffSteerWheel",
+            "ModuleAlias":"差速舵轮"
+        },
+		{
+			"ModuleTypeKey": "weakSteerWheel",
+            "ModuleAlias":"无动力差速轮"
+        },
+        {
+			"ModuleTypeKey": "verticalSteerWheel",
+            "ModuleAlias":"立式舵轮"
+        },
+		{
+			"ModuleTypeKey": "horizontalSteerWheel",
+            "ModuleAlias":"卧式舵轮"
+        },
+		{
+			"ModuleTypeKey": "weakTurnWheel",
+            "ModuleAlias":"可控转向轮"
+        },
+		{
+			"ModuleTypeKey": "lift",
+            "ModuleAlias":"举升机构"
+        },
+		{
+			"ModuleTypeKey": "rotate",
+            "ModuleAlias":"旋转机构"
+        },
+        {
+			"ModuleTypeKey": "translation",
+            "ModuleAlias":"平移机构"
+        },
+		{
+			"ModuleTypeKey": "linear",
+            "ModuleAlias":"线性机构"
+        },
+		{
+			"ModuleTypeKey": "clamp",
+            "ModuleAlias":"夹持机构"
+        },
+		{
+			"ModuleTypeKey": "block",
+            "ModuleAlias":"挡块机构"
+        },
+		{
+			"ModuleTypeKey": "motor",
+            "ModuleAlias":"电机"
+        },
+        {
+			"ModuleTypeKey": "PMSMMotor",
+            "ModuleAlias":"永磁同步伺服电机"
+        },
+		{
+			"ModuleTypeKey": "BLDCMotor",
+            "ModuleAlias":"直流无刷电机"
+        },
+		{
+			"ModuleTypeKey": "BDCMotor",
+            "ModuleAlias":"直流有刷电机"
+        },
+		{
+			"ModuleTypeKey": "subDriver",
+            "ModuleAlias":"驱动"
+        },
+		{
+			"ModuleTypeKey": "servo",
+            "ModuleAlias":"伺服驱动"
+        },
+		{
+			"ModuleTypeKey": "HYD",
+            "ModuleAlias":"液压驱动"
+        },
+        {
+			"ModuleTypeKey": "subMainCPU",
+            "ModuleAlias":"主控制器"
+        },
+		{
+			"ModuleTypeKey": "subIntergratedController",
+            "ModuleAlias":"集成控制器"
+        },
+		{
+			"ModuleTypeKey": "safetyController",
+            "ModuleAlias":"安全控制器"
+        },
+		{
+			"ModuleTypeKey": "powerController",
+            "ModuleAlias":"电源控制器"
+        },
+		{
+			"ModuleTypeKey": "prechargeController",
+            "ModuleAlias":"预充控制器"
+        },
+		{
+			"ModuleTypeKey": "binocularCameraProcessor",
+            "ModuleAlias":"双目处理器"
+        },
+        {
+			"ModuleTypeKey": "ultrasonicProcessor",
+            "ModuleAlias":"超声处理器"
+        },
+		{
+			"ModuleTypeKey": "TOFProcessor",
+            "ModuleAlias":"TOF处理器"
+        },
+		{
+			"ModuleTypeKey": "airPressureProcessor",
+            "ModuleAlias":"气压处理器"
+        },
+		{
+			"ModuleTypeKey": "weighProcessor",
+            "ModuleAlias":"称重处理器"
+        },
+        {
+			"ModuleTypeKey": "encoderProcessor",
+            "ModuleAlias":"编码器处理器"
+        },
+		{
+			"ModuleTypeKey": "IOModule",
+            "ModuleAlias":"IO模块"
+        },
+		{
+			"ModuleTypeKey": "safetyIOModule",
+            "ModuleAlias":"安全IO模块"
+        },
+		{
+			"ModuleTypeKey": "ethernetSwitch",
+            "ModuleAlias":"以太网交换机"
+        },
+        {
+			"ModuleTypeKey": "interfaceModule",
+            "ModuleAlias":"接口模块"
+        },
+		{
+			"ModuleTypeKey": "laser",
+            "ModuleAlias":"激光"
+        },
+		{
+			"ModuleTypeKey": "3DLaser",
+            "ModuleAlias":"3D激光"
+        },
+		{
+			"ModuleTypeKey": "codeReader",
+            "ModuleAlias":"读码器"
+        },
+		{
+			"ModuleTypeKey": "stereo",
+            "ModuleAlias":"双目"
+        },
+		{
+			"ModuleTypeKey": "camera",
+            "ModuleAlias":"相机"
+        },
+		{
+			"ModuleTypeKey": "infrared",
+            "ModuleAlias":"红外"
+        },
+		{
+			"ModuleTypeKey": "TOFCamera",
+            "ModuleAlias":"3DTOF"
+        },
+		{
+			"ModuleTypeKey": "TOF",
+            "ModuleAlias":"TOF"
+        },
+		{
+			"ModuleTypeKey": "pullWireEncode",
+            "ModuleAlias":"拉线编码器"
+        },
+		{
+			"ModuleTypeKey": "ABZEncode",
+            "ModuleAlias":"磁栅编码器"
+        },
+		{
+			"ModuleTypeKey": "absoluteValueEncode",
+            "ModuleAlias":"绝对式编码器"
+        },
+		{
+			"ModuleTypeKey": "incrementalEncode",
+            "ModuleAlias":"增量式编码器"
+        },
+		{
+			"ModuleTypeKey": "gyro",
+            "ModuleAlias":"陀螺仪"
+        },
+		{
+			"ModuleTypeKey": "collisionPize",
+            "ModuleAlias":"压电碰撞条"
+        },
+		{
+			"ModuleTypeKey": "collisionBaro",
+            "ModuleAlias":"气动碰撞条"
+        },
+		{
+			"ModuleTypeKey": "tempSensor",
+            "ModuleAlias":"温感传感器"
+        },
+		{
+			"ModuleTypeKey": "ultrasonicSensor",
+            "ModuleAlias":"超声传感器"
+        },
+		{
+			"ModuleTypeKey": "weighSensor",
+            "ModuleAlias":"称重传感器"
+        },
+		{
+			"ModuleTypeKey": "proximitySensor",
+            "ModuleAlias":"接近传感器"
+        },
+		{
+			"ModuleTypeKey": "PT",
+            "ModuleAlias":"光电开关"
+        },
+		{
+			"ModuleTypeKey": "comDo",
+            "ModuleAlias":"通用DO器件"
+        },
+		{
+			"ModuleTypeKey": "WIFI",
+            "ModuleAlias":"WIFI"
+        },
+		{
+			"ModuleTypeKey": "bluetooth",
+            "ModuleAlias":"蓝牙"
+        },
+		{
+			"ModuleTypeKey": "RFID",
+            "ModuleAlias":"RFID"
+        },
+		{
+			"ModuleTypeKey": "PIO",
+            "ModuleAlias":"PIO"
+        },
+		{
+			"ModuleTypeKey": "fifthGeneration",
+            "ModuleAlias":"5G"
+        },
+		{
+			"ModuleTypeKey": "WAPI",
+            "ModuleAlias":"WAPI"
+        },
+		{
+			"ModuleTypeKey": "subBattery",
+            "ModuleAlias":"电池"
+        },
+		{
+			"ModuleTypeKey": "power",
+            "ModuleAlias":"电源"
+        },
+		{
+			"ModuleTypeKey": "charge",
+            "ModuleAlias":"充电继电器"
+        },
+		{
+			"ModuleTypeKey": "lamp",
+            "ModuleAlias":"灯带"
+        },
+		{
+			"ModuleTypeKey": "warningLight",
+            "ModuleAlias":"警示灯"
+        },
+		{
+			"ModuleTypeKey": "subButton",
+            "ModuleAlias":"按钮"
+        },
+		{
+			"ModuleTypeKey": "audioIn",
+            "ModuleAlias":"拾音器"
+        },
+		{
+			"ModuleTypeKey": "audioOut",
+            "ModuleAlias":"扬声器"
+        },
+		{
+			"ModuleTypeKey": "subScreen",
+            "ModuleAlias":"显示屏"
+        },
+		{
+			"ModuleTypeKey": "segDisplays",
+            "ModuleAlias":"数码管"
+        },
+        {
+			"ModuleTypeKey": "subHandOperator",
+            "ModuleAlias":"手操器"
+        },
+		{
+			"ModuleTypeKey": "valveCtrl",
+            "ModuleAlias":"控制阀"
+        },
+		{
+			"ModuleTypeKey": "generalAnalogDistance",
+            "ModuleAlias":"通用模拟量测距传感器"
+        }
+    ]
+}

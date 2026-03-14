@@ -1,0 +1,176 @@
+{
+	"moduleGroupName": "incrementalEncode-Common",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "incrementalEncode-Common",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "通用增量式编码器",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-08-21 20:14:45.843",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SensorSys",
+						"typeDesc": "\u0005"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "sensor",
+						"typeDesc": "\n"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "incrementalEncode",
+						"typeDesc": "\n"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 100,
+						"sizeWidth": 100,
+						"sizeHeight": 100
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "incrementalEncode-Common",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "sensorAttr",
+						"desc": "传感属性",
+						"arrayBaseEle": [
+							{
+								"key": "needCalib",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否需要标定",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					},
+					{
+						"key": "encodeAttr",
+						"desc": "编码器属性",
+						"arrayBaseEle": [
+							{
+								"key": "lineCount",
+								"type": "DATA_INT32",
+								"int32Value": 0,
+								"int32Maxvalue": 99999,
+								"int32Minvalue": 0,
+								"desc": "线数",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "isInvert",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否反向",
+								"boolBasic": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}

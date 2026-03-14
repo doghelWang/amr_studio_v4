@@ -1,0 +1,24 @@
+{
+    "Module_Map_Config": [
+        {
+            "source": "intergratedController",
+            "target": "intergratedType"
+        },
+        {
+            "source": "sensorProcessor",
+            "target": "processorType"
+        },
+        {
+            "source": "energyController",
+            "target": "energyType"
+        },
+        {
+            "source": "extendedlnterface",
+            "target": "InterfaceType"
+        },
+        {
+            "source": "encode",
+            "target": "encodeType"
+        }
+    ]
+}

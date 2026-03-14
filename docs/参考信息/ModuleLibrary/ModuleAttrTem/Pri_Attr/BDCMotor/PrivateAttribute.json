@@ -1,0 +1,138 @@
+{
+	"privateAttrs": [
+		{
+			"key": "motorAttr",
+			"desc": "电机属性",
+			"arrayBaseEle": [
+				{
+					"key": "ENCType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ENCODER_NULL",
+						"typeDesc": "无",
+						"typeGroups": [
+							{
+								"key": "ENCODER_NULL",
+								"desc": "无"
+							},
+							{
+								"key": "ENCODER_INC",
+								"desc": "增量式编码器",
+								"arrayCmobEle": [
+                                	{
+										"key": "encoderLine",
+										"type": "DATA_INT32",
+										"int32Value": 100,
+										"int32Maxvalue": 10000,
+										"int32Minvalue": 1,
+										"desc": "编码器线数"
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "编码器类型",
+					"boolMustfill": true
+				},
+				{
+					"key": "ratedSpeed",
+					"type": "DATA_INT32",
+					"int32Value": 0,
+					"int32Maxvalue": 99999,
+					"int32Minvalue": 0,
+					"unit": "RPM",
+					"desc": "电机额定转速",
+					"boolMustfill": true
+				},
+				{
+					"key": "bHbrake",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "WITH_HBRAKE",
+						"typeDesc": "带抱闸",
+						"typeGroups": [
+							{
+								"key": "WITH_HBRAKE",
+								"desc": "带抱闸",
+								"arrayCmobEle": [
+                                	{
+										"key": "brakeVolt",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 12,
+										"doubleMaxvalue": 48,
+										"doubleMinvalue": 0,
+										"unit": "V",
+										"desc": "抱闸额定电压",
+										"boolMustfill": true
+									}
+                                ]
+							},
+							{
+								"key": "WITHOUT_HBRAKE",
+								"desc": "不带抱闸"
+							}
+						]
+					},
+					"desc": "是否带抱闸"
+				},
+				{
+					"key": "torque",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "N*m",
+					"desc": "额定扭矩",
+					"boolMustfill": true
+				},
+				{
+					"key": "ratedCurr",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 28,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "额定电流",
+					"boolMustfill": true
+				},
+				{
+					"key": "ratedVolt",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "额定电压",
+					"boolMustfill": true
+				},
+				{
+					"key": "powerVolt",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "供电电压",
+					"boolMustfill": true
+				},
+				{
+					"key": "bReverse",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否反向",
+					"boolHide": true
+				},
+				{
+					"key": "posKp",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"desc": "位置环Kp值",
+					"boolMustfill": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,82 @@
+{
+	"privateAttrs": [
+		{
+			"key": "sensorAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "antiLight",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"unit": "klux",
+					"desc": "抗光干扰",
+					"boolHide": true
+				},
+				{
+					"key": "blindZone",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "盲区",
+					"boolHide": true
+				},
+				{
+					"key": "needCalib",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否需要标定",
+					"boolBasic": true,
+					"boolHide": true
+				}
+			]
+		},
+		{
+			"key": "scanAttr",
+			"desc": "扫描属性",
+			"arrayBaseEle": [
+				{
+					"key": "pointAngleMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": 0,
+					"unit": "°",
+					"desc": "指向角最小值",
+					"boolHide": true
+				},
+				{
+					"key": "pointAngleMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": 0,
+					"unit": "°",
+					"desc": "指向角最大值",
+					"boolHide": true
+				},
+				{
+					"key": "detecteDistence",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "最大测量距离",
+					"boolHide": true
+				},
+				{
+					"key": "accuracy",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "测量精度",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

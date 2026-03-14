@@ -1,0 +1,59 @@
+{
+	"privateAttrs": [
+		{
+			"key": "valveCtrlAttr",
+			"desc": "控制阀属性",
+			"arrayBaseEle": [
+				{
+					"key": "ctrlMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "VALVE_DRIVE_VOLT",
+						"typeDesc": "开关控制型",
+						"typeGroups": [
+							{
+								"key": "VALVE_DRIVE_VOLT",
+								"desc": "开关控制型",
+							},
+							{
+								"key": "VALVE_DRIVE_DUTY",
+								"desc": "占空比控制型"
+							}
+						]
+					},
+					"desc": "控制模式"
+				},
+				{
+					"key": "ratedVolt",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "额定电压",
+					"boolMustfill": true
+				},
+				{
+					"key": "ratedCur",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "额定电流",
+					"boolMustfill": true
+				},
+				{
+					"key": "powerVlot",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "供电电压",
+					"boolMustfill": true
+				},
+			]
+		}
+	]
+}

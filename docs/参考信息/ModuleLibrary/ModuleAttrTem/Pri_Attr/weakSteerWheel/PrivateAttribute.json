@@ -1,0 +1,81 @@
+{
+    "privateAttrs": [
+        {
+            "key": "wheelAttr",
+            "desc": "基本属性",
+            "arrayBaseEle": [
+                {
+                    "key": "wheelRadius",
+                    "type": "DATA_DOUBLE",
+                    "doubleValue": 0,
+                    "doubleMaxvalue": 999,
+                    "doubleMinvalue": 1,
+                    "unit": "mm",
+                    "desc": "轮半径",
+                    "boolMustfill": true,
+                    "boolBasic": true
+                },
+                {
+                    "key": "wheelSpace",
+                    "type": "DATA_DOUBLE",
+                    "doubleValue": 0,
+                    "doubleMaxvalue": 999,
+                    "doubleMinvalue": 1,
+                    "unit": "mm",
+                    "desc": "轮间距",
+                    "boolMustfill": true
+                }
+            ]
+        },
+		{
+			"key": "angleSensor",
+			"desc": "转向反馈",
+			"arrayBaseEle": [
+				{
+					"key": "angleSensorType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "GROUP_CALI_INC_EXTERNAL",
+						"typeDesc": "增量编码器(外置)",
+						"typeGroups": [
+							{
+								"key": "GROUP_CALI_INC_EXTERNAL",
+								"desc": "增量编码器(外置)",
+								"arrayCmobEle": [
+									{
+										"key": "gearRatio",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 1,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 1,
+										"desc": "减速比(齿轮比)",
+										"boolHide": true
+									},
+                                	{
+                                    	"key": "relatedEncode",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "关联编码器",
+										"fixedSource": [
+											"sensor/incrementalEncode"
+										]
+                                    },
+									{
+                                    	"key": "otherRelatedEncode",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "二号关联编码器",
+										"fixedSource": [
+											"sensor/incrementalEncode"
+										]
+                                    }
+								]	
+							}
+						]
+					},
+					"desc":"类型"
+				}
+			]
+		}
+    ]
+}

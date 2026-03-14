@@ -1,0 +1,6765 @@
+{
+	"moduleGroupName": "DIFF_WHEELS(差速轮组)",
+	"moduleSys": "DriverSys",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "wheel_diff_right",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "f783b658afd148f9aac614f105aa611e",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "./ModuleLibrary/3dModelRes/drivewheel.obj",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ChassisSys",
+						"typeDesc": "底盘"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driveWheel",
+						"typeDesc": "\u0001"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "diffWheel"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 180,
+						"sizeWidth": 45,
+						"sizeHeight": 180
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "DWD-R-Q3",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "wheelAttr",
+						"desc": "轮属性",
+						"arrayBaseEle": [
+							{
+								"key": "wheelRadius",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 90,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 1,
+								"unit": "mm",
+								"desc": "轮半径",
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					},
+					{
+						"key": "linkMotorAttr",
+						"desc": "关联电机",
+						"arrayBaseEle": [
+							{
+								"key": "relateMotor",
+								"type": "DATA_FIXED_E",
+								"stringFix": "motor_left",
+								"desc": "行走电机",
+								"fixedSource": [
+									"driver/PMSMMotor"
+								]
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": -301.5,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		},
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "wheel_diff_left",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "83e7b197e6ed45f2aa651865f1ed875c",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "./ModuleLibrary/3dModelRes/drivewheel.obj",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ChassisSys",
+						"typeDesc": "底盘"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driveWheel",
+						"typeDesc": "\u0001"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "diffWheel"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 180,
+						"sizeWidth": 45,
+						"sizeHeight": 180
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "DWD-R-Q3",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "wheelAttr",
+						"desc": "轮属性",
+						"arrayBaseEle": [
+							{
+								"key": "wheelRadius",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 90,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 1,
+								"unit": "mm",
+								"desc": "轮半径",
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					},
+					{
+						"key": "linkMotorAttr",
+						"desc": "关联电机",
+						"arrayBaseEle": [
+							{
+								"key": "relateMotor",
+								"type": "DATA_FIXED_E",
+								"stringFix": "motor_right",
+								"desc": "行走电机",
+								"fixedSource": [
+									"driver/PMSMMotor"
+								]
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 301.5,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		},
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "motor_diff_right",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "05eb59bb6aef4c8cb39d2c24fc423467",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driver",
+						"typeDesc": "\u0004"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "PMSMMotor"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"stringValue": "CZYUNKONG",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"stringValue": "100SV04202_0750K_012",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/2/cylinder.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_CYLINDER",
+					"cylinder": {
+						"diameter": 143,
+						"height": 187
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "MOTOR-00SV04202-0750K-012",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "motorAttr",
+						"desc": "电机属性",
+						"arrayBaseEle": [
+							{
+								"key": "ENCType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "ENCODER_INC",
+									"typeDesc": "增量式编码器",
+									"typeGroups": [
+										{
+											"key": "ENCODER_NULL",
+											"desc": "无"
+										},
+										{
+											"key": "ENCODER_INC",
+											"desc": "增量式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "encoderLine",
+													"type": "DATA_INT32",
+													"int32Value": 2500,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器线数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_MULTI_TURN_ABS",
+											"desc": "多圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器单圈位数"
+												},
+												{
+													"key": "multiTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器多圈位数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_SGL_TURN_ABS",
+											"desc": "单圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器单圈位数"
+												}
+											]
+										}
+									]
+								},
+								"desc": "编码器类型",
+								"boolMustfill": true
+							},
+							{
+								"key": "initMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "MODE_FREERUN",
+									"typeDesc": "FREERUN模式",
+									"typeGroups": [
+										{
+											"key": "MODE_FREERUN",
+											"desc": "FREERUN模式"
+										},
+										{
+											"key": "MODE_VELOCITY_ZERO",
+											"desc": "速度0模式"
+										}
+									]
+								},
+								"desc": "电机初始状态",
+								"boolHide": true
+							},
+							{
+								"key": "RPM",
+								"type": "DATA_INT32",
+								"int32Value": 2000,
+								"int32Maxvalue": 9999,
+								"int32Minvalue": 0,
+								"unit": "RPM",
+								"desc": "电机额定转速",
+								"boolMustfill": true
+							},
+							{
+								"key": "bTemper",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否支持电机温度获取",
+								"boolHide": true
+							},
+							{
+								"key": "bHbrake",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否带抱闸"
+							},
+							{
+								"key": "bReverse",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否反向",
+								"boolHide": true
+							},
+							{
+								"key": "torque",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "N*m",
+								"desc": "额定扭矩"
+							},
+							{
+								"key": "gearRatio",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 10,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 1,
+								"desc": "减速比"
+							},
+							{
+								"key": "ratedCurr",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 26.9,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "额定电流"
+							},
+							{
+								"key": "overCurrCoef",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 2,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"desc": "过流系数"
+							},
+							{
+								"key": "defaultAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 200,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认加速度",
+								"boolHide": true
+							},
+							{
+								"key": "defaultDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 200,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认减速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1000,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大加速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1000,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大减速度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "ENCR",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "LINE",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "ENCR_1",
+						"type": "ENCR",
+						"desc": "ENCR_1",
+						"interfaceUuid": "4dbcbedb0a69472bb1370d50a1479215",
+						"linkedInterfaceUuid": [
+							"f19eeb3355464e5dbf1dc097d86d8bc8"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "ABZ+HALL",
+										"typeDesc": "ABZ+HALL",
+										"typeGroups": [
+											{
+												"key": "HALL",
+												"desc": "HALL"
+											},
+											{
+												"key": "ABZ",
+												"desc": "ABZ"
+											},
+											{
+												"key": "RS422",
+												"desc": "RS422"
+											},
+											{
+												"key": "RS485",
+												"desc": "RS485"
+											},
+											{
+												"key": "ABZ+HALL",
+												"desc": "ABZ+HALL"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "LINE_1",
+						"type": "LINE",
+						"desc": "LINE_1",
+						"interfaceUuid": "56834638e5e54c2f8a003e4448995589",
+						"linkedInterfaceUuid": [
+							"5230201a91c847168654264fec39af8a"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Three-Phase",
+										"typeDesc": "三相（伺服",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "One-Phase",
+												"desc": "单相（液压）"
+											},
+											{
+												"key": "Two-Phase",
+												"desc": "两相（步进）"
+											},
+											{
+												"key": "Three-Phase",
+												"desc": "三相（伺服"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 19300,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 999,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceUuid": "2c7115a55c1f412d8d028bced4f1f13d",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 5,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				],
+				"nodePosX": 600,
+				"nodePosY": 57.5
+			},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		},
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "motor_diff_left",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "f1d5a0d1334a4f9b821930f7185eca7c",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driver",
+						"typeDesc": "\u0004"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "PMSMMotor"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"stringValue": "CZYUNKONG",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"stringValue": "100SV04202_0750K_012",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/2/cylinder.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_CYLINDER",
+					"cylinder": {
+						"diameter": 143,
+						"height": 187
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "MOTOR-00SV04202-0750K-012",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "motorAttr",
+						"desc": "电机属性",
+						"arrayBaseEle": [
+							{
+								"key": "ENCType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "ENCODER_INC",
+									"typeDesc": "增量式编码器",
+									"typeGroups": [
+										{
+											"key": "ENCODER_NULL",
+											"desc": "无"
+										},
+										{
+											"key": "ENCODER_INC",
+											"desc": "增量式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "encoderLine",
+													"type": "DATA_INT32",
+													"int32Value": 2500,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器线数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_MULTI_TURN_ABS",
+											"desc": "多圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器单圈位数"
+												},
+												{
+													"key": "multiTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器多圈位数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_SGL_TURN_ABS",
+											"desc": "单圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 0,
+													"int32Maxvalue": 0,
+													"int32Minvalue": 0,
+													"desc": "编码器单圈位数"
+												}
+											]
+										}
+									]
+								},
+								"desc": "编码器类型",
+								"boolMustfill": true
+							},
+							{
+								"key": "initMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "MODE_FREERUN",
+									"typeDesc": "FREERUN模式",
+									"typeGroups": [
+										{
+											"key": "MODE_FREERUN",
+											"desc": "FREERUN模式"
+										},
+										{
+											"key": "MODE_VELOCITY_ZERO",
+											"desc": "速度0模式"
+										}
+									]
+								},
+								"desc": "电机初始状态",
+								"boolHide": true
+							},
+							{
+								"key": "RPM",
+								"type": "DATA_INT32",
+								"int32Value": 2000,
+								"int32Maxvalue": 9999,
+								"int32Minvalue": 0,
+								"unit": "RPM",
+								"desc": "电机额定转速",
+								"boolMustfill": true
+							},
+							{
+								"key": "bTemper",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否支持电机温度获取",
+								"boolHide": true
+							},
+							{
+								"key": "bHbrake",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否带抱闸"
+							},
+							{
+								"key": "bReverse",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否反向",
+								"boolHide": true
+							},
+							{
+								"key": "torque",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "N*m",
+								"desc": "额定扭矩"
+							},
+							{
+								"key": "gearRatio",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 10,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 1,
+								"desc": "减速比"
+							},
+							{
+								"key": "ratedCurr",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 26.9,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "额定电流"
+							},
+							{
+								"key": "overCurrCoef",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 2,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"desc": "过流系数"
+							},
+							{
+								"key": "defaultAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 200,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认加速度",
+								"boolHide": true
+							},
+							{
+								"key": "defaultDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 200,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认减速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1000,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大加速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 1000,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大减速度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "ENCR",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "LINE",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "ENCR_1",
+						"type": "ENCR",
+						"desc": "ENCR_1",
+						"interfaceUuid": "f2210ac8d8fa43e892a3a0b0a6680e28",
+						"linkedInterfaceUuid": [
+							"0cac5e65767d48ccae33eeb909d52ee5"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "ABZ+HALL",
+										"typeDesc": "ABZ+HALL",
+										"typeGroups": [
+											{
+												"key": "HALL",
+												"desc": "HALL"
+											},
+											{
+												"key": "ABZ",
+												"desc": "ABZ"
+											},
+											{
+												"key": "RS422",
+												"desc": "RS422"
+											},
+											{
+												"key": "RS485",
+												"desc": "RS485"
+											},
+											{
+												"key": "ABZ+HALL",
+												"desc": "ABZ+HALL"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "LINE_1",
+						"type": "LINE",
+						"desc": "LINE_1",
+						"interfaceUuid": "b62771b3e82a4d9f98b6694054540798",
+						"linkedInterfaceUuid": [
+							"6c82e7a35e6b44a5bdcb354a4b697759"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Three-Phase",
+										"typeDesc": "三相（伺服",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "One-Phase",
+												"desc": "单相（液压）"
+											},
+											{
+												"key": "Two-Phase",
+												"desc": "两相（步进）"
+											},
+											{
+												"key": "Three-Phase",
+												"desc": "三相（伺服"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 19300,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 999,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceUuid": "cccb18c20e344a6a8994346545131d3f",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 5,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				],
+				"nodePosX": 200,
+				"nodePosY": 57.5
+			},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		},
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "servo_diff_right",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "R-Q3一体式驱动组件(驱动轮综合款)V1",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "ce6c8f0448824f0aa4294515871235fa",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driver",
+						"typeDesc": "\u0004"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "subDriver",
+						"typeDesc": "\u0001"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"stringValue": "HIKROBOT",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"stringValue": "MV_84036_V11",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 120,
+						"sizeWidth": 60,
+						"sizeHeight": 25
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "SD-R-Q3-DriveVV1",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "boardAttr",
+						"desc": "控制板属性",
+						"arrayBaseEle": [
+							{
+								"key": "chipPlatform",
+								"type": "DATA_STRING",
+								"stringValue": "R131",
+								"desc": "芯片平台",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "softwareSpec",
+								"type": "DATA_STRING",
+								"stringValue": "RA-DR/D-48/14SA-311AH1",
+								"desc": "软件规格",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "inputVoltage",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "输入电压",
+								"boolHide": true
+							},
+							{
+								"key": "inputCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "输入电流",
+								"boolHide": true
+							},
+							{
+								"key": "overloadCapacity",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 2,
+								"doubleMaxvalue": 99,
+								"doubleMinvalue": 0,
+								"unit": "倍",
+								"desc": "过载能力",
+								"boolHide": true,
+								"boolMustfill": true
+							},
+							{
+								"key": "overloadTime",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 3,
+								"doubleMaxvalue": 99,
+								"doubleMinvalue": 0,
+								"unit": "S",
+								"desc": "过载时长",
+								"boolHide": true,
+								"boolMustfill": true
+							},
+							{
+								"key": "type",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "MOTOR_SERVO_TYPE_AUTO",
+									"typeDesc": "伺服自动获取",
+									"typeGroups": [
+										{
+											"key": "HYD_DRIVER_TYPE",
+											"desc": "液压驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_AUTO",
+											"desc": "伺服自动获取"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_STANDARD",
+											"desc": "标准CANOPEN驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_ELMO",
+											"desc": "ELMO驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_HIK",
+											"desc": "自研驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_SENCHUANG",
+											"desc": "森创驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_CURTIS",
+											"desc": "柯蒂斯驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_ZAPI",
+											"desc": "zapi驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_KINCO",
+											"desc": "步科驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_SIHENG",
+											"desc": "四宏(横)电机"
+										}
+									]
+								},
+								"desc": "驱动类型"
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "PO",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "CAN",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "UART",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "RS232",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "DI",
+						"busInterfaceNums": 6
+					},
+					{
+						"busInterfaceType": "AI",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "LINE",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "ENCR",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceUuid": "dda3e79d24ef44a58aee16dc1c126b29",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 48,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "PO_1",
+						"type": "PO",
+						"desc": "PO_1",
+						"interfaceUuid": "cf7575fe178b426fa9e32aff2501d10d",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "CPWR",
+												"desc": "CPWR"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 14,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输出电压",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 999,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "CAN_1",
+						"type": "CAN",
+						"desc": "CAN_1",
+						"interfaceUuid": "8f9890c1696f4ebdaf4765a27cbed23b",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "BUS",
+										"typeDesc": "BUS",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1M",
+										"typeDesc": "1M",
+										"typeGroups": [
+											{
+												"key": "1M",
+												"desc": "1M"
+											},
+											{
+												"key": "500K",
+												"desc": "500K"
+											},
+											{
+												"key": "250K",
+												"desc": "250K"
+											},
+											{
+												"key": "125K",
+												"desc": "125K"
+											},
+											{
+												"key": "100K",
+												"desc": "100K"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolNoeditable":true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PROTOCOL_EXT_CAN",
+										"typeDesc": "PROTOCOL_EXT_CAN",
+										"typeGroups": [
+											{
+												"key": "PROTOCOL_EXT_CAN",
+												"desc": "PROTOCOL_EXT_CAN"
+											},
+											{
+												"key": "PROTOCOL_CANOPEN",
+												"desc": "PROTOCOL_CANOPEN"
+											},
+											{
+												"key": "PROTOCOL_UCAN",
+												"desc": "PROTOCOL_UCAN"
+											},
+											{
+												"key": "PROTOCOL_STD_CAN",
+												"desc": "PROTOCOL_STD_CAN"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true
+								},
+								{
+									"key": "nodeId",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 127,
+									"int32Minvalue": 1,
+									"desc": "节点Id",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "CAN_2",
+						"type": "CAN",
+						"desc": "CAN_2",
+						"interfaceUuid": "5034b04d97d34344a0901b167890fad1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "BUS",
+										"typeDesc": "BUS",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1M",
+										"typeDesc": "1M",
+										"typeGroups": [
+											{
+												"key": "1M",
+												"desc": "1M"
+											},
+											{
+												"key": "500K",
+												"desc": "500K"
+											},
+											{
+												"key": "250K",
+												"desc": "250K"
+											},
+											{
+												"key": "125K",
+												"desc": "125K"
+											},
+											{
+												"key": "100K",
+												"desc": "100K"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolNoeditable":true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PROTOCOL_EXT_CAN",
+										"typeDesc": "PROTOCOL_EXT_CAN",
+										"typeGroups": [
+											{
+												"key": "PROTOCOL_EXT_CAN",
+												"desc": "PROTOCOL_EXT_CAN"
+											},
+											{
+												"key": "PROTOCOL_CANOPEN",
+												"desc": "PROTOCOL_CANOPEN"
+											},
+											{
+												"key": "PROTOCOL_UCAN",
+												"desc": "PROTOCOL_UCAN"
+											},
+											{
+												"key": "PROTOCOL_STD_CAN",
+												"desc": "PROTOCOL_STD_CAN"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true
+								},
+								{
+									"key": "nodeId",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 127,
+									"int32Minvalue": 1,
+									"desc": "节点Id",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "UART_1",
+						"type": "UART",
+						"desc": "UART_1",
+						"interfaceUuid": "f07a33e431d04a8aa7c4bf449abee4ec",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "HIK-TOF-01",
+												"desc": "HIK-TOF-01"
+											},
+											{
+												"key": "HIK-TOF-02",
+												"desc": "HIK-TOF-02"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 0,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "UART_2",
+						"type": "UART",
+						"desc": "UART_2",
+						"interfaceUuid": "b5201c9e507d4fa597df622c08a43077",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "HIK-TOF-01",
+												"desc": "HIK-TOF-01"
+											},
+											{
+												"key": "HIK-TOF-02",
+												"desc": "HIK-TOF-02"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "RS232_1",
+						"type": "RS232",
+						"desc": "RS232_1",
+						"interfaceUuid": "9b1a349075064cd19b814aeba7fab840",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_1",
+						"type": "DI",
+						"desc": "DI_1",
+						"interfaceUuid": "0451216ead9d4fb28a8e49028b4186ad",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0.2,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_2",
+						"type": "DI",
+						"desc": "DI_2",
+						"interfaceUuid": "196faac72ffb4d5cbebc6bb848c20b40",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_3",
+						"type": "DI",
+						"desc": "DI_3",
+						"interfaceUuid": "50a15e9e1c194b29bbbe8372749d2ec4",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_4",
+						"type": "DI",
+						"desc": "DI_4",
+						"interfaceUuid": "0c0b0699ead34873a87d85c1ad3d213d",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_5",
+						"type": "DI",
+						"desc": "DI_5",
+						"interfaceUuid": "b49be26e26a24de38c9c5f8893932dd4",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_6",
+						"type": "DI",
+						"desc": "DI_6",
+						"interfaceUuid": "5793a942b7444a47b63aca0975d9eae1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "AI_1",
+						"type": "AI",
+						"desc": "AI_1",
+						"interfaceUuid": "29b2a3466d4d43a09971cb9379af7502",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Voltage",
+										"typeDesc": "电压型",
+										"typeGroups": [
+											{
+												"key": "Resistive",
+												"desc": "电阻型"
+											},
+											{
+												"key": "Voltage",
+												"desc": "电压型"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "AI_2",
+						"type": "AI",
+						"desc": "AI_2",
+						"interfaceUuid": "bd8ff5b9851f4dfab0ddfb4466a8d4c1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Voltage",
+										"typeDesc": "电压型",
+										"typeGroups": [
+											{
+												"key": "Resistive",
+												"desc": "电阻型"
+											},
+											{
+												"key": "Voltage",
+												"desc": "电压型"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "LINE_1",
+						"type": "LINE",
+						"desc": "LINE_1",
+						"interfaceUuid": "5230201a91c847168654264fec39af8a",
+						"linkedInterfaceUuid": [
+							"56834638e5e54c2f8a003e4448995589"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Three-Phase",
+										"typeDesc": "三相（伺服",
+										"typeGroups": [
+											{
+												"key": "One-Phase",
+												"desc": "单相（液压）"
+											},
+											{
+												"key": "Two-Phase",
+												"desc": "两相（步进）"
+											},
+											{
+												"key": "Three-Phase",
+												"desc": "三相（伺服"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 999,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 999,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "ENCR_1",
+						"type": "ENCR",
+						"desc": "ENCR_1",
+						"interfaceUuid": "f19eeb3355464e5dbf1dc097d86d8bc8",
+						"linkedInterfaceUuid": [
+							"4dbcbedb0a69472bb1370d50a1479215"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "ABZ+HALL",
+										"typeDesc": "ABZ+HALL",
+										"typeGroups": [
+											{
+												"key": "HALL",
+												"desc": "HALL"
+											},
+											{
+												"key": "ABZ",
+												"desc": "ABZ"
+											},
+											{
+												"key": "RS422",
+												"desc": "RS422"
+											},
+											{
+												"key": "RS485",
+												"desc": "RS485"
+											},
+											{
+												"key": "ABZ+HALL",
+												"desc": "ABZ+HALL"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				],
+				"nodePosX": 400,
+				"nodePosY": 242.5
+			},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		},
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "servo_diff_left",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "R-Q3一体式驱动组件(驱动轮综合款)V1",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"stringValue": "38a346224b814248891fb866dc175262",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-06-10 16:44:48.054",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driver",
+						"typeDesc": "\u0004"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "subDriver",
+						"typeDesc": "\u0001"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_STRING",
+					"stringValue": "HIKROBOT",
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_STRING",
+					"stringValue": "MV_84036_V11",
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 120,
+						"sizeWidth": 60,
+						"sizeHeight": 25
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "SD-R-Q3-DriveVV1",
+						"desc": "模块原始名称",
+						"boolParse": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "boardAttr",
+						"desc": "控制板属性",
+						"arrayBaseEle": [
+							{
+								"key": "chipPlatform",
+								"type": "DATA_STRING",
+								"stringValue": "R131",
+								"desc": "芯片平台",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "softwareSpec",
+								"type": "DATA_STRING",
+								"stringValue": "RA-DR/D-48/14SA-311AH1",
+								"desc": "软件规格",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "inputVoltage",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "输入电压",
+								"boolHide": true
+							},
+							{
+								"key": "inputCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "输入电流",
+								"boolHide": true
+							},
+							{
+								"key": "overloadCapacity",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 2,
+								"doubleMaxvalue": 99,
+								"doubleMinvalue": 0,
+								"unit": "倍",
+								"desc": "过载能力",
+								"boolHide": true,
+								"boolMustfill": true
+							},
+							{
+								"key": "overloadTime",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 3,
+								"doubleMaxvalue": 99,
+								"doubleMinvalue": 0,
+								"unit": "S",
+								"desc": "过载时长",
+								"boolHide": true,
+								"boolMustfill": true
+							},
+							{
+								"key": "type",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "MOTOR_SERVO_TYPE_AUTO",
+									"typeDesc": "伺服自动获取",
+									"typeGroups": [
+										{
+											"key": "HYD_DRIVER_TYPE",
+											"desc": "液压驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_AUTO",
+											"desc": "伺服自动获取"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_STANDARD",
+											"desc": "标准CANOPEN驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_ELMO",
+											"desc": "ELMO驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_HIK",
+											"desc": "自研驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_SENCHUANG",
+											"desc": "森创驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_CURTIS",
+											"desc": "柯蒂斯驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_ZAPI",
+											"desc": "zapi驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_KINCO",
+											"desc": "步科驱动器"
+										},
+										{
+											"key": "MOTOR_SERVO_TYPE_SIHENG",
+											"desc": "四宏(横)电机"
+										}
+									]
+								},
+								"desc": "驱动类型"
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "PO",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "CAN",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "UART",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "RS232",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "DI",
+						"busInterfaceNums": 6
+					},
+					{
+						"busInterfaceType": "AI",
+						"busInterfaceNums": 2
+					},
+					{
+						"busInterfaceType": "LINE",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "ENCR",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceUuid": "a981e08a749f49118881f4f6458d2f05",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 48,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "PO_1",
+						"type": "PO",
+						"desc": "PO_1",
+						"interfaceUuid": "c3f6c575609a412c9adb358815db1a56",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "CPWR",
+												"desc": "CPWR"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 14,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输出电压",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 999,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "CAN_1",
+						"type": "CAN",
+						"desc": "CAN_1",
+						"interfaceUuid": "bfe576c4a965421698a188dc12334096",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "BUS",
+										"typeDesc": "BUS",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1M",
+										"typeDesc": "1M",
+										"typeGroups": [
+											{
+												"key": "1M",
+												"desc": "1M"
+											},
+											{
+												"key": "500K",
+												"desc": "500K"
+											},
+											{
+												"key": "250K",
+												"desc": "250K"
+											},
+											{
+												"key": "125K",
+												"desc": "125K"
+											},
+											{
+												"key": "100K",
+												"desc": "100K"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolNoeditable":true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PROTOCOL_EXT_CAN",
+										"typeDesc": "PROTOCOL_EXT_CAN",
+										"typeGroups": [
+											{
+												"key": "PROTOCOL_EXT_CAN",
+												"desc": "PROTOCOL_EXT_CAN"
+											},
+											{
+												"key": "PROTOCOL_CANOPEN",
+												"desc": "PROTOCOL_CANOPEN"
+											},
+											{
+												"key": "PROTOCOL_UCAN",
+												"desc": "PROTOCOL_UCAN"
+											},
+											{
+												"key": "PROTOCOL_STD_CAN",
+												"desc": "PROTOCOL_STD_CAN"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true
+								},
+								{
+									"key": "nodeId",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 127,
+									"int32Minvalue": 1,
+									"desc": "节点Id",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "CAN_2",
+						"type": "CAN",
+						"desc": "CAN_2",
+						"interfaceUuid": "b6d7b4019f8c4c69b6e74a64c8cdf7dd",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "BUS",
+										"typeDesc": "BUS",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1M",
+										"typeDesc": "1M",
+										"typeGroups": [
+											{
+												"key": "1M",
+												"desc": "1M"
+											},
+											{
+												"key": "500K",
+												"desc": "500K"
+											},
+											{
+												"key": "250K",
+												"desc": "250K"
+											},
+											{
+												"key": "125K",
+												"desc": "125K"
+											},
+											{
+												"key": "100K",
+												"desc": "100K"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolNoeditable":true
+								},
+								{
+									"key": "protocol",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PROTOCOL_EXT_CAN",
+										"typeDesc": "PROTOCOL_EXT_CAN",
+										"typeGroups": [
+											{
+												"key": "PROTOCOL_EXT_CAN",
+												"desc": "PROTOCOL_EXT_CAN"
+											},
+											{
+												"key": "PROTOCOL_CANOPEN",
+												"desc": "PROTOCOL_CANOPEN"
+											},
+											{
+												"key": "PROTOCOL_UCAN",
+												"desc": "PROTOCOL_UCAN"
+											},
+											{
+												"key": "PROTOCOL_STD_CAN",
+												"desc": "PROTOCOL_STD_CAN"
+											}
+										]
+									},
+									"desc": "协议",
+									"boolParse": true
+								},
+								{
+									"key": "nodeId",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 127,
+									"int32Minvalue": 1,
+									"desc": "节点Id",
+									"boolParse": true
+								}
+							]
+						}
+					},
+					{
+						"key": "UART_1",
+						"type": "UART",
+						"desc": "UART_1",
+						"interfaceUuid": "0533888e7f504fdd863285c4c3b8a6cc",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "HIK-TOF-01",
+												"desc": "HIK-TOF-01"
+											},
+											{
+												"key": "HIK-TOF-02",
+												"desc": "HIK-TOF-02"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 0,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "UART_2",
+						"type": "UART",
+						"desc": "UART_2",
+						"interfaceUuid": "f02e73a9491c46cca6a80c31776782c9",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "HIK-TOF-01",
+												"desc": "HIK-TOF-01"
+											},
+											{
+												"key": "HIK-TOF-02",
+												"desc": "HIK-TOF-02"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "RS232_1",
+						"type": "RS232",
+						"desc": "RS232_1",
+						"interfaceUuid": "6694dbe5e0c34c659deaf953b39809df",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "BUSTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "BUS",
+												"desc": "BUS"
+											}
+										]
+									},
+									"desc": "总线标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "baudrate",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "9600",
+										"typeDesc": "9600",
+										"typeGroups": [
+											{
+												"key": "9600",
+												"desc": "9600"
+											},
+											{
+												"key": "4800",
+												"desc": "4800"
+											},
+											{
+												"key": "19200",
+												"desc": "19200"
+											},
+											{
+												"key": "38400",
+												"desc": "38400"
+											},
+											{
+												"key": "115200",
+												"desc": "115200"
+											},
+											{
+												"key": "921600",
+												"desc": "921600"
+											}
+										]
+									},
+									"desc": "波特率",
+									"boolParse": true,
+									"boolHide":true
+								},
+								{
+									"key": "dataBits",
+									"type": "DATA_INT32",
+									"int32Value": 1,
+									"int32Maxvalue": 999,
+									"int32Minvalue": 1,
+									"desc": "有效数字位",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "patity",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "None",
+										"typeDesc": "None",
+										"typeGroups": [
+											{
+												"key": "None",
+												"desc": "None"
+											},
+											{
+												"key": "Odd",
+												"desc": "Odd"
+											},
+											{
+												"key": "Even",
+												"desc": "Even"
+											},
+											{
+												"key": "Mark",
+												"desc": "Mark"
+											},
+											{
+												"key": "Space",
+												"desc": "Space"
+											}
+										]
+									},
+									"desc": "奇偶校验",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "stopBits",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "1",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "1"
+											},
+											{
+												"key": "1.5",
+												"desc": "1.5"
+											},
+											{
+												"key": "2",
+												"desc": "2"
+											}
+										]
+									},
+									"desc": "停止位",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_1",
+						"type": "DI",
+						"desc": "DI_1",
+						"interfaceUuid": "026f0ec7764d417b8d04813985c6bcb9",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0.2,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 9,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_2",
+						"type": "DI",
+						"desc": "DI_2",
+						"interfaceUuid": "10a34681efc84599bb7c03a834599d06",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_3",
+						"type": "DI",
+						"desc": "DI_3",
+						"interfaceUuid": "386fa13311ec4f90bb13dd669d717e9f",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_4",
+						"type": "DI",
+						"desc": "DI_4",
+						"interfaceUuid": "898397b2f0724461a420812ba723b806",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_5",
+						"type": "DI",
+						"desc": "DI_5",
+						"interfaceUuid": "fcacffb4a62a44c1ab0b8640744405c4",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "DI_6",
+						"type": "DI",
+						"desc": "DI_6",
+						"interfaceUuid": "450e5cea93d543998d08378714ad262c",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NPN",
+										"typeDesc": "NPN",
+										"typeGroups": [
+											{
+												"key": "PWM",
+												"desc": "PWM"
+											},
+											{
+												"key": "NPN",
+												"desc": "NPN"
+											},
+											{
+												"key": "PNP",
+												"desc": "PNP"
+											},
+											{
+												"key": " NO",
+												"desc": " NO"
+											},
+											{
+												"key": " NC",
+												"desc": " NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 2.96,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true,
+									"boolHide": true
+								}
+							]
+						}
+					},
+					{
+						"key": "AI_1",
+						"type": "AI",
+						"desc": "AI_1",
+						"interfaceUuid": "63cd68c467354670a9ccdde1c7aeaea3",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Voltage",
+										"typeDesc": "电压型",
+										"typeGroups": [
+											{
+												"key": "Resistive",
+												"desc": "电阻型"
+											},
+											{
+												"key": "Voltage",
+												"desc": "电压型"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "AI_2",
+						"type": "AI",
+						"desc": "AI_2",
+						"interfaceUuid": "da7137477dc4480b90350a931c772650",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Voltage",
+										"typeDesc": "电压型",
+										"typeGroups": [
+											{
+												"key": "Resistive",
+												"desc": "电阻型"
+											},
+											{
+												"key": "Voltage",
+												"desc": "电压型"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "VH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "高电平",
+									"boolParse": true
+								},
+								{
+									"key": "IH",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "高电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "VL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "低电平",
+									"boolParse": true
+								},
+								{
+									"key": "IL",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "低电平电流能力",
+									"boolParse": true
+								},
+								{
+									"key": "Z",
+									"type": "DATA_STRING",
+									"stringValue": "*",
+									"desc": "高阻态",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "LINE_1",
+						"type": "LINE",
+						"desc": "LINE_1",
+						"interfaceUuid": "6c82e7a35e6b44a5bdcb354a4b697759",
+						"linkedInterfaceUuid": [
+							"b62771b3e82a4d9f98b6694054540798"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "Three-Phase",
+										"typeDesc": "三相（伺服",
+										"typeGroups": [
+											{
+												"key": "One-Phase",
+												"desc": "单相（液压）"
+											},
+											{
+												"key": "Two-Phase",
+												"desc": "两相（步进）"
+											},
+											{
+												"key": "Three-Phase",
+												"desc": "三相（伺服"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 999,
+									"doubleMaxvalue": 0,
+									"doubleMinvalue": 999,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "ENCR_1",
+						"type": "ENCR",
+						"desc": "ENCR_1",
+						"interfaceUuid": "0cac5e65767d48ccae33eeb909d52ee5",
+						"linkedInterfaceUuid": [
+							"f2210ac8d8fa43e892a3a0b0a6680e28"
+						],
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "ABZ+HALL",
+										"typeDesc": "ABZ+HALL",
+										"typeGroups": [
+											{
+												"key": "HALL",
+												"desc": "HALL"
+											},
+											{
+												"key": "ABZ",
+												"desc": "ABZ"
+											},
+											{
+												"key": "RS422",
+												"desc": "RS422"
+											},
+											{
+												"key": "RS485",
+												"desc": "RS485"
+											},
+											{
+												"key": "ABZ+HALL",
+												"desc": "ABZ+HALL"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				],
+				"nodePosY": 242.5
+			},
+			"structParam": {
+				"extendParams": [
+					{
+						"key": "parentNodeUuid",
+						"type": "DATA_COMBOX",
+						"comboType": {
+							"typeKey": "d64b7b41be3b444a889b608bf855917a",
+							"typeDesc": "chassis_diff",
+							"typeGroups": [
+								{
+									"key": "d64b7b41be3b444a889b608bf855917a",
+									"desc": "chassis_diff"
+								}
+							]
+						},
+						"desc": "从属机构",
+						"boolParse": true
+					},
+					{
+						"key": "locCoordX",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "X坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordY",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Y坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordZ",
+						"type": "DATA_DOUBLE",
+						"doubleValue": 0,
+						"doubleMaxvalue": 9999,
+						"doubleMinvalue": -9999,
+						"unit": "mm",
+						"desc": "Z坐标",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordROLL",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "翻滚角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordYAW",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "偏航角",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "locCoordPITCH",
+						"type": "DATA_DOUBLE",
+						"doubleMaxvalue": 180,
+						"doubleMinvalue": -180,
+						"unit": "°",
+						"desc": "俯仰角",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			}
+		}
+	]
+}

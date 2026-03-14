@@ -1,0 +1,60 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "HWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "BRAKE",
+				"typeDesc": "BRAKE",
+				"typeGroups": [
+					{
+						"key": "BRAKE",
+						"desc": "BRAKE"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "硬件标签属性",
+			"boolParse": true
+		},
+		{
+			"key": "VIN",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 999,
+			"doubleMinvalue": 0,
+			"unit": "V",
+			"desc": "额定输入电压",
+			"boolParse": true
+		},
+		{
+			"key": "IIN",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 999999,
+			"doubleMinvalue": 0,
+			"unit": "mA",
+			"desc": "额定输入电流",
+			"boolParse": true
+		}
+	]
+}

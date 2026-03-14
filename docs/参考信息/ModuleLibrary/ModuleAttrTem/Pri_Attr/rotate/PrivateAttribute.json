@@ -1,0 +1,217 @@
+{
+	"privateAttrs": [
+		{
+			"key": "rotateAttr",
+			"desc": "私有属性",
+			"arrayBaseEle": [
+				{
+					"key": "structureForm",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "wormGear",
+						"typeDesc": "蜗轮蜗杆",
+						"typeGroups": [
+							{
+								"key": "wormGear",
+								"desc": "蜗轮蜗杆"
+							},
+							{
+								"key": "gearDrive",
+								"desc": "齿轮传动"
+							},
+							{
+								"key": "beltDrive",
+								"desc": "带传动"
+							}
+						]
+					},
+					"desc": "结构形式",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "drivingForm",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "servo",
+						"typeDesc": "伺服",
+						"typeGroups": [
+							{
+								"key": "servo",
+								"desc": "伺服"
+							}
+						]
+					},
+					"desc": "驱动形式",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "transmissionRelationship",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "line",
+						"typeDesc": "线性",
+						"typeGroups": [
+							{
+								"key": "line",
+								"desc": "线性"
+							},
+							{
+								"key": "unline",
+								"desc": "非线性"
+							}
+						]
+					},
+					"desc": "传动关系",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "sensorMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "zero",
+						"typeDesc": "零位",
+						"typeGroups": [
+							{
+								"key": "zero",
+								"desc": "零位"
+							},
+							{
+								"key": "zeroBlock",
+								"desc": "零位+弧形检测块"
+							},
+							{
+								"key": "encoder",
+								"desc": "绝对式编码"
+							}
+						]
+					},
+					"desc": "传感模式",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "lead",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "导程",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "totalSpeedRatio",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"desc": "总速比",
+					"boolMustfill": true
+				},
+				{
+					"key": "maximumSpeed (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s",
+					"desc": "最大角速度（空载）",
+					"boolMustfill": true
+				},
+				{
+					"key": "maximumAcceleration (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s^2",
+					"desc": "最大角加速度（空载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumDeceleration (Idle)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s^2",
+					"desc": "最大角减速度（空载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumSpeed (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s",
+					"desc": "最大角速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumAcceleration (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s^2",
+					"desc": "最大角加速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "maximumDeceleration (Full Load)",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s^2",
+					"desc": "最大角减速度（满载）",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "negativeLimit",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": -360,
+					"unit": "°",
+					"desc": "负限位",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "positiveLimit",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": -360,
+					"unit": "°",
+					"desc": "正限位",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "load",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "kg",
+					"desc": "负载",
+					"boolHide": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

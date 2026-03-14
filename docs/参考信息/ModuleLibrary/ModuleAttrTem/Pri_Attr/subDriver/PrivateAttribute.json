@@ -1,0 +1,120 @@
+{
+	"privateAttrs": [
+		{
+			"key": "boardAttr",
+			"desc": "控制板属性",
+			"arrayBaseEle": [
+				{
+					"key": "chipPlatform",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "芯片平台",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "softwareSpec",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "软件规格",
+					"boolMustfill": true,
+					"boolBasic": true
+				},
+				{
+					"key": "inputVoltage",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 24,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "输入电压",
+					"boolHide": true
+				},
+				{
+					"key": "inputCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0.5,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "输入电流",
+					"boolHide": true
+				},
+				{
+					"key": "overloadCapacity",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 1.5,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "倍",
+					"desc": "过载能力",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "overloadTime",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 3,
+					"doubleMaxvalue": 99,
+					"doubleMinvalue": 0,
+					"unit": "S",
+					"desc": "过载时长",
+					"boolMustfill": true,
+					"boolHide": true
+				},
+				{
+					"key": "type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "MOTOR_SERVO_TYPE_AUTO",
+						"typeDesc": "伺服自动获取",
+						"typeGroups": [
+							{
+								"key": "HYD_DRIVER_TYPE",
+								"desc": "液压驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_AUTO",
+								"desc": "伺服自动获取"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_STANDARD",
+								"desc": "标准CANOPEN驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_ELMO",
+								"desc": "ELMO驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_HIK",
+								"desc": "自研驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_SENCHUANG",
+								"desc": "森创驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_CURTIS",
+								"desc": "柯蒂斯驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_ZAPI",
+								"desc": "zapi驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_KINCO",
+								"desc": "步科驱动器"
+							},
+							{
+								"key": "MOTOR_SERVO_TYPE_SIHENG",
+								"desc": "四宏(横)电机"
+							}
+						]
+					},
+					"desc": "驱动类型"
+				}
+			]
+		}
+	]
+}

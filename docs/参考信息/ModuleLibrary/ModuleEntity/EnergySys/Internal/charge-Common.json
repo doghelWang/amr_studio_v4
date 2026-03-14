@@ -1,0 +1,275 @@
+{
+	"moduleGroupName": "charge-Common",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "charge-Common",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "通用充电继电器",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-09-18 10:51:10.446",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "EnergySys",
+						"typeDesc": "\u0007"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "battery",
+						"typeDesc": "\f"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "charge",
+						"typeDesc": "\u0002"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 100,
+						"sizeWidth": 100,
+						"sizeHeight": 100
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "charge-Common",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "chargerAttr",
+						"desc": "充电属性",
+						"arrayBaseEle": [
+							{
+								"key": "dir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "AGV_CHARGE_RELAY_DIR_BACK",
+									"typeDesc": "尾充",
+									"typeGroups": [
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_BACK",
+											"desc": "尾充"
+										},
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_LEFT",
+											"desc": "左侧"
+										},
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_RIGHT",
+											"desc": "右侧"
+										},
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_DOWN",
+											"desc": "底部"
+										},
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_FRONT",
+											"desc": "前部"
+										},
+										{
+											"key": "AGV_CHARGE_RELAY_DIR_UP",
+											"desc": "顶部"
+										}
+										
+									]
+								},
+								"desc": "充电方向"
+							},
+							{
+								"key": "type",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "IOCharger",
+									"typeDesc": "IO继电器",
+									"typeGroups": [
+										{
+											"key": "valveVoltCharger",
+											"desc": "阀继电器",
+											"arrayCmobEle": [
+												{
+													"key": "ratedVolt",
+													"type": "DATA_DOUBLE",
+													"doubleValue": 0,
+													"doubleMaxvalue": 9999,
+													"doubleMinvalue": 0,
+													"unit": "V",
+													"desc": "额定电压"
+												},
+												{
+													"key": "ratedCur",
+													"type": "DATA_DOUBLE",
+													"doubleValue": 0,
+													"doubleMaxvalue": 9999,
+													"doubleMinvalue": 0,
+													"unit": "A",
+													"desc": "额定电流"
+												},
+												{
+													"key": "powerVolt",
+													"type": "DATA_DOUBLE",
+													"doubleValue": 0,
+													"doubleMaxvalue": 9999,
+													"doubleMinvalue": 0,
+													"unit": "V",
+													"desc": "供电电压"
+												}
+											]
+										},
+										{
+											"key": "IOCharger",
+											"desc": "IO继电器"
+										}
+									]
+								},
+								"desc": "类型"
+							},
+							{
+								"key": "voltage",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "V",
+								"desc": "工作电压",
+								"boolHide": true,
+								"boolBasic": true
+							},
+							{
+								"key": "contactResistance",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 99999,
+								"doubleMinvalue": 0,
+								"unit": "mΩ",
+								"desc": "接触电阻",
+								"boolHide": true
+							},
+							{
+								"key": "insulationResistance",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 99999,
+								"doubleMinvalue": 0,
+								"unit": "mΩ",
+								"desc": "绝缘电阻",
+								"boolHide": true
+							},
+							{
+								"key": "maxCurrent",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "最大工作电流",
+								"boolHide": true
+							},
+							{
+								"key": "maxTemperature",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 999,
+								"doubleMinvalue": 0,
+								"unit": "℃",
+								"desc": "最高工作温度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}

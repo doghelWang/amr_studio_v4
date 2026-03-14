@@ -1,0 +1,82 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "Resistive",
+				"typeDesc": "电阻型",
+				"typeGroups": [
+					{
+						"key": "Resistive",
+						"desc": "电阻型"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					},
+					{
+						"key": "Voltage",
+						"desc": "电压型"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "SWITCHCHAR",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "NC",
+				"typeDesc": "NC",
+				"typeGroups": [
+					{
+						"key": "NC",
+						"desc": "NC"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "开关特性",
+			"boolParse": true
+		},
+		{
+			"key": "RESIST",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 0,
+			"doubleMinvalue": 0,
+			"unit": "Ω",
+			"desc": "电阻值",
+			"boolParse": true
+		},
+		{
+			"key": "RELATION",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "parallel",
+				"typeDesc": "并联",
+				"typeGroups": [
+					{
+						"key": "parallel",
+						"desc": "并联"
+					},
+					{
+						"key": "series",
+						"desc": "串联"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "关系",
+			"boolParse": true
+		}
+	]
+}

@@ -1,0 +1,68 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "100M",
+				"typeDesc": "100M",
+				"typeGroups": [
+					{
+						"key": "1000M",
+						"desc": "1000M"
+					},
+					{
+						"key": "100M",
+						"desc": "100M"
+					},
+					{
+						"key": "10M",
+						"desc": "10M"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "SWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "软件标签属性",
+			"boolParse": true
+		},
+		{
+			"key": "BUSTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					},
+					{
+						"key": "BUS",
+						"desc": "BUS"
+					}
+				]
+			},
+			"desc": "总线标签属性",
+			"boolParse": true
+		}
+	]
+}

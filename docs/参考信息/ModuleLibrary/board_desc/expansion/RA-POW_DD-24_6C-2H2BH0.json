@@ -1,0 +1,33 @@
+{
+    "RA-POW_DD-24_6C-2H2BH0": {
+      "基本信息": {
+        "name": "能源板",
+        "desc": "",
+        "type": "MV-82039",
+        "ver": "V2.0.0",
+        "id_dip":"ID_DIP_NULL",
+        "ce_mode_set":0,
+        "di_hd_mode_set":0,
+        "power_type": 4,
+        "board_type": ["BOARD_POWER"],
+        "mcu":[
+          {"chip":"R130"}
+        ]
+      },
+      "通信接口": {
+        "can": [
+          {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN",
+			"ucan_id":[
+			{ 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[71]
+			}
+			]
+          }
+        ]
+      }
+  }
+} 

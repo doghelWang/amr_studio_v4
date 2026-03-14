@@ -1,0 +1,1 @@
+{"interfaceParamsArray":[{"key":"VOUT","type":"DATA_DOUBLE","doubleValue":0,"doubleMaxvalue":0,"doubleMinvalue":0,"unit":"V","desc":"额定输出电压","boolParse":true},{"key":"CAPACITY","type":"DATA_DOUBLE","doubleValue":0,"doubleMaxvalue":999,"doubleMinvalue":0,"unit":"AH","desc":"容量","boolParse":true}]}

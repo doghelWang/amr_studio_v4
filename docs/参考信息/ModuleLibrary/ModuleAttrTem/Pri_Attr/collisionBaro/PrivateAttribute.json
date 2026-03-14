@@ -1,0 +1,21 @@
+{
+	"privateAttrs": [
+		{
+			"key": "collisionAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "thresholdBaro",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 220,
+					"doubleMinvalue": 0,
+					"unit": "Pa",
+					"desc": "气压阈值",
+					"boolMustfill": true,
+					"boolBasic": true
+				}
+			]
+		}
+	]
+}

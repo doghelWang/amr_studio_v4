@@ -1,0 +1,288 @@
+{
+	"extendParams": [
+		{
+			"key": "parentNodeUuid",
+			"type": "DATA_COMBOX",
+			"desc": "从属机构",
+			"boolParse": true
+		},
+		{
+			"key": "locCoordX",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "X坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordY",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Y坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordZ",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Z坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "GyroUpSurfaceOri",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "UPSUFACE_ORI_DOWN",
+				"typeDesc": "下",
+				"typeGroups": [
+					{
+						"key": "UPSUFACE_ORI_DOWN",
+						"desc": "下",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_FRONT",
+									"typeDesc": "前",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_FRONT",
+											"desc": "前"
+										},
+										{
+											"key": "OUTLET_DIR_BACK",
+											"desc": "后"
+										},
+										{
+											"key": "OUTLET_DIR_LEFT",
+											"desc": "左"
+										},
+										{
+											"key": "OUTLET_DIR_RIGHT",
+											"desc": "右"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					},
+					{
+						"key": "UPSUFACE_ORI_UP",
+						"desc": "上",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_FRONT",
+									"typeDesc": "前",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_FRONT",
+											"desc": "前"
+										},
+										{
+											"key": "OUTLET_DIR_BACK",
+											"desc": "后"
+										},
+										{
+											"key": "OUTLET_DIR_LEFT",
+											"desc": "左"
+										},
+										{
+											"key": "OUTLET_DIR_RIGHT",
+											"desc": "右"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					},
+					{
+						"key": "UPSUFACE_ORI_FRONT",
+						"desc": "前",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_UP",
+									"typeDesc": "上",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_UP",
+											"desc": "上"
+										},
+										{
+											"key": "OUTLET_DIR_DOWN",
+											"desc": "下"
+										},
+										{
+											"key": "OUTLET_DIR_LEFT",
+											"desc": "左"
+										},
+										{
+											"key": "OUTLET_DIR_RIGHT",
+											"desc": "右"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					},
+					{
+						"key": "UPSUFACE_ORI_BACK",
+						"desc": "后",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_UP",
+									"typeDesc": "上",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_UP",
+											"desc": "上"
+										},
+										{
+											"key": "OUTLET_DIR_DOWN",
+											"desc": "下"
+										},
+										{
+											"key": "OUTLET_DIR_LEFT",
+											"desc": "左"
+										},
+										{
+											"key": "OUTLET_DIR_RIGHT",
+											"desc": "右"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					},
+					{
+						"key": "UPSUFACE_ORI_LEFT",
+						"desc": "左",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_FRONT",
+									"typeDesc": "前",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_FRONT",
+											"desc": "前"
+										},
+										{
+											"key": "OUTLET_DIR_UP",
+											"desc": "上"
+										},
+										{
+											"key": "OUTLET_DIR_BACK",
+											"desc": "后"
+										},
+										{
+											"key": "OUTLET_DIR_DOWN",
+											"desc": "下"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					},
+					{
+						"key": "UPSUFACE_ORI_RIGHT",
+						"desc": "右",
+						"arrayCmobEle": [
+                            {
+                                "key": "outletDir",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "OUTLET_DIR_FRONT",
+									"typeDesc": "前",
+									"typeGroups": [
+										{
+											"key": "OUTLET_DIR_FRONT",
+											"desc": "前"
+										},
+										{
+											"key": "OUTLET_DIR_UP",
+											"desc": "上"
+										},
+										{
+											"key": "OUTLET_DIR_BACK",
+											"desc": "后"
+										},
+										{
+											"key": "OUTLET_DIR_DOWN",
+											"desc": "下"
+										}
+									]
+								},
+								"desc": "出线方向"
+                            }
+                        ]
+					}
+				]
+			},
+			"desc": "陀螺仪上表面朝向"
+		},
+		{
+			"key": "locCoordROLL",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 180,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "翻滚角",
+			"boolParse": true,
+			"boolMustfill": true,
+			"boolNoeditable":true
+		},
+		{
+			"key": "locCoordYAW",
+			"type": "DATA_DOUBLE",
+			"doubleValue": -90,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "偏航角",
+			"boolParse": true,
+			"boolMustfill": true,
+			"boolNoeditable":true
+		},
+		{
+			"key": "locCoordPITCH",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "俯仰角",
+			"boolParse": true,
+			"boolMustfill": true,
+			"boolNoeditable":true
+		}
+	]
+}

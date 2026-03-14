@@ -1,0 +1,490 @@
+{
+	"moduleGroupName": "MOTOR-MCXL501TAFUKM",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "MOTOR-MCXL501TAFUKM",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "旋转电机-MCXL501TAFUKM",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:39:42.837",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "C:/Users/huangjingchong/Desktop/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "DriverSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "driver",
+						"typeDesc": "\u0004"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "PMSMMotor"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 80,
+						"sizeWidth": 87,
+						"sizeHeight": 128
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "MOTOR-MCXL501TAFUKM",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "motorAttr",
+						"desc": "电机属性",
+						"arrayBaseEle": [
+							{
+								"key": "ENCType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "ENCODER_INC",
+									"typeDesc": "增量式编码器",
+									"typeGroups": [
+										{
+											"key": "ENCODER_NULL",
+											"desc": "无"
+										},
+										{
+											"key": "ENCODER_INC",
+											"desc": "增量式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "encoderLine",
+													"type": "DATA_INT32",
+													"int32Value": 2500,
+													"int32Maxvalue": 10000,
+													"int32Minvalue": 1,
+													"desc": "编码器线数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_MULTI_TURN_ABS",
+											"desc": "多圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 8,
+													"int32Maxvalue": 20,
+													"int32Minvalue": 1,
+													"desc": "编码器单圈位数"
+												},
+												{
+													"key": "multiTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 8,
+													"int32Maxvalue": 24,
+													"int32Minvalue": 1,
+													"desc": "编码器多圈位数"
+												}
+											]
+										},
+										{
+											"key": "ENCODER_SGL_TURN_ABS",
+											"desc": "单圈绝对式编码器",
+											"arrayCmobEle": [
+												{
+													"key": "sglTurnBit",
+													"type": "DATA_INT32",
+													"int32Value": 8,
+													"int32Maxvalue": 20,
+													"int32Minvalue": 1,
+													"desc": "编码器单圈位数"
+												}
+											]
+										}
+									]
+								},
+								"desc": "编码器类型",
+								"boolMustfill": true
+							},
+							{
+								"key": "initMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "MODE_FREERUN",
+									"typeDesc": "FREERUN模式",
+									"typeGroups": [
+										{
+											"key": "MODE_FREERUN",
+											"desc": "FREERUN模式"
+										},
+										{
+											"key": "MODE_VELOCITY_ZERO",
+											"desc": "速度0模式"
+										}
+									]
+								},
+								"desc": "电机初始状态",
+								"boolHide": true
+							},
+							{
+								"key": "RPM",
+								"type": "DATA_INT32",
+								"int32Value": 3000,
+								"int32Maxvalue": 9999,
+								"int32Minvalue": 0,
+								"unit": "RPM",
+								"desc": "电机额定转速",
+								"boolMustfill": true
+							},
+							{
+								"key": "bTemper",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否支持电机温度获取",
+								"boolHide": true
+							},
+							{
+								"key": "bHbrake",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否带抱闸"
+							},
+							{
+								"key": "bReverse",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否反向",
+								"boolHide": true
+							},
+							{
+								"key": "torque",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "N*m",
+								"desc": "额定扭矩"
+							},
+							{
+								"key": "gearRatio",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 180.76,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 1,
+								"desc": "减速比"
+							},
+							{
+								"key": "ratedCurr",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "A",
+								"desc": "额定电流"
+							},
+							{
+								"key": "overCurrCoef",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"desc": "过流系数"
+							},
+							{
+								"key": "defaultAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认加速度",
+								"boolHide": true
+							},
+							{
+								"key": "defaultDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "默认减速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxAcc",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大加速度",
+								"boolHide": true
+							},
+							{
+								"key": "maxDec",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "r/s^2",
+								"desc": "电机支持的最大减速度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "PI",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "LINE",
+						"busInterfaceNums": 1
+					},
+					{
+						"busInterfaceType": "ENCR",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "PI_1",
+						"type": "PI",
+						"desc": "PI_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "LINE_1",
+						"type": "LINE",
+						"desc": "LINE_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											},
+											{
+												"key": "One-Phase",
+												"desc": "单相（液压）"
+											},
+											{
+												"key": "Two-Phase",
+												"desc": "两相（步进）"
+											},
+											{
+												"key": "Three-Phase",
+												"desc": "三相（伺服）"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "IOUT",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输出电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					},
+					{
+						"key": "ENCR_1",
+						"type": "ENCR",
+						"desc": "ENCR_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "HALL",
+										"typeDesc": "HALL",
+										"typeGroups": [
+											{
+												"key": "HALL",
+												"desc": "HALL"
+											},
+											{
+												"key": "ABZ",
+												"desc": "ABZ"
+											},
+											{
+												"key": "RS422",
+												"desc": "RS422"
+											},
+											{
+												"key": "RS485",
+												"desc": "RS485"
+											},
+											{
+												"key": "ABZ+HALL",
+												"desc": "ABZ+HALL"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "SWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "软件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {}
+					}
+				]
+			}
+		}
+	]
+}

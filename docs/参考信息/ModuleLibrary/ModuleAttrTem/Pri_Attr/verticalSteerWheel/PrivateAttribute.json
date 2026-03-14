@@ -1,0 +1,192 @@
+{
+    "privateAttrs": [
+        {
+            "key": "wheelAttr",
+            "desc": "基本属性",
+            "arrayBaseEle": [
+                {
+                    "key": "wheelRadius",
+                    "type": "DATA_DOUBLE",
+                    "doubleValue": 0,
+                    "doubleMaxvalue": 999,
+                    "doubleMinvalue": 1,
+                    "unit": "mm",
+                    "desc": "轮半径",
+                    "boolMustfill": true,
+                    "boolBasic": true
+                },
+				{
+                    "key": "angleLmtPos",
+                    "type": "DATA_DOUBLE",
+                    "doubleValue": 0,
+                    "doubleMaxvalue": 175,
+                    "doubleMinvalue": 0,
+                    "unit": "°",
+                    "desc": "正限位角度"
+                },
+				{
+                	"key": "angleLmtNeg",
+                	"type": "DATA_DOUBLE",
+                	"doubleValue": 0,
+                	"doubleMaxvalue": 0,
+                	"doubleMinvalue": -175,
+                	"unit": "°",
+                	"desc": "负限位角度"
+                },
+				{
+					"key": "rotOmgLmt",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "°/s",
+					"desc": "转向能力(最大)",
+					"boolHide": true
+				}
+            ]
+        },
+		{
+			"key": "angleSensor",
+			"desc": "转向反馈",
+			"arrayBaseEle": [
+				{
+					"key": "angleSensorType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "GROUP_CALI_ABS_INTERNAL",
+						"typeDesc": "绝对式编码器(内置)",
+						"typeGroups": [
+							{
+								"key": "GROUP_CALI_ABS_INTERNAL",
+								"desc": "绝对式编码器(内置)"
+							},
+							{
+								"key": "GROUP_CALI_ABS_EXTERNAL",
+								"desc": "绝对式编码器(外置)",
+								"arrayCmobEle": [
+									{
+                                    	"key": "relatedEncode",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "关联编码器",
+										"fixedSource": [
+											"sensor/absoluteValueEncode"
+										]
+                                    },
+									{
+										"key": "gearRatio",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 1,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 1,
+										"desc": "减速比(齿轮比)",
+										"boolHide": true
+									}
+                                ]
+							},
+							{
+								"key": "GROUP_CALI_HELM_IO",
+								"desc": "增量编码器(内置)",
+								"arrayCmobEle": [
+									{
+                                    	"key": "relatePosIo",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "正限位关联io",
+										"fixedSource": [
+											"sensor/proximitySensor",
+											"sensor/PT"
+										]
+                                    },
+									{
+                                    	"key": "relateNegIo",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "负限位关联io",
+										"fixedSource": [
+											"sensor/proximitySensor",
+											"sensor/PT"
+										]
+                                    },
+									{
+                                    	"key": "relateAngleZero",
+                                    	"type": "DATA_FIXED_E",
+                                    	"stringFix": "",
+                                    	"desc": "零位关联io",
+										"fixedSource": [
+											"sensor/proximitySensor",
+											"sensor/PT"
+										]
+                                    },
+									{
+                                    	"key": "angleDeviationZero",
+                                    	"type": "DATA_DOUBLE",
+                                    	"doubleValue": 0,
+                                    	"doubleMaxvalue": 360,
+                                    	"doubleMinvalue": -360,
+                                    	"unit": "°",
+                                    	"desc": "零位角度偏差",
+										"boolHide": true
+                                    },
+									{
+										"key": "detectModeZero",
+										"type": "DATA_COMBOX",
+										"comboType": {
+											"typeKey": "DETECT_MODE_NONE",
+											"typeDesc": "无",
+											"typeGroups": [
+												{
+													"key": "DETECT_MODE_NONE",
+													"desc": "无"
+												},
+												{
+													"key": "ZERO_TRIG_MODE_POINT",
+													"desc": "单点检测"
+												},
+												{
+													"key": "ZERO_TRIG_MODE_POS_AREA",
+													"desc": "正向区域检测"
+												},
+												{
+													"key": "ZERO_TRIG_MODE_NEG_AREA",
+													"desc": "负向区域检测"
+												}
+											]
+										},
+										"desc":"零位检测模式",
+										"boolHide": true
+									}
+                                ]
+							}
+						]
+					},
+					"desc":"类型"
+				}
+			]
+		},
+		{
+            "key": "linkMotorAttr",
+            "desc": "电机",
+            "arrayBaseEle": [
+                {
+                    "key": "relateRotMotor",
+                     "type": "DATA_FIXED_E",
+                     "stringFix": "",
+                     "desc": "转向电机",
+					"fixedSource": [
+						"driver/PMSMMotor"
+						]
+                },
+				{
+                    "key": "relateWalkMotor",
+                     "type": "DATA_FIXED_E",
+                     "stringFix": "",
+                     "desc": "行走电机",
+					"fixedSource": [
+						"driver/PMSMMotor"
+						]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,188 @@
+{
+    "Laser_Port_Setting": [
+		{
+			"Type": "PEPPERL-FUCHS/OMD25M-R2000-B23-V1V1D-SD-1L",
+            "PortDefault":"5000"
+		},
+		{
+			"Type": "PEPPERL-FUCHS/OMD30M-R2000-B23-V1V1D-HD-1L",
+            "PortDefault":"5000"
+		},
+		{
+			"Type": "PEPPERL-FUCHS/OMD30M-R2000-B23-V1V1D-1L",
+            "PortDefault":"5000"
+		},
+		{
+			"Type": "SICK/TIM240-2050300",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "SICK/TIM473-2050106",
+            "PortDefault":"2111"
+		},
+		{
+			"Type": "SICK/TIM510-9950000S01",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "SICK/TIM510-9950000S08",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "SICK/TIM561-2050101",
+            "PortDefault":"2111"
+		},
+		{
+			"Type": "SICK/LMS111-10100",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "SICK/NANS3-AAAZ30AN1",
+            "PortDefault":"2122"
+		},
+		{
+			"Type": "SICK/MICS3-CBAZ90PZ1P01",
+            "PortDefault":"2122"
+		},
+		{
+			"Type": "SICK/PicoScan 150",
+            "PortDefault":"2112"
+		},
+		{
+			"Type": "HOKUYO/UST-20LX",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "HOKUYO/UAM-05LP-T301",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "HOKUYO/UST-05LA",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "HOKUYO/UST-05LN",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "WHST/STL1-3",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "WHST/MR-LS-01H-N2725",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "WHST/MR-LS-01H-N2725N",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "WHST/MR-LS-02H-S2725",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "WHST/MR-LS-06H-N3025",
+            "PortDefault":"10941"
+		},
+		{
+			"Type": "WHST/MR-LS-07H-S2025",
+            "PortDefault":"10941"
+		},
+		{
+			"Type": "WHST/MR-LS-04H-N2005",
+            "PortDefault":"10941"
+		},
+		{
+			"Type": "WHST/MR-LS-05H-N4017",
+            "PortDefault":"10941"
+		},
+		{
+			"Type": "KELI/LS-2027DE/H03",
+            "PortDefault":"2112"
+		},
+		{
+			"Type": "KELI/KLMs-0327PE",
+            "PortDefault":"2112"
+		},
+		{
+			"Type": "PACECAT/LDS-50C-C30E",
+            "PortDefault":"6543"
+		},
+		{
+			"Type": "PACECAT/LDS-E300-E",
+            "PortDefault":"6543"
+		},
+		{
+			"Type": "PACECAT/LDS-E200-E-7",
+            "PortDefault":"6543"
+		},
+		{
+			"Type": "PACECAT/LDS-E300-E-6",
+            "PortDefault":"1"
+		},
+		{
+			"Type": "FREE-OPTICS/MR-LS-01F-S1533-BLACK",
+            "PortDefault":"2111"
+		},
+		{
+			"Type": "FREE-OPTICS/MR-LS-01F-S1533-MIDDLE",
+            "PortDefault":"2111"
+		},
+		{
+			"Type": "FREE-OPTICS/MR-LS-02F-N3010",
+            "PortDefault":"2111"
+		},
+		{
+			"Type": "VANJEE/WLR-716",
+            "PortDefault":"2110"
+		},
+		{
+			"Type": "VANJEE/WLR-716MINI",
+            "PortDefault":"2110"
+		},
+		{
+			"Type": "VANJEE/WLR-718H",
+            "PortDefault":"2110"
+		},
+		{
+			"Type": "VANJEE/WLR-719",
+            "PortDefault":"6050"
+		},
+		{
+			"Type": "HINSON/LE-50821",
+            "PortDefault":"8080"
+		},
+		{
+			"Type": "HINSON/LE-50821-2",
+            "PortDefault":"8080"
+		},
+		{
+			"Type": "ROBOSENSE/RS-LS-RS-HELIOS16P",
+            "PortDefault":"6699"
+		},
+		{
+			"Type": "LEISHEN/CX16",
+            "PortDefault":"6699"
+		},
+		{
+			"Type": "LIVOX/MID-360",
+            "PortDefault":"57000"
+		},
+		{
+			"Type": "OLEI/LR-1F",
+            "PortDefault":"2368"
+		},
+		{
+			"Type": "LITRA/LTME-02A-JK-YQ1",
+            "PortDefault":"2105"
+		},
+		{
+			"Type": "JIUWU/M30E",
+            "PortDefault":"10940"
+		},
+		{
+			"Type": "ORD/MS200",
+            "PortDefault":"8081"
+		}
+    ]
+}

@@ -1,0 +1,109 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "NO",
+				"typeDesc": "NO",
+				"typeGroups": [
+					{
+						"key": "NO",
+						"desc": "NO"
+					},
+					{
+						"key": "NC",
+						"desc": "NC"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true,
+			"boolHide": true
+		},
+		{
+			"key": "HWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "BUTT",
+				"typeDesc": "BUTT",
+				"typeGroups": [
+					{
+						"key": "EMO",
+						"desc": "EMO"
+					},
+					{
+						"key": "BUTT",
+						"desc": "BUTT"
+					},
+					{
+						"key": "SWITCH",
+						"desc": "SWITCH"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "硬件标签属性",
+			"boolParse": true
+		},
+		{
+			"key": "FUNCTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "ho_access",
+				"typeDesc": "接入",
+				"typeGroups": [
+					{
+						"key": "ho_access",
+						"desc": "接入"
+					},
+					{
+						"key": "ho_ahead",
+						"desc": "前进"
+					},
+					{
+						"key": "ho_back",
+						"desc": "后退"
+					},
+					{
+						"key": "ho_left",
+						"desc": "左移"
+					},
+					{
+						"key": "ho_right",
+						"desc": "右移"
+					},
+					{
+						"key": "ho_turn_left",
+						"desc": "左转"
+					},
+					{
+						"key": "ho_turn_right",
+						"desc": "右转"
+					},
+					{
+						"key": "ho_lift_up",
+						"desc": "举升"
+					},
+					{
+						"key": "ho_lift_down",
+						"desc": "放下"
+					},
+					{
+						"key": "ho_disable_obs",
+						"desc": "避障关闭"
+					}
+				]
+			},
+			"desc": "功能标签属性",
+			"boolParse": true
+		}
+	]
+}

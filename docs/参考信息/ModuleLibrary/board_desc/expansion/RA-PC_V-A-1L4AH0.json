@@ -1,0 +1,62 @@
+{
+  "RA-PC_V-A-1L4AH0": {
+    "基本信息": {
+	  "name": "阀控板",
+	  "desc": "",
+	  "type": "MV_83148",
+	  "ver": "V1.0.0",
+	  "id_dip":"ID_DIP_2_BIT",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+	  "board_type": ["BOARD_VALVE_DRIVE"],
+	  "mcu":[
+		  {
+			  "chip":"R111"
+		  }
+	  ]
+    },
+    "通信接口": {
+      "can": [
+        {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN",
+			"ucan_id":[
+			  { 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[31,32,33,34]
+			  }
+			]
+        }
+      ]
+    },
+    "功能接口": {
+      "pwm": [
+        {
+			"name": "PWM_1",
+			"desc": "",
+			"mcu": 0,
+			"chan": 0
+        },
+        {
+			"name": "PWM_2",
+			"desc": "",
+			"mcu": 0,
+			"chan": 1
+        },
+        {
+			"name": "PWM_3",
+			"desc": "",
+			"mcu": 0,
+			"chan": 2
+        },
+        {
+			"name": "PWM_4",
+			"desc": "",
+			"mcu": 0,
+			"chan": 3
+        }
+      ]
+    }
+  }
+}
