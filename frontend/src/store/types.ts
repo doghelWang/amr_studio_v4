@@ -215,6 +215,7 @@ export interface WheelComponent {
     ratedCurrent?: number;      // A
     ratedSpeed?: number;        // RPM
     gearRatio?: number;         // x:1
+    hasBrake?: boolean;
     encoderType?: 'NONE' | 'INCREMENTAL' | 'ABSOLUTE';
     encoderResolution?: number; // Lines or Bits
 }
@@ -260,6 +261,11 @@ export interface WheelConfig {
     zeroPos: number;
     leftLimit: number;
     rightLimit: number;
+
+    // Limit Sensors (UUIDs of connected sensors)
+    relatePosIo?: string;
+    relateNegIo?: string;
+    relateZeroIo?: string;
 }
 
 export const DRIVER_MODELS = [

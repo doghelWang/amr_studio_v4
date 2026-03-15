@@ -19,12 +19,15 @@ export const BUILT_IN_TEMPLATES: TemplateInfo[] = [
     { id: 'blank', name: '空白项目', description: '从零开始自定义所有参数', driveType: '', wheelCount: 0, icon: '📄' },
 ];
 
+const getApiUrl = (path: string) => {
+    const host = window.location.hostname === 'localhost' ? '127.0.0.1' : window.location.hostname;
+    return `http://${host}:8002/api/v1${path}`;
+};
+
 // Load template from static JSON assets
 export async function loadTemplate(templateId: string): Promise<AmrProject | null> {
     if (templateId === 'blank') return null;
-
     try {
-        // Use Vite's import.meta.glob to avoid runtime crashing if directory is empty
         const templates = import.meta.glob('../assets/templates/*.json');
         const path = `../assets/templates/${templateId}.json`;
         if (templates[path]) {
@@ -48,10 +51,11 @@ export interface BackendTemplateInfo {
 
 export async function fetchBackendTemplates(): Promise<BackendTemplateInfo[]> {
     try {
-        const res = await fetch('http://localhost:8002/api/v1/templates');
+        const res = await fetch(getApiUrl('/templates'));
         if (!res.ok) return [];
         const data = await res.json();
-        return data.templates || [];
+        // Backend returns templates list directly or wrapped in {templates: []}
+        return data.templates || data || [];
     } catch {
         return [];
     }
@@ -59,7 +63,7 @@ export async function fetchBackendTemplates(): Promise<BackendTemplateInfo[]> {
 
 export async function loadBackendTemplate(templateId: string): Promise<AmrProject | null> {
     try {
-        const res = await fetch(`http://localhost:8002/api/v1/templates/${templateId}`);
+        const res = await fetch(getApiUrl(`/templates/${templateId}`));
         if (!res.ok) return null;
         return await res.json() as AmrProject;
     } catch {
