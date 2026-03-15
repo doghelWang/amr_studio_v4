@@ -1,0 +1,100 @@
+{
+	"privateAttrs": [
+		{
+			"key": "sensorAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "yawRangeMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "偏航角最小值",
+					"boolHide": true
+				},
+				{
+					"key": "yawRangeMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "偏航角最大值",
+					"boolHide": true
+				},
+				{
+					"key": "rollRangeMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "翻滚角最小值",
+					"boolHide": true
+				},
+				{
+					"key": "rollRangeMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "翻滚角最大值",
+					"boolHide": true
+				},
+				{
+					"key": "pitchRangeMin",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "俯仰角最小值",
+					"boolHide": true
+				},
+				{
+					"key": "pitchRangeMax",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": -180,
+					"unit": "°",
+					"desc": "俯仰角最大值",
+					"boolHide": true
+				},
+				{
+					"key": "angularResolution",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 180,
+					"doubleMinvalue": 0,
+					"unit": "°",
+					"desc": "角度分辨率",
+					"boolHide": true
+				},
+				{
+					"key": "accelerationResolution",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s",
+					"desc": "加速度分辩率",
+					"boolHide": true
+				},
+				{
+					"key": "accelerationAccuracy",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 360,
+					"doubleMinvalue": 0,
+					"unit": "°/s",
+					"desc": "加速度精度",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,145 @@
+{
+    "RA-DR_D-48_25DB-311BH3": {
+      "基本信息": {
+		"name": "伺服驱动器",
+		"desc": "一拖二1000W",
+		"type": "MV84053",
+		"ver": "V1.0.0",
+		"id_dip":"ID_DIP_NULL",
+		"ce_mode_set":0,
+		"di_hd_mode_set":0,
+		"board_type": ["BOARD_HIK_SERVO_ST"],
+		"mcu":[
+		  {
+			  "chip":"R131"
+		  }
+		]
+      },
+	  "通信接口": {
+		"can": [
+		  {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN_CANOPEN",
+			"ucan_id":[
+			  { 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[]
+			  }
+			]
+		  }
+		]
+	  },
+      "io接口": {
+        "di": [
+          {
+			"name": "DI_1",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 0,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          },
+          {
+			"name": "DI_2",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 1,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          },
+          {
+			"name": "DI_3",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 2,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          },
+          {
+			"name": "DI_4",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 3,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          },
+          {
+			"name": "DI_5",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 4,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          },
+          {
+			"name": "DI_6",
+			"desc": "",
+			"mcu":0,
+			"group": "GPA",
+			"pin": 5,
+			"io_mode": 0,
+			"freq": 0,
+			"pull_mode": 0,
+			"open_circle_level":1,
+			"hd_if_mode": "NPN" 
+          }
+        ]
+      },
+	  "ai": [
+		{
+			"name": "AI_1",
+			"desc": "驱动器预留",
+			"mcu": 0,
+			"chan": 0
+		},
+		{
+			"name": "AI_2",
+			"desc": "驱动器预留",
+			"mcu": 0,
+			"chan": 1
+		}
+	  ]
+    },
+	"功能接口": {
+		"encr": [
+		  {
+			  "name": "ENCR_1",
+			  "desc": "",
+			  "mcu": 0,
+			  "if_type":"ABZ/HALL",
+			  "chan": 0
+		  }
+		],
+		"line": [
+			{
+				"name": "LINE_1",
+				"desc": "",
+				"mcu": 0,
+				"if_type":"BDC/PMSM/BLDC",
+				"chan": 0
+			}
+		]
+	  }
+  }
+  

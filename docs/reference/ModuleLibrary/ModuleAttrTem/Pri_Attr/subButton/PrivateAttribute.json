@@ -1,0 +1,84 @@
+{
+	"privateAttrs": [
+		{
+			"key": "buttonAttr",
+			"desc": "按钮属性",
+			"arrayBaseEle": [
+				{
+					"key": "buttonType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "BUTTON_COMP_NOT_EMCY",
+						"typeDesc": "非急停按钮",
+						"typeGroups": [
+							{
+								"key": "BUTTON_COMP_NOT_EMCY",
+								"desc": "非急停按钮"
+							},
+							{
+								"key": "BUTTON_COMP_EMCY",
+								"desc": "急停按钮"
+							}
+						]
+					},
+					"desc": "按钮类型",
+					"boolMustfill": true,
+					"boolBasic": true
+				},
+				{
+					"key": "switchMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "knob",
+						"typeDesc": "旋钮式",
+						"typeGroups": [
+							{
+								"key": "knob",
+								"desc": "旋钮式"
+							},
+							{
+								"key": "push",
+								"desc": "按钮式"
+							}
+						]
+					},
+					"desc": "开关方式",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "buttonLamp",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "BUTTON_LAMP_NULL",
+						"typeDesc": "无按钮灯",
+						"typeGroups": [
+							{
+								"key": "BUTTON_LAMP_NULL",
+								"desc": "无按钮灯"
+							},
+							{
+								"key": "SOFT_BUTTON_LAMP",
+								"desc": "软件控制按钮灯"
+							},
+							{
+								"key": "HARD_BUTTON_LAMP",
+								"desc": "硬件控制按钮灯"
+							}
+						]
+					},
+					"desc": "按钮灯控制",
+				},
+				{
+					"key": "selfLock",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否自锁",
+					"boolMustfill": true,
+					"boolBasic": true
+				}
+			]
+		}
+	]
+}

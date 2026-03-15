@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
     Card, Form, Select, Tag, Button, Table, Modal,
-    InputNumber, Typography, Divider, Tabs, Row, Col, Space, Empty
+    Input, InputNumber, Typography, Divider, Tabs, Row, Col, Space, Empty
 } from 'antd';
 import { 
     PlusOutlined, DeleteOutlined, InfoCircleOutlined, 
@@ -18,17 +18,38 @@ export const ControlBoardForm: React.FC = () => {
     const { config, setMcu, addIoBoard, removeIoBoard } = useProjectStore();
     const { mcu, ioBoards } = config;
     const [modalOpen, setModalOpen] = useState(false);
-    const [draft, setDraft] = useState({ model: Object.keys(IO_BOARD_MODELS)[0], canBus: mcu.canBuses[0] ?? 'CAN0', canNodeId: 10 });
+    const [draft, setDraft] = useState({ 
+        name: '', 
+        alias: '', 
+        model: Object.keys(IO_BOARD_MODELS)[0], 
+        canBus: mcu.canBuses[0] ?? 'CAN0', 
+        canNodeId: 10 
+    });
 
     const updDraft = (k: string, v: any) => setDraft(p => ({ ...p, [k]: v }));
 
     const handleAddIo = () => {
-        addIoBoard(draft);
+        // Auto-generate name if empty
+        const finalDraft = {
+            ...draft,
+            name: draft.name || `IO_${ioBoards.length + 1}`
+        };
+        addIoBoard(finalDraft);
         setModalOpen(false);
+        setDraft({ name: '', alias: '', model: Object.keys(IO_BOARD_MODELS)[0], canBus: mcu.canBuses[0] ?? 'CAN0', canNodeId: 10 });
     };
 
     const ioColumns = [
-        { title: '标签', dataIndex: 'label', key: 'label', render: (v: string) => <Tag color="blue">{v}</Tag> },
+        { 
+            title: '实体名称 | 别名', 
+            key: 'name_alias',
+            render: (_: any, r: IoBoardConfig) => (
+                <Space direction="vertical" size={0}>
+                    <Text strong>{r.name}</Text>
+                    <Text type="secondary" style={{ fontSize: 12 }}>{r.alias || '--'}</Text>
+                </Space>
+            )
+        },
         { title: '型号', dataIndex: 'model', key: 'model', render: (v: string) => <Text code>{v}</Text> },
         { title: '接入主控 CAN', dataIndex: 'canBus', key: 'canBus', render: (v: string) => <Tag color="orange">{v}</Tag> },
         { title: '节点 ID', dataIndex: 'canNodeId', key: 'canNodeId' },
@@ -66,7 +87,25 @@ export const ControlBoardForm: React.FC = () => {
                 <Form layout="vertical">
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="软件规格 (Software Spec)" required>
+                            <Form.Item label="实体名称 (Entity Name)" required>
+                                <Input 
+                                    style={{ width: '100%' }} 
+                                    value={mcu.name} 
+                                    onChange={v => setMcu({ name: v.target.value })}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="设备别名 (Alias)">
+                                <Input 
+                                    style={{ width: '100%' }} 
+                                    value={mcu.alias} 
+                                    onChange={v => setMcu({ alias: v.target.value })}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="软件规格 (Software Spec)" required tooltip="规格决定了辅助资源的可用性（如相机等）">
                                 <Select 
                                     value={mcu.model} 
                                     onChange={v => setMcu({ model: v })}
@@ -74,22 +113,17 @@ export const ControlBoardForm: React.FC = () => {
                                 />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
-                            <Form.Item label="设备别名">
-                                <InputNumber style={{ width: '100%' }} value={undefined} disabled placeholder={mcu.alias} />
-                            </Form.Item>
-                        </Col>
-                        <Col span={8}>
+                        <Col span={4}>
                             <Form.Item label="子系统">
                                 <Select value={mcu.subsystem} disabled />
                             </Form.Item>
                         </Col>
-                        <Col span={8}>
+                        <Col span={4}>
                             <Form.Item label="供应商">
                                 <Select value={mcu.vendor} disabled />
                             </Form.Item>
                         </Col>
-                        <Col span={8}>
+                        <Col span={4}>
                             <Form.Item label="版本号">
                                 <Select value={mcu.version} disabled />
                             </Form.Item>
@@ -312,6 +346,36 @@ export const ControlBoardForm: React.FC = () => {
                                 label: `${m}` 
                             }))} 
                         />
+                    </Form.Item>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="实体名称" tooltip="例: IO_1">
+                                <Input 
+                                    style={{ width: '100%' }} 
+                                    value={draft.name} 
+                                    placeholder={`IO_${ioBoards.length + 1}`}
+                                    onChange={v => updDraft('name', v.target.value)} 
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="别名" tooltip="例: 顶盖扩展板">
+                                <Input 
+                                    style={{ width: '100%' }} 
+                                    value={draft.alias} 
+                                    onChange={v => updDraft('alias', v.target.value)} 
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                    <Form.Item label="板卡规格资源预览">
+                        <Card size="small" style={{ background: '#1c1f2b' }}>
+                            <Space size={8} wrap>
+                                <Tag color="blue">DI 端口: {IO_BOARD_MODELS[draft.model] ?? 8}</Tag>
+                                <Tag color="green">DO 端口: --</Tag>
+                                <Tag color="orange">CAN 接口: 1</Tag>
+                            </Space>
+                        </Card>
                     </Form.Item>
                     <div style={{ marginBottom: 16 }}>
                         <Text type="secondary" style={{ fontSize: 12 }}>

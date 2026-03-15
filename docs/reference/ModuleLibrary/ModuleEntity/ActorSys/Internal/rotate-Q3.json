@@ -1,0 +1,348 @@
+{
+	"moduleGroupName": "rotate-Q3",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "rotate-Q3",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:32:49.559",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "E:/00产品管理/07控制器/1203模型搭建/Release_Test20241203/Release/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ActorSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "actor",
+						"typeDesc": "\u0003"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "rotate",
+						"typeDesc": "\u0001"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/2/cylinder.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_CYLINDER",
+					"cylinder": {
+						"diameter": 350,
+						"height": 150
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "rotate-Q3",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "rotateAttr",
+						"desc": "私有属性",
+						"arrayBaseEle": [
+							{
+								"key": "structureForm",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "gearDrive",
+									"typeDesc": "齿轮传动",
+									"typeGroups": [
+										{
+											"key": "wormGear",
+											"desc": "蜗轮蜗杆"
+										},
+										{
+											"key": "gearDrive",
+											"desc": "齿轮传动"
+										},
+										{
+											"key": "beltDrive",
+											"desc": "带传动"
+										}
+									]
+								},
+								"desc": "结构形式",
+								"boolMustfill": true,
+								"boolBasic": true,
+								"boolHide": true
+							},
+							{
+								"key": "drivingForm",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "servo",
+									"typeDesc": "伺服",
+									"typeGroups": [
+										{
+											"key": "servo",
+											"desc": "伺服"
+										}
+									]
+								},
+								"desc": "驱动形式",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "transmissionRelationship",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "line",
+									"typeDesc": "线性",
+									"typeGroups": [
+										{
+											"key": "line",
+											"desc": "线性"
+										},
+										{
+											"key": "unline",
+											"desc": "非线性"
+										}
+									]
+								},
+								"desc": "传动关系",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "sensorMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "zero",
+									"typeDesc": "零位",
+									"typeGroups": [
+										{
+											"key": "zero",
+											"desc": "零位"
+										},
+										{
+											"key": "zeroBlock",
+											"desc": "零位+弧形检测块"
+										},
+										{
+											"key": "encoder",
+											"desc": "绝对式编码"
+										}
+									]
+								},
+								"desc": "传感模式",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "lead",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "mm",
+								"desc": "导程",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "totalSpeedRatio",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 180.76,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"desc": "总速比",
+								"boolMustfill": true
+							},
+							{
+								"key": "maximumSpeed (Idle)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s",
+								"desc": "最大角速度（空载）",
+								"boolMustfill": true
+							},
+							{
+								"key": "maximumAcceleration (Idle)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s^2",
+								"desc": "最大角加速度（空载）",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "maximumDeceleration (Idle)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s^2",
+								"desc": "最大角减速度（空载）",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "maximumSpeed (Full Load)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s",
+								"desc": "最大角速度（满载）",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "maximumAcceleration (Full Load)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s^2",
+								"desc": "最大角加速度（满载）",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "maximumDeceleration (Full Load)",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 100,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s^2",
+								"desc": "最大角减速度（满载）",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "negativeLimit",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": -360,
+								"unit": "°",
+								"desc": "负限位",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "positiveLimit",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": -360,
+								"unit": "°",
+								"desc": "正限位",
+								"boolMustfill": true,
+								"boolHide": true
+							},
+							{
+								"key": "load",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 600,
+								"doubleMaxvalue": 9999,
+								"doubleMinvalue": 0,
+								"unit": "kg",
+								"desc": "负载",
+								"boolHide": true,
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}

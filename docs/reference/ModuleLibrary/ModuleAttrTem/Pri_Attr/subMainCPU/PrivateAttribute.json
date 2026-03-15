@@ -1,0 +1,288 @@
+{
+	"privateAttrs": [
+		{
+			"key": "boardAttr",
+			"desc": "控制板属性",
+			"arrayBaseEle": [
+				{
+					"key": "chipPlatform",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "芯片平台",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "softwareSpec",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "软件规格",
+					"boolMustfill": true,
+					"boolBasic": true
+				},
+				{
+					"key": "isWithGyro",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "no",
+						"typeDesc": "否",
+						"typeGroups": [
+							{
+								"key": "no",
+								"desc": "否"
+							},
+							{
+								"key": "yes",
+								"desc": "是",
+								"arrayCmobEle": [
+                                	{
+										"key": "GyroX",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载陀螺仪X坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "GyroY",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载陀螺仪Y坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "GyroZ",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载陀螺仪Z坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "GyroRoll",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载陀螺仪翻滚角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "GyroPitch",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载陀螺仪俯仰角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "GyroYaw",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载陀螺仪偏航角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "是否有板载陀螺仪"
+				},
+				{
+					"key": "isWithUpCamera",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "no",
+						"typeDesc": "否",
+						"typeGroups": [
+							{
+								"key": "no",
+								"desc": "否"
+							},
+							{
+								"key": "yes",
+								"desc": "是",
+								"arrayCmobEle": [
+                                	{
+										"key": "UpCameraX",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载上读码头X坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "UpCameraY",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载上读码头Y坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "UpCameraZ",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载上读码头Z坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "UpCameraRoll",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载上读码头翻滚角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "UpCameraPitch",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载上读码头俯仰角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "UpCameraYaw",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载上读码头偏航角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "是否有板载上读码头"
+				},
+				{
+					"key": "isWithDownCamera",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "no",
+						"typeDesc": "否",
+						"typeGroups": [
+							{
+								"key": "no",
+								"desc": "否"
+							},
+							{
+								"key": "yes",
+								"desc": "是",
+								"arrayCmobEle": [
+                                	{
+										"key": "DownCameraX",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载下读码头X坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "DownCameraY",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载下读码头Y坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "DownCameraZ",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "mm",
+										"desc": "板载下读码头Z坐标(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "DownCameraRoll",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载下读码头翻滚角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "DownCameraPitch",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载下读码头俯仰角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									},
+									{
+										"key": "DownCameraYaw",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": -99999,
+										"unit": "°",
+										"desc": "板载下读码头偏航角(相对主板)",
+										"boolMustfill": true,
+										"boolHide": true
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "是否有板载下读码头"
+				}
+			]
+		}
+	]
+}

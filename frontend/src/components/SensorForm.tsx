@@ -24,13 +24,15 @@ const CONN_TYPE_COLORS: Record<ConnectionType, string> = {
 
 const BAUD_RATES = [9600, 19200, 57600, 115200, 230400, 460800];
 
-const DEFAULT_SENSOR: Omit<SensorConfig, 'id' | 'label'> = {
-    type: 'LASER_2D', model: 'SICK_TIM561',
+const DEFAULT_SENSOR: Omit<SensorConfig, 'id'> = {
+    name: '', alias: '', label: '',
+    type: 'LASER_2D', model: 'SICK_TIM561-2050101',
     mountX: 500, mountY: 0, mountZ: 200,
     mountYaw: 0, mountPitch: 0, mountRoll: 0,
     usageNavi: true, usageObs: true,
-    connType: 'ETHERNET', ipAddress: '', port: 2112, ethPort: 'ETH0',
+    connType: 'ETHERNET', ipAddress: '192.168.1.100', port: 2111, ethPort: 'ETH0',
     baudRate: 115200, serialPort: '',
+    privateAttrs: {}
 };
 
 export const SensorForm: React.FC = () => {
@@ -38,7 +40,7 @@ export const SensorForm: React.FC = () => {
     const { sensors, mcu } = config;
 
     const [modalOpen, setModalOpen] = useState(false);
-    const [draft, setDraft] = useState<Omit<SensorConfig, 'id' | 'label'>>(DEFAULT_SENSOR);
+    const [draft, setDraft] = useState<Omit<SensorConfig, 'id'>>(DEFAULT_SENSOR);
     const [editId, setEditId] = useState<string | null>(null);
 
     const openAdd = () => {
@@ -48,7 +50,7 @@ export const SensorForm: React.FC = () => {
     };
 
     const openEdit = (s: SensorConfig) => {
-        const { id, label, ...rest } = s;
+        const { id, ...rest } = s;
         setDraft(rest);
         setEditId(id);
         setModalOpen(true);
@@ -64,13 +66,50 @@ export const SensorForm: React.FC = () => {
     };
 
     const upd = (data: Partial<typeof draft>) => setDraft(prev => ({ ...prev, ...data }));
+    const updPrivate = (data: Record<string, any>) => upd({ privateAttrs: { ...(draft.privateAttrs || {}), ...data } });
+
+    const renderPrivateFields = () => {
+        const attrs = draft.privateAttrs || {};
+        switch (draft.type) {
+            case 'LASER_2D':
+            case 'LASER_3D':
+                return (
+                    <Form layout="horizontal">
+                        <Form.Item label="水平视场角起始 (°)"><InputNumber value={attrs.scanRangeHorizonStart} onChange={v => updPrivate({ scanRangeHorizonStart: v })} /></Form.Item>
+                        <Form.Item label="水平视场角终止 (°)"><InputNumber value={attrs.scanRangeHorizonEnd} onChange={v => updPrivate({ scanRangeHorizonEnd: v })} /></Form.Item>
+                        <Form.Item label="应用视场起始 (°)"><InputNumber value={attrs.actualScanRangeHorizonStart} onChange={v => updPrivate({ actualScanRangeHorizonStart: v })} /></Form.Item>
+                        <Form.Item label="应用视场终止 (°)"><InputNumber value={attrs.actualScanRangeHorizonEnd} onChange={v => updPrivate({ actualScanRangeHorizonEnd: v })} /></Form.Item>
+                        <Form.Item label="强度阈值"><InputNumber value={attrs.reflectThreshold} onChange={v => updPrivate({ reflectThreshold: v })} /></Form.Item>
+                    </Form>
+                );
+            case 'BARCODE':
+                return (
+                    <Form layout="horizontal">
+                        <Form.Item label="焦距 (mm)"><InputNumber value={attrs.focalLength} onChange={v => updPrivate({ focalLength: v })} /></Form.Item>
+                        <Form.Item label="曝光时长 (s)"><InputNumber value={attrs.exposure} onChange={v => updPrivate({ exposure: v })} /></Form.Item>
+                        <Form.Item label="分辨率 W"><InputNumber value={attrs.resolutionW} onChange={v => updPrivate({ resolutionW: v })} /></Form.Item>
+                        <Form.Item label="分辨率 H"><InputNumber value={attrs.resolutionH} onChange={v => updPrivate({ resolutionH: v })} /></Form.Item>
+                    </Form>
+                );
+            default:
+                return <Text type="secondary">该型号暂无特殊私有属性</Text>;
+        }
+    };
 
     const tabItems = [
         {
             key: 'type',
-            label: '📦 型号选择',
+            label: '📦 基本属性',
             children: (
                 <Form layout="vertical">
+                    <Space size="large">
+                        <Form.Item label="模块名称 (Entity Name)" required>
+                            <Input value={draft.name} onChange={e => upd({ name: e.target.value })} placeholder="例如: Front_Laser" />
+                        </Form.Item>
+                        <Form.Item label="别名 (Alias)">
+                            <Input value={draft.alias} onChange={e => upd({ alias: e.target.value })} placeholder="例如: 前向雷达" />
+                        </Form.Item>
+                    </Space>
                     <Form.Item label="传感器类型">
                         <Select value={draft.type} onChange={v => upd({ type: v, model: SENSOR_MODELS[v][0] })}
                             options={Object.entries(SENSOR_TYPE_LABELS).map(([k, v]) => ({ value: k, label: v }))} />
@@ -93,6 +132,11 @@ export const SensorForm: React.FC = () => {
                     </Form.Item>
                 </Form>
             )
+        },
+        {
+            key: 'private',
+            label: '🛡️ 私有属性',
+            children: renderPrivateFields()
         },
         {
             key: 'pose',
@@ -143,23 +187,27 @@ export const SensorForm: React.FC = () => {
                                 options={['', ...mcu.ethPorts].map(p => ({ value: p, label: p || '未分配' }))} />
                         </Form.Item>
                     </>}
-                    {(draft.connType === 'RS232' || draft.connType === 'USB') && <>
-                        <Form.Item label="波特率">
-                            <Select value={draft.baudRate} onChange={v => upd({ baudRate: v })}
-                                options={BAUD_RATES.map(b => ({ value: b, label: String(b) }))} />
-                        </Form.Item>
-                        <Form.Item label="串口设备">
-                            <Input value={draft.serialPort} onChange={e => upd({ serialPort: e.target.value })} placeholder="/dev/ttyUSB0" />
-                        </Form.Item>
-                    </>}
                 </Form>
             )
         }
     ];
 
     const columns = [
-        { title: '类型', dataIndex: 'type', key: 'type', render: (t: SensorType) => SENSOR_TYPE_LABELS[t] ?? t },
-        { title: '型号', dataIndex: 'model', key: 'model' },
+        { 
+            title: '传感器名称', dataIndex: 'name', key: 'name', 
+            render: (n: string, s: SensorConfig) => (
+                <Space direction="vertical" size={0}>
+                    <Text strong>{n}</Text>
+                    {s.alias && <Text type="secondary" style={{ fontSize: 11 }}>{s.alias}</Text>}
+                </Space>
+            )
+        },
+        { title: '类型/型号', key: 'typeModel', render: (_: any, s: SensorConfig) => (
+            <Space direction="vertical" size={0}>
+                <Tag color="blue">{SENSOR_TYPE_LABELS[s.type]}</Tag>
+                <Text type="secondary" style={{ fontSize: 11 }}>{s.model}</Text>
+            </Space>
+        )},
         {
             title: '接入', dataIndex: 'connType', key: 'conn',
             render: (t: ConnectionType, s: SensorConfig) => (
@@ -168,10 +216,6 @@ export const SensorForm: React.FC = () => {
                     {t === 'ETHERNET' && <code style={{ fontSize: 11, color: '#00d2ff' }}>{s.ipAddress}:{s.port}</code>}
                 </span>
             )
-        },
-        {
-            title: '安装位姿 (X/Y/Yaw)', key: 'pose',
-            render: (_: unknown, s: SensorConfig) => <span style={{ fontSize: 12 }}>[{s.mountX}, {s.mountY}] {s.mountYaw}°</span>
         },
         {
             title: '用途', key: 'usage',
@@ -207,7 +251,7 @@ export const SensorForm: React.FC = () => {
                 style={{ background: '#141414' }} />
 
             <Modal title={editId ? '编辑传感器' : '添加传感器节点'} open={modalOpen}
-                onOk={handleOk} onCancel={() => setModalOpen(false)} width={580} okText="确定">
+                onOk={handleOk} onCancel={() => setModalOpen(false)} width={620} okText="确定" destroyOnClose>
                 <Tabs items={tabItems} />
             </Modal>
         </div>

@@ -1,0 +1,46 @@
+{
+	"privateAttrs": [
+		{
+			"key": "sensorAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "resolutionH",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "PPI",
+					"desc": "分辨率H",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "resolutionW",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "PPI",
+					"desc": "分辨率W",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "detectDistance",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "检测距离",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

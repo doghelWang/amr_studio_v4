@@ -1,0 +1,233 @@
+{
+	"RA-IC_I-C-140BH6": {
+		"基本信息": {
+			"name": "潜伏五代专用集成控制器",
+			"desc": "LCD屏，无终端，CAN不合并，TE连接器",
+			"type": "MV-83224",
+			"ver": "V1.0.0",
+			"id_dip": "ID_DIP_NULL",
+			"ce_mode_set": 0,
+			"di_hd_mode_set": 0,
+			"board_type": [
+				"BOARD_SENSOR_INTERFACE"
+			],
+			"mcu": [
+				{
+					"chip": "R110"
+				}
+			]
+		},
+		"通信接口": {
+			"can": [
+				{
+					"name": "CAN_1",
+					"protocol": "PROTOCOL_UCAN",
+					"ucan_id": [
+						{
+							"mcu": 0,
+							"peripheral": "hcan1",
+							"id_map": [
+								38
+							]
+						}
+					]
+				}
+			],
+			"uart": [
+				{
+					"name": "UART_1",
+					"func_mode": "TOF_MODE",
+					"mcu": 0,
+					"func_idx": "uart2"
+				},
+				{
+					"name": "UART_2",
+					"func_mode": "TOF_MODE",
+					"mcu": 0,
+					"func_idx": "uart3"
+				}
+			]
+		},
+		"io接口": {
+			"di": [
+				{
+					"name": "DI_1",
+					"desc": "光电输入1",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 2,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": "NPN"
+				},
+				{
+					"name": "DI_2",
+					"desc": "光电输入2",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 3,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": "NPN"
+				},
+				{
+					"name": "DI_3",
+					"desc": "光电输入3",
+					"mcu": 0,
+					"group": "GPB",
+					"pin": 10,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": "NPN"
+				},
+				{
+					"name": "DI_4",
+					"desc": "光电输入4",
+					"mcu": 0,
+					"group": "GPB",
+					"pin": 11,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": "NPN"
+				},
+				{
+					"name": "DI_5",
+					"desc": "电池锁状态反馈",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 3,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": "NPN"
+				}
+			],
+			"do": [
+				{
+					"name": "DO_1",
+					"desc": "灯带（左）绿",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 8,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_2",
+					"desc": "灯带（左）红",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 7,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_3",
+					"desc": "灯带（左）黄",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 9,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_4",
+					"desc": "灯带（右）绿",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 9,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_5",
+					"desc": "灯带（右）红",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 8,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_6",
+					"desc": "灯带（右）黄",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 10,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				},
+				{
+					"name": "DO_7",
+					"desc": "电池锁/接触器控制",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 7,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 1
+				}
+			]
+		},
+		"功能接口": {
+			"pztb": [
+				{
+					"name": "PZTB_1",
+					"desc": "",
+					"mcu": 0,
+					"chan": 0,
+					"func_pztb": {
+						"sgl_mode": {
+							"normal": 1650,
+							"trig": 0,
+							"threshold": 500
+						},
+						"dual_mode": {
+							"normal": 1100,
+							"trig": 0,
+							"threshold": 500
+						}
+					}
+				}
+			],
+			"bar": [
+				{
+					"name": "BAR_1",
+					"desc": "",
+					"mcu": 0,
+					"chan": 0,
+					"dft_threshold": "300"
+				},
+				{
+					"name": "BAR_2",
+					"desc": "",
+					"mcu": 0,
+					"chan": 1,
+					"dft_threshold": "300"
+				}
+			]
+		}
+	}
+}

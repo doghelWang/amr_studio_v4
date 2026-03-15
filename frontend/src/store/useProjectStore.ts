@@ -10,14 +10,14 @@ import type {
     WheelConfig, SensorConfig, IOConfig, DriveType,
     ProjectSnapshot, AmrProject, ProjectMeta, ChassisConfig
 } from './types';
-import { defaultRobotConfig } from './types';
+import { defaultRobotConfig, IO_BOARD_MODELS } from './types';
 import { runValidation } from '../services/validationEngine';
 import type { ValidationResult } from './types';
 
 // ━━━ Default wheel factory ━━━
 function makeDefaultWheels(driveType: DriveType): WheelConfig[] {
-    const base = (_id: string, label: string, type: WheelConfig['type'], orientation: WheelConfig['orientation'], x: number, y: number): WheelConfig => ({
-        id: uuid(), label, type, mountX: x, mountY: y, mountZ: 0, mountYaw: 0, orientation,
+    const base = (_id: string, name: string, alias: string, type: WheelConfig['type'], orientation: WheelConfig['orientation'], x: number, y: number): WheelConfig => ({
+        id: uuid(), name, alias, label: name, type, mountX: x, mountY: y, mountZ: 0, mountYaw: 0, orientation,
         diameter: 200, track: 650,
         components: [
             { 
@@ -33,8 +33,51 @@ function makeDefaultWheels(driveType: DriveType): WheelConfig[] {
     });
 
     switch (driveType) {
-        case 'DIFFERENTIAL': return [base('fl', 'Left Wheel', 'STANDARD_DIFF', 'FRONT_LEFT', 0, 350), base('fr', 'Right Wheel', 'STANDARD_DIFF', 'FRONT_RIGHT', 0, -350)];
-        default: return [base('sc', 'Main Steer', 'VERTICAL_STEER', 'CENTER', 400, 0)];
+        case 'DIFFERENTIAL': return [
+            base('fl', 'Wheel_L', '左驱动轮', 'STANDARD_DIFF', 'FRONT_LEFT', 0, 350), 
+            base('fr', 'Wheel_R', '右驱动轮', 'STANDARD_DIFF', 'FRONT_RIGHT', 0, -350)
+        ];
+        default: return [base('sc', 'Wheel_Steer', '舵轮', 'VERTICAL_STEER', 'CENTER', 400, 0)];
+    }
+}
+
+// ━━━ Default private attributes for sensors ━━━
+function getDefaultPrivateAttrs(type: SensorConfig['type']): Record<string, any> {
+    switch (type) {
+        case 'LASER_2D':
+        case 'LASER_3D':
+            return {
+                scanRangeHorizonStart: 0,
+                scanRangeHorizonEnd: 360,
+                actualScanRangeHorizonStart: 0,
+                actualScanRangeHorizonEnd: 360,
+                needCalib: false,
+                reflectThreshold: 0,
+                frameRate: 15,
+            };
+        case 'BARCODE':
+            return {
+                focalLength: 0,
+                exposure: 0,
+                needCalib: false,
+                resolutionW: 1280,
+                resolutionH: 960,
+            };
+        case 'CAMERA_BINOCULAR':
+            return {
+                focalLength: 0,
+                exposure: 0,
+                needCalib: false,
+                resolutionW: 1280,
+                resolutionH: 720,
+            };
+        case 'IMU':
+            return {
+                yawRangeMin: -180,
+                yawRangeMax: 180,
+            };
+        default:
+            return {};
     }
 }
 
@@ -50,6 +93,28 @@ const INITIAL_META: ProjectMeta = {
     templateOrigin: 'blank',
     formatVersion: '1.0',
 };
+
+// ━━━ Spec-driven MCU Resource Locking ━━━
+function getMcuResources(model: string): Partial<McuConfig> {
+    const res: Partial<McuConfig> = {
+        hasGyro: true,
+        hasTopCamera: false,
+        hasDownCamera: false,
+        canBuses: ['CAN_1', 'CAN_2', 'CAN_3'],
+        ethPorts: ['ETH0', 'ETH1', 'ETH2', 'ETH3'],
+    };
+
+    if (model.includes('R318AD')) {
+        res.hasTopCamera = true;
+    } else if (model.includes('R349AD')) {
+        res.hasTopCamera = true;
+        res.hasDownCamera = true;
+        res.canBuses = ['CAN_1', 'CAN_2', 'CAN_3', 'CAN_4']; // Expanded CAN for R349
+    } else if (model.includes('R318BN')) {
+        res.hasGyro = false; // Example variation
+    }
+    return res;
+}
 
 export interface ProjectState {
     meta: ProjectMeta;
@@ -104,7 +169,12 @@ export const useProjectStore = create<ProjectState>()(
                 }),
 
                 setMcu: (data) => set((s) => {
-                    const config = { ...s.config, mcu: { ...s.config.mcu, ...data } };
+                    let mcu = { ...s.config.mcu, ...data };
+                    // If model changed, update resources
+                    if (data.model && data.model !== s.config.mcu.model) {
+                        mcu = { ...mcu, ...getMcuResources(data.model) };
+                    }
+                    const config = { ...s.config, mcu };
                     return { config, isDirty: true, validation: runValidation(config) };
                 }),
 
@@ -117,7 +187,20 @@ export const useProjectStore = create<ProjectState>()(
                 addSensor: (sensor) => {
                     const id = uuid();
                     set((s) => {
-                        const newSensor = { id, ...sensor } as SensorConfig;
+                        const typeCount = s.config.sensors.filter(x => x.type === sensor.type).length + 1;
+                        const defaultName = `${sensor.type}_${typeCount}`;
+                        
+                        const newSensor: SensorConfig = { 
+                            ...sensor,
+                            id, 
+                            name: sensor.name || defaultName,
+                            alias: sensor.alias || '',
+                            label: sensor.label || sensor.name || defaultName,
+                            privateAttrs: {
+                                ...getDefaultPrivateAttrs(sensor.type),
+                                ...(sensor.privateAttrs || {})
+                            }
+                        } as SensorConfig;
                         const config = { ...s.config, sensors: [...s.config.sensors, newSensor] };
                         return { config, isDirty: true, validation: runValidation(config) };
                     });
@@ -136,7 +219,19 @@ export const useProjectStore = create<ProjectState>()(
                 }),
 
                 addIoBoard: (board) => set((s) => {
-                    const newBoard: IoBoardConfig = { id: uuid(), label: `IO-${board.model}`, ...board, canBuses: [], diPorts: [], doPorts: [], aiPorts: [] };
+                    const typeCount = s.config.ioBoards.length + 1;
+                    const defaultName = `IO_${typeCount}`;
+                    const newBoard: IoBoardConfig = { 
+                        id: uuid(), 
+                        name: defaultName,
+                        alias: '',
+                        label: defaultName,
+                        model: board.model,
+                        canBus: board.canBus,
+                        canNodeId: board.canNodeId,
+                        canBuses: [], diPorts: Array(IO_BOARD_MODELS[board.model] || 8).fill(''), 
+                        doPorts: [], aiPorts: [] 
+                    };
                     const config = { ...s.config, ioBoards: [...s.config.ioBoards, newBoard] };
                     return { config, isDirty: true, validation: runValidation(config) };
                 }),

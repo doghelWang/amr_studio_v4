@@ -1,0 +1,324 @@
+{
+	"Vender_Type_Controller": {
+		"laser": [
+			{
+				"VenderName": "FREE-OPTICS",
+				"DeviceModel": [
+					"MR-LS-01F-S1533-BLACK",
+					"MR-LS-01F-S1533-MIDDLE",
+					"MR-LS-02F-N3010"
+				]
+			},
+			{
+				"VenderName": "HOKUYO",
+				"DeviceModel": [
+					"UST-20LX",
+					"UAM-05LP-T301",
+					"UST-05LA",
+					"UST-05LN"
+				]
+			},
+			{
+				"VenderName": "KELI",
+				"DeviceModel": [
+					"LS-2027DE/H03",
+					"KLMs-0327PE"
+				]
+			},
+			{
+				"VenderName": "LITRA",
+				"DeviceModel": [
+					"LTME-02A-JK-YQ1"
+				]
+			},
+			{
+				"VenderName": "JIUWU",
+				"DeviceModel": [
+					"M30E"
+				]
+			},
+			{
+				"VenderName": "ORD",
+				"DeviceModel": [
+					"MS200"
+				]
+			},
+			{
+				"VenderName": "PACECAT",
+				"DeviceModel": [
+					"LDS-50C-C30E",
+					"LDS-E300-E",
+					"LDS-E200-E-7",
+					"LDS-E300-E-6"
+				]
+			},
+			{
+				"VenderName": "PEPPERL-FUCHS",
+				"DeviceModel": [
+					"OMD25M-R2000-B23-V1V1D-SD-1L",
+					"OMD30M-R2000-B23-V1V1D-HD-1L",
+					"OMD30M-R2000-B23-V1V1D-1L"
+				]
+			},
+			{
+				"VenderName": "OLEI",
+				"DeviceModel": [
+					"LR-1F"
+				]
+			},
+			{
+				"VenderName": "LEISHEN",
+				"DeviceModel": [
+					"CX16"
+				]
+			},
+			{
+				"VenderName": "ROBOSENSE",
+				"DeviceModel": [
+					"RS-LS-RS-HELIOS16P"
+				]
+			},
+			{
+				"VenderName": "HINSON",
+				"DeviceModel": [
+					"LE-50821",
+					"LE-50821-2"
+				]
+			},
+			{
+				"VenderName": "SICK",
+				"DeviceModel": [
+					"TIM561-2050101",
+					"LMS111-10100",
+					"TIM510-9950000S01",
+					"TIM510-9950000S08",
+					"NANS3-AAAZ30AN1",
+					"TIM240-2050300",
+					"TIM473-2050106",
+					"MICS3-CBAZ90PZ1P01",
+					"PicoScan 150"
+				]
+			},
+			{
+				"VenderName": "VANJEE",
+				"DeviceModel": [
+					"WLR-716",
+					"WLR-716Mini",
+					"WLR-718H",
+					"WLR-719"
+				]
+			},
+			{
+				"VenderName": "WHST",
+				"DeviceModel": [
+					"STL1-3",
+					"MR-LS-01H-N2725",
+					"MR-LS-01H-N2725N",
+					"MR-LS-02H-S2725",
+					"MR-LS-04H-N2005",
+					"MR-LS-05H-N4017",
+					"MR-LS-06H-N3025",
+					"MR-LS-07H-S2025"
+				]
+			}
+		],
+		"3DLaser": [
+			{
+				"VenderName": "LIVOX",
+				"DeviceModel": [
+					"MID-360"
+				]
+			}
+		],
+		"codeReader": [
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": [
+					"MV_SC2000AM",
+					"MV_ID3016PM"
+				]
+			}
+		],
+		"stereo": [
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": [
+					"REALSENS_STEREO",
+					"MV_EB435I"
+				]
+			},
+			{
+				"VenderName": "BERXELP",
+				"DeviceModel": [
+					"100R"
+				]
+			}
+		],
+		"TOFCamera": [
+			{
+				"VenderName": "IFM",
+				"DeviceModel": [
+					"O3X_120"
+				]
+			}
+		],
+		"subBattery": [
+			{
+				"VenderName": "Goldencell",
+				"DeviceModel": [
+					"U-BAT-LFP-480024-F1-Aa-HJ"
+				]
+			},
+			{
+				"VenderName": "CBAK",
+				"DeviceModel": [
+					"U_MR_LFP_480024_F1_C_AA0"
+				]
+			},
+			{
+				"VenderName": "MT",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			},
+			{
+				"VenderName": "JUYUN",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			},
+			{
+				"VenderName": "LP",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			},
+			{
+				"VenderName": "JBD",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			},
+			{
+				"VenderName": "JINYUAN",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			},
+			{
+				"VenderName": "BAIWEI",
+				"DeviceModel": [
+					"BATTERY"
+				]
+			}
+		],
+		"gyro": [
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": [
+					"SPI_ON_BOARD",
+					"MV_89013_V13"
+				]
+			}
+		],
+		"fifthGeneration": [
+			{
+				"VenderName": "LIERDA",
+				"DeviceModel": [
+					"5G"
+				]
+			},
+			{
+				"VenderName": "TROY",
+				"DeviceModel": [
+					"5G"
+				]
+			},
+			{
+				"VenderName": "HONGDIAN",
+				"DeviceModel": [
+					"5G"
+				]
+			},
+			{
+				"VenderName": "JENET",
+				"DeviceModel": [
+					"5G"
+				]
+			},
+			{
+				"VenderName": "OTHER",
+				"DeviceModel": [
+					"5G"
+				]
+			}
+		],
+		"subScreen": [
+			{
+				"VenderName": "FLEXEM",
+				"DeviceModel": []
+			},
+			{
+				"VenderName": "KINCO",
+				"DeviceModel": []
+			},
+			{
+				"VenderName": "WEINVIEW",
+				"DeviceModel": []
+			},
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": []
+			
+			}
+		],
+		"audioOut": [
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": [
+					"HOST_UCAN_CTRL",
+					"DSP_CTRL",
+					"HOST_CAN_CTRL"
+				]
+			}
+		],
+		"BDCMotor": [
+			{
+				"VenderName": "",
+				"DeviceModel": [
+					"28ZY38-2450-28JX51G620",
+					"28ZY47P-2450-28JN30K51G0620",
+					"BS28395246000-72KE3",
+					"M28GXR51L6D385-2450",
+					"DC3657A-G51A3",
+					"DC3177A-G200A1",
+					"SDC2847A24-PG51-AC408",
+					"OTHER"
+				]
+			}
+		],
+		"weighSensor": [
+			{
+				"VenderName": "LEAP",
+				"DeviceModel": [
+					"RS_PSW_LEAP5000_0.01"
+				]
+			},
+			{
+				"VenderName": "",
+				"DeviceModel": [
+					"WEIGH_SPOKE_PRESSURE",
+					"WEIGH_HYD_PRESSURE"
+				]
+			}
+		],
+		"common": [
+			{
+				"VenderName": "HIKROBOT",
+				"DeviceModel": [
+					"HIKROBOT"
+				]
+			}
+		]
+	}
+}

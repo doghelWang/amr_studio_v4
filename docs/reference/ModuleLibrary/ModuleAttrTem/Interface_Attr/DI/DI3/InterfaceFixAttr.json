@@ -1,0 +1,92 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "*",
+				"typeDesc": "*",
+				"typeGroups": [
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "HWTAGS",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "PDO",
+				"typeDesc": "PDO",
+				"typeGroups": [
+					{
+						"key": "PDO",
+						"desc": "PDO"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "硬件标签属性",
+			"boolParse": true
+		},
+		{
+			"key": "COLOR",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "LAMP_COLOR_RED",
+				"typeDesc": "LAMP_COLOR_RED",
+				"typeGroups": [
+					{
+						"key": "LAMP_COLOR_RED",
+						"desc": "LAMP_COLOR_RED"
+					},
+					{
+						"key": "LAMP_COLOR_GREEN",
+						"desc": "LAMP_COLOR_GREEN"
+					},
+					{
+						"key": "LAMP_COLOR_BULE",
+						"desc": "LAMP_COLOR_BULE"
+					},
+					{
+						"key": "LAMP_COLOR_YELLOW",
+						"desc": "LAMP_COLOR_YELLOW"
+					},
+					{
+						"key": "LAMP_COLOR_WHITE",
+						"desc": "LAMP_COLOR_WHITE"
+					}
+				]
+			},
+			"desc": "颜色",
+			"boolParse": true
+		},
+		{
+			"key": "VIN",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 999,
+			"doubleMinvalue": 0,
+			"unit": "V",
+			"desc": "额定输入电压",
+			"boolParse": true
+		},
+		{
+			"key": "IIN",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 999999,
+			"doubleMinvalue": 0,
+			"unit": "mA",
+			"desc": "额定输入电流",
+			"boolParse": true
+		}
+	]
+}

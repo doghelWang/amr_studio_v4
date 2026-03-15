@@ -1,0 +1,23 @@
+{
+    "Module_Size_Assign": [
+        {
+			"ModuleShapeEnum":0,
+			"ModuleLength":30,
+			"ModuleWidth":30,
+			"ModuleHeigth":30
+			
+        },
+		{
+			"ModuleShapeEnum":1,
+			"ModuleLength":100,
+			"ModuleWidth":100,
+			"ModuleHeigth":100
+		},
+		{
+			"ModuleShapeEnum":2,
+			"ModuleLength":100,
+			"ModuleWidth":100,
+			"ModuleHeigth":100
+        }	
+    ]
+}

@@ -208,7 +208,8 @@ class CustomCompDescBuilder:
 
         # ── 2. 驱动轮 ────────────────────────────────
         for w in amr.wheels:
-            wnode = self._create_node("driveWheel", w.label)
+            w_name = w.name or w.label or "Unnamed_Wheel"
+            wnode = self._create_node("driveWheel", w_name)
             self._add_relation(wnode, chassis, w.mountX, w.mountY, w.mountZ, w.mountYaw)
             
             # Map topology type to softwareSpec
@@ -222,6 +223,8 @@ class CustomCompDescBuilder:
             spec = spec_map.get(w.type, "diffWheel-Common")
             
             self._add_prop_group(wnode, "轮组参数", [
+                {"1": b"moduleName",   "51": "模块名称".encode('utf-8'), "10": w_name.encode('utf-8')},
+                {"1": b"module_alias", "51": "模块别名".encode('utf-8'), "10": w.alias.encode('utf-8')},
                 {"1": b"softwareSpec", "51": "软件规格".encode('utf-8'), "10": spec.encode('utf-8')},
                 {"1": b"wheelType",    "51": "轮组类型".encode('utf-8'), "10": w.type.encode('utf-8')},
                 {"1": b"wheelRadius",  "51": "轮半径".encode('utf-8'), "2": 10, "35": float_to_fixed64(w.diameter / 2), "45": float_to_fixed64(w.diameter / 2), "50": b"mm"},
@@ -262,30 +265,55 @@ class CustomCompDescBuilder:
         # ── 3. 传感器 ────────────────────────────────
         sensor_ifaces: list[tuple] = []  # (s_uuid, s_port, snode)
         for s in amr.sensors:
-            snode = self._create_node("sensor", s.label)
-            # Use all pose fields
-            self._add_relation(snode, chassis, s.mountX, s.mountY, s.mountZ, s.yaw)
-            # One ETH port per sensor
-            s_uuid, s_port = self._add_interface(snode, "ETH_1")
-            sensor_ifaces.append((s_uuid, s_port, snode))
+            s_name = s.name or s.label or "Unnamed_Sensor"
+            snode = self._create_node("sensor", s_name)
             
-            # Extract software spec from model (remove vendor prefix if exists)
+            # Use 6D pose fields
+            self._add_relation(snode, chassis, s.mountX, s.mountY, s.mountZ, s.mountYaw, s.mountPitch, s.mountRoll)
+            
+            # One ETH port per sensor (if Ethernet)
+            if s.connType == "ETHERNET":
+                s_uuid, s_port = self._add_interface(snode, s.ethPort or "ETH_1")
+                sensor_ifaces.append((s_uuid, s_port, snode))
+            
+            # Extract software spec from model
             s_spec = s.model.split('_')[-1] if '_' in s.model else s.model
 
-            # Private sensor properties
-            self._add_prop_group(snode, "传感器参数", [
-                {"1": s.model.encode('utf-8'), "51": "型号".encode('utf-8'), "10": s.model.encode('utf-8')},
-                {"1": s.type.encode('utf-8'),  "51": "类型".encode('utf-8'), "10": s.type.encode('utf-8')},
-                {"1": b"softwareSpec",         "51": "软件规格".encode('utf-8'), "10": s_spec.encode('utf-8')},
-            ])
+            # Build Sensor Properties
+            s_props = [
+                {"1": b"moduleName",   "51": "模块名称".encode('utf-8'), "10": s_name.encode('utf-8')},
+                {"1": b"module_alias", "51": "模块别名".encode('utf-8'), "10": s.alias.encode('utf-8')},
+                {"1": b"module_dsc_type", "51": "型号".encode('utf-8'), "10": s.model.encode('utf-8')},
+                {"1": b"sensorType",   "51": "类型".encode('utf-8'), "10": s.type.encode('utf-8')},
+                {"1": b"softwareSpec", "51": "软件规格".encode('utf-8'), "10": s_spec.encode('utf-8')},
+            ]
+            
+            # Add electrical info
+            if s.connType == "ETHERNET":
+                s_props.append({"1": b"ip", "51": "IP地址".encode('utf-8'), "10": (s.ipAddress or "").encode('utf-8')})
+                s_props.append({"1": b"port", "51": "端口号".encode('utf-8'), "2": 5, "17": s.port or 0})
+
+            # Add Dynamic Private Attributes
+            for key, val in s.privateAttrs.items():
+                if isinstance(val, (int, float)):
+                    s_props.append({"1": key.encode('utf-8'), "51": key.encode('utf-8'), "2": 10, "35": float_to_fixed64(val)})
+                elif isinstance(val, bool):
+                    s_props.append({"1": key.encode('utf-8'), "51": key.encode('utf-8'), "2": 1, "10": b"true" if val else b"false"})
+                else:
+                    s_props.append({"1": key.encode('utf-8'), "51": key.encode('utf-8'), "10": str(val).encode('utf-8')})
+
+            self._add_prop_group(snode, "传感器参数", s_props)
             nodes.append(snode)
 
         # ── 4. IO 扩展模块 ──────────────────────────
         io_ifaces: list[tuple] = []
         for io in amr.ioBoards:
-            ionode = self._create_node("extendedlnterface", io.label or io.model)
+            io_name = io.name or io.label or io.model
+            ionode = self._create_node("extendedlnterface", io_name)
             self._add_relation(ionode, chassis, 0.0, 0.0, 0.0)
             self._add_prop_group(ionode, "设备信息", [
+                {"1": b"moduleName",   "51": "模块名称".encode('utf-8'), "10": io_name.encode('utf-8')},
+                {"1": b"module_alias", "51": "模块别名".encode('utf-8'), "10": io.alias.encode('utf-8')},
                 {"1": b"model",        "51": "型号".encode('utf-8'), "10": io.model.encode('utf-8')},
                 {"1": b"softwareSpec", "51": "软件规格".encode('utf-8'), "10": io.model.encode('utf-8')},
                 {"1": b"canNodeId",    "51": "节点ID".encode('utf-8'), "2": 5, "17": io.canNodeId or 0},

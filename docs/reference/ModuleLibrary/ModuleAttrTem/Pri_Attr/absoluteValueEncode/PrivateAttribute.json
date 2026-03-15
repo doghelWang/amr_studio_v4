@@ -1,0 +1,120 @@
+{
+	"privateAttrs": [
+		{
+			"key": "encodeAttr",
+			"desc": "编码器属性",
+			"arrayBaseEle": [
+				{
+					"key": "absEncodeType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SSI_ENCODER",
+						"typeDesc": "SSI编码器",
+						"typeGroups": [
+							{
+								"key": "SSI_ENCODER",
+								"desc": "SSI编码器",
+								"arrayCmobEle": [
+                                	{
+                                    	"key": "codeType",
+										"type": "DATA_COMBOX",
+										"comboType": {
+											"typeKey": "ENCODER_GRAY_CODE",
+											"typeDesc": "格雷码编码",
+											"typeGroups": [
+												{
+													"key": "ENCODER_GRAY_CODE",
+													"desc": "格雷码编码"
+												},
+												{
+													"key": "ENCODER_BINARY_CODE",
+													"desc": "二进制编码"
+												}
+											]
+										},
+										"desc": "编码格式"
+                                    }
+                                ]
+							},
+							{
+								"key": "MOTOR_ENCODER",
+								"desc": "电机编码器"
+							},
+							{
+								"key": "CANOPEN_ENCODER",
+								"desc": "CANOPEN编码器"
+							},
+							{
+								"key": "CAN_BRT_ENCODER",
+								"desc": "CAN自定义(BRT)"
+							}
+						]
+					},
+					"desc": "编码器类型"
+				},
+				{
+					"key": "resolutionMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "RES_BIT_MODE",
+						"typeDesc": "位数模式",
+						"typeGroups": [
+							{
+								"key": "RES_BIT_MODE",
+								"desc": "位数模式",
+								"arrayCmobEle": [
+									{
+										"key": "sglTurnBit",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 99999,
+										"int32Minvalue": 0,
+										"desc": "单圈位数"
+									},
+                                	{
+                                    	"key": "mutiTurnBit",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 99999,
+										"int32Minvalue": 0,
+										"desc": "多圈位数"
+                                    }
+                                ]
+							},
+							{
+								"key": "RES_NUM_MODE",
+								"desc": "数值模式",
+								"arrayCmobEle": [
+                                	{
+                                    	"key": "sglTurnCount",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 99999,
+										"int32Minvalue": 0,
+										"desc": "单圈分辨率"
+                                    },
+									{
+                                    	"key": "mutiTurnCount",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 99999,
+										"int32Minvalue": 0,
+										"desc": "多圈圈数"
+                                    }
+								]
+							}
+						]
+					},
+					"desc": "分辨率模式"
+				},
+				{
+					"key": "isInvert",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否反向",
+					"boolMustfill": true
+				}
+			]
+		}
+	]
+}

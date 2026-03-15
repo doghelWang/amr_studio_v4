@@ -1,0 +1,224 @@
+{
+	"moduleGroupName": "GYRO-VIR",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "GYRO-VIR",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "板载陀螺仪",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:34:29.910",
+					"desc": "版本信息",
+					"boolParse": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SensorSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "sensor",
+						"typeDesc": "\n"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "gyro",
+						"typeDesc": "\u000B"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SPI_ON_BOARD"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 20,
+						"sizeWidth": 20,
+						"sizeHeight": 2
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "sensorAttr",
+						"desc": "传感属性",
+						"arrayBaseEle": [
+							{
+								"key": "yawRangeMin",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "偏航角最小值",
+								"boolHide": true
+							},
+							{
+								"key": "yawRangeMax",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "偏航角最大值",
+								"boolHide": true
+							},
+							{
+								"key": "rollRangeMin",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "翻滚角最小值",
+								"boolHide": true
+							},
+							{
+								"key": "rollRangeMax",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "翻滚角最大值",
+								"boolHide": true
+							},
+							{
+								"key": "pitchRangeMin",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "俯仰角最小值",
+								"boolHide": true
+							},
+							{
+								"key": "pitchRangeMax",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": -180,
+								"unit": "°",
+								"desc": "俯仰角最大值",
+								"boolHide": true
+							},
+							{
+								"key": "angularResolution",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 180,
+								"doubleMinvalue": 0,
+								"unit": "°",
+								"desc": "角度分辨率",
+								"boolHide": true
+							},
+							{
+								"key": "accelerationResolution",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s",
+								"desc": "加速度分辩率",
+								"boolHide": true
+							},
+							{
+								"key": "accelerationAccuracy",
+								"type": "DATA_DOUBLE",
+								"doubleValue": 0,
+								"doubleMaxvalue": 360,
+								"doubleMinvalue": 0,
+								"unit": "°/s",
+								"desc": "加速度精度",
+								"boolHide": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}

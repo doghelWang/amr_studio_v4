@@ -173,7 +173,9 @@ export const MCU_MODELS = [
 
 export interface IoBoardConfig {
     id: string;
-    label: string;
+    name: string;         // 实体名称 (e.g., IO_1)
+    alias: string;        // 别名 (e.g., 顶盖扩展板)
+    label: string;        // UI 标签
     model: string;
     canBus: string;       // 接入的主控 CAN 总线
     canNodeId: number;    // ID
@@ -222,7 +224,9 @@ export interface WheelComponent {
 
 export interface WheelConfig {
     id: string;
-    label: string;
+    name: string;               // 实体名称 (e.g., Wheel_Left)
+    alias: string;              // 别名 (e.g., 左驱动轮)
+    label: string;              // UI 标签
     type: 'VERTICAL_STEER' | 'HORIZONTAL_STEER' | 'DIFF_STEER' | 'STANDARD_DIFF';
     
     // Kinematic (Phase 8)
@@ -281,7 +285,9 @@ export const DRIVER_MODELS = [
 
 export interface SensorConfig {
     id: string;
-    label: string;
+    name: string;        // 实体名称 (e.g., Laser_1)
+    alias: string;       // 别名 (e.g., 前激光)
+    label: string;       // UI 显示标签 (通常同 name)
     type: SensorType;
     model: string;
     // Pose 6D
@@ -301,6 +307,9 @@ export interface SensorConfig {
     ethPort: string;
     baudRate: number;
     serialPort: string;
+
+    // Private Attributes (Phase 13)
+    privateAttrs: Record<string, any>;
 }
 
 export type LogicBind =

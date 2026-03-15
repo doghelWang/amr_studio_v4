@@ -1,0 +1,176 @@
+{
+	"extendParams": [
+		{
+			"key": "parentNodeUuid",
+			"type": "DATA_COMBOX",
+			"desc": "从属机构",
+			"boolParse": true
+		},
+		{
+			"key": "locCoordX",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "X坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordY",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Y坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordZ",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Z坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordROLL",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "翻滚角",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordYAW",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "偏航角",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordPITCH",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "俯仰角",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "motionMode",
+			"type": "DATA_STRING",
+			"stringValue": "",
+			"desc": "运动方式"
+		},
+		{
+			"key": "motionDirection",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "X_AXIS",
+				"typeDesc": "X轴",
+				"typeGroups": [
+					{
+						"key": "X_AXIS",
+						"desc": "X轴"
+					},
+					{
+						"key": "Y_AXIS",
+						"desc": "Y轴"
+					},
+					{
+						"key": "Z_AXIS",
+						"desc": "Z轴"
+					}
+				]
+			},
+			"desc": "运动方向",
+		},
+		{
+			"key": "segmenteCnt",
+			"type": "DATA_INT32",
+			"int32Value": 1,
+			"int32Maxvalue": 5,
+			"int32Minvalue": 1,
+			"desc": "总分段数",
+			"boolMustfill": true,
+		},
+		{
+			"key": "positiveLimit",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": 0,
+			"unit": "mm",
+			"desc": "正限位",
+			"boolMustfill": true,
+		},
+		{
+			"key": "negativeLimit",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": 0,
+			"unit": "mm",
+			"desc": "负限位",
+			"boolMustfill": true,
+		}
+	],
+	"segmentedLimitsParams": [
+		{
+			"key": "segmenteNO",
+			"desc": "分段编号",
+			"arrayBaseEle": [
+				{
+					"key": "parentLimitStart",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"desc": "行程区间-起点",
+					"boolMustfill": true,
+				},
+				{
+					"key": "parentLimitEnd",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"desc": "行程区间-终点",
+					"boolMustfill": true,
+				},
+				{
+					"key": "positiveLimit",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "正限位",
+					"boolMustfill": true,
+				},
+				{
+					"key": "negativeLimit",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "负限位",
+					"boolMustfill": true,
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,439 @@
+{
+	"privateAttrs": [
+		{
+			"key": "sensorAttr",
+			"desc": "传感属性",
+			"arrayBaseEle": [
+				{
+					"key": "waveLength",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "nm",
+					"desc": "波长",
+					"boolHide": true
+				},
+				{
+					"key": "antiLight",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "klux",
+					"desc": "抗光干扰",
+					"boolHide": true
+				},
+				{
+					"key": "needCalib",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否需要标定",
+					"boolMustfill": true,
+					"boolBasic": true,
+					"boolHide": true
+				}
+			]
+		},
+		{
+			"key": "scanAttr",
+			"desc": "扫描属性",
+			"arrayBaseEle": [
+				{
+					"key": "scanDirect",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "SCAN_COUNTERCLOCKWISE",
+						"typeDesc": "逆时针",
+						"typeGroups": [
+							{
+								"key": "SCAN_CLOCKWISE",
+								"desc": "顺时针"
+							},
+							{
+								"key": "SCAN_COUNTERCLOCKWISE",
+								"desc": "逆时针"
+							}
+						]
+					},
+					"desc": "扫描方向",
+					"boolMustfill": true,
+					"boolNoeditable":true,
+					"boolHide": true
+				},
+				{
+					"key": "usageMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "PClOUD_LASER",
+						"typeDesc": "轮廓激光",
+						"typeGroups": [
+							{
+								"key": "PClOUD_LASER",
+								"desc": "轮廓激光",
+								"arrayCmobEle": [
+                                	{
+										"key": "resolution",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": 0,
+										"unit": "°",
+										"desc": "角分辨率",
+										"boolHide": true
+									},
+									{
+										"key": "pointsRate",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 999999,
+										"int32Minvalue": 0,
+										"unit": "/s",
+										"desc": "采样点",
+										"boolHide": true
+									},
+									{
+										"key": "frameRate",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 999,
+										"doubleMinvalue": 0,
+										"unit": "HZ",
+										"desc": "帧率",
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeHorizonStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角理论起始角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeHorizonEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角理论终止角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "actualScanRangeHorizonStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": -180,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角应用起始角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "actualScanRangeHorizonEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 180,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角应用终止角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "scanRangeVerticalStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "垂直视场角理论起始角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeVerticalEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "垂直视场角理论终止角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "actualScanRangeVerticalStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 52,
+										"doubleMinvalue": -7,
+										"unit": "°",
+										"desc": "垂直视场角应用起始角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "actualScanRangeVerticalEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 52,
+										"doubleMinvalue": -7,
+										"unit": "°",
+										"desc": "垂直视场角应用终止角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "reflectThreshold",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 0,
+										"unit": "cd",
+										"desc": "有效强度阈值",
+										"boolHide": true
+									},
+									{
+										"key": "scanDistence@10%",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99,
+										"doubleMinvalue": 0,
+										"unit": "m",
+										"desc": "有效扫描距离@10%",
+										"boolHide": true
+									},
+									{
+										"key": "scanDistence@90%",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99,
+										"doubleMinvalue": 0,
+										"unit": "m",
+										"desc": "有效扫描距离@90%",
+										"boolHide": true
+									},
+									{
+										"key": "accuracy",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 999,
+										"doubleMinvalue": 0,
+										"unit": "mm",
+										"desc": "测量精度",
+										"boolHide": true
+									}
+                                ]
+							},
+							{
+								"key": "AREA_LASER",
+								"desc": "区域激光",
+								"arrayCmobEle": [
+                                	{
+										"key": "areaCnt",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 999,
+										"int32Minvalue": 0,
+										"desc": "区域方案数量"
+									}
+                                ]
+							},
+							{
+								"key": "PCLOUD_AND_AREA_LASER",
+								"desc": "轮廓加区域激光",
+								"arrayCmobEle": [
+                                	{
+										"key": "resolution",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": 0,
+										"unit": "°",
+										"desc": "角分辨率",
+										"boolHide": true
+									},
+									{
+										"key": "pointsRate",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 999999,
+										"int32Minvalue": 0,
+										"unit": "/s",
+										"desc": "采样点",
+										"boolHide": true
+									},
+									{
+										"key": "frameRate",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 999,
+										"doubleMinvalue": 0,
+										"unit": "HZ",
+										"desc": "帧率",
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeHorizonStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角理论起始角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeHorizonEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角理论终止角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "actualScanRangeHorizonStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角应用起始角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "actualScanRangeHorizonEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "水平视场角应用终止角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "scanRangeVerticalStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "垂直视场角理论起始角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "scanRangeVerticalEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 180,
+										"doubleMinvalue": -180,
+										"unit": "°",
+										"desc": "垂直视场角理论终止角度",
+										"boolMustfill": true,
+										"boolBasic": true,
+										"boolHide": true
+									},
+									{
+										"key": "actualScanRangeVerticalStart",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 52,
+										"doubleMinvalue": -7,
+										"unit": "°",
+										"desc": "垂直视场角应用起始角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "actualScanRangeVerticalEnd",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 52,
+										"doubleMinvalue": -7,
+										"unit": "°",
+										"desc": "垂直视场角应用终止角度",
+										"boolMustfill": true,
+										"boolBasic": true
+									},
+									{
+										"key": "reflectThreshold",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 0,
+										"unit": "cd",
+										"desc": "有效强度阈值",
+										"boolHide": true
+									},
+									{
+										"key": "scanDistence@10%",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99,
+										"doubleMinvalue": 0,
+										"unit": "m",
+										"desc": "有效扫描距离@10%",
+										"boolHide": true
+									},
+									{
+										"key": "scanDistence@90%",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99,
+										"doubleMinvalue": 0,
+										"unit": "m",
+										"desc": "有效扫描距离@90%",
+										"boolHide": true
+									},
+									{
+										"key": "accuracy",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 999,
+										"doubleMinvalue": 0,
+										"unit": "mm",
+										"desc": "测量精度",
+										"boolHide": true
+									},
+									{
+										"key": "areaCnt",
+										"type": "DATA_INT32",
+										"int32Value": 0,
+										"int32Maxvalue": 999,
+										"int32Minvalue": 0,
+										"desc": "区域方案数量"
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "应用方式",
+					"boolNoeditable":true
+				}
+			]
+		}
+	]
+}

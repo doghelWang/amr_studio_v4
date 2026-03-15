@@ -1,0 +1,76 @@
+{
+	"extendParams": [
+		{
+			"key": "parentNodeUuid",
+			"type": "DATA_COMBOX",
+			"desc": "从属机构",
+			"boolParse": true
+		},
+		{
+			"key": "locCoordX",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "X坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordY",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Y坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordZ",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 9999,
+			"doubleMinvalue": -9999,
+			"unit": "mm",
+			"desc": "Z坐标",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordROLL",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "翻滚角",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordYAW",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "偏航角",
+			"boolMustfill": true,
+			"boolParse": true
+		},
+		{
+			"key": "locCoordPITCH",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0,
+			"doubleMaxvalue": 180,
+			"doubleMinvalue": -180,
+			"unit": "°",
+			"desc": "俯仰角",
+			"boolMustfill": true,
+			"boolParse": true
+		}
+	]
+}

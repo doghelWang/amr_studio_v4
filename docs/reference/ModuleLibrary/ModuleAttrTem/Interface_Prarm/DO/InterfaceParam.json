@@ -1,0 +1,45 @@
+{
+    "interfaceParamsArray": [
+        {
+            "key": "isReversed",
+            "type": "DATA_COMBOX",
+            "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                    {
+                        "key": "0",
+                        "desc": "0"
+                    },
+                    {
+                        "key": "1",
+                        "desc": "1"
+                    }
+                ]
+            },
+            "desc": "是否反向",
+            "boolParse": true,
+			"boolHide": true
+        },
+		{
+            "key": "mode",
+            "type": "DATA_COMBOX",
+            "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                    {
+                        "key": "NO",
+                        "desc": "常开"
+                    },
+                    {
+                        "key": "NC",
+                        "desc": "常闭"
+                    }
+                ]
+            },
+            "desc": "模式",
+            "boolParse": true
+        }
+    ]
+}

@@ -18,7 +18,9 @@ class WheelComponent(BaseModel):
 class WheelConfig(BaseModel):
     model_config = {"extra": "allow"}
     id: str
-    label: str
+    name: str = ""
+    alias: str = ""
+    label: Optional[str] = None # For compatibility
     type: str = "STANDARD_DIFF"
     # Kinematic (Phase 8)
     diameter: float = 200.0
@@ -51,23 +53,39 @@ class WheelConfig(BaseModel):
 class SensorConfig(BaseModel):
     model_config = {"extra": "allow"}
     id: str
+    name: str = ""
+    alias: str = ""
+    label: Optional[str] = None # For compatibility
     type: str
     model: str
     usageNavi: bool = True
     usageObs: bool = True
-    offsetX: float = 0.0
-    offsetY: float = 0.0
-    offsetZ: float = 0.0
-    yaw: float = 0.0
-    pitch: float = 0.0
-    roll: float = 0.0
-    ip: Optional[str] = None
+    
+    # Pose
+    mountX: float = 0.0
+    mountY: float = 0.0
+    mountZ: float = 0.0
+    mountYaw: float = 0.0
+    mountPitch: float = 0.0
+    mountRoll: float = 0.0
+    
+    # Connection
+    connType: Optional[str] = "ETHERNET"
+    ipAddress: Optional[str] = None
     port: Optional[int] = None
-    canNodeId: Optional[int] = None
+    ethPort: Optional[str] = None
+    baudRate: Optional[int] = None
+    serialPort: Optional[str] = None
+    
+    # Private Attributes
+    privateAttrs: Dict[str, Any] = {}
 
 class IOBoardConfig(BaseModel):
     model_config = {"extra": "allow"}
     id: str
+    name: str = ""
+    alias: str = ""
+    label: Optional[str] = None # For compatibility
     model: str
     canBus: str
     canNodeId: int

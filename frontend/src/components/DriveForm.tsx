@@ -24,6 +24,8 @@ const QuickSensorModal: React.FC<{
     const handleOk = () => {
         form.validateFields().then(values => {
             const newSensor: Omit<SensorConfig, 'id'> = {
+                name: values.label,
+                alias: values.label,
                 label: values.label,
                 type: 'IMU', 
                 model: values.model,
@@ -40,7 +42,8 @@ const QuickSensorModal: React.FC<{
                 port: 0,
                 ethPort: '',
                 baudRate: 115200,
-                serialPort: ''
+                serialPort: '',
+                privateAttrs: {}
             };
             addSensor(newSensor as any);
             message.success(`传感器 ${values.label} 已添加并继承坐标`);
@@ -213,10 +216,22 @@ const WheelCard: React.FC<WheelCardProps> = ({ wheel, canBuses, availableSensors
             size="small"
             style={{ marginBottom: 20, background: '#141414', borderColor: '#333', borderRadius: 12 }}
             title={
-                <Space>
-                    <Input value={wheel.label} onChange={e => upd({ label: e.target.value })} style={{ width: 180, fontWeight: 800, color: '#1677ff', background: 'transparent', border: 'none' }} />
-                    <Tag color="geekblue">{wheel.type}</Tag>
-                    {isSteerCapable && !wheel.relateZeroIo && <Tag color="error">未绑定零位</Tag>}
+                <Space direction="vertical" size={0}>
+                    <Space>
+                        <Input 
+                            value={wheel.name} 
+                            onChange={e => upd({ name: e.target.value })} 
+                            style={{ width: 140, fontWeight: 800, color: '#1677ff', background: 'transparent', border: 'none', padding: 0 }} 
+                        />
+                        <Tag color="geekblue">{wheel.type}</Tag>
+                        {isSteerCapable && !wheel.relateZeroIo && <Tag color="error">未绑定零位</Tag>}
+                    </Space>
+                    <Input 
+                        placeholder="轮组别名 (Alias)" 
+                        value={wheel.alias} 
+                        onChange={e => upd({ alias: e.target.value })} 
+                        style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', background: 'transparent', border: 'none', padding: 0, height: 16 }} 
+                    />
                 </Space>
             }
         >

@@ -1,0 +1,27 @@
+{
+	"privateAttrs": [
+		{
+			"key": "encodeAttr",
+			"desc": "编码器属性",
+			"arrayBaseEle": [
+				{
+					"key": "lineCount",
+					"type": "DATA_INT32",
+					"int32Value": 0,
+					"int32Maxvalue": 99999,
+					"int32Minvalue": 0,
+					"desc": "线数",
+					"boolMustfill": true,
+					"boolBasic": true
+				},
+				{
+					"key": "isInvert",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否反向",
+					"boolBasic": true
+				}
+			]
+		}
+	]
+}

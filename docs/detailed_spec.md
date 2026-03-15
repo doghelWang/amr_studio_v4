@@ -61,23 +61,45 @@ export interface RobotIdentity {
 }
 
 export interface McuConfig {
-  model: string;               // 'RK3588_CTRL_BOARD' | 'X86_CTRL_PC' | ...
-  canBuses: string[];          // 可用CAN总线ID列表，如 ['CAN0','CAN1','CAN2']
-  ethPorts: string[];          // 可用以太网口列表，如 ['ETH0','ETH1']
+  name: string;                // 模块名称，如 'MainController'
+  alias: string;               // 别名，如 '主控制器'
+  description: string;         // 描述
+  version: string;             // 版本
+  subsystem: string;           // 子系统，如 'ChassisSys'
+  vendor: string;              // 供应商
+  model: string;               // 'RA-MC-R318AT' | 'RA-MC-R318BN' | ...
+  mountX: number;              // 安装坐标
+  mountY: number;
+  mountZ: number;
+  roll: number;
+  pitch: number;
+  yaw: number;
+  canBuses: string[];          // 可用总线列表
+  ethPorts: string[];          // 可用网口列表
+  rs232Ports: string[];
+  rs485Ports: string[];
+  hasGyro: boolean;            // 物理资源开关
+  hasTopCamera: boolean;
+  hasDownCamera: boolean;
 }
 
 export interface IoBoardConfig {
   id: string;
-  label: string;               // 自动生成，如 'IO-STANDARD-1'
-  model: string;               // 'STANDARD_IO_16CH' | 'COMPACT_IO_8CH' | ...
-  canBus: string;              // 接入的CAN总线，必须在 mcu.canBuses 中
-  canNodeId: number;           // 1-126，同总线内唯一
-  channelCount: number;        // 根据model自动填入（16 / 8）
+  name: string;                // 如 'IO_Board_1'
+  alias: string;               // 如 '扩展接口板'
+  model: string;               // 'RA-IC_I-F-1R6BH0' | ...
+  canBus: string;              // 所属CAN总线
+  canNodeId: number;           // 1-126
+  canBuses: string[];          // 提供的资源列表
+  diPorts: string[];
+  doPorts: string[];
+  aiPorts: string[];
 }
 
 export interface WheelConfig {
   id: string;
-  label: string;               // 自动生成，如 'Front Left'
+  name: string;                // 轮组名称
+  alias: string;               // 轮组别名
 
   // 安装位置（结构参数）
   mountX: number;              // mm，相对底盘中心，+前 -后
@@ -109,32 +131,33 @@ export interface WheelConfig {
 
 export interface SensorConfig {
   id: string;
-  label: string;               // 自动生成，如 '2D LiDAR (激光) #1'
+  name: string;                // 实体名称
+  alias: string;               // 别名
   type: SensorType;
-  model: string;               // 型号，依 type 选择
+  model: string;               // 型号
 
-  // 安装位姿（6D）
-  mountX: number;              // mm
-  mountY: number;              // mm
-  mountZ: number;              // mm，离地高度
-  mountYaw: number;            // °，绕Z轴
-  mountPitch: number;          // °，绕Y轴（3D雷达/相机有效）
-  mountRoll: number;           // °，绕X轴（3D雷达/相机有效）
+  // 位姿
+  mountX: number;
+  mountY: number;
+  mountZ: number;
+  mountYaw: number;
+  mountPitch: number;
+  mountRoll: number;
 
-  // 功能声明
-  usageNavi: boolean;          // 用于导航
-  usageObs: boolean;           // 用于避障
+  // 用途
+  usageNavi: boolean;
+  usageObs: boolean;
 
-  // 电气连接
+  // 连接
   connType: ConnectionType;
-  // Ethernet 专用
-  ipAddress: string;           // IPv4格式，非空当 connType === 'ETHERNET'
-  port: number;                // 1-65535
-  ethPort: string;             // 接入的MCU网口，在 mcu.ethPorts 中
+  ipAddress?: string;
+  port?: number;
+  ethPort?: string;
+  baudRate?: number;
+  serialPort?: string;
 
-  // 串口专用（RS232/USB）
-  baudRate?: number;           // 9600 | 19200 | 57600 | 115200 | ...
-  serialPort?: string;         // '/dev/ttyUSB0' 等配置
+  // 私有属性 (Dynamic)
+  privateAttrs: Record<string, any>;
 }
 
 export interface IOConfig {
