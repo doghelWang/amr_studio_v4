@@ -9,11 +9,20 @@ AUDIT_DIR="$BASE_DIR/gemini_audits"
 echo "🚀 Starting AMR Studio V4 Stack..."
 
 # 1. Start Backend (FastAPI)
-echo "[*] Launching Backend on Port 8000..."
-kill -9 $(lsof -t -i :8000) 2>/dev/null
+if [ ! -d "$BACKEND_DIR/venv" ]; then
+    echo "[*] Creating Python Virtual Environment..."
+    cd "$BACKEND_DIR" && python3 -m venv venv
+    venv/bin/pip install -r requirements.txt
+fi
+echo "[*] Launching Backend on Port 8002..."
+kill -9 $(lsof -t -i :8002) 2>/dev/null
 cd "$BACKEND_DIR" && nohup venv/bin/python3 main.py > backend_runtime.log 2>&1 &
 
 # 2. Start Frontend (Vite)
+if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
+    echo "[*] Installing Frontend Dependencies..."
+    cd "$FRONTEND_DIR" && npm install
+fi
 echo "[*] Launching Frontend on Port 3001..."
 kill -9 $(lsof -t -i :3001) 2>/dev/null
 cd "$FRONTEND_DIR" && nohup npm run dev -- --port 3001 > frontend_runtime.log 2>&1 &

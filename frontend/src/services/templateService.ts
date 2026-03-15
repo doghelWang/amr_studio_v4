@@ -24,10 +24,15 @@ export async function loadTemplate(templateId: string): Promise<AmrProject | nul
     if (templateId === 'blank') return null;
 
     try {
-        const module = await import(`../assets/templates/${templateId}.json`);
-        return module.default as AmrProject;
+        // Use Vite's import.meta.glob to avoid runtime crashing if directory is empty
+        const templates = import.meta.glob('../assets/templates/*.json');
+        const path = `../assets/templates/${templateId}.json`;
+        if (templates[path]) {
+            const module = await templates[path]() as any;
+            return module.default as AmrProject;
+        }
+        return null;
     } catch {
-        // Template file doesn't exist yet, return a simple generated default
         return null;
     }
 }
@@ -43,7 +48,7 @@ export interface BackendTemplateInfo {
 
 export async function fetchBackendTemplates(): Promise<BackendTemplateInfo[]> {
     try {
-        const res = await fetch('http://localhost:8000/api/v1/templates');
+        const res = await fetch('http://localhost:8002/api/v1/templates');
         if (!res.ok) return [];
         const data = await res.json();
         return data.templates || [];
@@ -54,7 +59,7 @@ export async function fetchBackendTemplates(): Promise<BackendTemplateInfo[]> {
 
 export async function loadBackendTemplate(templateId: string): Promise<AmrProject | null> {
     try {
-        const res = await fetch(`http://localhost:8000/api/v1/templates/${templateId}`);
+        const res = await fetch(`http://localhost:8002/api/v1/templates/${templateId}`);
         if (!res.ok) return null;
         return await res.json() as AmrProject;
     } catch {

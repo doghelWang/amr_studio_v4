@@ -66,14 +66,20 @@ async def import_modelset(file: UploadFile = File(...)):
         raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}")
 
 @app.post("/api/v1/generate")
-async def generate_model(payload: GeneratePayload):
+async def generate_model_endpoint(payload: GeneratePayload):
     try:
-        project_id = payload.projectId if hasattr(payload, 'projectId') else 'default'
-        base_path = PROJECT_BASES_DIR / f"{project_id}.base.cmodel"
-        custom_base = str(base_path) if base_path.exists() else None
-        zip_path = generate_industrial_modelset(payload, base_modelset_zip=custom_base)
-        return FileResponse(path=zip_path, media_type='application/zip', filename=f"{payload.robotName}_V4_Export.cmodel")
+        from core.schema_builder import CustomCompDescBuilder
+        template = Path(__file__).parent / "templates" / "CompDesc.model"
+        builder = CustomCompDescBuilder(str(template))
+        zip_path = builder.build_from_payload(payload)
+        return FileResponse(
+            zip_path,
+            media_type="application/zip",
+            filename=os.path.basename(zip_path)
+        )
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/v1/projects")
