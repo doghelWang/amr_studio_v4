@@ -42,12 +42,6 @@ start_all.bat
     npm run dev -- --port 3001
     ```
 
-3.  **自动化审计哨兵 (Sentinel)**:
-    ```bash
-    cd gemini_audits
-    ../backend/venv/bin/python3 sentinel_v3.py
-    ```
-
 ---
 
 *   **开发访问入口**: [http://localhost:3001](http://localhost:3001) (前端 HMR 实时预览)

@@ -26,10 +26,6 @@ for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3001') do taskkill /f /pid %
 cd /d "%BASE_DIR%frontend"
 start "AMR_FRONTEND" cmd /c "npm run dev -- --port 3001"
 
-:: 3. Start Sentinel (Audit)
-echo [*] Launching Sentinel V7 Pro...
-cd /d "%BASE_DIR%gemini_audits"
-start "AMR_SENTINEL" ..\backend\venv\Scripts\python.exe sentinel_v3.py
 
 echo [*] All services initiated.
 echo Frontend: http://localhost:3001

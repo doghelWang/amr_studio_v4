@@ -27,9 +27,4 @@ echo "[*] Launching Frontend on Port 3001..."
 kill -9 $(lsof -t -i :3001) 2>/dev/null
 cd "$FRONTEND_DIR" && nohup npm run dev -- --port 3001 > frontend_runtime.log 2>&1 &
 
-# 3. Start Sentinel (Audit & Auto-Push)
-echo "[*] Launching Sentinel V7 Pro..."
-kill -9 $(ps aux | grep sentinel_v3 | grep -v grep | awk '{print $2}') 2>/dev/null
-cd "$AUDIT_DIR" && nohup ../backend/venv/bin/python3 sentinel_v3.py > sentinel_runtime.log 2>&1 &
-
 echo "✅ All services initiated. Use './check_health.sh' to verify status."
