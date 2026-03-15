@@ -1,0 +1,67 @@
+# AMR Studio v4 开发任务
+
+## Phase 4 & 5: 后端重构与硬件库集成 (Completed)
+
+- [x] **后端生成管线重构**：使用 `blackboxprotobuf` 与 `CustomCompDescBuilder` 实现基于 cmodel 真实 schema 的生成。
+- [x] **数据无损编码**：修复 `fixed64` (IEEE-754) 坐标编码与 UUID 格式。
+- [x] **ModuleLibrary 深度解析**：
+    - [x] 提取真实 MCU、IO、传感器型号 (`MCPU-RA-MC-R318AT`, `SICK_TIM561-2050101` 等)。
+    - [x] 映射接口与私有参数结构。
+- [x] **硬件型号库修复**：
+    - [x] 更新前端 `types.ts` 与 `WizardBuilder.tsx` 使用真实硬件型号。
+    - [x] 后端生成流程支持 `softwareSpec` 属性注入。
+- [x] **GitHub 同步**：所有代码、文档及生成的指南均已上传至 `doghelWang/amr_studio_v4`。
+- [x] **文档产出**：
+    - [x] 编写《AMR 构建与解析终极指南》 [build_parse_guide.md](build_parse_guide.md)
+    - [x] 完成验证报告 [walkthrough.md](walkthrough.md)
+
+## Phase 6: 硬件体系精度修复 (Completed)
+- [x] **IO 模块类型修复**：
+    - [x] 移除 `STANDARD_IO` 等占位符，引入 `IOModule-Common`, `safetyIOModule-Common` 等真实型号。
+- [x] **轮组分类体系重构**：
+    - [x] 实现 **立式/卧式舵轮** 双驱动 (行走+转向) 配置。
+    - [x] 实现 **差速式舵轮** (左右驱动+外置编码器) 配置。
+    - [x] Phase 7: Hardware Taxonomy Refinement (IO & Drivers)
+    - [x] Use real vendor models for IO boards (e.g., RA-IC/I-A-1C0AH1)
+    - [x] Replace placeholder driver names with real software specs (e.g., RA-DR/D-48/80S2B)
+    - [x] Verify UI selection and CModel generation alignment
+- [x] Phase 8: Expanding Wheel & Power Attributes
+    - [x] Research ModuleLibrary for kinematic and power keys (diameter, track, RPM, etc.)
+    - [x] Update frontend types and store with expanded wheel/component models
+    - [x] Add UI fields to DriveForm for power and kinematic parameters
+    - [x] Update backend API and schema builder to serialize expanded attributes
+    - [x] Verify end-to-end integration and CModel output
+- [x] Phase 9: Refining Chassis Attributes (Metadata, Performance, Motion Center)
+    - [x] Research chassis specific keys in `ModuleLibrary` JSONs
+    - [x] Update frontend `ChassisConfig` interface and default factories
+    - [x] Implement multi-tab UI for Chassis (Metadata, Motion, Performance)
+    - [x] Implement auto-offset calculation for motion center
+    - [x] Map new chassis attributes in backend `schema_builder.py`
+    - [x] Verify UI-Backend integration and blueprint visualization
+- [x] Phase 10: Refining Main Controller Attributes
+    - [x] Research MCU specific keys and onboard modules in `ModuleLibrary`
+    - [x] Update frontend `McuConfig` interface with pose and orientation helpers
+    - [x] Implement multi-tab `ControlBoardForm` (Identity, Physical, On-board, Resources)
+    - [x] Implement auto-detection of onboard modules based on model selected
+    - [x] Update backend `api.py` and `schema_builder.py` for 6D pose and node synthesis
+    - [x] Verify UI orientation logic and backend CModel correctness
+- [x] Phase 11: Refining MCU Interface Resources
+    - [x] Analyze hardware specs for R318/R349 series interfaces (CAN, RS485, RS232, ETH, SPK)
+    - [x] Update frontend `McuConfig` data model and store logic
+    - [x] Refine "Internal Resources" UI to support all communication port types
+    - [x] Update backend schema and building logic for additional interfaces
+    - [x] Verify resource allocation and CModel mapping
+- [x] Phase 12: Refining IO Board Resources & MCU CAN Fix
+    - [x] Deep analysis of hardware specs for 12+ expansion boards (DI/DO/AI/CAN)
+    - [x] Update frontend `IoBoardConfig` data model and store logic with full library
+    - [x] Fix MCU CAN counts and naming (CAN_1, CAN_2, CAN_3)
+    - [x] Refine "Add IO" UI and board details with fixed resources
+    - [x] Update backend schema and building logic for expanded IO boards
+    - [x] Verify IO resource population for specific models (e.g. RA-IC/I-A-1E3BH0 has 2 CANs)
+- [x] **精度与安装位修复**：
+    - [x] 实现 **6D Pose** 支持：加入 `mountZ` 与安装偏航角 (Angle/Yaw) 字段。
+    - [x] 移除 CAN ID 自动递增，改为**手动填写并支持冲突校验**。
+- [x] **端到端自验证**：
+    - [x] 修复 `validationEngine` 崩溃问题。
+    - [x] 验证 `Wizard` 状态无损同步至 `DriveForm` 多驱动 UI。
+    - [x] 成功编译生成 `ModelSet.zip`。
