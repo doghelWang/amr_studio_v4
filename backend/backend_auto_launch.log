@@ -1,7 +1,0 @@
-INFO:     Started server process [26718]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
-🚀 Starting Unified AMR Studio on Port 8002...
-INFO:     127.0.0.1:64751 - "GET /api/v1/debug/logs HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64752 - "HEAD /index.html HTTP/1.1" 200 OK

@@ -1,0 +1,270 @@
+{
+  "1": "V1.0",
+  "12": [
+    {
+      "1": "locationAbility",
+      "2": "定位能力",
+      "11": {
+        "1": "navi",
+        "2": "导航",
+        "10": [
+          {
+            "1": "naviUniqueKey",
+            "11": {
+              "1": "naviType",
+              "2": "NAVI_INERTANCE",
+              "3": "惯性导航",
+              "10": {
+                "11": [
+                  {
+                    "1": "funName",
+                    "10": 1,
+                    "11": "gyro"
+                  },
+                  {
+                    "1": "relatedGyro",
+                    "10": 11,
+                    "20": "gyro",
+                    "21": "sensor/gyro"
+                  }
+                ]
+              }
+            },
+            "32": 1
+          },
+          {
+            "1": "naviUniqueKey_57997",
+            "11": {
+              "1": "naviType",
+              "2": "NAVI_SLAM",
+              "3": "slam导航",
+              "10": {
+                "11": [
+                  {
+                    "1": "funName",
+                    "10": 1,
+                    "11": "slam"
+                  },
+                  {
+                    "1": "relatedLaser",
+                    "10": 11,
+                    "20": "laser-front",
+                    "21": [
+                      "sensor/laser",
+                      "sensor/3DLaser"
+                    ]
+                  }
+                ]
+              }
+            },
+            "32": 1
+          },
+          {
+            "1": "naviUniqueKey_21218",
+            "11": {
+              "1": "naviType",
+              "2": "NAVI_CODE",
+              "3": "二维码导航",
+              "10": {
+                "11": [
+                  {
+                    "1": "funName",
+                    "10": 1,
+                    "11": "QR"
+                  },
+                  {
+                    "1": "relatedCodeReader",
+                    "10": 11,
+                    "20": "smart camera",
+                    "21": "sensor/codeReader"
+                  }
+                ]
+              }
+            },
+            "32": 1
+          }
+        ]
+      }
+    },
+    {
+      "1": "HCI",
+      "2": "人机交互",
+      "11": [
+        {
+          "1": "led",
+          "2": "灯光",
+          "10": {
+            "1": "ledUniqueKey",
+            "11": {
+              "1": "ledType",
+              "2": "noLed",
+              "3": "无指示灯"
+            },
+            "32": 1
+          }
+        },
+        {
+          "1": "button",
+          "2": "按钮",
+          "10": {
+            "1": "btnUniqueKey",
+            "11": {
+              "1": "btnType",
+              "2": "noBtn",
+              "3": "无按钮"
+            },
+            "32": 1
+          }
+        }
+      ]
+    },
+    {
+      "1": "safetyAbility",
+      "2": "安全能力",
+      "11": [
+        {
+          "1": "safetyIO",
+          "2": "安全IO",
+          "10": [
+            {
+              "1": "safetyIOUniqueKey",
+              "11": {
+                "1": "safeIOType",
+                "2": "noSafeIO",
+                "3": "无安全IO"
+              },
+              "32": 1
+            },
+            {
+              "1": "safetyIOUniqueKey_16047",
+              "11": {
+                "1": "safeIOType",
+                "2": "SAFETY_IO_EMC_STOP",
+                "3": "急停按钮",
+                "10": {
+                  "11": {
+                    "1": "relatedEmcBtn",
+                    "10": 11,
+                    "20": "button-emc",
+                    "21": "button/subButton"
+                  }
+                },
+                "11": {
+                  "1": "emcMode",
+                  "2": "freerun",
+                  "3": "进入freerun模式"
+                }
+              },
+              "32": 1
+            }
+          ]
+        },
+        {
+          "1": "safetySensor",
+          "2": "避障传感器",
+          "10": {
+            "1": "safetySensorUniqueKey",
+            "11": {
+              "1": "sensorType",
+              "2": "SAFETY_OBS_LASER",
+              "3": "避障激光",
+              "10": {
+                "11": {
+                  "1": "relatedSafetyLaser",
+                  "10": 11,
+                  "20": "laser-front",
+                  "21": [
+                    "sensor/laser",
+                    "sensor/3DLaser"
+                  ]
+                }
+              }
+            },
+            "32": 1
+          }
+        },
+        {
+          "1": "safetyRound",
+          "2": "避障范围",
+          "10": {
+            "1": "safetyRoundUniqueKey",
+            "11": {
+              "1": "RoundType",
+              "2": "BOX_ROUND",
+              "3": "框体避障",
+              "10": {
+                "11": [
+                  {
+                    "1": "centerX",
+                    "10": 5,
+                    "13": 0
+                  },
+                  {
+                    "1": "centerY",
+                    "10": 5,
+                    "13": 0
+                  },
+                  {
+                    "1": "centerZ",
+                    "10": 5,
+                    "13": 99
+                  },
+                  {
+                    "1": "boxLength",
+                    "10": 5,
+                    "13": 1495
+                  },
+                  {
+                    "1": "boxwidth",
+                    "10": 5,
+                    "13": 1083
+                  },
+                  {
+                    "1": "boxheight",
+                    "10": 5,
+                    "13": 198
+                  }
+                ]
+              }
+            },
+            "32": 1
+          }
+        }
+      ]
+    },
+    {
+      "1": "distMeasureAbility",
+      "2": "透传测距",
+      "11": {
+        "1": "distSensor",
+        "2": "测距",
+        "10": {
+          "1": "distSensorUniqueKey",
+          "11": {
+            "1": "distType",
+            "2": "noDistSensor",
+            "3": "无测距传感器"
+          },
+          "32": 1
+        }
+      }
+    },
+    {
+      "1": "actorAbility",
+      "2": "执行机构能力",
+      "11": {
+        "1": "actor",
+        "2": "执行机构",
+        "10": {
+          "1": "moduleType",
+          "11": {
+            "1": "moduleType",
+            "2": "noActor",
+            "3": "无执行机构"
+          },
+          "32": 1
+        }
+      }
+    }
+  ]
+}

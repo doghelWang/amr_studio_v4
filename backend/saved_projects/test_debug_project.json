@@ -1,0 +1,11 @@
+{
+    "meta": {
+        "projectId": "test_debug_project",
+        "projectName": "Debug_AMR_V4"
+    },
+    "config": {
+        "identity": {
+            "robotName": "Debug_AMR_V4"
+        }
+    }
+}
