@@ -4,7 +4,7 @@ import type { MenuProps } from 'antd';
 import {
     SaveOutlined, FolderOpenOutlined, FileAddOutlined,
     UndoOutlined, RedoOutlined, SafetyOutlined,
-    CloudDownloadOutlined,
+    CloudDownloadOutlined, ThunderboltOutlined,
     RobotOutlined, ControlOutlined, DashboardOutlined,
     RadarChartOutlined, ApiOutlined, NodeIndexOutlined, ApartmentOutlined
 } from '@ant-design/icons';
@@ -27,6 +27,7 @@ import { DriveTypeConfirmDialog } from './components/DriveTypeConfirmDialog';
 import { HealthDashboard } from './components/HealthDashboard';
 import { StatusBar } from './layout/StatusBar';
 import { ModelZipImportModal } from './components/ModelZipImportModal';
+import { WizardBuilder } from './components/WizardBuilder';
 
 const { Header, Content, Sider } = Layout;
 
@@ -72,6 +73,7 @@ export default function App() {
     const [loadingProjects, setLoadingProjects] = React.useState(false);
     const [factoryTemplates, setFactoryTemplates] = React.useState<BackendTemplateInfo[]>([]);
     const [importModalVisible, setImportModalVisible] = React.useState(false);
+    const [wizardVisible, setWizardVisible] = React.useState(false);
 
     const handleSave = async () => {
         try {
@@ -172,7 +174,7 @@ export default function App() {
                 others: config.others || []
             };
 
-            const res = await axios.post('http://localhost:8002/api/v1/generate', payload, { responseType: 'blob' });
+            const res = await axios.post('http://localhost:8003/api/v1/generate', payload, { responseType: 'blob' });
             const url = URL.createObjectURL(new Blob([res.data]));
             const a = document.createElement('a');
             a.href = url;
@@ -231,6 +233,12 @@ export default function App() {
                     <span style={{ color: '#00d2ff', fontWeight: 800, fontSize: 15, letterSpacing: 1, marginRight: 8 }}>
                         ⚡ AMR Studio
                     </span>
+                    <Tooltip title="向导式新建 AMR">
+                        <Button size="small" type="text"
+                            icon={<ThunderboltOutlined style={{ color: '#faad14' }} />}
+                            onClick={() => setWizardVisible(true)}
+                        />
+                    </Tooltip>
                     <Tooltip title="新建项目 (Ctrl+N)">
                         <Button size="small" type="text" icon={<FileAddOutlined />} onClick={handleNew} />
                     </Tooltip>
@@ -317,6 +325,7 @@ export default function App() {
             <DriveTypeConfirmDialog />
             <HealthDashboard />
             <ModelZipImportModal open={importModalVisible} onClose={() => setImportModalVisible(false)} />
+            <WizardBuilder open={wizardVisible} onClose={() => setWizardVisible(false)} />
             <Modal
                 title="打开云端项目"
                 open={projectModalVisible}
