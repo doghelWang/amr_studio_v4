@@ -36,7 +36,8 @@ const SENSOR_ICONS: Record<string, string> = {
 export const RobotCanvas: React.FC = () => {
     const { config } = useProjectStore();
     const { identity, wheels, sensors } = config;
-    const { chassisLength, chassisWidth, robotName } = identity;
+    const { chassis, robotName } = identity;
+    const { length: chassisLength, width: chassisWidth } = chassis;
     const [drawerItem, setDrawerItem] = useState<HoverInfo | null>(null);
 
     const bodyW = chassisWidth * SCALE;
@@ -175,9 +176,15 @@ export const RobotCanvas: React.FC = () => {
                     return (
                         <div style={{ fontFamily: 'monospace', lineHeight: 2.2, fontSize: 13 }}>
                             <div><b>安装位置:</b> [{w.mountX}, {w.mountY}] mm · Yaw {w.mountYaw}°</div>
-                            <div><b>驱动型号:</b> {w.driverModel}</div>
-                            <div><b>CAN 接口:</b> <Tag color="orange">{w.canBus}</Tag> Node ID: {w.canNodeId}</div>
-                            <div><b>电机方向:</b> {w.motorPolarity}</div>
+                            <div><b>驱动构成:</b></div>
+                            <div style={{ marginLeft: 12 }}>
+                                {(w.components || []).map((c, idx) => (
+                                    <div key={idx} style={{ marginBottom: 4 }}>
+                                        <Tag color="cyan" style={{ fontSize: 10 }}>{c.role}</Tag>
+                                        <span>{c.driverModel} | {c.canBus} ID:{c.canNodeId}</span>
+                                    </div>
+                                ))}
+                            </div>
                             <div><b>最大速度:</b> {w.maxVelocityIdle} mm/s (空载) / {w.maxVelocityFull} mm/s (满载)</div>
                             <div><b>加/减速度:</b> {w.maxAccIdle} / {w.maxDecIdle} mm/s² (空载)</div>
                             <div><b>舵轮零位:</b> {w.zeroPos}</div>

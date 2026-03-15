@@ -13,7 +13,12 @@ export const StatusBar: React.FC = () => {
 
     // Bus occupancy
     const busMap: Record<string, number> = {};
-    [...wheels, ...ioBoards].forEach(d => {
+    wheels.forEach(w => {
+        (w.components || []).forEach(c => {
+            if (c.canBus) busMap[c.canBus] = (busMap[c.canBus] ?? 0) + 1;
+        });
+    });
+    ioBoards.forEach(d => {
         if (d.canBus) busMap[d.canBus] = (busMap[d.canBus] ?? 0) + 1;
     });
 

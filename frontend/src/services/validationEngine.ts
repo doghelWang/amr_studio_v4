@@ -36,8 +36,14 @@ export function runValidation(config: RobotConfig): ValidationResult {
 
     // ── Rule 2: CAN Node ID conflict ─────────────────
     const allCanDevices = [
-        ...wheels.map(w => ({ id: w.id, label: w.label, canBus: w.canBus, canNodeId: w.canNodeId, panel: 'drive' as const })),
-        ...ioBoards.map(b => ({ id: b.id, label: b.label, canBus: b.canBus, canNodeId: b.canNodeId, panel: 'control' as const }))
+        ...wheels.flatMap(w => (w.components || []).map(c => ({ 
+            id: w.id, 
+            label: `${w.label} (${c.role || 'device'})`, 
+            canBus: c.canBus || 'CAN0', 
+            canNodeId: c.canNodeId || 1, 
+            panel: 'drive' as const 
+        }))),
+        ...ioBoards.map(b => ({ id: b.id, label: b.label, canBus: b.canBus || 'CAN0', canNodeId: b.canNodeId || 1, panel: 'control' as const }))
     ];
 
     const busBuckets: Record<string, typeof allCanDevices> = {};

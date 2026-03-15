@@ -21,8 +21,7 @@ import {
 import { useProjectStore } from '../store/useProjectStore';
 import type { DriveType, NavigationMethod, SensorType, WheelConfig, SensorConfig } from '../store/types';
 import {
-    DRIVE_TYPE_LABELS, NAV_METHOD_LABELS, SENSOR_MODELS,
-    defaultMcu
+    DRIVE_TYPE_LABELS, NAV_METHOD_LABELS, SENSOR_MODELS, MCU_MODELS, DRIVER_MODELS, defaultMcu
 } from '../store/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -32,57 +31,101 @@ const { Option } = Select;
 
 const WHEEL_PRESETS: Record<DriveType, Array<Partial<WheelConfig>>> = {
     DIFFERENTIAL: [
-        { label: 'LEFT_WHEEL',  orientation: 'FRONT_LEFT',  mountX: 0, mountY: 250,  mountYaw: 0 },
-        { label: 'RIGHT_WHEEL', orientation: 'FRONT_RIGHT', mountX: 0, mountY: -250, mountYaw: 0 },
+        { label: 'LEFT_WHEEL',  type: 'STANDARD_DIFF', orientation: 'FRONT_LEFT',  mountX: 0, mountY: 250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
+        { label: 'RIGHT_WHEEL', type: 'STANDARD_DIFF', orientation: 'FRONT_RIGHT', mountX: 0, mountY: -250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
     ],
     SINGLE_STEER: [
-        { label: 'STEER_WHEEL',    orientation: 'CENTER',       mountX: 0,    mountY: 0,   mountYaw: 0 },
-        { label: 'FRONT_CASTOR',   orientation: 'FRONT_CENTER', mountX: 400,  mountY: 0,   mountYaw: 0 },
-        { label: 'REAR_CASTOR',    orientation: 'REAR_CENTER',  mountX: -400, mountY: 0,   mountYaw: 0 },
+        { label: 'STEER_WHEEL',  type: 'VERTICAL_STEER', orientation: 'CENTER', mountX: 300, mountY: 0, mountZ: 0, mountYaw: 0, diameter: 250, track: 600 },
+        { label: 'FRONT_CASTOR', type: 'STANDARD_DIFF', orientation: 'FRONT_CENTER', mountX: 600, mountY: 0, mountZ: 0, mountYaw: 0, diameter: 100, track: 600 },
+        { label: 'REAR_CASTOR',  type: 'STANDARD_DIFF', orientation: 'REAR_CENTER', mountX: -600, mountY: 0, mountZ: 0, mountYaw: 0, diameter: 100, track: 600 },
     ],
     DUAL_STEER: [
-        { label: 'FRONT_STEER', orientation: 'FRONT_CENTER', mountX: 300,  mountY: 0, mountYaw: 0 },
-        { label: 'REAR_STEER',  orientation: 'REAR_CENTER',  mountX: -300, mountY: 0, mountYaw: 0 },
+        { label: 'FRONT_STEER', type: 'VERTICAL_STEER', orientation: 'FRONT_CENTER', mountX: 300, mountY: 0, mountZ: 0, mountYaw: 0, diameter: 250, track: 600 },
+        { label: 'REAR_STEER',  type: 'VERTICAL_STEER', orientation: 'REAR_CENTER',  mountX: -300, mountY: 0, mountZ: 0, mountYaw: 0, diameter: 250, track: 600 },
     ],
     QUAD_STEER: [
-        { label: 'FL_STEER', orientation: 'FRONT_LEFT',  mountX:  300, mountY:  250, mountYaw: 0 },
-        { label: 'FR_STEER', orientation: 'FRONT_RIGHT', mountX:  300, mountY: -250, mountYaw: 0 },
-        { label: 'RL_STEER', orientation: 'REAR_LEFT',   mountX: -300, mountY:  250, mountYaw: 0 },
-        { label: 'RR_STEER', orientation: 'REAR_RIGHT',  mountX: -300, mountY: -250, mountYaw: 0 },
+        { label: 'FL_STEER', type: 'VERTICAL_STEER', orientation: 'FRONT_LEFT',  mountX:  300, mountY:  250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
+        { label: 'FR_STEER', type: 'VERTICAL_STEER', orientation: 'FRONT_RIGHT', mountX:  300, mountY: -250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
+        { label: 'RL_STEER', type: 'VERTICAL_STEER', orientation: 'REAR_LEFT',   mountX: -300, mountY:  250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
+        { label: 'RR_STEER', type: 'VERTICAL_STEER', orientation: 'REAR_RIGHT',  mountX: -300, mountY: -250, mountZ: 0, mountYaw: 0, diameter: 200, track: 500 },
     ],
     MECANUM_4: [
-        { label: 'FL_MECANUM', orientation: 'FRONT_LEFT',  mountX:  300, mountY:  250, mountYaw: 0 },
-        { label: 'FR_MECANUM', orientation: 'FRONT_RIGHT', mountX:  300, mountY: -250, mountYaw: 0 },
-        { label: 'RL_MECANUM', orientation: 'REAR_LEFT',   mountX: -300, mountY:  250, mountYaw: 0 },
-        { label: 'RR_MECANUM', orientation: 'REAR_RIGHT',  mountX: -300, mountY: -250, mountYaw: 0 },
+        { label: 'FL_MECANUM', type: 'STANDARD_DIFF', orientation: 'FRONT_LEFT',  mountX:  400, mountY:  300, mountZ: 0, mountYaw: 0, diameter: 200, track: 600 },
+        { label: 'FR_MECANUM', type: 'STANDARD_DIFF', orientation: 'FRONT_RIGHT', mountX:  400, mountY: -300, mountZ: 0, mountYaw: 0, diameter: 200, track: 600 },
+        { label: 'RL_MECANUM', type: 'STANDARD_DIFF', orientation: 'REAR_LEFT',   mountX: -400, mountY:  300, mountZ: 0, mountYaw: 0, diameter: 200, track: 600 },
+        { label: 'RR_MECANUM', type: 'STANDARD_DIFF', orientation: 'REAR_RIGHT',  mountX: -400, mountY: -300, mountZ: 0, mountYaw: 0, diameter: 200, track: 600 },
     ],
     OMNI_3: [
-        { label: 'OMNI_FRONT',       orientation: 'FRONT_CENTER', mountX:  300, mountY:    0, mountYaw: 0   },
-        { label: 'OMNI_REAR_LEFT',   orientation: 'REAR_LEFT',    mountX: -150, mountY:  260, mountYaw: 120 },
-        { label: 'OMNI_REAR_RIGHT',  orientation: 'REAR_RIGHT',   mountX: -150, mountY: -260, mountYaw: 240 },
+        { label: 'OMNI_FRONT',      type: 'STANDARD_DIFF', orientation: 'FRONT_CENTER', mountX:  300, mountY:    0, mountZ: 0, mountYaw:    0, diameter: 150, track: 500 },
+        { label: 'OMNI_REAR_LEFT',  type: 'STANDARD_DIFF', orientation: 'REAR_LEFT',    mountX: -150, mountY:  260, mountZ: 0, mountYaw:  120, diameter: 150, track: 500 },
+        { label: 'OMNI_REAR_RIGHT', type: 'STANDARD_DIFF', orientation: 'REAR_RIGHT',   mountX: -150, mountY: -260, mountZ: 0, mountYaw:  240, diameter: 150, track: 500 },
     ],
 };
 
-const defaultWheel = (preset: Partial<WheelConfig>): WheelConfig => ({
-    id: uuidv4(),
-    label: preset.label || 'WHEEL',
-    mountX: preset.mountX ?? 0,
-    mountY: preset.mountY ?? 0,
-    mountYaw: preset.mountYaw ?? 0,
-    orientation: preset.orientation ?? 'CENTER',
-    headOffsetIdle: 30, tailOffsetIdle: 30, leftOffsetIdle: 30, rightOffsetIdle: 30,
-    maxVelocityIdle: 1.5, maxAccIdle: 0.5, maxDecIdle: 0.5,
-    headOffsetFull: 40, tailOffsetFull: 40, leftOffsetFull: 40, rightOffsetFull: 40,
-    maxVelocityFull: 1.0, maxAccFull: 0.3, maxDecFull: 0.3,
-    driverModel: 'CANOPEN_SERVO', canBus: 'CAN0', canNodeId: 1, motorPolarity: 'FORWARD',
-    zeroPos: 0, leftLimit: -180, rightLimit: 180,
-});
+const defaultWheel = (preset: Partial<WheelConfig>): WheelConfig => {
+    const type = preset.type || 'STANDARD_DIFF';
+    let components: WheelConfig['components'] = [];
+
+    if (type === 'VERTICAL_STEER' || type === 'HORIZONTAL_STEER') {
+        components = [
+            { 
+                role: 'DRIVE_DRIVER', driverModel: 'RA-DR/D-48/80S2B-411BH3', canBus: 'CAN0', canNodeId: 1, motorPolarity: 'FORWARD',
+                ratedVoltage: 48, ratedCurrent: 80, ratedSpeed: 3000, gearRatio: 25, encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+            { 
+                role: 'STEER_DRIVER', driverModel: 'RA-DR/D-48/25DB-311BH3', canBus: 'CAN0', canNodeId: 2, motorPolarity: 'FORWARD',
+                ratedVoltage: 48, ratedCurrent: 25, ratedSpeed: 3000, gearRatio: 30, encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+        ];
+    } else if (type === 'DIFF_STEER') {
+        components = [
+            { 
+                role: 'DRIVE_DRIVER',  driverModel: 'RA-DR/D-48/25DB-311BH3', canBus: 'CAN0', canNodeId: 1, motorPolarity: 'FORWARD',
+                ratedVoltage: 48, ratedCurrent: 25, ratedSpeed: 3000, gearRatio: 20, encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+            { 
+                role: 'DRIVE_DRIVER', driverModel: 'RA-DR/D-48/25DB-311BH3', canBus: 'CAN0', canNodeId: 2, motorPolarity: 'FORWARD',
+                ratedVoltage: 48, ratedCurrent: 25, ratedSpeed: 3000, gearRatio: 20, encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+            { 
+                role: 'STEER_ENCODER', driverModel: 'HIK_ENCODER_H8', canBus: 'CAN0', canNodeId: 3, motorPolarity: 'FORWARD',
+                encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+        ];
+    } else {
+        components = [
+            { 
+                role: 'DRIVE_DRIVER', driverModel: 'RA-DR/D-48/25DB-311BH3', canBus: 'CAN0', canNodeId: 1, motorPolarity: 'FORWARD',
+                ratedVoltage: 48, ratedCurrent: 25, ratedSpeed: 3000, gearRatio: 15, encoderType: 'ABSOLUTE', encoderResolution: 17
+            },
+        ];
+    }
+
+    return {
+        id: uuidv4(),
+        label: preset.label || 'WHEEL',
+        type,
+        mountX: preset.mountX ?? 0,
+        mountY: preset.mountY ?? 0,
+        mountZ: preset.mountZ ?? 0,
+        mountYaw: preset.mountYaw ?? 0,
+        diameter: preset.diameter ?? 200,
+        track: preset.track ?? 650,
+        orientation: preset.orientation ?? 'CENTER',
+        components,
+        headOffsetIdle: 30, tailOffsetIdle: 30, leftOffsetIdle: 30, rightOffsetIdle: 30,
+        maxVelocityIdle: 1500, maxAccIdle: 800, maxDecIdle: 800,
+        headOffsetFull: 40, tailOffsetFull: 40, leftOffsetFull: 40, rightOffsetFull: 40,
+        maxVelocityFull: 1200, maxAccFull: 500, maxDecFull: 500,
+        zeroPos: 0, leftLimit: -180, rightLimit: 180,
+    };
+};
 
 const defaultSensor = (): SensorConfig => ({
     id: uuidv4(),
     label: 'laser-front',
     type: 'LASER_2D',
-    model: 'SICK_TIM561',
+    model: 'SICK_TIM561-2050101',
     mountX: 500, mountY: 0, mountZ: 100,
     mountYaw: 0, mountPitch: 0, mountRoll: 0,
     usageNavi: true, usageObs: true,
@@ -122,36 +165,86 @@ function WheelRow({
         <Card size="small" style={S.card} styles={{ body: { padding: '10px 14px' } }}>
             <Row align="middle" gutter={8}>
                 <Col flex="auto">
-                    <Row gutter={8}>
-                        <Col span={7}>
+                    <Row gutter={8} style={{ marginBottom: 8 }}>
+                        <Col span={6}>
                             <div style={S.label}>标签</div>
                             <Input size="small" value={wheel.label}
                                 onChange={e => onChange(wheel.id, 'label', e.target.value)} />
                         </Col>
-                        <Col span={5}>
-                            <div style={S.label}>X 位置 (mm)</div>
-                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountX}
-                                onChange={v => onChange(wheel.id, 'mountX', v ?? 0)} />
-                        </Col>
-                        <Col span={5}>
-                            <div style={S.label}>Y 位置 (mm)</div>
-                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountY}
-                                onChange={v => onChange(wheel.id, 'mountY', v ?? 0)} />
-                        </Col>
-                        <Col span={4}>
-                            <div style={S.label}>CAN 总线</div>
-                            <Select size="small" style={{ width: '100%' }} value={wheel.canBus}
-                                onChange={v => onChange(wheel.id, 'canBus', v)}>
-                                {['CAN0','CAN1','CAN2','CAN3'].map(c => <Option key={c} value={c}>{c}</Option>)}
+                        <Col span={6}>
+                            <div style={S.label}>拓扑类型</div>
+                            <Select size="small" style={{ width: '100%' }} value={wheel.type}
+                                onChange={v => onChange(wheel.id, 'type', v)}>
+                                <Option value="STANDARD_DIFF">标准差速轮 (Drive Only)</Option>
+                                <Option value="VERTICAL_STEER">立式舵轮 (Drive + Steer)</Option>
+                                <Option value="HORIZONTAL_STEER">卧式舵轮 (Drive + Steer)</Option>
+                                <Option value="DIFF_STEER">差速式舵轮 (D-Drive + E-Encoder)</Option>
                             </Select>
                         </Col>
                         <Col span={3}>
-                            <div style={S.label}>节点 ID</div>
-                            <InputNumber size="small" style={{ width: '100%' }} min={1} max={127}
-                                value={wheel.canNodeId}
-                                onChange={v => onChange(wheel.id, 'canNodeId', v ?? 1)} />
+                            <div style={S.label}>X (mm)</div>
+                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountX}
+                                onChange={v => onChange(wheel.id, 'mountX', v ?? 0)} />
+                        </Col>
+                        <Col span={3}>
+                            <div style={S.label}>Y (mm)</div>
+                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountY}
+                                onChange={v => onChange(wheel.id, 'mountY', v ?? 0)} />
+                        </Col>
+                        <Col span={3}>
+                            <div style={S.label}>Z (mm)</div>
+                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountZ}
+                                onChange={v => onChange(wheel.id, 'mountZ', v ?? 0)} />
+                        </Col>
+                        <Col span={3}>
+                            <div style={S.label}>角度 (°)</div>
+                            <InputNumber size="small" style={{ width: '100%' }} value={wheel.mountYaw}
+                                onChange={v => onChange(wheel.id, 'mountYaw', v ?? 0)} />
                         </Col>
                     </Row>
+
+                    {/* Component-level Wiring */}
+                    <div style={{ background: '#090b10', padding: 8, borderRadius: 6 }}>
+                        <div style={{ fontSize: 11, color: '#666', marginBottom: 4 }}>🔌 CAN 节点配置 (驱动器/编码器)</div>
+                        {wheel.components.map((comp, idx) => (
+                            <Row key={idx} gutter={8} align="middle" style={{ marginBottom: 4 }}>
+                                <Col span={6}>
+                                    <Tag color={comp.role.includes('ENCODER') ? 'orange' : 'blue'} style={S.tag}>
+                                        {comp.role === 'DRIVE_DRIVER' ? '行走驱动' : comp.role === 'STEER_DRIVER' ? '转向驱动' : '转向编码器'}
+                                    </Tag>
+                                </Col>
+                                <Col span={7}>
+                                    <Select size="small" style={{ width: '100%' }} value={comp.driverModel}
+                                        onChange={v => {
+                                            const newComps = [...wheel.components];
+                                            newComps[idx] = { ...comp, driverModel: v };
+                                            onChange(wheel.id, 'components', newComps);
+                                        }}>
+                                        {DRIVER_MODELS.map(m => <Option key={m} value={m}>{m}</Option>)}
+                                    </Select>
+                                </Col>
+                                <Col span={6}>
+                                    <Select size="small" style={{ width: '100%' }} value={comp.canBus}
+                                        onChange={v => {
+                                            const newComps = [...wheel.components];
+                                            newComps[idx] = { ...comp, canBus: v };
+                                            onChange(wheel.id, 'components', newComps);
+                                        }}>
+                                        {['CAN0','CAN1','CAN2','CAN3'].map(c => <Option key={c} value={c}>{c}</Option>)}
+                                    </Select>
+                                </Col>
+                                <Col span={4}>
+                                    <InputNumber size="small" style={{ width: '100%' }} min={1} max={127}
+                                        value={comp.canNodeId}
+                                        onChange={v => {
+                                            const newComps = [...wheel.components];
+                                            newComps[idx] = { ...comp, canNodeId: v ?? 1 };
+                                            onChange(wheel.id, 'components', newComps);
+                                        }} />
+                                </Col>
+                            </Row>
+                        ))}
+                    </div>
                 </Col>
                 <Col>
                     <Tooltip title="删除该轮组">
@@ -258,6 +351,7 @@ export function WizardBuilder({ open, onClose }: WizardBuilderProps) {
     const [chassisWidth, setChassisWidth] = useState(800);
     const [driveType, setDriveType] = useState<DriveType>('DIFFERENTIAL');
     const [navMethod, setNavMethod] = useState<NavigationMethod>('LIDAR_SLAM');
+    const [mcuModel, setMcuModel] = useState(MCU_MODELS[0]);
 
     // Step 2: wheels (auto-populated from driveType, editable)
     const [wheels, setWheels] = useState<WheelConfig[]>(() =>
@@ -322,10 +416,16 @@ export function WizardBuilder({ open, onClose }: WizardBuilderProps) {
             config: {
                 identity: {
                     robotName, version,
-                    chassisLength, chassisWidth,
+                    chassis: {
+                        ...useProjectStore.getState().config.identity.chassis, // Get defaults
+                        length: chassisLength,
+                        width: chassisWidth,
+                        name: robotName,
+                        alias: robotName,
+                    },
                     driveType, navigationMethod: navMethod,
                 },
-                mcu: defaultMcu(),
+                mcu: { ...defaultMcu(), model: mcuModel },
                 wheels,
                 sensors,
                 ioBoards: [],
@@ -381,7 +481,7 @@ export function WizardBuilder({ open, onClose }: WizardBuilderProps) {
                 <div>
                     <div style={S.sectionTitle}>🤖 底盘与驱动基础配置</div>
                     <Row gutter={16}>
-                        <Col span={14}>
+                        <Col span={10}>
                             <div style={S.label}>机器人名称（英文，无空格）</div>
                             <Input
                                 value={robotName}
@@ -391,10 +491,16 @@ export function WizardBuilder({ open, onClose }: WizardBuilderProps) {
                                 style={{ marginBottom: 12 }}
                             />
                         </Col>
-                        <Col span={10}>
+                        <Col span={6}>
                             <div style={S.label}>版本号</div>
                             <Input value={version} onChange={e => setVersion(e.target.value)}
                                 size="middle" style={{ marginBottom: 12 }} />
+                        </Col>
+                        <Col span={8}>
+                            <div style={S.label}>控制器型号</div>
+                            <Select style={{ width: '100%' }} value={mcuModel} onChange={setMcuModel}>
+                                {MCU_MODELS.map(m => <Option key={m} value={m}>{m}</Option>)}
+                            </Select>
                         </Col>
                     </Row>
                     <Row gutter={16}>

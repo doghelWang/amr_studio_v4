@@ -103,9 +103,29 @@ const WiringCanvasInner: React.FC = () => {
         });
 
         wheels.forEach((w, i) => {
-            const nid = `wheel-${w.id}`;
-            nodes.push({ id: nid, type: 'wheel', position: { x: 680, y: 40 + i * 130 }, data: { label: w.label, canBus: w.canBus, canNodeId: w.canNodeId, driverModel: w.driverModel } });
-            edges.push({ id: `e-${nid}`, source: 'mcu', target: nid, label: `${w.canBus}·ID${w.canNodeId}`, style: { stroke: '#ff8c00', strokeWidth: 2 }, labelStyle: { fill: '#ff8c00', fontSize: 10 }, animated: true });
+            (w.components || []).forEach((comp, j) => {
+                const nid = `wheel-${w.id}-${j}`;
+                nodes.push({ 
+                    id: nid, 
+                    type: 'wheel', 
+                    position: { x: 680, y: 40 + i * 200 + j * 90 }, 
+                    data: { 
+                        label: `${w.label} (${comp.role === 'DRIVE_DRIVER' ? '驱动' : comp.role === 'STEER_DRIVER' ? '转向' : '编码'})`, 
+                        canBus: comp.canBus, 
+                        canNodeId: comp.canNodeId, 
+                        driverModel: comp.driverModel 
+                    } 
+                });
+                edges.push({ 
+                    id: `e-${nid}`, 
+                    source: 'mcu', 
+                    target: nid, 
+                    label: `${comp.canBus}·ID${comp.canNodeId}`, 
+                    style: { stroke: '#ff8c00', strokeWidth: 2 }, 
+                    labelStyle: { fill: '#ff8c00', fontSize: 10 }, 
+                    animated: true 
+                });
+            });
         });
 
         sensors.forEach((s, i) => {

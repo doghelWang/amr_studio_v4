@@ -31,11 +31,15 @@ export type SensorType =
     | 'BARCODE' | 'CAMERA_BINOCULAR' | 'IMU';
 
 export const SENSOR_MODELS: Record<SensorType, string[]> = {
-    LASER_2D: ['SICK_TIM561', 'SICK_NANO_SCAN3', 'HOKUYO_UTM30LX', 'RSLIDAR_M1', 'LEISHEN_N10'],
-    LASER_3D: ['VELODYNE_VLP16', 'OUSTER_OS1', 'RSLIDAR_RS16', 'LIVOX_MID360'],
-    BARCODE: ['SICK_CLV6XX', 'ZEBRA_DS9908', 'DATALOGIC_MATRIX'],
-    CAMERA_BINOCULAR: ['ZED2i', 'INTEL_D435i', 'ORBBEC_ASTRA'],
-    IMU: ['XSENS_MTI', 'HIPNUC_HI226', 'WHEELTEC_N100'],
+    LASER_2D: [
+        'SICK_TIM561-2050101', 'HOKUYO_UST-20LX', 'MR-LS-01F-S1533-BLACK', 
+        'VANJEE_WLR-716', 'PEPPERL_OMD30M-R2000', 'PACECAT_LDS-50C-C30E',
+        'TIM510-9950000S01', 'UAM-05LP-T301'
+    ],
+    LASER_3D: ['LIVOX_MID-360', 'RS-LS-RS-HELIOS16P', 'VELODYNE_VLP16'],
+    BARCODE: ['HIKROBOT_MV_SC2000AM', 'HIKROBOT_MV_ID3016PM'],
+    CAMERA_BINOCULAR: ['HIKROBOT_MV_EB435I', 'REALSENS_STEREO', 'BERXELP_100R'],
+    IMU: ['HIKROBOT_MV_89013_V13', 'SPI_ON_BOARD'],
 };
 
 export type ConnectionType = 'ETHERNET' | 'USB' | 'RS232' | 'SPI' | 'CAN';
@@ -65,51 +69,174 @@ export interface ProjectMeta {
     formatVersion: '1.0';
 }
 
+ // ─── Chassis & Identity ───────────────────────────────────────────
+
+export interface ChassisConfig {
+    name: string;
+    alias: string;
+    description: string;
+    version: string;
+    subsystem: string;      // 子系统 (e.g., ChassisSys)
+    mainType: string;       // 主类型 (e.g., chassis)
+    subType: string;        // 子类型 (e.g., diffChassis, steerChassis)
+    vendor: string;         // 供应商
+    model: string;          // 设备型号
+    shape: 'BOX' | 'CYLINDER';
+    length: number;
+    width: number;
+    height: number;
+    
+    // Performance (Chassis Attr)
+    maxSpeedIdle: number;
+    maxAccIdle: number;
+    maxDecIdle: number;
+    maxSpeedFull: number;
+    maxAccFull: number;
+    maxDecFull: number;
+    
+    maxAngSpeedIdle: number;
+    maxAngAccIdle: number;
+    maxAngDecIdle: number;
+    maxAngSpeedFull: number;
+    maxAngAccFull: number;
+    maxAngDecFull: number;
+
+    // Motion Center (Private Attr)
+    headOffsetIdle: number;
+    tailOffsetIdle: number;
+    leftOffsetIdle: number;
+    rightOffsetIdle: number;
+    headOffsetFull: number;
+    tailOffsetFull: number;
+    leftOffsetFull: number;
+    rightOffsetFull: number;
+}
+
 export interface RobotIdentity {
     robotName: string;
     version: string;
-    chassisLength: number;
-    chassisWidth: number;
-    navigationMethod: NavigationMethod;
     driveType: DriveType;
+    navigationMethod: NavigationMethod;
+    chassis: ChassisConfig; // Nested Chassis config
 }
 
 export interface McuConfig {
+    // Basic Info
+    name: string;
+    alias: string;
+    description: string;
+    version: string;
+    subsystem: string;
+    mainType: string;
+    subType: string;
+    vendor: string;
     model: string;
+    
+    // Physical Pose (6D)
+    mountX: number;
+    mountY: number;
+    mountZ: number;
+    roll: number;
+    pitch: number;
+    yaw: number;
+    
+    // Shape & Dimensions
+    shape: 'BOX' | 'CYLINDER';
+    length: number;
+    width: number;
+    height: number;
+
+    // Orientation Helpers
+    surfaceOrientation: 'UP' | 'DOWN' | 'FRONT' | 'BACK' | 'LEFT' | 'RIGHT';
+    cableDirection: 'FRONT' | 'BACK' | 'LEFT' | 'RIGHT';
+    installType: 'HORIZONTAL' | 'VERTICAL';
+
+    // Resources
     canBuses: string[];
     ethPorts: string[];
+    rs232Ports: string[];
+    rs485Ports: string[];
+    speakerPorts: string[];
+
+    // Onboard Device Flags (Derived or explicit)
+    hasGyro: boolean;
+    hasTopCamera: boolean;
+    hasDownCamera: boolean;
 }
 
 export const MCU_MODELS = [
-    'RK3588_CTRL_BOARD',
-    'X86_IPC_CTRL',
-    'JETSON_ORIN_CTRL',
-    'CUSTOM_MCU',
+    'RA-MC-R318AT',
+    'RA-MC-R318AD',
+    'RA-MC-R318BN',
+    'RA-MC-R349AD-21BH0',
 ];
 
 export interface IoBoardConfig {
     id: string;
     label: string;
     model: string;
-    canBus: string;
-    canNodeId: number;
-    channelCount: number;
+    canBus: string;       // 接入的主控 CAN 总线
+    canNodeId: number;    // ID
+    
+    // Resources (Phase 12)
+    canBuses: string[];   // 本地 CAN 总线
+    diPorts: string[];
+    doPorts: string[];
+    aiPorts: string[];
 }
 
 export const IO_BOARD_MODELS: Record<string, number> = {
-    'STANDARD_IO_16CH': 16,
-    'COMPACT_IO_8CH': 8,
-    'SAFETY_IO_16CH': 16,
+    'RA-IC/I-F-1R6BH0': 40,
+    'RA-EI/I-A-14400AH0': 8,
+    'RA-EI/I-A-18A00BH5': 18,
+    'RA-EI/I-B-500A5AH1': 15,
+    'RA-IC/I-A-1A3BH0': 15,
+    'RA-IC/I-A-1C0AH1': 21,
+    'RA-IC/I-A-1C0BH0': 21,
+    'RA-IC/I-A-1E3BH0': 23,
+    'RA-IC/I-C-140AH1': 14, // 4 DI + 7 DO + PZTB/BAR? Summing IO only for now
+    'RA-IC/I-C-140BH0': 14,
+    'RA-IC/I-D-120BH0': 11, // 2 DI + 5 DO + 3 AI + 1 CAN
+    'RA-EI/F-C-1H2AH0': 8,
+    'RA-EI/F-C-1S1AH0': 1,
 };
+
+export type WheelRole = 'DRIVE_DRIVER' | 'STEER_DRIVER' | 'STEER_ENCODER';
+
+export interface WheelComponent {
+    role: WheelRole;
+    driverModel: string;
+    canBus: string;
+    canNodeId: number;
+    motorPolarity: MotorPolarity;
+    
+    // Power & Motor attributes (Phase 8)
+    ratedVoltage?: number;      // V
+    ratedCurrent?: number;      // A
+    ratedSpeed?: number;        // RPM
+    gearRatio?: number;         // x:1
+    encoderType?: 'NONE' | 'INCREMENTAL' | 'ABSOLUTE';
+    encoderResolution?: number; // Lines or Bits
+}
 
 export interface WheelConfig {
     id: string;
     label: string;
+    type: 'VERTICAL_STEER' | 'HORIZONTAL_STEER' | 'DIFF_STEER' | 'STANDARD_DIFF';
+    
+    // Kinematic (Phase 8)
+    diameter: number;           // mm
+    track: number;              // mm (wheel spacing)
+    
     // Structural
     mountX: number;
     mountY: number;
+    mountZ: number;
     mountYaw: number;
     orientation: WheelOrientation;
+    
+    // Components (e.g., Drive motor vs Steer motor)
+    components: WheelComponent[];
     
     // Idle state parameters
     headOffsetIdle: number;
@@ -120,7 +247,7 @@ export interface WheelConfig {
     maxAccIdle: number;
     maxDecIdle: number;
 
-    // Full Load state parameters (added to align with V4 .model spec)
+    // Full Load state parameters
     headOffsetFull: number;
     tailOffsetFull: number;
     leftOffsetFull: number;
@@ -129,12 +256,6 @@ export interface WheelConfig {
     maxAccFull: number;
     maxDecFull: number;
 
-    // Electrical
-    driverModel: string;
-    canBus: string;
-    canNodeId: number;
-    motorPolarity: MotorPolarity;
-    
     // Kinematic
     zeroPos: number;
     leftLimit: number;
@@ -142,8 +263,14 @@ export interface WheelConfig {
 }
 
 export const DRIVER_MODELS = [
-    'ELMO_GOLD', 'CANOPEN_SERVO', 'MAXON_EPOS4',
-    'INOVANCE_IS620N', 'TECHSERVO_TS100', 'CUSTOM_DRIVER',
+    'RA-DR/D-48/25DB-311BH3',
+    'RA-DR/D-48/80S2B-411BH3',
+    'KINCO_SERVO',
+    'ZAPI_AC2',
+    'ELMO_GOLD',
+    'CURTIS_1234',
+    'SIHENG_SERVO',
+    'HIK_ENCODER_H8',
 ];
 
 export interface SensorConfig {
@@ -233,19 +360,70 @@ export type PanelKey =
     | 'identity' | 'control' | 'drive' | 'sensor' | 'io' | 'blueprint' | 'wiring';
 
 // Default factory functions
+export const defaultChassis = (len = 1200, wid = 800): ChassisConfig => ({
+    name: 'diffChassis-Common',
+    alias: 'Default Chassis',
+    description: 'Universal Differential Chassis',
+    version: 'V1.0',
+    subsystem: 'ChassisSys',
+    mainType: 'chassis',
+    subType: 'diffChassis',
+    vendor: 'HIKROBOT',
+    model: 'HIK-CH-D-V1',
+    shape: 'BOX',
+    length: len,
+    width: wid,
+    height: 400,
+    
+    maxSpeedIdle: 1500, maxAccIdle: 800, maxDecIdle: 800,
+    maxSpeedFull: 1200, maxAccFull: 500, maxDecFull: 500,
+    maxAngSpeedIdle: 180, maxAngAccIdle: 90, maxAngDecIdle: 90,
+    maxAngSpeedFull: 120, maxAngAccFull: 60, maxAngDecFull: 60,
+
+    headOffsetIdle: len / 2, tailOffsetIdle: len / 2,
+    leftOffsetIdle: wid / 2, rightOffsetIdle: wid / 2,
+    headOffsetFull: len / 2, tailOffsetFull: len / 2,
+    leftOffsetFull: wid / 2, rightOffsetFull: wid / 2,
+});
+
 export const defaultMcu = (): McuConfig => ({
-    model: 'RK3588_CTRL_BOARD',
-    canBuses: ['CAN0', 'CAN1', 'CAN2'],
-    ethPorts: ['ETH0', 'ETH1'],
+    name: 'MainController',
+    alias: '主控制器',
+    description: '核心控制单元',
+    version: 'V1.0',
+    subsystem: 'ChassisSys',
+    mainType: 'mcu',
+    subType: 'hostBoard',
+    vendor: 'HIKROBOT',
+    model: 'RA-MC-R318AT',
+    
+    mountX: 508, mountY: -181, mountZ: 100,
+    roll: 0, pitch: 0, yaw: 90,
+    
+    shape: 'BOX',
+    length: 120, width: 100, height: 40,
+    
+    surfaceOrientation: 'UP',
+    cableDirection: 'RIGHT',
+    installType: 'HORIZONTAL',
+    
+    canBuses: ['CAN_1', 'CAN_2', 'CAN_3'],
+    ethPorts: ['ETH0', 'ETH1', 'ETH2', 'ETH3'],
+    rs232Ports: ['UART0', 'UART1'],
+    rs485Ports: ['RS485_1', 'RS485_2'],
+    speakerPorts: ['SPK0'],
+    
+    hasGyro: true,
+    hasTopCamera: true,
+    hasDownCamera: false,
 });
 
 export const defaultIdentity = (): RobotIdentity => ({
-    robotName: 'Custom AMR',
+    robotName: 'Custom_AMR',
     version: '1.0',
-    chassisLength: 1200,
-    chassisWidth: 800,
     navigationMethod: 'LIDAR_SLAM',
     driveType: 'DIFFERENTIAL',
+    chassis: defaultChassis(),
 });
 
 export const defaultRobotConfig = (): RobotConfig => ({
