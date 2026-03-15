@@ -3,11 +3,11 @@
 
 echo "--- Service Status Report ---"
 
-BE_PID=$(lsof -t -i :8000)
+BE_PID=$(lsof -t -i :8002)
 if [ -z "$BE_PID" ]; then
     echo "Backend:  ❌ OFFLINE"
 else
-    echo "Backend:  ✅ ONLINE (PID: $BE_PID) -> http://localhost:8000"
+    echo "Backend:  ✅ ONLINE (PID: $BE_PID) -> http://localhost:8002"
 fi
 
 FE_PID=$(lsof -t -i :3001)

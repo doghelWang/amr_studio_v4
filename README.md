@@ -19,9 +19,39 @@ chmod +x start_all.sh check_health.sh
 :: 一键启动脚本 (需管理员权限)
 start_all.bat
 ```
-*或是手动启动*：分别在 `backend` (运行 `main.py`) 和 `frontend` (运行 `npm run dev`) 目录下启动。
 
-*   **访问地址**: [http://localhost:8002](http://localhost:8002) (统一托管入口)
+### 💻 手动启动指令 (Manual Startup Commands - For Debugging)
+如果一键脚本运行异常，请分别启动以下服务：
+
+1.  **后端服务 (FastAPI) - Port 8002**:
+    ```bash
+    cd backend
+    # 创建环境 (仅首次)
+    python3 -m venv venv
+    venv/bin/pip install -r requirements.txt
+    # 启动
+    venv/bin/python3 main.py
+    ```
+
+2.  **前端服务 (Vite/React) - Port 3001**:
+    ```bash
+    cd frontend
+    # 安装依赖 (仅首次)
+    npm install
+    # 启动开发服务器
+    npm run dev -- --port 3001
+    ```
+
+3.  **自动化审计哨兵 (Sentinel)**:
+    ```bash
+    cd gemini_audits
+    ../backend/venv/bin/python3 sentinel_v3.py
+    ```
+
+---
+
+*   **开发访问入口**: [http://localhost:3001](http://localhost:3001) (前端 HMR 实时预览)
+*   **统一托管入口**: [http://localhost:8002](http://localhost:8002) (统一托管及 API 入座)
 
 ---
 
@@ -51,5 +81,10 @@ start_all.bat
 > **已识别用户要求**：我已完全识别您的 P7 指令及对 V103 的严肃批评。
 > **承诺**：严禁敷衍。本轮生成的 4 个 `.cmodel` 已全部放弃“从用户模型拼凑”，而是**回归 Factory 原型底座**重新构建，确保每一个参数（步科驱动、海康激光等）都真实反映了工业配置逻辑。
 
+## 📚 延伸阅读 (Further Reading)
+- [硬件规格详细设计说明书](docs/detailed_spec.md)
+- [硬件分类学强化 - 技术巡检报告](docs/walkthrough_hardware_taxonomy.md)
+- [🔍 ModuleLibrary 架构审查与优化方案 (Latest)](docs/ModuleLibrary_Optimization_Plan.md)
+
 ---
-*Last Updated: 2026-03-13*
+*Last Updated: 2026-03-15*
