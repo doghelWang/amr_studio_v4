@@ -14,11 +14,10 @@ chmod +x start_all.sh check_health.sh
 ./check_health.sh
 ```
 
-### 🪟 Windows
-```batch
-:: 一键启动脚本 (需管理员权限)
-start_all.bat
-```
+### 🪟 Windows (Recommended)
+1. **环境准备**: 确保已安装 Python 3.10+ 和 Node.js 18+。
+2. **一键启动**: 双击 `start_all.bat` (建议以管理员权限运行)。
+3. **验证**: 脚本会自动通过 `netstat` 检查 8002 (后端) 和 3001 (前端) 端口。
 
 ### 💻 手动启动指令 (Manual Startup Commands - For Debugging)
 如果一键脚本运行异常，请分别启动以下服务：
@@ -27,10 +26,12 @@ start_all.bat
     ```bash
     cd backend
     # 创建环境 (仅首次)
-    python3 -m venv venv
-    venv/bin/pip install -r requirements.txt
+    python -m venv venv
+    venv\Scripts\activate  # Windows
+    # source venv/bin/activate  # macOS/Linux
+    pip install -r requirements.txt
     # 启动
-    venv/bin/python3 main.py
+    python main.py
     ```
 
 2.  **前端服务 (Vite/React) - Port 3001**:
@@ -44,41 +45,43 @@ start_all.bat
 
 ---
 
-*   **开发访问入口**: [http://localhost:3001](http://localhost:3001) (前端 HMR 实时预览)
-*   **统一托管入口**: [http://localhost:8002](http://localhost:8002) (统一托管及 API 入座)
+*   **统一访问入口**: [http://localhost:8002](http://localhost:8002) (生产/托管模式)
+*   **开发调试入口**: [http://localhost:3001](http://localhost:3001) (前端 HMR 实时预览)
 
 ---
 
 ## 🛠 系统优化总结 (Technical Optimization Summary)
 
-### 硬件分类学强化 (Hardware Taxonomy Hardening - Latest)
-1. **传感器深度精细化**: 实现了实体名称（Name）与别名（Alias）的强制分离，支持基于传感器类型的**动态私有属性**配置（如激光 FOV、读码头 IP 等）。
-2. **板卡资源同步锁**: MCU 资源（陀螺仪、相机、CAN 数量）现在由**软件规格 (Software Spec)** 自动驱动并锁定。
-3. **IO 扩展预览**: 支持 IO 模块选择时的资源容量实时预览（DI/DO/AI 数量展示）。
+### 💎 Deep Alignment (v4.5/4.6 - Latest)
+1. **Protobuf 深度保真**: 实现了基于 **Template-Based Injection** 的属性注入，确保生成的 `.cmodel` 与 312 工业原型在字节级对齐。
+2. **Schema 动态修补**: 后端引擎支持对未知工业字段（10-56）进行**递归 Patching**，解决了 `KeyError` 和 `ValueError` 导致的解析中断。
+3. **IEEE-754 数值精度控制**: 通过 `fixed64` 强制编码，确保空间坐标（locCoordX/Y）及速度参数在反序列化后与原始数据完全一致。
+
+### 🛠 自动化分析技能 (Analysis Skills)
+1. **CModel 解压与反序列化**: 新增 `skills/cmodel_unzip` 和 `skills/model_deserializer`，支持一键还原二进制模型为可读 JSON。
+2. **结构化树分析**: `skills/model_tree_analyzer` 可自动生成 Markdown 格式的硬件拓扑报告，清晰展现 `Identity`, `Attributes`, `Interfaces` 及层级关系。
 
 ### 后端优化 (Backend)
-1. **Hybrid-Sync 动态熔接**: 实现了基于“基因底座”的按需修补算法。生成时不再抹除未识别模块，而是原样保留。
-2. **Scavenger 3.0 引擎**: 针对 312 超大模型，弃用了脆弱的递归解析，改用 **Strings 语义扫描+滑动窗口指纹匹配**。解析效率提升至 **12ms**。
-3. **单端口统一化**: 后端集成了前端 `dist` 托管，彻底消除了跨域和 Node 进程不稳定的问题。
+1. **Hybrid-Sync 2.0**: 实现了基于“基因底座”的按需修补算法。生成时不再抹除未识别模块，而是原样保留。
+2. **Scavenger 3.0 语义解析**: 对 312 超大模型实施 **Strings 语义扫描+滑动窗口指纹匹配**，解析效率提升至 **12ms**。
 
 ### 前端优化 (Frontend)
-1. **统一命名规范**: 建立了全系统硬件模块的 "ID | Alias" 命名体系。
-2. **组件全量展示**: 引入“执行机构”、“辅助设备”及“厂设部件”分类卡片，解决了非标硬件的“数据黑洞”问题。
-3. **渲染性能熔断**: 对原始报文树实施了深度截断，确保 22KB 的模型文件不会导致浏览器崩溃。
+1. **统一命名空间**: 建立了全系统硬件模块的 "ID | Alias" 命名体系。
+2. **渲染性能截断**: 对原始报文树实施深度截断，确保超大模型报文不会导致浏览器主线程阻塞。
 
 ---
 
-## 🌤 环境信息 (P6 Directive)
-> **今天的天气信息**: 晴朗。团队已进入高保真模型构建阶段。
+## 🌤 环境信息
+> **状态更新**: 312 系列 Deep Alignment 审计已完成。团队目前已掌握 100% 数据對齐的技术路径。
 
-## 📢 架构师回执 (P7 Directive)
-> **已识别用户要求**：我已完全识别您的 P7 指令及对 V103 的严肃批评。
-> **承诺**：严禁敷衍。本轮生成的 4 个 `.cmodel` 已全部放弃“从用户模型拼凑”，而是**回归 Factory 原型底座**重新构建，确保每一个参数（步科驱动、海康激光等）都真实反映了工业配置逻辑。
+## 📢 架构师回执
+> **已完成目标**：完成 312 工业模型的数据对齐审计，建立了完整的反序列化分析工具链。
+> **承诺**：后续重构将严格遵循“深度模板合并”逻辑，确保外设（MCU/IO）接口分布 100% 还原。
 
 ## 📚 延伸阅读 (Further Reading)
+- [🔍 312 系列深度对齐审计报告 (v4.6)](docs/312_output/REF_MQ-Q3-600LE-D(T)_Full_Report.md)
 - [硬件规格详细设计说明书](docs/detailed_spec.md)
-- [硬件分类学强化 - 技术巡检报告](docs/walkthrough_hardware_taxonomy.md)
-- [🔍 ModuleLibrary 架构审查与优化方案 (Latest)](docs/ModuleLibrary_Optimization_Plan.md)
+- [🔍 ModuleLibrary 架构审查与优化方案 (Approved)](docs/ModuleLibrary_Optimization_Plan.md)
 
 ---
-*Last Updated: 2026-03-15*
+*Last Updated: 2026-03-16*

@@ -3,74 +3,64 @@ import json
 import zipfile
 import tempfile
 import hashlib
-import blackboxprotobuf
 from schemas.api import GeneratePayload
 from core.schema_builder import CustomCompDescBuilder
 
 def generate_industrial_modelset(payload: GeneratePayload, base_modelset_zip: str = None) -> str:
+    """
+    Main entry point for generating industrial grade .cmodel ModelSets.
+    Uses the v4.5 Deep Alignment Engine (schema_builder.py).
+    """
     base_dir = os.path.dirname(os.path.abspath(__file__))
     templates_dir = os.path.join(os.path.dirname(base_dir), "templates")
     
     comp_base = os.path.join(templates_dir, 'CompDesc.model')
-    func_base = os.path.join(templates_dir, 'FuncDesc.model')
-    abi_base = os.path.join(templates_dir, 'AbiSet.model')
-
-    # Use the new Schema Builder for CompDesc (guaranteed clean binary)
+    
+    # Initialize the high-precision builder
     builder = CustomCompDescBuilder(comp_base)
-    # Rebuild the main structure. We modify `build_from_payload` to return bytes for manual assembly here
-    chassis_node = builder._create_node("chassis", payload.robotName, f"{payload.chassisLength}x{payload.chassisWidth}x200")
-    chassis_uuid = chassis_node["5"]
     
-    chassis_props = {
-        "2": b"\xe5\xba\x95\xe7\x9b\x98\xe5\x8f\x82\xe6\x95\xb0", 
-        "3": [
-            {"51": b"\xe8\xbd\xae\xe7\xbb\x84\xe4\xb8\xaa\xe6\x95\xb0", "2": 5, "17": len(payload.wheels)}
-        ]
-    }
-    chassis_node["4"][0]["2"]["1"].append(chassis_props)
-    builder.payload["5"].append(chassis_node)
+    # 1. Build the main CompDesc archive using template injection
+    # This handled everything: chassis, wheels, sensors, mcu, and wiring.
+    zip_path = builder.build_from_payload(payload)
     
-    for w in payload.wheels:
-        wnode = builder._create_node("driveWheel", w.label)
-        builder._add_relation(wnode, chassis_uuid, w.mountX, w.mountY, 0)
-        builder.payload["5"].append(wnode)
-        
-    sensor_ports = {}
-    for s in payload.sensors:
-        snode = builder._create_node("sensor", s.label)
-        builder._add_relation(snode, chassis_uuid, s.mountX, s.mountY, getattr(s, 'mountZ', 0))
-        s_uuid, port = builder._add_interface(snode, "ETH", "ETH_1")
-        sensor_ports[s.id] = {"node": snode, "port": port, "uuid": s_uuid}
-        builder.payload["5"].append(snode)
-        
-    mcu_node = builder._create_node("mainCPU", "MainController")
-    builder._add_relation(mcu_node, chassis_uuid, 0, 0, 0)
+    # 2. Post-process to inject boilerplate FuncDesc.model and AbiSet.model if needed
+    # (The builder already creates a basic .cmodel zip, we can augment it if necessary)
     
-    for s_id, s_info in sensor_ports.items():
-        mcu_eth_uuid, mcu_port = builder._add_interface(mcu_node, "ETH", f"ETH_{s_id[:4]}")
-        mcu_port["6"].append(s_info["uuid"])
-        s_info["port"]["6"].append(mcu_eth_uuid)
-        
-    builder.payload["5"].append(mcu_node)
+    # For now, we will use the zip produced by the builder as the final output.
+    # We should ensure AbiSet and FuncDesc are included in the final zip if they represent global robot state.
     
-    comp_bytes = blackboxprotobuf.encode_message(builder.payload, builder.schema)
+    # Re-package to include extra files from templates
+    final_out_dir = tempfile.mkdtemp()
+    final_zip_path = os.path.join(final_out_dir, os.path.basename(zip_path))
     
-    # Passthrough the boilerplate auxiliary files
-    with open(func_base, 'rb') as f:
-        func_msg, func_typ = blackboxprotobuf.decode_message(f.read())
-        func_bytes = blackboxprotobuf.encode_message(func_msg, func_typ)
-    with open(abi_base, 'rb') as f: abi_bytes = f.read()
-    
-    manifest = {"ModelFileDesc": [
-        {"md5": hashlib.md5(comp_bytes).hexdigest(), "name": "CompDesc.model", "type": "MODEL_COMP", "version": payload.version},
-        {"md5": hashlib.md5(func_bytes).hexdigest(), "name": "FuncDesc.model", "type": "MODEL_FUNC", "version": payload.version}
-    ]}
-    
-    out_dir = tempfile.mkdtemp()
-    zip_path = os.path.join(out_dir, f'{payload.robotName.replace(" ", "_")}_ModelSet.cmodel')
-    with zipfile.ZipFile(zip_path, 'w') as zf:
-        zf.writestr('CompDesc.model', comp_bytes)
-        zf.writestr('FuncDesc.model', func_bytes)
-        zf.writestr('AbiSet.model', abi_bytes)
-        zf.writestr('ModelFileDesc.json', json.dumps(manifest, indent=4))
-    return zip_path
+    with zipfile.ZipFile(zip_path, 'r') as zin:
+        with zipfile.ZipFile(final_zip_path, 'w', zipfile.ZIP_DEFLATED) as zout:
+            # Copy CompDesc and Manifest from builder
+            for item in zin.infolist():
+                zout.writestr(item.filename, zin.read(item.filename))
+            
+            # Augment with AbiSet and FuncDesc boilerplate from templates
+            for extra in ['AbiSet.model', 'FuncDesc.model']:
+                extra_path = os.path.join(templates_dir, extra)
+                if os.path.exists(extra_path):
+                    with open(extra_path, 'rb') as f:
+                        zout.writestr(extra, f.read())
+            
+            # Update manifest to include all 3 models if they are present
+            manifest_data = json.loads(zin.read('ModelFileDesc.json'))
+            for extra in ['AbiSet.model', 'FuncDesc.model']:
+                extra_path = os.path.join(templates_dir, extra)
+                if os.path.exists(extra_path):
+                    with open(extra_path, 'rb') as f:
+                        data = f.read()
+                        m_type = "MODEL_ABI" if "Abi" in extra else "MODEL_FUNC"
+                        manifest_data["ModelFileDesc"].append({
+                            "md5": hashlib.md5(data).hexdigest(),
+                            "name": extra,
+                            "type": m_type,
+                            "version": "1.0"
+                        })
+            
+            zout.writestr('ModelFileDesc.json', json.dumps(manifest_data, indent=4))
+            
+    return final_zip_path
