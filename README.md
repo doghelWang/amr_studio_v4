@@ -79,9 +79,10 @@ chmod +x start_all.sh check_health.sh
 > **承诺**：后续重构将严格遵循“深度模板合并”逻辑，确保外设（MCU/IO）接口分布 100% 还原。
 
 ## 📚 延伸阅读 (Further Reading)
-- [🔍 312 系列深度对齐审计报告 (v4.6)](docs/312_output/REF_MQ-Q3-600LE-D(T)_Full_Report.md)
-- [硬件规格详细设计说明书](docs/detailed_spec.md)
+- [🔍 312 系列机器模型深度对齐审计报告 (v4.6)](docs/312_alignment_audit_summary.md)
+- [🔍 312 真机解析报告 (全节点结构)](docs/312_output/REF_MQ-Q3_Analysis.md)
 - [🔍 ModuleLibrary 架构审查与优化方案 (Approved)](docs/ModuleLibrary_Optimization_Plan.md)
+- [硬件规格详细设计说明书](docs/detailed_spec.md)
 
 ---
 *Last Updated: 2026-03-16*
