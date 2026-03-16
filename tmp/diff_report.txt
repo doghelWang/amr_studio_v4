@@ -1,0 +1,86 @@
+
+====================
+FILE: AbiSet.json
+====================
+RESULT: 12 differences found.
+  - EXTRA: componentAbility[0].childFunction
+  - EXTRA: componentAbility[0].desc
+  - EXTRA: componentAbility[1].childFunction
+  - EXTRA: componentAbility[1].desc
+  - LENGTH MISMATCH: functionAbility[0].childFunction (1 vs 0)
+  - LENGTH MISMATCH: functionAbility[1].childFunction (2 vs 0)
+  - LENGTH MISMATCH: functionAbility[2].childFunction (3 vs 0)
+  - LENGTH MISMATCH: functionAbility[3].childFunction (1 vs 0)
+  - LENGTH MISMATCH: functionAbility[4].childFunction (1 vs 0)
+  - MISSING: componentAbility[0].entity
+  - MISSING: componentAbility[1].entity
+  - MISSING: functionAbility[3].tips
+
+====================
+FILE: CompDesc.json
+====================
+RESULT: 916 differences found.
+  - EXTRA: moreModuleInfo.G_MainController.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.G_MainController.moduleComponets[0].privateAttr.privateAttrs.控制板属性
+  - EXTRA: moreModuleInfo.G_MainController.moduleComponets[0].structParam.extendParams.mainCpuUpSurfaceOri.stringValue
+  - EXTRA: moreModuleInfo.IO module.moduleComponets[0].generalAttr.moduleDesc.stringValue
+  - EXTRA: moreModuleInfo.IO module.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.IO module.moduleComponets[0].privateAttr.privateAttrs.控制板属性
+  - EXTRA: moreModuleInfo.button-emc.moduleComponets[0].generalAttr.moduleShape.shapeType
+  - EXTRA: moreModuleInfo.button-emc.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.button-emc.moduleComponets[0].privateAttr.privateAttrs.按钮属性
+  - EXTRA: moreModuleInfo.charger.moduleComponets[0].generalAttr.moduleDesc.stringValue
+  - EXTRA: moreModuleInfo.charger.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.chassis_diff.moduleComponets[0].privateAttr.privateAttrs.底盘参数
+  - EXTRA: moreModuleInfo.chassis_diff.moduleComponets[0].privateAttr.privateAttrs.轮组属性
+  - EXTRA: moreModuleInfo.chassis_diff.moduleComponets[0].privateAttr.privateAttrs.运动中心参数
+  - EXTRA: moreModuleInfo.diffWheel-lft.moduleComponets[0].privateAttr.privateAttrs.关联电机
+  - EXTRA: moreModuleInfo.diffWheel-lft.moduleComponets[0].privateAttr.privateAttrs.基本属性
+  - EXTRA: moreModuleInfo.diffWheel-right.moduleComponets[0].privateAttr.privateAttrs.关联电机
+  - EXTRA: moreModuleInfo.diffWheel-right.moduleComponets[0].privateAttr.privateAttrs.基本属性
+  - EXTRA: moreModuleInfo.down_sensor.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.driver-left.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.driver-left.moduleComponets[0].privateAttr.privateAttrs.控制板属性
+  - EXTRA: moreModuleInfo.driver-lift.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.driver-lift.moduleComponets[0].privateAttr.privateAttrs.控制板属性
+  - EXTRA: moreModuleInfo.driver-right.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.driver-right.moduleComponets[0].privateAttr.privateAttrs.控制板属性
+  - EXTRA: moreModuleInfo.lamp.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.lamp.moduleComponets[0].privateAttr.privateAttrs.灯光属性
+  - EXTRA: moreModuleInfo.laser-front.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.laser-front.moduleComponets[0].privateAttr.privateAttrs.传感属性
+  - EXTRA: moreModuleInfo.laser-front.moduleComponets[0].privateAttr.privateAttrs.扫描属性
+  - EXTRA: moreModuleInfo.motor-left.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.motor-left.moduleComponets[0].privateAttr.privateAttrs.电机属性
+  - EXTRA: moreModuleInfo.motor-lift.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.motor-lift.moduleComponets[0].privateAttr.privateAttrs.电机属性
+  - EXTRA: moreModuleInfo.motor-right.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.motor-right.moduleComponets[0].privateAttr.privateAttrs.电机属性
+  - EXTRA: moreModuleInfo.smart camera.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.smart camera.moduleComponets[0].privateAttr.privateAttrs.传感属性
+  - EXTRA: moreModuleInfo.smart camera.moduleComponets[0].privateAttr.privateAttrs.图像属性
+  - EXTRA: moreModuleInfo.smart camera.moduleComponets[0].privateAttr.privateAttrs.识别属性
+  - EXTRA: moreModuleInfo.smart camera.moduleComponets[0].structParam.extendParams.lensOrientation.stringValue
+  - EXTRA: moreModuleInfo.smart camera0.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - EXTRA: moreModuleInfo.smart camera0.moduleComponets[0].privateAttr.privateAttrs.传感属性
+  - EXTRA: moreModuleInfo.smart camera0.moduleComponets[0].privateAttr.privateAttrs.图像属性
+  - EXTRA: moreModuleInfo.smart camera0.moduleComponets[0].privateAttr.privateAttrs.识别属性
+  - EXTRA: moreModuleInfo.smart camera0.moduleComponets[0].structParam.extendParams.lensOrientation.stringValue
+  - EXTRA: moreModuleInfo.up_sensor.moduleComponets[0].interfaceParams.interfaceParamsArray
+  - LENGTH MISMATCH: moreModuleInfo.G_MainController.moduleComponets (2 vs 1)
+  - LENGTH MISMATCH: moreModuleInfo.G_MainController.moduleComponets[0].generalAttr.extendParams (3 vs 1)
+  - LENGTH MISMATCH: moreModuleInfo.IO module.moduleComponets[0].generalAttr.extendParams (3 vs 1)
+  - ... (truncated)
+
+====================
+FILE: FuncDesc.json
+====================
+RESULT: 8 differences found.
+  - VALUE MISMATCH: function[0].childFunction[0].attr ('[{'key': 'naviUniqueKey', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_INERTANCE', 'desc': '惯性导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': 'STRING_E', 'stringValue': 'gyro'}, {'key': 'relatedGyro', 'type': 'FIXED_E', 'stringFix': 'gyro', 'fixedSource': ['sensor/gyro']}]}]}, 'cloneEnable': True}, {'key': 'naviUniqueKey_57997', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_SLAM', 'desc': 'slam导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': 'STRING_E', 'stringValue': 'slam'}, {'key': 'relatedLaser', 'type': 'FIXED_E', 'stringFix': 'laser-front', 'fixedSource': ['sensor/laser', 'sensor/3DLaser']}]}]}, 'cloneEnable': True}, {'key': 'naviUniqueKey_21218', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_CODE', 'desc': '二维码导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': 'STRING_E', 'stringValue': 'QR'}, {'key': 'relatedCodeReader', 'type': 'FIXED_E', 'stringFix': 'smart camera', 'fixedSource': ['sensor/codeReader']}]}]}, 'cloneEnable': True}]' vs '{'naviUniqueKey': {'key': 'naviUniqueKey', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_INERTANCE', 'desc': '惯性导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': '', 'stringValue': 'gyro', 'stringFix': 'gyro'}, {'key': 'relatedGyro', 'type': '', 'stringValue': 11, 'int32Value': 'gyro'}]}]}, 'cloneEnable': True}, 'naviUniqueKey_57997': {'key': 'naviUniqueKey_57997', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_SLAM', 'desc': 'slam导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': '', 'stringValue': 'slam', 'stringFix': 'slam'}, {'key': 'relatedLaser', 'type': '', 'stringValue': 11, 'int32Value': 'laser-front'}]}]}, 'cloneEnable': True}, 'naviUniqueKey_21218': {'key': 'naviUniqueKey_21218', 'comboxParam': {'combName': 'naviType', 'key': 'NAVI_CODE', 'desc': '二维码导航', 'arrayAttr': [{'attrParams': [{'key': 'funName', 'type': '', 'stringValue': 'QR', 'stringFix': 'QR'}, {'key': 'relatedCodeReader', 'type': '', 'stringValue': 11, 'int32Value': 'smart camera'}]}]}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[1].childFunction[0].attr ('[{'key': 'ledUniqueKey', 'comboxParam': {'combName': 'ledType', 'key': 'noLed', 'desc': '无指示灯'}, 'cloneEnable': True}]' vs '{'ledUniqueKey': {'key': 'ledUniqueKey', 'comboxParam': {'combName': 'ledType', 'key': 'noLed', 'desc': '无指示灯'}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[1].childFunction[1].attr ('[{'key': 'btnUniqueKey', 'comboxParam': {'combName': 'btnType', 'key': 'noBtn', 'desc': '无按钮'}, 'cloneEnable': True}]' vs '{'btnUniqueKey': {'key': 'btnUniqueKey', 'comboxParam': {'combName': 'btnType', 'key': 'noBtn', 'desc': '无按钮'}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[2].childFunction[0].attr ('[{'key': 'safetyIOUniqueKey', 'comboxParam': {'combName': 'safeIOType', 'key': 'noSafeIO', 'desc': '无安全IO'}, 'cloneEnable': True}, {'key': 'safetyIOUniqueKey_16047', 'comboxParam': {'combName': 'safeIOType', 'key': 'SAFETY_IO_EMC_STOP', 'desc': '急停按钮', 'arrayAttr': [{'attrParams': [{'key': 'relatedEmcBtn', 'type': 'FIXED_E', 'stringFix': 'button-emc', 'fixedSource': ['button/subButton']}]}], 'comboxAttr': [{'combName': 'emcMode', 'key': 'freerun', 'desc': '进入freerun模式'}]}, 'cloneEnable': True}]' vs '{'safetyIOUniqueKey': {'key': 'safetyIOUniqueKey', 'comboxParam': {'combName': 'safeIOType', 'key': 'noSafeIO', 'desc': '无安全IO'}, 'cloneEnable': True}, 'safetyIOUniqueKey_16047': {'key': 'safetyIOUniqueKey_16047', 'comboxParam': {'combName': 'safeIOType', 'key': 'SAFETY_IO_EMC_STOP', 'desc': '急停按钮', 'arrayAttr': [{'attrParams': [{'key': 'relatedEmcBtn', 'type': '', 'stringValue': 11, 'int32Value': 'button-emc'}]}]}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[2].childFunction[1].attr ('[{'key': 'safetySensorUniqueKey', 'comboxParam': {'combName': 'sensorType', 'key': 'SAFETY_OBS_LASER', 'desc': '避障激光', 'arrayAttr': [{'attrParams': [{'key': 'relatedSafetyLaser', 'type': 'FIXED_E', 'stringFix': 'laser-front', 'fixedSource': ['sensor/laser', 'sensor/3DLaser']}]}]}, 'cloneEnable': True}]' vs '{'safetySensorUniqueKey': {'key': 'safetySensorUniqueKey', 'comboxParam': {'combName': 'sensorType', 'key': 'SAFETY_OBS_LASER', 'desc': '避障激光', 'arrayAttr': [{'attrParams': [{'key': 'relatedSafetyLaser', 'type': '', 'stringValue': 11, 'int32Value': 'laser-front'}]}]}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[2].childFunction[2].attr ('[{'key': 'safetyRoundUniqueKey', 'comboxParam': {'combName': 'RoundType', 'key': 'BOX_ROUND', 'desc': '框体避障', 'arrayAttr': [{'attrParams': [{'key': 'centerX', 'type': 'INT32_E', 'int32Value': 0}, {'key': 'centerY', 'type': 'INT32_E', 'int32Value': 0}, {'key': 'centerZ', 'type': 'INT32_E', 'int32Value': 99}, {'key': 'boxLength', 'type': 'INT32_E', 'int32Value': 1495}, {'key': 'boxwidth', 'type': 'INT32_E', 'int32Value': 1083}, {'key': 'boxheight', 'type': 'INT32_E', 'int32Value': 198}]}]}, 'cloneEnable': True}]' vs '{'safetyRoundUniqueKey': {'key': 'safetyRoundUniqueKey', 'comboxParam': {'combName': 'RoundType', 'key': 'BOX_ROUND', 'desc': '框体避障', 'arrayAttr': [{'attrParams': [{'key': 'centerX', 'type': '', 'stringValue': 5, 'fixedSource': [0]}, {'key': 'centerY', 'type': '', 'stringValue': 5, 'fixedSource': [0]}, {'key': 'centerZ', 'type': '', 'stringValue': 5, 'fixedSource': [99]}, {'key': 'boxLength', 'type': '', 'stringValue': 5, 'fixedSource': [1495]}, {'key': 'boxwidth', 'type': '', 'stringValue': 5, 'fixedSource': [1083]}, {'key': 'boxheight', 'type': '', 'stringValue': 5, 'fixedSource': [198]}]}]}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[3].childFunction[0].attr ('[{'key': 'distSensorUniqueKey', 'comboxParam': {'combName': 'distType', 'key': 'noDistSensor', 'desc': '无测距传感器'}, 'cloneEnable': True}]' vs '{'distSensorUniqueKey': {'key': 'distSensorUniqueKey', 'comboxParam': {'combName': 'distType', 'key': 'noDistSensor', 'desc': '无测距传感器'}, 'cloneEnable': True}}')
+  - VALUE MISMATCH: function[4].childFunction[0].attr ('[{'key': 'moduleType', 'comboxParam': {'combName': 'moduleType', 'key': 'noActor', 'desc': '无执行机构'}, 'cloneEnable': True}]' vs '{'moduleType': {'key': 'moduleType', 'comboxParam': {'combName': 'moduleType', 'key': 'noActor', 'desc': '无执行机构'}, 'cloneEnable': True}}')

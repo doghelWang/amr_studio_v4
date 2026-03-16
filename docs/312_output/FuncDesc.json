@@ -1,0 +1,314 @@
+{
+  "version": "V1.0",
+  "function": [
+    {
+      "type": "locationAbility",
+      "desc": "定位能力",
+      "childFunction": [
+        {
+          "type": "navi",
+          "desc": "导航",
+          "attr": {
+            "naviUniqueKey": {
+              "key": "naviUniqueKey",
+              "comboxParam": {
+                "combName": "naviType",
+                "key": "NAVI_INERTANCE",
+                "desc": "惯性导航",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "funName",
+                        "type": "",
+                        "stringValue": "gyro",
+                        "stringFix": "gyro"
+                      },
+                      {
+                        "key": "relatedGyro",
+                        "type": "",
+                        "stringValue": 11,
+                        "int32Value": "gyro"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            },
+            "naviUniqueKey_57997": {
+              "key": "naviUniqueKey_57997",
+              "comboxParam": {
+                "combName": "naviType",
+                "key": "NAVI_SLAM",
+                "desc": "slam导航",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "funName",
+                        "type": "",
+                        "stringValue": "slam",
+                        "stringFix": "slam"
+                      },
+                      {
+                        "key": "relatedLaser",
+                        "type": "",
+                        "stringValue": 11,
+                        "int32Value": "laser-front"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            },
+            "naviUniqueKey_21218": {
+              "key": "naviUniqueKey_21218",
+              "comboxParam": {
+                "combName": "naviType",
+                "key": "NAVI_CODE",
+                "desc": "二维码导航",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "funName",
+                        "type": "",
+                        "stringValue": "QR",
+                        "stringFix": "QR"
+                      },
+                      {
+                        "key": "relatedCodeReader",
+                        "type": "",
+                        "stringValue": 11,
+                        "int32Value": "smart camera"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "HCI",
+      "desc": "人机交互",
+      "childFunction": [
+        {
+          "type": "led",
+          "desc": "灯光",
+          "attr": {
+            "ledUniqueKey": {
+              "key": "ledUniqueKey",
+              "comboxParam": {
+                "combName": "ledType",
+                "key": "noLed",
+                "desc": "无指示灯"
+              },
+              "cloneEnable": true
+            }
+          }
+        },
+        {
+          "type": "button",
+          "desc": "按钮",
+          "attr": {
+            "btnUniqueKey": {
+              "key": "btnUniqueKey",
+              "comboxParam": {
+                "combName": "btnType",
+                "key": "noBtn",
+                "desc": "无按钮"
+              },
+              "cloneEnable": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "safetyAbility",
+      "desc": "安全能力",
+      "childFunction": [
+        {
+          "type": "safetyIO",
+          "desc": "安全IO",
+          "attr": {
+            "safetyIOUniqueKey": {
+              "key": "safetyIOUniqueKey",
+              "comboxParam": {
+                "combName": "safeIOType",
+                "key": "noSafeIO",
+                "desc": "无安全IO"
+              },
+              "cloneEnable": true
+            },
+            "safetyIOUniqueKey_16047": {
+              "key": "safetyIOUniqueKey_16047",
+              "comboxParam": {
+                "combName": "safeIOType",
+                "key": "SAFETY_IO_EMC_STOP",
+                "desc": "急停按钮",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "relatedEmcBtn",
+                        "type": "",
+                        "stringValue": 11,
+                        "int32Value": "button-emc"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            }
+          }
+        },
+        {
+          "type": "safetySensor",
+          "desc": "避障传感器",
+          "attr": {
+            "safetySensorUniqueKey": {
+              "key": "safetySensorUniqueKey",
+              "comboxParam": {
+                "combName": "sensorType",
+                "key": "SAFETY_OBS_LASER",
+                "desc": "避障激光",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "relatedSafetyLaser",
+                        "type": "",
+                        "stringValue": 11,
+                        "int32Value": "laser-front"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            }
+          }
+        },
+        {
+          "type": "safetyRound",
+          "desc": "避障范围",
+          "attr": {
+            "safetyRoundUniqueKey": {
+              "key": "safetyRoundUniqueKey",
+              "comboxParam": {
+                "combName": "RoundType",
+                "key": "BOX_ROUND",
+                "desc": "框体避障",
+                "arrayAttr": [
+                  {
+                    "attrParams": [
+                      {
+                        "key": "centerX",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          0
+                        ]
+                      },
+                      {
+                        "key": "centerY",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          0
+                        ]
+                      },
+                      {
+                        "key": "centerZ",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          99
+                        ]
+                      },
+                      {
+                        "key": "boxLength",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          1495
+                        ]
+                      },
+                      {
+                        "key": "boxwidth",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          1083
+                        ]
+                      },
+                      {
+                        "key": "boxheight",
+                        "type": "",
+                        "stringValue": 5,
+                        "fixedSource": [
+                          198
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "cloneEnable": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "distMeasureAbility",
+      "desc": "透传测距",
+      "childFunction": [
+        {
+          "type": "distSensor",
+          "desc": "测距",
+          "attr": {
+            "distSensorUniqueKey": {
+              "key": "distSensorUniqueKey",
+              "comboxParam": {
+                "combName": "distType",
+                "key": "noDistSensor",
+                "desc": "无测距传感器"
+              },
+              "cloneEnable": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "actorAbility",
+      "desc": "执行机构能力",
+      "childFunction": [
+        {
+          "type": "actor",
+          "desc": "执行机构",
+          "attr": {
+            "moduleType": {
+              "key": "moduleType",
+              "comboxParam": {
+                "combName": "moduleType",
+                "key": "noActor",
+                "desc": "无执行机构"
+              },
+              "cloneEnable": true
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
