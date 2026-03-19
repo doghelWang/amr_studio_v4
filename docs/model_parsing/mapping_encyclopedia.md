@@ -1,49 +1,116 @@
-# 模型三板斧映射百科全书 (Mapping Encyclopedia)
+# 模型解析高保真映射手册 (Comprehensive Mapping Manual)
 
-## 1. 映射数据清单 (Mapping Catalog)
-
-### 1.1 公共核心标签 (Common Core Tags)
-| 标签 (Tag) | 语义名称 (Semantic Name) | 备注 (Note) |
-| :--- | :--- | :--- |
-| **1** | `key` | 唯一的字符串标识符。 |
-| **2** | `type` | 业务类型或底层数据类型。 |
-| **3 / 4 / 51** | `desc` | 人机交互描述文本。 |
-
-### 1.2 模型特有差异点 (Model-Specific Differences)
-
-#### AbiSet (能力定义模型)
-- **定位**：对硬件能力的抽象描述（“能做什么”）。
-- **类型后缀**：统一采用 `_E` 系列枚举（如 `STRING_E`, `INT32_E`）。
-- **递归深度**：中等。主要结构为 `componentAbility` -> `childFunction` -> `attr`。
-- **特有逻辑**：`naviUniqueKey` 强制构建 `customCombox`，用于前端下拉选择导航方式。
-
-#### CompDesc (组件描述模型)
-- **定位**：对硬件及其接口的物理描述（“是什么”，“如何接线”）。
-- **类型前缀**：统一采用 `DATA_` 系列前缀（如 `DATA_DOUBLE`, `DATA_STRING`）。
-- **数值标签对准**：
-    - `17`: `doubleValue` (当前值)
-    - `35`: `doubleMaxvalue` (上限)
-    - `45`: `doubleMinvalue` (下限)
-- **复杂接口逻辑**：包含 `interfaceAbility` -> `interfaceParamsArray` -> `comboType`。Tag 8/9 作为复合容器。
-- **单位编码**：Tag 50 采用 4 字节 ASCII 压缩（如 `846409581` -> `mm/s2`）。
-
-#### FuncDesc (功能描述模型)
-- **定位**：对操作层级功能的封装（“如何执行组合任务”）。
-- **类型后缀**：与 AbiSet 类似，采用 `_E` 系列。
-- **递归深度**：最高。支持 `function` -> `childFunction` -> `attr` (包含 `comboxParam` 深度嵌套)。
+> [!NOTE]
+> 本手册详细列出了 `AbiSet`, `CompDesc`, `FuncDesc` 三类文件在 Protobuf 原始标签 (Tag) 与 JSON 语义字段 (Key) 之间的完整映射关系。
 
 ---
 
-## 2. 关键定义思想 (Core Design Philosophy)
+## 1. CompDesc (组件描述模型)
 
-### I. 抽象层级分离 (Layer Separation)
-- **CompDesc (底层)**：关注比特位和物理接线，描述硬件的不可变属性。
-- **AbiSet (中层)**：关注逻辑能力。将多个 CompDesc 的物理信号聚合为业务可感知的“能力”。
-- **FuncDesc (高层)**：关注交付任务。是用户在 UI 上直接交互的对象，它关联能力并配置执行参数。
+### 1.1 核心结构映射 (Tag Mapping)
 
-### II. 强类型系统与冗余容错
-- 针对 Protobuf 丢弃元数据的特性，解析器在映射过程中执行**显式类型注入**。
-- `DATA_X` 与 `X_E` 的分立虽然增加了复杂性，但确保了与历史遗留系统的完全兼容（"木已成舟"原则）。
+| 原始标签 (Tag) | 语义字段 (JSON Key) | 数据类型 (Data Type) | 说明 (Description) |
+| :--- | :--- | :--- | :--- |
+| **5** | `moreModuleInfo` | Array<Message> | 顶层容器，包含模块分组。 |
+| **1 (in 5)** | `moduleGroupName` | String | 模块组名称。 |
+| **4 (in 5)** | `moduleComponets` | Array<Message> | 具体的模块组件列表。 |
+| **1 (in 4)** | `moduleName` | String | (通用属性解析) 模块名称。 |
+| **2 (in 4)** | `interfaceAbility` | Array<Message> | 接口能力定义 (Tag 2)。 |
+| **3 (in 4)** | `interfaceParams` | Message | 接口参数配置 (Tag 3)。 |
+| **4 (in 4)** | `privateAttr` | Array<Message> | 私有属性列表。 |
+| **13 (in 4)** | `moduleShape` | Message | 模块形状定义。 |
+| **1 (in 13)** | `sizeLen` | Double | 形状长度。 |
+| **2 (in 13)** | `sizeWidth` | Double | 形状宽度。 |
+| **3 (in 13)** | `sizeHeight` | Double | 形状高度。 |
 
-### III. 动态单位系统
-- 采用定长 `int32` 压缩 ASCII 字符串，是在 Protobuf 效率与语义可读性之间的平衡。解析器必须具备“解压”能力。
+### 1.2 属性字段映射 (Attribute Mapping)
+*适用于 `privateAttr`, `interfaceParamsArray` 等属性容器内部。*
+
+| 标签 (Tag) | 语义字段 (JSON Key) | 说明 (Description) |
+| :--- | :--- | :--- |
+| **1** | `key` | 属性键名。 |
+| **2** | `type` | 业务类型 (详见 1.3 类型表)。 |
+| **3 / 4 / 51** | `desc` | 属性描述信息。 |
+| **5** | `interfaceUuid` | 接口 UUID 标识。 |
+| **10** | `stringValue` | 字符串类型的值。 |
+| **12** | `defaultValue` | 默认值 (Int32 或 Double)。 |
+| **13** | `int32Value` | 整型类型的值。 |
+| **14** | `boolValue` | 布尔类型的值。 |
+| **17** | `doubleValue` | **当前数值** (双精度浮点)。 |
+| **20** | `stringFix` | 固定属性字符串。 |
+| **21** | `comboType` | 下拉选择配置 (Message)。 |
+| **35** | `doubleMaxvalue` | **数值上限**。 |
+| **45** | `doubleMinvalue` | **数值下限**。 |
+| **50** | `unit` | 单位 (ASCII 自动解压)。 |
+| **52** | `boolParse` | 标志位：是否解析。 |
+| **53** | `boolHide` | 标志位：是否隐藏。 |
+| **54** | `boolNoeditable` | 标志位：是否不可编辑。 |
+| **55** | `boolMustfill` | 标志位：是否必填。 |
+| **56** | `boolBasic` | 标志位：是否基础属性。 |
+
+### 1.3 类型枚举映射 (Type Enum)
+*对应 Tag 2 的数值含义。*
+
+| 数值 (Value) | 映射字符串 (String) |
+| :--- | :--- |
+| **1** | `DATA_STRING` |
+| **2** | `DATA_INT32` |
+| **4 / 10** | `DATA_DOUBLE` |
+| **11** | `DATA_COMBOX` |
+| **12 / 20** | `DATA_FIXED_E` |
+| **13** | `DATA_BOOL` |
+
+---
+
+## 2. AbiSet (能力定义模型)
+
+### 2.1 结构映射 (Tag Mapping)
+
+| 标签 (Tag) | 语义字段 (JSON Key) | 说明 (Description) |
+| :--- | :--- | :--- |
+| **11** | `componentAbility` | 组件抽象能力列表。 |
+| **12** | `functionAbility` | 功能抽象能力列表。 |
+| **1** | `type` | 能力的物理/逻辑类型 (如 Laser, Motor)。 |
+| **2 / 51** | `desc` | 能力描述。 |
+| **3** | `tips` | 提示信息。 |
+| **10 / 11** | `attr` | 属性列表容器。 |
+| **5** | `cloneEnable` | 标志位：是否允许克隆。 |
+
+### 2.2 属性类型映射 (Type Enum)
+*对应属性节点内 Tag 10 的数值含义。*
+
+| 数值 (Value) | 映射字符串 (String) |
+| :--- | :--- |
+| **1 / 3** | `STRING_E` |
+| **2** | `INT32_E` |
+| **4 / 10** | `DOUBLE_E` |
+| **11** | `UINT32_E` |
+| **13 / 5** | `BOOL_E` |
+| **20** | `FIXED_E` |
+
+---
+
+## 3. FuncDesc (功能描述模型)
+
+### 3.1 结构映射 (Tag Mapping)
+
+| 标签 (Tag) | 语义字段 (JSON Key) | 说明 (Description) |
+| :--- | :--- | :--- |
+| **1** | `version` | 文件版本信息。 |
+| **12** | `function` | 顶层功能列表。 |
+| **11** | `childFunction` | 子功能列表容器。 |
+| **1** | `type` | 功能类型标识。 |
+| **2 / 51** | `desc` | 功能描述。 |
+| **10 / 11** | `attr` | 功能参数列表。 |
+
+### 3.2 属性类型映射 (Type Enum)
+*与 AbiSet 保持一致。*
+
+| 数值 (Value) | 映射字符串 (String) |
+| :--- | :--- |
+| **1** | `STRING_E` |
+| **2** | `INT32_E` |
+| **4** | `DOUBLE_E` |
+| **11** | `UINT32_E` |
+| **13 / 5** | `BOOL_E` |
+| **20** | `FIXED_E` |
