@@ -148,22 +148,34 @@ def map_leaf_attr(ap, m_type):
 
 def m_abi_attr(obj, m_type):
     if not isinstance(obj, dict): return obj
-    r = OrderedDict(); rk = s_val(g_v(obj, 1)); r["key"] = rk
+    r = OrderedDict(); r["key"] = s_val(g_v(obj, 1))
     v51, v2 = g_v(obj, 51), g_v(obj, 2)
     if v51: r["desc"] = s_val(v51)
     elif v2: r["desc"] = s_val(v2)
-    if rk == "naviUniqueKey":
+    
+    # Capture interfaceUuid (Tag 5) if present
+    iuuid = g_v(obj, 5)
+    if iuuid: r["interfaceUuid"] = s_val(iuuid)
+
+    # RECURSIVE ATTRIBUTE CAPTURE: Process Tags 3, 10, 11 as full property lists
+    for tag_name, t in [("attributes", 3), ("interfaceParams", 10), ("interfaceAttrs", 8)]:
+        # Note: in reference JSON, these are often merged or flattened.
+        # To maintain 100% fidelity, we must capture every single one.
+        raw_vals = g_v(obj, t)
+        if not raw_vals: continue
+        # If it looks like a list of CModelProperties, map them
+        if isinstance(raw_vals, list) and isinstance(raw_vals[0], dict):
+            r[tag_name] = [map_leaf_attr(v, m_type) for v in raw_vals]
+    
+    # Special case: naviUniqueKey combox
+    if r.get("key") == "naviUniqueKey":
         r["comboxParam"] = OrderedDict([("key", "naviType"), ("desc", "不适用导航"), ("tips", "不适用导航"), ("comboxSource", "CUSTOM_E")])
         els = []; [els.append(OrderedDict([("key",k),("desc",d)])) for k,d in [("noNavi","不适用导航"),("NAVI_SLAM","slam导航"),("QR_NAVI","二维码导航"),("MAGNETIC_NAVI","磁条导航")]]
         r["comboxParam"]["customCombox"] = OrderedDict([("element",els)])
-    elif "10" in obj or "11" in obj or "3" in obj:
-        items = obj.get("10",[]) + obj.get("11",[]) + obj.get("3", [])
-        if items and isinstance(items[0], dict):
-            first = items[0]; cp = OrderedDict(); [cp.update({kn:s_val(g_v(first,t))}) for t,kn in [("1","combName"),("2","key"),("3","desc")] if g_v(first,t) is not None]
-            apl = [map_leaf_attr(at, m_type) for aa in first.get("10", []) if isinstance(aa, dict) for at in aa.get("11", [])]
-            if apl: cp["arrayAttr"] = [{"attrParams": apl}]
-            r["comboxParam"] = cp
-    if "5" in obj: r["cloneEnable"] = bool(obj["5"][0])
+    
+    # Capture cloneEnable (Tag 5) - context dependent
+    if "5" in obj and not isinstance(obj["5"][0], str): r["cloneEnable"] = bool(obj["5"][0])
+    
     return r
 
 def deserialize(inp, outp):
@@ -209,30 +221,73 @@ def deserialize(inp, outp):
                 idx["childFunction"].append(cci_f)
             res["functionAbility"].append(idx)
     elif "compdesc" in fn:
-        res = OrderedDict([("moreModuleInfo", [])]); ms_map = {"1":"sizeLen","2":"sizeWidth","3":"sizeHeight"}
+        res = OrderedDict([("moreModuleInfo", [])])
+        # Mapping for Component Properties (CModelProperty)
+        prop_map = {
+            1: "key", 2: "type", 10: "stringValue", 11: "uint32Value",
+            13: "int32Value", 14: "boolValue", 17: "doubleValue",
+            12: "defaultValue", 35: "doubleMaxvalue", 45: "doubleMinvalue",
+            50: "unit", 51: "desc", 52: "boolParse", 53: "boolHide",
+            54: "boolNoeditable", 55: "boolMustfill", 56: "boolBasic",
+            30: "enumValue", 21: "comboType"
+        }
+        
+        def map_comp_property(obj):
+            if not isinstance(obj, dict): return obj
+            # Penetrate wrapper Tag 1 if it's the only key
+            if list(obj.keys()) == ["1"] and isinstance(obj["1"][0], dict): obj = obj["1"][0]
+            p = OrderedDict()
+            for t, val_list in obj.items():
+                tag = int(t); name = prop_map.get(tag, t)
+                if tag == 21: # comboType
+                    ct_raw = val_list[0]
+                    if isinstance(ct_raw, dict):
+                        ct = OrderedDict([("typeKey", s_val(g_v(ct_raw, 1))), ("typeDesc", s_val(g_v(ct_raw, 2)))])
+                        ct["typeGroups"] = [OrderedDict([("key",s_val(g_v(x,1))), ("desc",s_val(g_v(x,2)))]) for x in ct_raw.get("3", [])]
+                        p[name] = ct
+                    else: p[name] = s_val(ct_raw)
+                elif tag == 50 and isinstance(val_list[0], dict): p[name] = i2str(g_v(val_list[0], 13, ""))
+                elif tag in [52, 53, 54, 55, 56, 14] and not isinstance(val_list[0], dict): p[name] = bool(val_list[0])
+                elif tag in [17, 35, 45, 12]: p[name] = i2d(val_list[0])
+                elif isinstance(val_list[0], dict): p[name] = [map_comp_property(x) for x in val_list]
+                else:
+                    v = val_list[0]
+                    if tag == 50: p[name] = i2str(v)
+                    else: p[name] = s_val(v) if isinstance(v, (str, bytes)) else v
+            return p
+
+        def map_comp_container(obj):
+            if not isinstance(obj, dict): return obj
+            if list(obj.keys()) == ["1"] and isinstance(obj["1"][0], dict): obj = obj["1"][0]
+            c = OrderedDict(); c["key"] = s_val(g_v(obj, 1)); c["desc"] = s_val(g_v(obj, 2))
+            if "5" in obj: c["interfaceUuid"] = s_val(g_v(obj, 5))
+            for t, name in [("3", "attributes"), ("10", "interfaceParams"), ("11", "attributes"), ("8", "interfaceAttrs")]:
+                if t in obj:
+                    if name not in c: c[name] = []
+                    c[name].extend([map_comp_property(x) for x in obj[t] if isinstance(x, dict)])
+            return c
+
         for mmi in msg.get("5", []):
-            item = OrderedDict([("moduleGroupName", s_val(g_v(mmi,1))), ("moduleComponets", [])])
-            for raw in mmi.get("4", []):
-                cp = OrderedDict(); ga = OrderedDict()
-                if "13" in raw:
-                    sh = raw["13"][0]; b = OrderedDict([(ms_map.get(k,k), v[0]) for k, v in sh.items()])
-                    ga["moduleShape"] = OrderedDict([("shapeType","ENUM_BOX"),("box",b)])
-                ga["moduleName"] = OrderedDict([("key","module_name"), ("type","DATA_STRING"), ("stringValue",s_val(raw.get("1", [""])[0])), ("desc","模块名称"), ("boolParse",True)])
-                ga["moduleDesc"] = OrderedDict([("key","module_desc"), ("type","DATA_STRING"), ("stringValue",s_val(g_v(raw, 51, "模块描述"))), ("desc","模块描述"), ("boolParse",True)])
-                ga["moduleUuid"] = OrderedDict([("key","module_uuid"), ("type","DATA_STRING"), ("stringValue",s_val(g_v(raw, 10, "") or "uuid-placeholder")), ("desc","模块Uuid"), ("boolParse",True), ("boolHide",True)])
-                ga["versionInfo"] = OrderedDict([("key","version_info"), ("type","DATA_STRING"), ("stringValue",s_val(g_v(raw, 2, "V1.0"))), ("desc","版本信息"), ("boolParse",True), ("boolNoeditable",True)])
-                for t, kn in [("4","privateAttr"),("2","interfaceAbility"),("3","interfaceParams"),("5","structParam")]:
-                    if t in raw:
-                        sub_data = raw[t]
-                        if isinstance(sub_data[0], dict):
-                            mapped_sub = OrderedDict()
-                            for k, v_list in sub_data[0].items():
-                                name = COMP_TAG_MAP.get(k, k)
-                                if isinstance(v_list[0], dict): mapped_sub[name] = [m_comp_attr(x, 'comp') for x in v_list]
-                                else: mapped_sub[name] = v_list
-                            cp[kn] = mapped_sub
-                cp["generalAttr"] = ga; item["moduleComponets"].append(cp)
-            res["moreModuleInfo"].append(item)
+            group = OrderedDict([("moduleGroupName", s_val(g_v(mmi, 1))), ("moduleComponets", [])])
+            for cp_raw in mmi.get("4", []):
+                comp = OrderedDict(); raw_ga = g_v(cp_raw, 1)
+                if raw_ga:
+                    ga = OrderedDict(); ga_tags = {1:"moduleName", 3:"moduleDesc", 4:"moduleUuid", 5:"versionInfo", 6:"module3dIcon", 7:"subSysType", 8:"mainModuleType", 9:"subModuleType", 10:"venderName", 11:"moduleDscType", 12:"moduleIcon", 13:"moduleShape", 20:"metadata"}
+                    if list(raw_ga.keys()) == ["1"] and isinstance(raw_ga["1"][0], dict): raw_ga = raw_ga["1"][0]
+                    for t, name in ga_tags.items():
+                        vals = raw_ga.get(str(t))
+                        if not vals: continue
+                        if t == 13:
+                            sh_raw = vals[0]; ms_m = {"1":"sizeLen","2":"sizeWidth","3":"sizeHeight"}
+                            st = g_v(sh_raw, 1, 1); box_raw = g_v(sh_raw, 11, {})
+                            ga[name] = OrderedDict([("shapeType","ENUM_BOX" if st==1 else "ENUM_CYLINDER")])
+                            if box_raw: ga[name]["box"] = OrderedDict([(ms_m.get(tk,tk), tv[0]) for tk, tv in box_raw.items()])
+                        else: ga[name] = [map_comp_property(x) for x in vals] if isinstance(vals[0], dict) else s_val(vals[0])
+                    comp["generalAttr"] = ga
+                for kn, t in [("interfaceAbility", "2"), ("privateAttr", "4"), ("interfaceParams", "3"), ("structParam", "5")]:
+                    if t in cp_raw: comp[kn] = [map_comp_container(x) for x in cp_raw[t]]
+                group["moduleComponets"].append(comp)
+            res["moreModuleInfo"].append(group)
     with open(outp, 'w', encoding='utf-8') as f: json.dump(res, f, ensure_ascii=False, indent=2)
 
 if __name__ == "__main__":
