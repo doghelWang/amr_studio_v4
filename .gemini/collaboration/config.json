@@ -1,0 +1,16 @@
+{
+  "local_node": {
+    "role": "DESIGN_ENGINEER",
+    "ip": "192.168.100.217",
+    "port": 8090
+  },
+  "peer_node": {
+    "role": "REVIEW_ENGINEER",
+    "ip": "192.168.100.213",
+    "port": 8090
+  },
+  "git": {
+    "remote": "origin",
+    "branch": "feature/lossless-roundtrip-fix"
+  }
+}
