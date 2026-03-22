@@ -62,7 +62,8 @@ export default function App() {
     // 1. Fetch abilities when project changes
     useEffect(() => {
         if (projectId) {
-            apiFetchAbilities(projectId).then(abilities => {
+            apiFetchAbilities(projectId).then(abilitiesRaw => {
+                const abilities = ImportService.parseAbilities(abilitiesRaw);
                 // Merge with existing config
                 loadProject({ ...config, abilities });
             }).catch(err => console.error("Failed to fetch abilities:", err));
@@ -78,15 +79,16 @@ export default function App() {
                 const file = e.target.files[0];
                 const formData = new FormData();
                 formData.append('file', file);
-                const res = await axios.post('http://localhost:8002/api/v1/models/upload', formData);
+                const res = await axios.post('http://localhost:8005/api/v1/models/upload', formData);
                 if (res.data.status === 'success') {
                     console.log('Upload Success, Project ID:', res.data.project_id);
                     const pId = res.data.project_id;
                     setProjectId(pId);
                     try {
                         const parsedConfig = ImportService.parseCompDesc(res.data.full_json);
-                        // Fetch real abilities from API to ensure sync
-                        const abilities = await apiFetchAbilities(pId);
+                        // Fetch and deeply parse abilities
+                        const abilitiesRaw = await apiFetchAbilities(pId);
+                        const abilities = ImportService.parseAbilities(abilitiesRaw);
                         loadProject({ ...parsedConfig, abilities } as any);
                         message.success(`已导入并打散模块: ${file.name}`);
                     } catch (err) {

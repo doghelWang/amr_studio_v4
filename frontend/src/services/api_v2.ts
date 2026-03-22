@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE = 'http://localhost:8002/api/v1/models';
+const API_BASE = 'http://localhost:8005/api/v1/models';
 
 export const apiFetchComponentDetails = async (projectId: string, uuid: string) => {
     const res = await axios.get(`${API_BASE}/${projectId}/components/${uuid}`);

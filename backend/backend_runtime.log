@@ -1,171 +1,28 @@
 DEBUG: LOADING DECODER VERSION 4.1.0 (NO RM-TREE)
 🚀 Initializing AMR Studio V4 Backend...
 📁 Projects Directory: /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects
-INFO:     Started server process [24868]
+INFO:     Started server process [25300]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8005 (Press CTRL+C to quit)
-DEBUG: upload_cmodel called for ModelSet39.cmodel
-DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/ModelSet39.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/decoded
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/decoded
 DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
-DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/decoded
-DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/split
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/decoded/CompDesc.json...
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/decoded/CompDesc.json...
 Split complete. Extracted 20 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/split/blueprint_CompDesc.json
-DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpzn9iaa0o/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_2547abbf
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpopoy8qw7/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_e0a9272d
 DataManager: Copying FuncDesc.model
 DataManager: Copying AbiSet.json
 DataManager: Copying CompDesc.model
 DataManager: Copying AbiSet.model
 DataManager: Copying FuncDesc.json
 DataManager: Copying ModelFileDesc.json
-INFO:     127.0.0.1:51378 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51388 - "GET /api/v1/models/proj_2547abbf/abilities HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        self.scope, self.receive, self.send
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
-    await super().__call__(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 87, in __call__
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 324, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/main.py", line 162, in get_abilities_api
-    abilities = data_manager.get_ability(project_id)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/core/data_manager.py", line 102, in get_ability
-    return json.load(f)
-                     ^
-NameError: name 'f' is not defined
-INFO:     127.0.0.1:51390 - "PATCH /api/v1/models/proj_2547abbf/abilities HTTP/1.1" 422 Unprocessable Content
-API: compile_cmodel_api called for proj_2547abbf
-Reading blueprint from /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_2547abbf/blueprint_CompDesc.json...
-Resolving module references and assembling tree...
-Parsing CompDesc JSON into Protobuf...
-Rebuilding AbiSet.model from JSON...
-Rebuilding FuncDesc.model from JSON...
-Zipping into /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_2547abbf/proj_2547abbf_packed.cmodel...
-Successfully encoded and verified generation of /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_2547abbf/proj_2547abbf_packed.cmodel
-INFO:     127.0.0.1:51392 - "POST /api/v1/models/proj_2547abbf/compile HTTP/1.1" 200 OK
-DEBUG: upload_cmodel called for rebuilt.cmodel
-DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/rebuilt.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/decoded
-DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
-DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/decoded
-DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/split
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/decoded/CompDesc.json...
-Split complete. Extracted 20 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/split/blueprint_CompDesc.json
-DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpu4r1huro/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_1d2464cf
-DataManager: Copying FuncDesc.model
-DataManager: Copying AbiSet.json
-DataManager: Copying CompDesc.model
-DataManager: Copying AbiSet.model
-DataManager: Copying FuncDesc.json
-DataManager: Copying ModelFileDesc.json
-INFO:     127.0.0.1:51394 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51396 - "GET /api/v1/models/proj_1d2464cf/abilities HTTP/1.1" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/uvicorn/protocols/http/h11_impl.py", line 410, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        self.scope, self.receive, self.send
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    )
-    ^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/applications.py", line 1160, in __call__
-    await super().__call__(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/applications.py", line 107, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
-    await self.app(scope, receive, _send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 87, in __call__
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 716, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 736, in app
-    await route.handle(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/routing.py", line 290, in handle
-    await self.app(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 130, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 116, in app
-    response = await f(request)
-               ^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 670, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-    ...<3 lines>...
-    )
-    ^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/venv/lib/python3.14/site-packages/fastapi/routing.py", line 324, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/main.py", line 162, in get_abilities_api
-    abilities = data_manager.get_ability(project_id)
-  File "/Users/wangfeifei/code/amr_studio_v4/backend/core/data_manager.py", line 102, in get_ability
-    return json.load(f)
-                     ^
-NameError: name 'f' is not defined
+INFO:     127.0.0.1:54035 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54035 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54035 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54952 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55034 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55132 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK

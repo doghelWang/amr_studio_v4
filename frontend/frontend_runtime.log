@@ -1,0 +1,15 @@
+
+> amr-studio-frontend@1.0.0 dev
+> vite --port 3001
+
+
+  VITE v5.4.21  ready in 101 ms
+
+  ➜  Local:   http://localhost:3001/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+17:22:57 [vite] hmr update /src/App.tsx
+17:23:02 [vite] hmr update /src/App.tsx, /src/components/wizard/ComponentPropertyPanel.tsx
+17:27:47 [vite] hmr update /src/App.tsx
+17:27:57 [vite] hmr update /src/App.tsx
+17:28:09 [vite] hmr update /src/App.tsx

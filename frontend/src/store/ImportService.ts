@@ -4,14 +4,15 @@ import {
     AttributeGroup,
     MainModuleType,
     InterfaceConfig,
-    RobotConfig
+    RobotConfig,
+    ControllerAbility
 } from './types';
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
  * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
- * Precisely aligned with controller_model_comp_desc.proto (snake_case).
+ * Performs deep mapping from snake_case (Protobuf) to camelCase (Frontend Store).
  */
 export class ImportService {
     /** Maps raw snake_case category keys from proto to frontend MainModuleType enum */
@@ -42,7 +43,6 @@ export class ImportService {
     static parseCompDesc(json: any): Partial<RobotConfig> {
         const components: ComponentConfig[] = [];
 
-        // Aligned with snake_case proto: more_module_info
         if (json.more_module_info && Array.isArray(json.more_module_info)) {
             json.more_module_info.forEach((group: any) => {
                 this.processModuleGroup(group, components, null);
@@ -63,14 +63,53 @@ export class ImportService {
             chassisHeight: 400,
         };
 
-        return { components, identity, abilities: json.abilities || abilityRegistry as any };
+        return { components, identity };
+    }
+
+    /**
+     * Deeply parses the abilities JSON from snake_case to Store-aligned camelCase.
+     */
+    static parseAbilities(json: any): ControllerAbility {
+        if (!json || !json.function_ability) return abilityRegistry as any;
+
+        return {
+            functionAbility: json.function_ability.map((func: any) => ({
+                type: func.type,
+                desc: func.desc,
+                childFunction: (func.child_function || []).map((child: any) => ({
+                    key: child.key,
+                    desc: child.desc,
+                    tips: child.tips,
+                    attr: (child.attr || []).map((a: any) => this.mapCommonAttr(a))
+                }))
+            }))
+        };
+    }
+
+    private static mapCommonAttr(common: any): any {
+        return {
+            key: common.key,
+            type: common.type,
+            arrayParam: common.array_param ? {
+                groupName: common.array_param.group_name,
+                attrParams: (common.array_param.attr_params || []).map((p: any) => this.mapAttribute(p))
+            } : undefined,
+            comboxParam: common.combox_param ? {
+                desc: common.combox_param.desc,
+                value: common.combox_param.value,
+                options: (common.combox_param.options || []).map((o: any) => ({
+                    key: o.key,
+                    desc: o.desc,
+                    arrayCmobEle: (o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
+                }))
+            } : undefined
+        };
     }
 
     private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null) {
         const groupName = group.module_group_name || '';
         const groupUuid = group.module_group_uuid || uuidv4();
 
-        // Aligned with snake_case proto: module_componets
         if (group.module_componets) {
             group.module_componets.forEach((comp: any) => {
                 const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid);
@@ -95,7 +134,7 @@ export class ImportService {
 
         const uuid = gen.module_uuid?.string_value || uuidv4();
 
-        // ── Private Attributes ──────────────────────────────────────────────────────
+        // Private Attributes (Snake -> Camel)
         const rawPrivateAttr = comp.private_attr;
         const privateAttrList: any[] = rawPrivateAttr?.private_attrs ?? [];
 
@@ -106,7 +145,7 @@ export class ImportService {
             elements: (grp.array_base_ele || []).map((attr: any) => this.mapAttribute(attr)),
         }));
 
-        // ── Interfaces ──────────────────────────────────────────────────────────────
+        // Interfaces (Snake -> Camel)
         const rawIface = comp.interface_params;
         const ifaceList: any[] = rawIface?.interface_group ?? [];
 
@@ -116,13 +155,13 @@ export class ImportService {
             path: inf.path,
             desc: inf.desc,
             interfaceUuid: inf.interface_uuid || uuidv4(),
-            linkedInterfaceUuid: inf.linked_interface_uuid,
+            linkedInterfaceUuid: inf.linked_interface_uuid || [],
             linkAttrs: inf.link_attrs,
             interfaceAttrs: inf.interface_attrs,
             interfaceParams: inf.interface_params,
         }));
 
-        // ── Shape ────────────────────────────────────────────────────────────────────
+        // Shape
         let shape: ComponentConfig['shape'];
         if (gen.module_shape && !Array.isArray(gen.module_shape)) {
             const s = gen.module_shape;
@@ -131,7 +170,6 @@ export class ImportService {
             else if (s.sphere) shape = { type: 'SPHERE', diameter: s.sphere.diameter };
         }
 
-        // ── struct param: parent_node_uuid & mount coords ──────────────────────────────
         const structExtend = struct.extend_params ?? [];
 
         return {
@@ -162,7 +200,9 @@ export class ImportService {
         };
     }
 
-    /** Maps a single Message_Base_Element to SmartAttribute */
+    /**
+     * Maps a single Message_Base_Element to SmartAttribute (Snake -> Camel)
+     */
     private static mapAttribute(attr: any): SmartAttribute {
         return {
             key: attr.key,
@@ -178,8 +218,16 @@ export class ImportService {
             boolMustfill: attr.bool_mustfill,
             boolBasic: attr.bool_basic,
             fixedSource: attr.fixed_source,
-            comboType: attr.combo_type,
-            arrayCmobEle: attr.array_cmob_ele?.map((sub: any) => this.mapAttribute(sub)),
+            comboType: attr.combo_type ? {
+                typeKey: attr.combo_type.type_key,
+                typeDesc: attr.combo_type.type_desc,
+                typeGroups: (attr.combo_type.type_groups || []).map((g: any) => ({
+                    key: g.key,
+                    desc: g.desc,
+                    arrayCmobEle: (g.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub))
+                }))
+            } : undefined,
+            arrayCmobEle: (attr.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub)),
         };
     }
 

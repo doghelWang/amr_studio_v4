@@ -99,7 +99,7 @@ def get_ability(project_id: str) -> dict:
     if not fpath.exists():
         return None
     with open(fpath, "r", encoding="utf-8") as file:
-        return json.load(f)
+        return json.load(file)
 
 def update_ability(project_id: str, payload_delta: dict) -> bool:
     fpath = get_project_dir(project_id) / "AbiSet.json"
