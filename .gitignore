@@ -15,9 +15,14 @@ frontend/frontend_runtime.log
 *.model
 *.debug.json
 
-# ━━━ CRITICAL: ABI DESC PROTOCOL ISOLATION ━━━
+# ━━━ CRITICAL: PROTOCOL ISOLATION (LOCAL ONLY) ━━━
 # These files are restricted to local environment and MUST NOT be uploaded to GitHub.
-*controller_model_abi_desc*
+*controller_model_abi*
+*controller_model_comp*
+*controller_model_func*
+*AbiSet*
+*CompDesc*
+*FuncDesc*
 
 # Frontend
 frontend/node_modules/
