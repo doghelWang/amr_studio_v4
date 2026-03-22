@@ -1,43 +1,46 @@
 # AMR Studio V4 - 工业级机器人建模平台
 
-AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置与建模平台。它实现了从底层工业级二进制固件（.cmodel）到高层可视化配置界面的双向无损转换，支持复杂的传感器拓扑、执行器参数及能力集映射。
+AMR Studio V4 是一款面向工业级自动移动机器人（AMR）设计的高级配置平台。它打通了从底层二进制协议（Protobuf）到高层可视化交互的链路，实现了 100% 位对齐的无损编解码。
 
-## 🚀 项目核心愿景
-- **100% 结构保真**：确保模型在“导入-编辑-导出”循环中保持原始物理拓扑结构不变。
-- **协议驱动开发**：深度对齐 Protobuf 3 协议，支持 12 种原生数据类型及深层嵌套属性。
-- **原子化碎片存储**：采用 Blueprint + Module 碎片化管理，支持多并发局部 Patch 更新。
+## 🚀 重要更新 (2026-03-22)
+- **100% 无损闭环**：通过 `always_print_fields_with_no_presence` 与 `Last-Mile Normalization` 策略，彻底解决了导出文件缩水问题。
+- **结构保真构建**：实现“原树注入”引擎，确保生成的 `.cmodel` 与原始模型拥有完全一致的拓扑结构。
+- **UI 深度优化**：
+  - **视觉分层**：重构了底盘参数、组件库、属性面板，彻底解决了背景网格干扰。
+  - **递归编辑**：支持 `DATA_COMBOX` 下拉框的深度关联属性实时编辑与同步。
+- **AI 核心框架**：在 `.gemini/` 目录下建立了专属于本项目的 `Soul`（行为准则）与 `Skills`（专业能力库）。
 
-## 📊 当前研发进展 (截止 2026-03-22)
-- [x] **无损编解码引擎**：成功解决 `including_default_value_fields` 导致的字节流失问题。
-- [x] **结构保真构建 (Fidelity Build)**：实现“原树注入”策略，解决导出后层级脱臼问题。
-- [x] **全深度属性编辑**：支持电机减速比、驱动类型（COMBOX）等三层嵌套属性的实时同步。
-- [x] **全链路审计系统**：内置控制台字节级日志，支持导入导出环节的物理数据量对账。
-- [ ] **遗留挑战**：特定下拉框（COMBOX）在标准检查工具中的语义兼容性最后验证。
+## 📂 项目内容概览
+- **`/backend`**: 基于 FastAPI 的微服务后端。
+  - `core/`: 数据持久化与智能合并逻辑。
+  - `skills_v2/`: 核心编解码、打散、构建引擎。
+  - `saved_projects/`: 项目碎片化存储与物理备份。
+- **`/frontend`**: 基于 React + Ant Design 5.x 的向导式 UI。
+  - `src/store/`: Zustand 状态管理与协议解析。
+  - `src/components/wizard/`: 9 步法构车核心组件。
+- **`/docs`**: 完整的工程文档体系。
+  - `design/`: UI 切片与 PRD 需求文档。
+  - `audit/`: 每日研发审计与问题复盘报告。
+  - `schemas/`: 原始 Protobuf 协议定义。
 
 ## 🛠 部署指南
 
-### 环境要求
-- **Backend**: Python 3.9+ (推荐 3.14), Google Protobuf 库
-- **Frontend**: Node.js 18+, Vite, React 18, Ant Design 5.x
-
-### 后端启动 (FastAPI)
-1. 进入 backend 目录。
-2. 激活虚拟环境：`source venv/bin/activate` (MacOS/Linux) 或 `venv\Scripts\activate` (Windows)。
+### 后端环境 (Python 3.14+)
+1. 进入 `backend` 目录。
+2. 创建并激活虚拟环境：`source venv/bin/activate`。
 3. 安装依赖：`pip install -r requirements.txt`。
-4. 运行服务：`python main.py`。
-   - 默认端口：**8002** (可在 main.py 修改)。
+4. 启动服务：`python main.py`。
+   - **监听端口：8002**
 
-### 前端启动 (React)
-1. 进入 frontend 目录。
+### 前端环境 (Node.js 18+)
+1. 进入 `frontend` 目录。
 2. 安装依赖：`npm install`。
-3. 启动开发服务器：`npm run dev -- --port 3001`。
-4. 浏览器访问：`http://localhost:3001`。
+3. 启动开发环境：`npm run dev -- --port 3001`。
+   - **访问地址：http://localhost:3001**
 
-### 建模工作流
-1. **导入**：点击左下角“导入 .cmodel”，选择原始模型。
-2. **编辑**：在 7 步向导中修改参数（数值、下拉框、坐标）。
-3. **审计**：查看开发者控制台 (F12) 的 `📊 Audit Log`。
-4. **导出**：点击“导出配置”，下载生成的 `.cmodel`。
+## 📜 维护约束 (Development Rules)
+- **协议唯一性**：前后端数据交换必须对齐官方 CamelCase 规范。
+- **文档同步**：根据 `docs/ENGINEERING_CONSTRAINTS.md` 第 8 条，**每次代码更新后必须同步更新本 README 文件**，完善部署说明与更新记录。
 
-## 📜 规则与约束
-所有开发必须遵循 `docs/ENGINEERING_CONSTRAINTS.md` 中的协议对齐与并发安全规范。
+---
+**王菲菲设计工程师团队 & Gemini AI 联合出品**

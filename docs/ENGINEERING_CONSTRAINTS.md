@@ -9,7 +9,6 @@
 - **最后一百米归一化 (Last-Mile Normalization)**：
   - **Encoder (后端)**: 在调用 `ParseDict` 序列化之前，必须执行 `proto_final_sync`。该函数强制将所有下划线键名转为 Proto 定义的原始驼峰名，防止数据被 `ParseDict` 静默丢弃。
 
-
 ## 2. 无损闭环保护 (Data Fidelity)
 - **约束**：
   - **元数据保留**：前端 Store 必须完整保存 `componentAbility`、`version` 等非 UI 编辑字段。导出时必须原样回填。
@@ -34,3 +33,12 @@
 ## 6. 环境约束 (Environment)
 - **服务端口**：**8002** (GROUND TRUTH)。
 - **前端地址**：**3001**。
+
+## 7. 前端交互设计原则 (UI/UX Principles)
+- **数据格式冻结 (Data Format Freeze)**：前端界面的任何优化、重构或交互增强，**严禁改变**前后端既有的数据交换格式（JSON Schema）。
+- **解析无损性 (Parsing Integrity)**：UI 组件的逻辑调整不得影响 `ImportService` 和 `ExportService` 的运行，确保 100% 的数据解析兼容性。
+
+## 8. 文档维护规范 (Documentation Maintenance)
+- **同步更新承诺 (README Sync)**：
+  - 每次执行代码功能变更、协议调整或 UI 重大更新后，**必须同步更新**根目录下的 `README.md`。
+  - 内容必须涵盖：最新的部署步骤（如端口变动）、项目内容更新描述以及本次更新的重要里程碑。

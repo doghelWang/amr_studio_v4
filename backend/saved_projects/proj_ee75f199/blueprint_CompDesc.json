@@ -1,0 +1,240 @@
+{
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_diff",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_chassis_diff_a6c2a0ccb9da489c8d58d7a583493893.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "diffWheel-lft",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_diffWheel-lft_aef1e94374684741ab5aa36d1162f5f0.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "diffWheel-right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_diffWheel-right_ca465f7732c043d09c33251d3e71cb0e.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver-left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver-left_82bd967322c54e888ef9aaf9752aded0.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver-right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver-right_c42343264c884ff2a0ca3fee8fc81997.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver-lift",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver-lift_baa1c9403ec24ad4924283322ff4af95.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor-left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor-left_13e6b0ff93bc49e2a89a214744cae88b.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor-right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor-right_639dde0162a3442489651066aaf9cdc7.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor-lift",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor-lift_2dce6a0eb00c48ad9e16b1ab111a5de1.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "button-emc",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_button-emc_82c4bc5d93dd40bfafc57e81773a6173.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "lamp",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_lamp_d2001a74c8b14cc8a6d67c8c4dca15c3.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "charger",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_charger_b55630cb09d44f65ad482e9202714f1b.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "G_MainController",
+      "moduleGroupUuid": "20330278d3844b928ba6caf5df900fd1",
+      "moduleSys": "ControlSys",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_MainController_30ce17ed495f40a6b90d85158c1d6f08.json"
+        },
+        {
+          "$ref": "modules/module_gyro_4202415039d54d8b8702065873899d42.json"
+        }
+      ],
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "smart camera",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_smart camera_349a2134e3494755a776854914f78c83.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "smart camera0",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_smart camera0_5cd062a3b2df4938b1c1a06a61645f1f.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "laser-front",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_laser-front_820decb04dd74f6480b7b9e6c8a2f7d8.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "IO module",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_IO module_07719f03c3634193aed300c01012bff3.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "up_sensor",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_up_sensor_a72279a85df345aba809eed5c2369108.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "down_sensor",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_down_sensor_3cc65206187a4fb08c223ed77ddcf4c3.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    }
+  ],
+  "moduleGroupName": "",
+  "moduleGroupUuid": "",
+  "moduleSys": "",
+  "moduleComponets": [],
+  "modelVersion": ""
+}

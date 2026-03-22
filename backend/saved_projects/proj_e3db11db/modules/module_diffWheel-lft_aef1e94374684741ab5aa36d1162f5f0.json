@@ -1,0 +1,398 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "diffWheel-lft",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "通用差速轮",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "aef1e94374684741ab5aa36d1162f5f0",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-08-21 19:17:40.242",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "./ModuleLibrary/3dModelRes/drivewheel.obj",
+      "desc": "3D模型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ChassisSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子系统",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel",
+        "typeDesc": "\u0001",
+        "typeGroups": []
+      },
+      "desc": "主类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "diffWheel",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "供应商",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "设备型号",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 130,
+        "sizeWidth": 60,
+        "sizeHeight": 60,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "diffWheel-Common",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "stringValue": "差速轮",
+        "desc": "模块别名",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "wheelAttr",
+        "desc": "基本属性",
+        "arrayBaseEle": [
+          {
+            "key": "wheelRadius",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 65.0,
+            "doubleMaxvalue": 999.0,
+            "doubleMinvalue": 1.0,
+            "unit": "mm",
+            "desc": "轮半径",
+            "boolMustfill": true,
+            "boolBasic": true,
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      },
+      {
+        "key": "linkMotorAttr",
+        "desc": "关联电机",
+        "arrayBaseEle": [
+          {
+            "key": "relateMotor",
+            "type": "DATA_FIXED_E",
+            "stringFix": "motor-left",
+            "desc": "行走电机",
+            "fixedSource": [
+              "driver/PMSMMotor"
+            ],
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "a6c2a0ccb9da489c8d58d7a583493893",
+          "typeDesc": "chassis_diff",
+          "typeGroups": [
+            {
+              "key": "a6c2a0ccb9da489c8d58d7a583493893",
+              "desc": "chassis_diff",
+              "arrayCmobEle": []
+            }
+          ]
+        },
+        "desc": "从属机构",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 450.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "翻滚角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "偏航角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "俯仰角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}
