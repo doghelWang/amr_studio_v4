@@ -1,281 +1,304 @@
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Main Project Store with Persistence & Undo/Redo
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 import { create } from 'zustand';
 import { temporal } from 'zundo';
 import { persist } from 'zustand/middleware';
-import { v4 as uuid } from 'uuid';
+import { v4 as uuidGen } from 'uuid';
 import type {
-    RobotConfig, RobotIdentity, McuConfig, IoBoardConfig,
-    WheelConfig, SensorConfig, IOConfig, DriveType,
-    ProjectSnapshot, AmrProject, ProjectMeta, ChassisConfig
+    RobotConfig, RobotIdentity, ComponentConfig,
+    SmartAttribute, AttributeGroup, MainModuleType, InterfaceConfig
 } from './types';
-import { defaultRobotConfig, IO_BOARD_MODELS } from './types';
-import { runValidation } from '../services/validationEngine';
-import type { ValidationResult } from './types';
+import masterRegistry from './master_registry.json';
+import abilityRegistry from './ability_registry.json';
 
-// ━━━ Default wheel factory ━━━
-function makeDefaultWheels(driveType: DriveType): WheelConfig[] {
-    const base = (_id: string, name: string, alias: string, type: WheelConfig['type'], orientation: WheelConfig['orientation'], x: number, y: number): WheelConfig => ({
-        id: uuid(), name, alias, label: name, type, mountX: x, mountY: y, mountZ: 0, mountYaw: 0, orientation,
-        diameter: 200, track: 650,
-        components: [
-            { 
-                role: 'DRIVE_DRIVER', driverModel: 'RA-DR/D-48/25DB-311BH3', canBus: 'CAN_1', canNodeId: 10, motorPolarity: 'FORWARD',
-                ratedVoltage: 48, gearRatio: 25, encoderType: 'INCREMENTAL', encoderResolution: 2500, hasBrake: false
-            }
-        ],
-        headOffsetIdle: 30, tailOffsetIdle: 30, leftOffsetIdle: 30, rightOffsetIdle: 30,
-        maxVelocityIdle: 1500, maxAccIdle: 800, maxDecIdle: 800,
-        headOffsetFull: 40, tailOffsetFull: 40, leftOffsetFull: 40, rightOffsetFull: 40,
-        maxVelocityFull: 1200, maxAccFull: 500, maxDecFull: 500,
-        zeroPos: 0, leftLimit: -180, rightLimit: 180,
-    });
+interface ProjectState {
+    config: RobotConfig;
+    activeComponentId: string | null;
+    isDirty: boolean;
 
-    switch (driveType) {
-        case 'DIFFERENTIAL': return [
-            base('fl', 'Wheel_L', '左驱动轮', 'STANDARD_DIFF', 'FRONT_LEFT', 0, 350), 
-            base('fr', 'Wheel_R', '右驱动轮', 'STANDARD_DIFF', 'FRONT_RIGHT', 0, -350)
-        ];
-        default: return [base('sc', 'Wheel_Steer', '舵轮', 'VERTICAL_STEER', 'CENTER', 400, 0)];
-    }
+    // Identity
+    setIdentity: (data: Partial<RobotIdentity>) => void;
+
+    // Components
+    addComponent: (category: MainModuleType, type: string) => string;
+    updateComponent: (id: string, data: Partial<ComponentConfig>) => void;
+    removeComponent: (id: string) => void;
+    setActiveComponent: (id: string | null) => void;
+
+    // Attributes (searches inside groups)
+    updateAttribute: (componentId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
+
+    // Interfaces
+    updateInterface: (componentId: string, interfaceUuid: string, data: Partial<InterfaceConfig>) => void;
+
+    // Structural & Shape
+    updateStructuralParam: (componentId: string, data: Partial<{
+        parentNodeUuid: string | null;
+        mountX: number; mountY: number; mountZ: number;
+        mountRoll: number; mountPitch: number; mountYaw: number;
+    }>) => void;
+    updateShape: (componentId: string, shape: ComponentConfig['shape']) => void;
+
+    // Global
+    resetProject: () => void;
+    loadProject: (config: RobotConfig) => void;
+
+    // Abilities
+    updateAbilityAttribute: (funcType: string, childKey: string, commonAttrKey: string, attrKey: string, value: any, subAttrKey?: string) => void;
 }
 
-// ━━━ Default private attributes for sensors ━━━
-function getDefaultPrivateAttrs(type: SensorConfig['type']): Record<string, any> {
-    switch (type) {
-        case 'LASER_2D':
-        case 'LASER_3D':
-            return {
-                scanRangeHorizonStart: 0,
-                scanRangeHorizonEnd: 360,
-                actualScanRangeHorizonStart: 0,
-                actualScanRangeHorizonEnd: 360,
-                needCalib: false,
-                reflectThreshold: 0,
-                frameRate: 15,
-            };
-        case 'BARCODE':
-            return {
-                focalLength: 0,
-                exposure: 0,
-                needCalib: false,
-                resolutionW: 1280,
-                resolutionH: 960,
-            };
-        case 'CAMERA_BINOCULAR':
-            return {
-                focalLength: 0,
-                exposure: 0,
-                needCalib: false,
-                resolutionW: 1280,
-                resolutionH: 720,
-            };
-        case 'IMU':
-            return {
-                yawRangeMin: -180,
-                yawRangeMax: 180,
-            };
-        default:
-            return {};
-    }
-}
-
-const INITIAL_CONFIG = defaultRobotConfig();
-INITIAL_CONFIG.wheels = makeDefaultWheels('DIFFERENTIAL');
-
-const INITIAL_META: ProjectMeta = {
-    projectId: uuid(),
-    projectName: '未命名项目',
-    createdAt: new Date().toISOString(),
-    modifiedAt: new Date().toISOString(),
-    author: 'Engineer',
-    templateOrigin: 'blank',
-    formatVersion: '1.0',
+const DEFAULT_IDENTITY: RobotIdentity = {
+    robotName: 'New_AMR',
+    version: '1.0.0',
+    materialCode: '',
+    alias: '',
+    venderName: 'SEER',
+    navigationMethod: 'LASER_SLAM',
+    driveType: 'STANDARD_DIFF',
+    chassisShape: 'BOX',
+    chassisLength: 1200,
+    chassisWidth: 800,
+    chassisHeight: 400
 };
 
-// ━━━ Spec-driven MCU Resource Locking ━━━
-function getMcuResources(model: string): Partial<McuConfig> {
-    const res: Partial<McuConfig> = {
-        hasGyro: true,
-        hasTopCamera: false,
-        hasDownCamera: false,
-        canBuses: ['CAN_1', 'CAN_2', 'CAN_3'],
-        ethPorts: ['ETH0', 'ETH1', 'ETH2', 'ETH3'],
-    };
-
-    if (model.includes('R318AD')) {
-        res.hasTopCamera = true;
-    } else if (model.includes('R349AD')) {
-        res.hasTopCamera = true;
-        res.hasDownCamera = true;
-        res.canBuses = ['CAN_1', 'CAN_2', 'CAN_3', 'CAN_4']; // Expanded CAN for R349
-    } else if (model.includes('R318BN')) {
-        res.hasGyro = false; // Example variation
-    }
-    return res;
-}
-
-export interface ProjectState {
-    meta: ProjectMeta;
-    config: RobotConfig;
-    snapshots: ProjectSnapshot[];
-    isDirty: boolean;
-    validation: ValidationResult;
-
-    setIdentity: (data: Partial<RobotIdentity>) => void;
-    updateChassis: (data: Partial<ChassisConfig>) => void;
-    setDriveTypeImmediate: (type: DriveType) => void;
-    setMcu: (data: Partial<McuConfig>) => void;
-    updateWheel: (id: string, data: Partial<WheelConfig>) => void;
-    addSensor: (sensor: Omit<SensorConfig, 'id'>) => string;
-    removeSensor: (id: string) => void;
-    updateSensor: (id: string, data: Partial<SensorConfig>) => void;
-    
-    // Missing IO Board & IO actions
-    addIoBoard: (board: Pick<IoBoardConfig, 'model' | 'canBus' | 'canNodeId'>) => void;
-    removeIoBoard: (id: string) => void;
-    addIO: (io: Omit<IOConfig, 'id'>) => void;
-    removeIO: (id: string) => void;
-
-    loadProject: (project: AmrProject) => void;
-    resetProject: () => void;
-}
+const createInitialConfig = (): RobotConfig => ({
+    identity: { ...DEFAULT_IDENTITY },
+    components: [],
+    abilities: abilityRegistry as any
+});
 
 export const useProjectStore = create<ProjectState>()(
     persist(
         temporal(
-            (set) => ({
-                meta: INITIAL_META,
-                config: INITIAL_CONFIG,
-                snapshots: [],
+            (set, get) => ({
+                config: createInitialConfig(),
+                activeComponentId: null,
                 isDirty: false,
-                validation: runValidation(INITIAL_CONFIG),
 
-                setIdentity: (data) => set((s) => {
-                    const config = { ...s.config, identity: { ...s.config.identity, ...data } };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                setIdentity: (data) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        identity: { ...state.config.identity, ...data }
+                    },
+                    isDirty: true
+                })),
 
-                updateChassis: (data) => set((s) => {
-                    const chassis = { ...s.config.identity.chassis, ...data };
-                    const config = { ...s.config, identity: { ...s.config.identity, chassis } };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                addComponent: (category, type) => {
+                    const id = uuidGen();
+                    const registryInfo = (masterRegistry as any)[category]?.[type];
 
-                setDriveTypeImmediate: (type) => set((s) => {
-                    const config = { ...s.config, identity: { ...s.config.identity, driveType: type }, wheels: makeDefaultWheels(type) };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                    // Map flat privateAttrs from registry to a default AttributeGroup
+                    const privateAttrs: AttributeGroup[] = [{
+                        key: 'private_group',
+                        desc: '私有属性',
+                        elements: (registryInfo?.privateAttrs || []).map((attr: any) => ({
+                            ...attr,
+                            value: attr.type === 'DATA_BOOL' ? false
+                                 : (attr.type === 'DATA_STRING' ? '' : 0),
+                            boolBasic: true // Default to basic for visibility
+                        }))
+                    }];
 
-                setMcu: (data) => set((s) => {
-                    let mcu = { ...s.config.mcu, ...data };
-                    // If model changed, update resources
-                    if (data.model && data.model !== s.config.mcu.model) {
-                        mcu = { ...mcu, ...getMcuResources(data.model) };
-                    }
-                    const config = { ...s.config, mcu };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                    const newComponent: ComponentConfig = {
+                        id,
+                        name: `${type}_${get().config.components.length + 1}`,
+                        alias: registryInfo?.desc || type,
+                        type,
+                        category,
+                        parentNodeUuid: null,
+                        mountX: 0, mountY: 0, mountZ: 0,
+                        mountRoll: 0, mountPitch: 0, mountYaw: 0,
+                        privateAttrs,
+                        interfaces: (registryInfo?.interfaces || []).map((inf: any) => ({
+                            key: inf.key || inf.name,
+                            type: inf.type,
+                            interfaceUuid: uuidGen(),
+                        }))
+                    };
 
-                updateWheel: (id, data) => set((s) => {
-                    const wheels = s.config.wheels.map(w => w.id === id ? { ...w, ...data } : w);
-                    const config = { ...s.config, wheels };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
-
-                addSensor: (sensor) => {
-                    const id = uuid();
-                    set((s) => {
-                        const typeCount = s.config.sensors.filter(x => x.type === sensor.type).length + 1;
-                        const defaultName = `${sensor.type}_${typeCount}`;
-                        
-                        const newSensor: SensorConfig = { 
-                            ...sensor,
-                            id, 
-                            name: sensor.name || defaultName,
-                            alias: sensor.alias || '',
-                            label: sensor.label || sensor.name || defaultName,
-                            privateAttrs: {
-                                ...getDefaultPrivateAttrs(sensor.type),
-                                ...(sensor.privateAttrs || {})
-                            }
-                        } as SensorConfig;
-                        const config = { ...s.config, sensors: [...s.config.sensors, newSensor] };
-                        return { config, isDirty: true, validation: runValidation(config) };
-                    });
+                    set((state) => ({
+                        config: {
+                            ...state.config,
+                            components: [...state.config.components, newComponent]
+                        },
+                        activeComponentId: id,
+                        isDirty: true
+                    }));
                     return id;
                 },
 
-                removeSensor: (id) => set((s) => {
-                    const config = { ...s.config, sensors: s.config.sensors.filter(x => x.id !== id) };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                updateComponent: (id, data) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.map((c) =>
+                            c.id === id ? { ...c, ...data } : c
+                        )
+                    },
+                    isDirty: true
+                })),
 
-                updateSensor: (id, data) => set((s) => {
-                    const sensors = s.config.sensors.map(x => x.id === id ? { ...x, ...data } : x);
-                    const config = { ...s.config, sensors };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                removeComponent: (id) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.filter((c) => c.id !== id)
+                    },
+                    activeComponentId: state.activeComponentId === id ? null : state.activeComponentId,
+                    isDirty: true
+                })),
 
-                addIoBoard: (board) => set((s) => {
-                    const typeCount = s.config.ioBoards.length + 1;
-                    const defaultName = `IO_${typeCount}`;
-                    const newBoard: IoBoardConfig = { 
-                        id: uuid(), 
-                        name: defaultName,
-                        alias: '',
-                        label: defaultName,
-                        model: board.model,
-                        canBus: board.canBus,
-                        canNodeId: board.canNodeId,
-                        canBuses: [], diPorts: Array(IO_BOARD_MODELS[board.model] || 8).fill(''), 
-                        doPorts: [], aiPorts: [] 
-                    };
-                    const config = { ...s.config, ioBoards: [...s.config.ioBoards, newBoard] };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                setActiveComponent: (id) => set({ activeComponentId: id }),
 
-                removeIoBoard: (id) => set((s) => {
-                    const config = { ...s.config, ioBoards: s.config.ioBoards.filter(b => b.id !== id) };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                // Update an attribute inside a specific group
+                updateAttribute: (componentId, groupKey, attrKey, value, subKey) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.map((c) => {
+                            if (c.id !== componentId) return c;
+                            return {
+                                ...c,
+                                privateAttrs: c.privateAttrs.map((group) => {
+                                    if (group.key !== groupKey) return group;
+                                    return {
+                                        ...group,
+                                        elements: group.elements.map((attr) => {
+                                            if (attr.key !== attrKey) return attr;
+                                            
+                                            // Handle nested attribute updates for COMBOX options
+                                            if (subKey && attr.type === 'DATA_COMBOX') {
+                                                const currentGroup = attr.comboType?.typeGroups?.find((g: any) => g.key === attr.value);
+                                                if (currentGroup?.arrayCmobEle) {
+                                                    return {
+                                                        ...attr,
+                                                        comboType: {
+                                                            ...attr.comboType,
+                                                            typeGroups: attr.comboType.typeGroups.map((g: any) => {
+                                                                if (g.key !== attr.value) return g;
+                                                                return {
+                                                                    ...g,
+                                                                    arrayCmobEle: g.arrayCmobEle.map((s: any) =>
+                                                                        s.key === subKey ? { ...s, value } : s
+                                                                    )
+                                                                };
+                                                            })
+                                                        }
+                                                    };
+                                                }
+                                            }
+                                            
+                                            return { ...attr, value };
+                                        })
+                                    };
+                                })
+                            };
+                        })
+                    },
+                    isDirty: true
+                })),
 
-                addIO: (io) => set((s) => {
-                    const newIO: IOConfig = { id: uuid(), ...io };
-                    const config = { ...s.config, ioPorts: [...s.config.ioPorts, newIO] };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                updateInterface: (componentId, interfaceUuid, data) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.map((c) => {
+                            if (c.id !== componentId) return c;
+                            return {
+                                ...c,
+                                interfaces: c.interfaces.map((i) =>
+                                    i.interfaceUuid === interfaceUuid ? { ...i, ...data } : i
+                                )
+                            };
+                        })
+                    },
+                    isDirty: true
+                })),
 
-                removeIO: (id) => set((s) => {
-                    const config = { ...s.config, ioPorts: s.config.ioPorts.filter(x => x.id !== id) };
-                    return { config, isDirty: true, validation: runValidation(config) };
-                }),
+                updateStructuralParam: (componentId, data) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.map((c) =>
+                            c.id === componentId ? { ...c, ...data } : c
+                        )
+                    },
+                    isDirty: true
+                })),
 
-                loadProject: (project) => set({
-                    meta: project.meta,
-                    config: project.config,
-                    snapshots: project.snapshots ?? [],
-                    isDirty: false,
-                    validation: runValidation(project.config),
-                }),
+                updateShape: (componentId, shape) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: state.config.components.map((c) =>
+                            c.id === componentId ? { ...c, shape } : c
+                        )
+                    },
+                    isDirty: true
+                })),
 
                 resetProject: () => set({
-                    meta: { ...INITIAL_META, projectId: uuid() },
-                    config: INITIAL_CONFIG,
-                    snapshots: [],
-                    isDirty: false,
-                    validation: runValidation(INITIAL_CONFIG),
+                    config: createInitialConfig(),
+                    activeComponentId: null,
+                    isDirty: false
                 }),
-            }),
-            {
-                limit: 50,
-                partialize: (state) => ({ config: state.config }),
-            }
+
+                loadProject: (config) => set({
+                    config,
+                    isDirty: false
+                }),
+
+                updateAbilityAttribute: (funcType, childKey, commonAttrKey, attrKey, value, subAttrKey) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        abilities: {
+                            ...state.config.abilities,
+                            functionAbility: state.config.abilities.functionAbility.map((f) => {
+                                if (f.type !== funcType) return f;
+                                return {
+                                    ...f,
+                                    childFunction: f.childFunction.map((c) => {
+                                        if (c.key !== childKey) return c;
+                                        return {
+                                            ...c,
+                                            attr: c.attr.map((a) => {
+                                                if (a.key !== commonAttrKey) return a;
+                                                
+                                                // 1. If it's an ARRAY type
+                                                if (a.type === 'ARRAY' && a.arrayParam) {
+                                                    return {
+                                                        ...a,
+                                                        arrayParam: {
+                                                            ...a.arrayParam,
+                                                            attrParams: a.arrayParam.attrParams.map((ap) => {
+                                                                if (ap.key === attrKey) {
+                                                                    if (subAttrKey && ap.arrayCmobEle) {
+                                                                        return {
+                                                                            ...ap,
+                                                                            arrayCmobEle: ap.arrayCmobEle.map(s => s.key === subAttrKey ? { ...s, value } : s)
+                                                                        };
+                                                                    }
+                                                                    return { ...ap, value };
+                                                                }
+                                                                return ap;
+                                                            })
+                                                        }
+                                                    };
+                                                }
+                                                
+                                                // 2. If it's a COMBOX type (directly under CommonAttr)
+                                                if (a.type === 'COMBOX' && a.comboxParam) {
+                                                    if (attrKey === commonAttrKey) {
+                                                        return { ...a, comboxParam: { ...a.comboxParam, value } };
+                                                    }
+                                                }
+                                                return a;
+                                            })
+                                        };
+                                    })
+                                };
+                            })
+                        }
+                    },
+                    isDirty: true
+                }))
+            })
         ),
         {
-            name: 'amr-studio-v4-storage',
-            partialize: (state) => ({ meta: state.meta, config: state.config }),
+            name: 'amr-configurator-v4',
+            partialize: (state) => ({ config: state.config })
         }
     )
 );
@@ -283,9 +306,9 @@ export const useProjectStore = create<ProjectState>()(
 export function useUndoRedo() {
     const temporalStore = useProjectStore.temporal.getState();
     return {
-        undo: (steps?: number) => temporalStore.undo(steps),
-        redo: (steps?: number) => temporalStore.redo(steps),
+        undo: temporalStore.undo,
+        redo: temporalStore.redo,
         canUndo: temporalStore.pastStates.length > 0,
-        canRedo: temporalStore.futureStates.length > 0,
+        canRedo: temporalStore.futureStates.length > 0
     };
 }

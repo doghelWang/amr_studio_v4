@@ -1,64 +1,234 @@
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// AMR Studio Pro V4 — Complete Type Definitions
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/**
+ * Zero-Omission Data Model for AMR Studio V4.
+ * Precisely aligned with controller_model_comp_desc.proto
+ */
 
-export type DriveType =
-    | 'DIFFERENTIAL'
-    | 'SINGLE_STEER'
-    | 'DUAL_STEER'
-    | 'QUAD_STEER'
-    | 'MECANUM_4'
-    | 'OMNI_3';
+// ━━━ Matches MESSAGE_BASE_DATA_TYPE enum in proto ━━━
+export type AttributeDataType =
+    | 'DATA_BYTES'    // 0
+    | 'DATA_STRING'   // 1
+    | 'DATA_IP'       // 3
+    | 'DATA_BOOL'     // 4
+    | 'DATA_INT32'    // 5
+    | 'DATA_UINT32'   // 6
+    | 'DATA_INT64'    // 7
+    | 'DATA_UINT64'   // 8
+    | 'DATA_FLOAT'    // 9
+    | 'DATA_DOUBLE'   // 10
+    | 'DATA_COMBOX'   // 11
+    | 'DATA_FIXED_E'; // 12
 
+// ━━━ Matches Message_Base_Element ━━━
+export interface SmartAttribute {
+    key: string;
+    desc: string;
+    type: AttributeDataType;
+    // Simplified typed value for frontend binding (maps to oneof_value)
+    value: any;
+    // Constraints (maps to oneof_maxValue / oneof_minValue)
+    maxValue?: number;
+    minValue?: number;
+    unit?: string;
+    // UI rendering flags from proto
+    boolParse?: boolean;       // 是否需要解析
+    boolHide?: boolean;        // 是否隐藏 (UI: skip rendering)
+    boolNoeditable?: boolean;  // 是否不可编辑 (UI: read-only)
+    boolMustfill?: boolean;    // 是否必填
+    boolBasic?: boolean;       // 是否为基础信息
+    // For DATA_FIXED_E
+    fixedSource?: string[];
+    // For DATA_COMBOX
+    comboType?: {
+        typeKey: string;
+        typeDesc?: string;
+        typeGroups?: Array<{ key: string; desc: string; arrayCmobEle?: SmartAttribute[] }>;
+    };
+    // Nested sub-attributes within a combo item
+    arrayCmobEle?: SmartAttribute[];
+}
+
+// ━━━ Matches Message_Base_Group_Element ━━━
+export interface AttributeGroup {
+    key: string;
+    desc: string;
+    elements: SmartAttribute[];  // maps to array_base_ele
+    boolDeprecated?: boolean;
+}
+
+// ━━━ Matches Message_Interface_Param_Group ━━━
+export interface InterfaceConfig {
+    key: string;               // e.g. "CAN0", "ETH0"
+    type: string;              // e.g. "CAN", "ETHERNET"
+    path?: string;             // 指向接口的模块路径
+    desc?: string;
+    interfaceUuid: string;     // Unique ID for this interface instance
+    linkedInterfaceUuid?: string[]; // Connected peer UUIDs
+    linkAttrs?: Array<{ key: string; desc: string }>;  // maps to link_attrs
+    interfaceAttrs?: any;      // maps to interface_attrs (template)
+    interfaceParams?: any;     // maps to interface_params (runtime)
+}
+
+// ━━━ Component Category ━━━
+export type MainModuleType =
+    | 'CHASSIS'               // chassis (底盘)
+    | 'DRIVEWHEEL'            // driveWheel (驱动轮)
+    | 'DRIVER'                // driver (驱动器)
+    | 'ACTOR'                 // actor (执行器)
+    | 'SENSOR'                // sensor (传感器)
+    | 'SENSORPROCESSOR'       // sensorprocessor (传感器处理器)
+    | 'CONTROL'               // control
+    | 'MAINCPU'               // mainCPU (主控)
+    | 'INTERGRATEDCONTROLLER' // intergratedcontroller (集成控制器)
+    | 'DRIVE'                 // drive (驱动)
+    | 'BATTERY'               // battery (电池)
+    | 'ENERGYCONTROLLER'      // energycontroller (能量控制器)
+    | 'COMMUNICATION'         // communication (通信)
+    | 'EXTENDEDLNTERFACE'     // extendedlnterface (扩展接口)
+    | 'VISUAL'                // visual (视觉)
+    | 'NETWORK'               // network (网络)
+    | 'AUDIO'                 // audio (音频)
+    | 'BUTTON'                // button (按钮)
+    | 'SCREEN'                // screen (屏幕)
+    | 'LIGHT'                 // light (灯光)
+    | 'AUTOBODY'              // autobody (车身)
+    | 'IO_BOARD';             // io board
+
+
+// ━━━ Matches Message_Module_Componets ━━━
+export interface ComponentConfig {
+    id: string;            // maps to generalAttr.module_uuid
+    name: string;          // maps to generalAttr.module_name
+    alias: string;
+    type: string;          // Sub-type key (e.g. "diffChassis")
+    category: MainModuleType;
+
+    // Physical Hierarchy (from Message_Module_Info)
+    parentNodeUuid: string | null;
+    moduleGroupName?: string;
+    moduleGroupUuid?: string;
+
+    // Mounting pose (from structParam.extendParams)
+    mountX: number;
+    mountY: number;
+    mountZ: number;
+    mountRoll: number;
+    mountPitch: number;
+    mountYaw: number;
+
+    // Private attributes (grouped, maps to Message_Module_Private_Attribute)
+    privateAttrs: AttributeGroup[];
+
+    // Interface capability (maps to interfaceAbility) — preserved losslessly
+    interfaceAbility?: any;
+    // Interface instances (maps to interfaceParams.interfaceGroup)
+    interfaces: InterfaceConfig[];
+
+    // Module shape (from generalAttr.module_shape)
+    shape?: { type: 'SPHERE' | 'BOX' | 'CYLINDER'; length?: number; width?: number; height?: number; diameter?: number };
+
+    // Raw generalAttr preserved for lossless round-trip
+    generalAttr?: any;
+    // Raw structParam segments (e.g. segmented_limits_params)
+    rawStructParam?: any;
+
+    // Proto flags
+    disabled?: boolean;     // maps to bool_disable
+    deprecated?: boolean;   // maps to bool_deprecated
+}
+
+// ━━━ Drive & Navigation ━━━
+export type DriveType = 'STANDARD_DIFF' | 'DUAL_STEER' | 'QUAD_STEER' | 'OMNI_WHEEL' | 'SINGLE_STEER';
 export const DRIVE_TYPE_LABELS: Record<DriveType, string> = {
-    DIFFERENTIAL: '差速双驱 Differential',
+    STANDARD_DIFF: '标准差速 Differential',
     SINGLE_STEER: '单舵轮 Single Steer',
     DUAL_STEER: '双舵轮 Dual Steer',
     QUAD_STEER: '四舵轮 Quad Steer',
-    MECANUM_4: '麦克纳姆四轮 Mecanum',
-    OMNI_3: '三轮全向 Omni-3',
+    OMNI_WHEEL: '全向轮 Omni',
 };
 
-export type WheelOrientation =
-    | 'FRONT_LEFT' | 'FRONT_RIGHT'
-    | 'REAR_LEFT' | 'REAR_RIGHT'
-    | 'FRONT_CENTER' | 'REAR_CENTER' | 'CENTER';
-
-export type MotorPolarity = 'FORWARD' | 'REVERSE';
-
-export type SensorType =
-    | 'LASER_2D' | 'LASER_3D'
-    | 'BARCODE' | 'CAMERA_BINOCULAR' | 'IMU';
-
-export const SENSOR_MODELS: Record<SensorType, string[]> = {
-    LASER_2D: [
-        'SICK_TIM561-2050101', 'HOKUYO_UST-20LX', 'MR-LS-01F-S1533-BLACK', 
-        'VANJEE_WLR-716', 'PEPPERL_OMD30M-R2000', 'PACECAT_LDS-50C-C30E',
-        'TIM510-9950000S01', 'UAM-05LP-T301'
-    ],
-    LASER_3D: ['LIVOX_MID-360', 'RS-LS-RS-HELIOS16P', 'VELODYNE_VLP16'],
-    BARCODE: ['HIKROBOT_MV_SC2000AM', 'HIKROBOT_MV_ID3016PM'],
-    CAMERA_BINOCULAR: ['HIKROBOT_MV_EB435I', 'REALSENS_STEREO', 'BERXELP_100R'],
-    IMU: ['HIKROBOT_MV_89013_V13', 'SPI_ON_BOARD'],
-};
-
-export type ConnectionType = 'ETHERNET' | 'USB' | 'RS232' | 'SPI' | 'CAN';
-
-export type NavigationMethod =
-    | 'LIDAR_SLAM' | 'REFLECTOR' | 'NATURAL_CONTOUR'
-    | 'VISUAL_SLAM' | 'BARCODE_GRID' | 'HYBRID';
-
+export type NavigationMethod = 'LASER_SLAM' | 'REFLECTOR' | 'QR_CODE' | 'VISUAL_SLAM' | 'HYBRID';
 export const NAV_METHOD_LABELS: Record<NavigationMethod, string> = {
-    LIDAR_SLAM: '激光SLAM',
+    LASER_SLAM: '激光 SLAM',
     REFLECTOR: '激光反射板',
-    NATURAL_CONTOUR: '自然轮廓',
-    VISUAL_SLAM: '视觉SLAM',
-    BARCODE_GRID: '二维码格导航',
+    QR_CODE: '二维码',
+    VISUAL_SLAM: '视觉 SLAM',
     HYBRID: '混合导航',
 };
 
-// ━━━ Core Data Entities ━━━
+// ━━━ Robot Identity ━━━
+export interface RobotIdentity {
+    robotName: string;
+    version: string;
+    materialCode: string;
+    alias: string;
+    venderName: string;
+    navigationMethod: NavigationMethod;
+    driveType: DriveType;
+    chassisShape: 'BOX' | 'CYLINDER';
+    chassisLength: number;
+    chassisWidth: number;
+    chassisHeight: number;
+}
 
+// ━━━ Ability Models (Matches controller_model_abi_set.proto) ━━━
+export interface AbilityAttribute extends SmartAttribute {
+    tips?: string;
+    maxCount?: number;
+    copyEnable?: boolean;
+}
+
+export interface AbilityArrayAttr {
+    groupKey: string;
+    groupName: string;
+    boolMustfill?: boolean;
+    attrParams: AbilityAttribute[];
+}
+
+export interface AbilityCommonAttr {
+    key: string;
+    type: 'COMBOX' | 'ARRAY';
+    comboxParam?: {
+        key: string;
+        desc: string;
+        tips?: string;
+        comboxSource: 'NORMAL' | 'CUSTOM';
+        // Simplified for UI
+        options?: Array<{ key: string; desc: string; arrayAttr?: AbilityArrayAttr[] }>;
+        value?: string;
+    };
+    arrayParam?: AbilityArrayAttr;
+    cloneEnable?: boolean;
+}
+
+export interface ChildAbility {
+    type: string;
+    desc: string;
+    tips?: string;
+    key: string;
+    attr: AbilityCommonAttr[];
+    cloneEnable?: boolean;
+}
+
+export interface FunctionAbility {
+    type: string;
+    desc: string;
+    tips?: string;
+    childFunction: ChildAbility[];
+}
+
+export interface ControllerAbility {
+    version: string;
+    functionAbility: FunctionAbility[];
+}
+
+// ━━━ Top-Level Robot Config ━━━
+export interface RobotConfig {
+    identity: RobotIdentity;
+    components: ComponentConfig[];
+    abilities: ControllerAbility;
+}
+
+// ━━━ Project & Validation ━━━
 export interface ProjectMeta {
     projectId: string;
     projectName: string;
@@ -69,298 +239,11 @@ export interface ProjectMeta {
     formatVersion: '1.0';
 }
 
- // ─── Chassis & Identity ───────────────────────────────────────────
-
-export interface ChassisConfig {
-    name: string;
-    alias: string;
-    description: string;
-    version: string;
-    subsystem: string;      // 子系统 (e.g., ChassisSys)
-    mainType: string;       // 主类型 (e.g., chassis)
-    subType: string;        // 子类型 (e.g., diffChassis, steerChassis)
-    vendor: string;         // 供应商
-    model: string;          // 设备型号
-    shape: 'BOX' | 'CYLINDER';
-    length: number;
-    width: number;
-    height: number;
-    
-    // Performance (Chassis Attr)
-    maxSpeedIdle: number;
-    maxAccIdle: number;
-    maxDecIdle: number;
-    maxSpeedFull: number;
-    maxAccFull: number;
-    maxDecFull: number;
-    
-    maxAngSpeedIdle: number;
-    maxAngAccIdle: number;
-    maxAngDecIdle: number;
-    maxAngSpeedFull: number;
-    maxAngAccFull: number;
-    maxAngDecFull: number;
-
-    // Motion Center (Private Attr)
-    headOffsetIdle: number;
-    tailOffsetIdle: number;
-    leftOffsetIdle: number;
-    rightOffsetIdle: number;
-    headOffsetFull: number;
-    tailOffsetFull: number;
-    leftOffsetFull: number;
-    rightOffsetFull: number;
-}
-
-export interface RobotIdentity {
-    robotName: string;
-    version: string;
-    driveType: DriveType;
-    navigationMethod: NavigationMethod;
-    chassis: ChassisConfig; // Nested Chassis config
-}
-
-export interface McuConfig {
-    // Basic Info
-    name: string;
-    alias: string;
-    description: string;
-    version: string;
-    subsystem: string;
-    mainType: string;
-    subType: string;
-    vendor: string;
-    model: string;
-    
-    // Physical Pose (6D)
-    mountX: number;
-    mountY: number;
-    mountZ: number;
-    roll: number;
-    pitch: number;
-    yaw: number;
-    
-    // Shape & Dimensions
-    shape: 'BOX' | 'CYLINDER';
-    length: number;
-    width: number;
-    height: number;
-
-    // Orientation Helpers
-    surfaceOrientation: 'UP' | 'DOWN' | 'FRONT' | 'BACK' | 'LEFT' | 'RIGHT';
-    cableDirection: 'FRONT' | 'BACK' | 'LEFT' | 'RIGHT';
-    installType: 'HORIZONTAL' | 'VERTICAL';
-
-    // Resources
-    canBuses: string[];
-    ethPorts: string[];
-    rs232Ports: string[];
-    rs485Ports: string[];
-    speakerPorts: string[];
-
-    // Onboard Device Flags (Derived or explicit)
-    hasGyro: boolean;
-    hasTopCamera: boolean;
-    hasDownCamera: boolean;
-}
-
-export const MCU_MODELS = [
-    'RA-MC-R318AT',
-    'RA-MC-R318AD',
-    'RA-MC-R318BN',
-    'RA-MC-R349AD-21BH0',
-];
-
-export interface IoBoardConfig {
-    id: string;
-    name: string;         // 实体名称 (e.g., IO_1)
-    alias: string;        // 别名 (e.g., 顶盖扩展板)
-    label: string;        // UI 标签
-    model: string;
-    canBus: string;       // 接入的主控 CAN 总线
-    canNodeId: number;    // ID
-    
-    // Resources (Phase 12)
-    canBuses: string[];   // 本地 CAN 总线
-    diPorts: string[];
-    doPorts: string[];
-    aiPorts: string[];
-}
-
-export const IO_BOARD_MODELS: Record<string, number> = {
-    'RA-IC/I-F-1R6BH0': 40,
-    'RA-EI/I-A-14400AH0': 8,
-    'RA-EI/I-A-18A00BH5': 18,
-    'RA-EI/I-B-500A5AH1': 15,
-    'RA-IC/I-A-1A3BH0': 15,
-    'RA-IC/I-A-1C0AH1': 21,
-    'RA-IC/I-A-1C0BH0': 21,
-    'RA-IC/I-A-1E3BH0': 23,
-    'RA-IC/I-C-140AH1': 14, // 4 DI + 7 DO + PZTB/BAR? Summing IO only for now
-    'RA-IC/I-C-140BH0': 14,
-    'RA-IC/I-D-120BH0': 11, // 2 DI + 5 DO + 3 AI + 1 CAN
-    'RA-EI/F-C-1H2AH0': 8,
-    'RA-EI/F-C-1S1AH0': 1,
-};
-
-export type WheelRole = 'DRIVE_DRIVER' | 'STEER_DRIVER' | 'STEER_ENCODER';
-
-export interface WheelComponent {
-    role: WheelRole;
-    driverModel: string;
-    canBus: string;
-    canNodeId: number;
-    motorPolarity: MotorPolarity;
-    
-    // Power & Motor attributes (Phase 8)
-    ratedVoltage?: number;      // V
-    ratedCurrent?: number;      // A
-    ratedSpeed?: number;        // RPM
-    gearRatio?: number;         // x:1
-    hasBrake?: boolean;
-    encoderType?: 'NONE' | 'INCREMENTAL' | 'ABSOLUTE';
-    encoderResolution?: number; // Lines or Bits
-}
-
-export interface WheelConfig {
-    id: string;
-    name: string;               // 实体名称 (e.g., Wheel_Left)
-    alias: string;              // 别名 (e.g., 左驱动轮)
-    label: string;              // UI 标签
-    type: 'VERTICAL_STEER' | 'HORIZONTAL_STEER' | 'DIFF_STEER' | 'STANDARD_DIFF';
-    
-    // Kinematic (Phase 8)
-    diameter: number;           // mm
-    track: number;              // mm (wheel spacing)
-    
-    // Structural
-    mountX: number;
-    mountY: number;
-    mountZ: number;
-    mountYaw: number;
-    orientation: WheelOrientation;
-    
-    // Components (e.g., Drive motor vs Steer motor)
-    components: WheelComponent[];
-    
-    // Idle state parameters
-    headOffsetIdle: number;
-    tailOffsetIdle: number;
-    leftOffsetIdle: number;
-    rightOffsetIdle: number;
-    maxVelocityIdle: number;
-    maxAccIdle: number;
-    maxDecIdle: number;
-
-    // Full Load state parameters
-    headOffsetFull: number;
-    tailOffsetFull: number;
-    leftOffsetFull: number;
-    rightOffsetFull: number;
-    maxVelocityFull: number;
-    maxAccFull: number;
-    maxDecFull: number;
-
-    // Kinematic
-    zeroPos: number;
-    leftLimit: number;
-    rightLimit: number;
-
-    // Limit Sensors (UUIDs of connected sensors)
-    relatePosIo?: string;
-    relateNegIo?: string;
-    relateZeroIo?: string;
-}
-
-export const DRIVER_MODELS = [
-    'RA-DR/D-48/25DB-311BH3',
-    'RA-DR/D-48/80S2B-411BH3',
-    'KINCO_SERVO',
-    'ZAPI_AC2',
-    'ELMO_GOLD',
-    'CURTIS_1234',
-    'SIHENG_SERVO',
-    'HIK_ENCODER_H8',
-];
-
-export interface SensorConfig {
-    id: string;
-    name: string;        // 实体名称 (e.g., Laser_1)
-    alias: string;       // 别名 (e.g., 前激光)
-    label: string;       // UI 显示标签 (通常同 name)
-    type: SensorType;
-    model: string;
-    // Pose 6D
-    mountX: number;
-    mountY: number;
-    mountZ: number;
-    mountYaw: number;
-    mountPitch: number;
-    mountRoll: number;
-    // Usage
-    usageNavi: boolean;
-    usageObs: boolean;
-    // Electrical
-    connType: ConnectionType;
-    ipAddress: string;
-    port: number;
-    ethPort: string;
-    baudRate: number;
-    serialPort: string;
-
-    // Private Attributes (Phase 13)
-    privateAttrs: Record<string, any>;
-}
-
-export type LogicBind =
-    | 'SAFETY_IO_EMC_STOP' | 'BUMPER_FRONT' | 'BUMPER_REAR'
-    | 'MANUAL_OVERRIDE' | 'LED_STATUS_RED' | 'LED_STATUS_GREEN'
-    | 'BUZZER' | 'CHARGE_DETECT' | 'DOOR_SENSOR';
-
-export interface IOConfig {
-    id: string;
-    port: string;
-    logicBind: LogicBind;
-    ioBoardId: string;
-}
-
-export interface RobotConfig {
-    identity: RobotIdentity;
-    mcu: McuConfig;
-    ioBoards: IoBoardConfig[];
-    wheels: WheelConfig[];
-    sensors: SensorConfig[];
-    ioPorts: IOConfig[];
-    actuators?: any[];
-    auxiliary?: any[];
-    others?: any[];
-}
-
-export interface ProjectSnapshot {
-    snapshotId: string;
-    label: string;
-    createdAt: string;
-    config: RobotConfig;
-}
-
-export interface AmrProject {
-    formatVersion: '1.0';
-    meta: ProjectMeta;
-    config: RobotConfig;
-    snapshots: ProjectSnapshot[];
-}
-
-// ━━━ Validation Types ━━━
-
-export type ValidationSeverity = 'ERROR' | 'WARNING';
-
 export interface ValidationIssue {
-    code: string;
-    severity: ValidationSeverity;
+    severity: 'ERROR' | 'WARNING';
     message: string;
-    panelKey: string;
     nodeId: string;
-    fieldPath: string;
+    fieldKey?: string;
 }
 
 export interface ValidationResult {
@@ -368,87 +251,3 @@ export interface ValidationResult {
     warnings: ValidationIssue[];
     isCompilable: boolean;
 }
-
-// ━━━ Utility Types ━━━
-
-export type PanelKey =
-    | 'identity' | 'control' | 'drive' | 'sensor' | 'io' | 'blueprint' | 'wiring';
-
-// Default factory functions
-export const defaultChassis = (len = 1200, wid = 800): ChassisConfig => ({
-    name: 'diffChassis-Common',
-    alias: 'Default Chassis',
-    description: 'Universal Differential Chassis',
-    version: 'V1.0',
-    subsystem: 'ChassisSys',
-    mainType: 'chassis',
-    subType: 'diffChassis',
-    vendor: 'HIKROBOT',
-    model: 'HIK-CH-D-V1',
-    shape: 'BOX',
-    length: len,
-    width: wid,
-    height: 400,
-    
-    maxSpeedIdle: 1500, maxAccIdle: 800, maxDecIdle: 800,
-    maxSpeedFull: 1200, maxAccFull: 500, maxDecFull: 500,
-    maxAngSpeedIdle: 180, maxAngAccIdle: 90, maxAngDecIdle: 90,
-    maxAngSpeedFull: 120, maxAngAccFull: 60, maxAngDecFull: 60,
-
-    headOffsetIdle: len / 2, tailOffsetIdle: len / 2,
-    leftOffsetIdle: wid / 2, rightOffsetIdle: wid / 2,
-    headOffsetFull: len / 2, tailOffsetFull: len / 2,
-    leftOffsetFull: wid / 2, rightOffsetFull: wid / 2,
-});
-
-export const defaultMcu = (): McuConfig => ({
-    name: 'MainController',
-    alias: '主控制器',
-    description: '核心控制单元',
-    version: 'V1.0',
-    subsystem: 'ChassisSys',
-    mainType: 'mcu',
-    subType: 'hostBoard',
-    vendor: 'HIKROBOT',
-    model: 'RA-MC-R318AT',
-    
-    mountX: 508, mountY: -181, mountZ: 100,
-    roll: 0, pitch: 0, yaw: 90,
-    
-    shape: 'BOX',
-    length: 120, width: 100, height: 40,
-    
-    surfaceOrientation: 'UP',
-    cableDirection: 'RIGHT',
-    installType: 'HORIZONTAL',
-    
-    canBuses: ['CAN_1', 'CAN_2', 'CAN_3'],
-    ethPorts: ['ETH0', 'ETH1', 'ETH2', 'ETH3'],
-    rs232Ports: ['UART0', 'UART1'],
-    rs485Ports: ['RS485_1', 'RS485_2'],
-    speakerPorts: ['SPK0'],
-    
-    hasGyro: true,
-    hasTopCamera: true,
-    hasDownCamera: false,
-});
-
-export const defaultIdentity = (): RobotIdentity => ({
-    robotName: 'Custom_AMR',
-    version: '1.0',
-    navigationMethod: 'LIDAR_SLAM',
-    driveType: 'DIFFERENTIAL',
-    chassis: defaultChassis(),
-});
-
-export const defaultRobotConfig = (): RobotConfig => ({
-    identity: defaultIdentity(),
-    mcu: defaultMcu(),
-    ioBoards: [],
-    wheels: [],
-    sensors: [],
-    ioPorts: [],
-    actuators: [],
-    auxiliary: [],
-    others: [],
-});

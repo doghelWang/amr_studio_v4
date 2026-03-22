@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import os
 import json
+import sys
 from pathlib import Path
 from typing import List, Dict, Any
 
@@ -72,6 +73,47 @@ async def save_project(payload: Dict[str, Any]):
     with open(file_path, "w", encoding='utf-8') as f:
         json.dump(payload, f, indent=4, ensure_ascii=False)
     return {"status": "ok", "projectId": p_id}
+
+@app.post("/api/v1/import/deserialize")
+async def deserialize_cmodel(file: UploadFile = File(...)):
+    print(f"API: deserialize_cmodel called for {file.filename}")
+    import zipfile, shutil, tempfile, subprocess
+    
+    temp_dir = Path(tempfile.mkdtemp())
+    try:
+        # 1. Save and Extract ZIP
+        zip_path = temp_dir / file.filename
+        with open(zip_path, "wb") as f:
+            shutil.copyfileobj(file.file, f)
+            
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(temp_dir)
+            
+        comp_desc_path = temp_dir / "CompDesc.model"
+        if not comp_desc_path.exists():
+            raise HTTPException(status_code=400, detail="Missing CompDesc.model in archive")
+            
+        # 2. Execute Deserializer Script
+        script_path = BASE_DIR / "skills" / "model_deserializer" / "scripts" / "deserialize_model.py"
+        json_out_path = temp_dir / "CompDesc.json"
+        
+        # Note: deserialize_model.py uses protoc --decode_raw, ensure it's in PATH
+        cmd = [sys.executable, str(script_path), str(comp_desc_path), "-o", str(json_out_path)]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        
+        if result.returncode != 0:
+            print(f"Deserialization failed: {result.stderr}")
+            raise HTTPException(status_code=500, detail=f"Deserialization failed: {result.stderr}")
+            
+        # 3. Read and Return JSON
+        if not json_out_path.exists():
+             raise HTTPException(status_code=500, detail="Deserializer failed to produce JSON output")
+             
+        with open(json_out_path, "r", encoding='utf-8') as f:
+            return json.load(f)
+            
+    finally:
+        shutil.rmtree(temp_dir)
 
 @app.post("/api/v1/generate")
 async def generate_cmodel(payload: Dict[str, Any]):

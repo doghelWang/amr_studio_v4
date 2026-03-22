@@ -1,0 +1,133 @@
+syntax = "proto3";
+package amr.model;
+
+enum FieldType {
+    TYPE_UNKNOWN = 0;
+    DATA_STRING = 1;
+    DATA_INT32 = 5;
+    DATA_INT64 = 6;
+    DATA_DOUBLE = 10;
+    DATA_COMBOX = 11;
+    PI = 13;
+    PO = 14;
+    DO = 15;
+    DI = 16;
+}
+
+message ParamField {
+    repeated string key = 1;
+    repeated FieldType type = 2;
+    repeated string stringValue = 10;
+    repeated bool boolValue = 11;
+    repeated int32 int32Value = 12;
+    repeated int64 int64Value = 13;
+    repeated double doubleValue = 17;
+    message ComboType {
+        repeated string typeKey = 1;
+        repeated string typeDesc = 2;
+        message ComboGroup {
+            repeated string key = 1;
+            repeated string desc = 2;
+        }
+        repeated ComboGroup typeGroups = 3;
+    }
+    repeated ComboType comboType = 21;
+    // Polymorphic tags 35, 45 must be handled as bytes or skipped in proto
+    repeated bytes doubleMaxvalue_raw = 35; 
+    repeated bytes doubleMinvalue_raw = 45;
+    repeated string unit = 50;
+    repeated string desc = 51;
+    repeated bool boolParse = 52;
+    repeated bool boolHide = 53;
+    repeated bool boolNoeditable = 54;
+    repeated bool boolMustfill = 55;
+    repeated bool boolBasic = 56;
+}
+
+message ModuleShape {
+    repeated int32 shapeType = 1;
+    message Box {
+        repeated int32 sizeLen = 1;
+        repeated int32 sizeWidth = 2;
+        repeated int32 sizeHeight = 3;
+    }
+    repeated Box box = 11;
+}
+
+message GeneralAttr {
+    repeated ParamField moduleName = 1;
+    repeated ParamField moduleDesc = 3;
+    repeated ParamField moduleUuid = 4;
+    repeated ParamField versionInfo = 5;
+    repeated ParamField module3dIcon = 6;
+    repeated ParamField subSysType = 7;
+    repeated ParamField mainModuleType = 8;
+    repeated ParamField subModuleType = 9;
+    repeated ParamField venderName = 10;
+    repeated ParamField moduleDscType = 11;
+    repeated ParamField moduleIcon = 12;
+    repeated ModuleShape moduleShape = 13;
+    repeated ParamField extendParams = 20;
+}
+
+message PrivateAttr {
+    message Inner {
+        repeated string key = 1;
+        repeated string desc = 2;
+        repeated ParamField arrayBaseEle = 3;
+        repeated ParamField extendParams = 4;
+    }
+    repeated Inner inner = 1;
+}
+
+message InterfaceAbility {
+    message BusAbility {
+        repeated string busInterfaceType = 1;
+        repeated int32 busInterfaceNums = 2;
+    }
+    repeated BusAbility busInterfaceAbility = 1;
+}
+
+message InterfaceGroup {
+    repeated string key = 1;
+    repeated bytes typeBlob = 2;
+    repeated string desc = 3;
+    repeated string nameCopy = 4;
+    repeated string interfaceUuid = 5;
+    repeated string linkedInterfaceUuid = 6;
+    message InterfaceAttrs {
+        repeated ParamField interfaceParamsArray = 1;
+    }
+    repeated InterfaceAttrs interfaceAttrs = 7;
+    message SubInterfaceParams {
+        repeated ParamField interfaceParamsArray = 1;
+    }
+    repeated SubInterfaceParams interfaceParams = 8;
+}
+
+message InterfaceParams {
+    repeated InterfaceGroup interfaceGroup = 1;
+}
+
+message StructParam {
+    repeated ParamField extendParams = 1;
+}
+
+message ModuleComponent {
+    repeated GeneralAttr generalAttr = 1;
+    repeated PrivateAttr privateAttrs = 2;
+    repeated InterfaceAbility interfaceAbility = 3;
+    repeated InterfaceParams interfaceParams = 4;
+    repeated StructParam structParam = 5;
+}
+
+message ModuleGroup {
+    repeated string moduleGroupName = 1;
+    repeated string moduleGroupUuid = 2;
+    repeated string moduleSys = 3;
+    repeated ModuleComponent moduleComponets = 4;
+}
+
+message CompDesc {
+    repeated ModuleGroup moreModuleInfo = 5;
+}

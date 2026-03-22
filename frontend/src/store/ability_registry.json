@@ -1,0 +1,87 @@
+{
+    "version": "1.0.0",
+    "functionAbility": [
+        {
+            "type": "locationAbility",
+            "desc": "定位能力",
+            "childFunction": [
+                {
+                    "type": "navi",
+                    "desc": "导航",
+                    "key": "navi_0",
+                    "attr": [
+                        {
+                            "key": "naviUniqueKey",
+                            "type": "ARRAY",
+                            "arrayParam": {
+                                "groupKey": "naviUniqueKey",
+                                "groupName": "导航单元",
+                                "attrParams": [
+                                    {
+                                        "key": "naviType",
+                                        "desc": "导航类型",
+                                        "type": "DATA_COMBOX",
+                                        "value": "LASER_SLAM",
+                                        "comboType": {
+                                            "typeKey": "naviType",
+                                            "typeGroups": [
+                                                { "key": "noNavi", "desc": "不适用导航" },
+                                                { "key": "LASER_SLAM", "desc": "激光SLAM导航", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedLaser", "desc": "关联激光", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]},
+                                                { "key": "QR_CODE", "desc": "二维码导航", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedCodeReader", "desc": "关联读码器", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "sensoryRecoAbi",
+            "desc": "感知识别",
+            "childFunction": [
+                {
+                    "type": "codeRec",
+                    "desc": "码识别",
+                    "key": "codeRec_0",
+                    "attr": [
+                        {
+                            "key": "codeRecUniqueKey",
+                            "type": "ARRAY",
+                            "arrayParam": {
+                                "groupKey": "codeRecUniqueKey",
+                                "groupName": "码识别单元",
+                                "attrParams": [
+                                    {
+                                        "key": "codeRecType",
+                                        "desc": "码识别类型",
+                                        "type": "DATA_COMBOX",
+                                        "value": "noCodeRec",
+                                        "comboType": {
+                                            "typeKey": "codeRecType",
+                                            "typeGroups": [
+                                                { "key": "noCodeRec", "desc": "无码识别能力" },
+                                                { "key": "rackCodeRec", "desc": "二维码识别", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedCodeReader", "desc": "关联读码器", "type": "DATA_STRING", "value": "" }
+                                                ]}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

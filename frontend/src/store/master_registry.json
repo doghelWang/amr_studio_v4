@@ -1,0 +1,2880 @@
+{
+    "ACTOR": {
+        "block": {
+            "desc": "通用挡块执行机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "transmissionRelationship",
+                    "desc": "传动关系",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "totalSpeedRatio",
+                    "desc": "总速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大线速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大线速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration  (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration  (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stroke",
+                    "desc": "行程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "clamp": {
+            "desc": "通用挡块执行机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "transmissionRelationship",
+                    "desc": "传动关系",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "lead",
+                    "desc": "导程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "totalSpeedRatio",
+                    "desc": "总速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大线速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大线速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration  (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration  (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stroke",
+                    "desc": "行程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "lift": {
+            "desc": "通用举升机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "transmissionRelationship",
+                    "desc": "传动关系",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "sensorMode",
+                    "desc": "传感模式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "lead",
+                    "desc": "导程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "totalSpeedRatio",
+                    "desc": "总速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大线速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大线速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration  (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration  (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stroke",
+                    "desc": "行程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "linear": {
+            "desc": "通用线性执行机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "transmissionRelationship",
+                    "desc": "传动关系",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "sensorMode",
+                    "desc": "传感模式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "totalSpeedRatio",
+                    "desc": "总速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大线速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大线速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration  (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration  (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stroke",
+                    "desc": "行程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "rotate": {
+            "desc": "通用旋转执行机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "transmissionRelationship",
+                    "desc": "传动关系",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "sensorMode",
+                    "desc": "传感模式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "lead",
+                    "desc": "导程",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "totalSpeedRatio",
+                    "desc": "总速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大角速度（空载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大角加速度（空载）",
+                    "unit": "°/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大角减速度（空载）",
+                    "unit": "°/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大角速度（满载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Full Load)",
+                    "desc": "最大角加速度（满载）",
+                    "unit": "°/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Full Load)",
+                    "desc": "最大角减速度（满载）",
+                    "unit": "°/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "negativeLimit",
+                    "desc": "负限位",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "positiveLimit",
+                    "desc": "正限位",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "translation": {
+            "desc": "通用平移执行机构",
+            "privateAttrs": [
+                {
+                    "key": "structureForm",
+                    "desc": "结构形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "drivingForm",
+                    "desc": "驱动形式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "maximumSpeed (Idle)",
+                    "desc": "最大线速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration (Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration (Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumSpeed (Full Load)",
+                    "desc": "最大线速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumAcceleration  (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maximumDeceleration  (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "load",
+                    "desc": "额定负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "AUDIO": {
+        "audioIn": {
+            "desc": "通用拾音器",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "audioOut": {
+            "desc": "can接口的通用扬声器",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "AUTOBODY": {
+        "carrier": {
+            "desc": "通用载台",
+            "privateAttrs": [
+                {
+                    "key": "ratedLoad",
+                    "desc": "额定承载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "carrierType",
+                    "desc": "载台类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "covers": {
+            "desc": "通用覆盖件",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "BATTERY": {
+        "charge": {
+            "desc": "通用充电继电器",
+            "privateAttrs": [
+                {
+                    "key": "dir",
+                    "desc": "充电方向",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "type",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "voltage",
+                    "desc": "工作电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "contactResistance",
+                    "desc": "接触电阻",
+                    "unit": "mΩ",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "insulationResistance",
+                    "desc": "绝缘电阻",
+                    "unit": "mΩ",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxCurrent",
+                    "desc": "最大工作电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxTemperature",
+                    "desc": "最高工作温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "power": {
+            "desc": "通用电源",
+            "privateAttrs": [
+                {
+                    "key": "outputCurrent",
+                    "desc": "输出电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxInputCurrent",
+                    "desc": "最大输入电流(AC)",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "minOutputVoltage",
+                    "desc": "最低输出电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxOutputVoltage",
+                    "desc": "最高输出电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "minInputVoltage",
+                    "desc": "最低输入电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxInputVoltage",
+                    "desc": "最高输入电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "efficiency",
+                    "desc": "效率",
+                    "unit": "%",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "factor",
+                    "desc": "功率因数",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "workTempMin",
+                    "desc": "最低工作温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "workTempMax",
+                    "desc": "最高工作温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "relativeHumidity",
+                    "desc": "工作相对湿度",
+                    "unit": "%",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "firmwareVersion",
+                    "desc": "固件版本",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "subBattery": {
+            "desc": "通用电池",
+            "privateAttrs": [
+                {
+                    "key": "capacity",
+                    "desc": "电池容量",
+                    "unit": "Ah",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stdChargeCurrent",
+                    "desc": "标准充电电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxChargeCurrent",
+                    "desc": "最大充电电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "stdDischargeCurrent",
+                    "desc": "标准放电电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDischargeCurrent",
+                    "desc": "最大放电电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "voltage",
+                    "desc": "额定电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxPower",
+                    "desc": "最大功率",
+                    "unit": "W",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resistance",
+                    "desc": "内阻",
+                    "unit": "mΩ",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "cycleLife",
+                    "desc": "循环寿命",
+                    "unit": "次",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "chargeTempMin",
+                    "desc": "最低充电温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "chargeTempMax",
+                    "desc": "最高充电温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "dischargeTempMin",
+                    "desc": "最低放电温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "dischargeTempMax",
+                    "desc": "最高放电温度",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "BUTTON": {
+        "subButton": {
+            "desc": "通用按钮",
+            "privateAttrs": [
+                {
+                    "key": "buttonType",
+                    "desc": "按钮类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "switchMode",
+                    "desc": "开关方式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "buttonLamp",
+                    "desc": "按钮灯控制",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "selfLock",
+                    "desc": "是否自锁",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "CHASSIS": {
+        "diffChassis": {
+            "desc": "通用差速底盘",
+            "privateAttrs": [
+                {
+                    "key": "headOffset(Idle)",
+                    "desc": "距离车头距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "tailOffset(Idle)",
+                    "desc": "距离车尾距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "leftOffset(Idle)",
+                    "desc": "距离左侧距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rightOffset(Idle)",
+                    "desc": "距离右侧距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "headOffset (Full Load)",
+                    "desc": "距离车头距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "tailOffset (Full Load)",
+                    "desc": "距离车尾距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "leftOffset (Full Load)",
+                    "desc": "距离左侧距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rightOffset (Full Load)",
+                    "desc": "距离右侧距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "wheelsNum",
+                    "desc": "轮组个数",
+                    "unit": "个",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "maxAcceleration(Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDeceleration(Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxSpeed(Idle)",
+                    "desc": "最大速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxAcceleration (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDeceleration (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxSpeed (Full Load)",
+                    "desc": "最大速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidMaxDec (Idle)",
+                    "desc": "避障最大减速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidMaxDec (Full Load)",
+                    "desc": "避障最大减速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidRotMaxAngDec (Idle)",
+                    "desc": "避障最大旋转减速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidRotMaxAngDec (Full Load)",
+                    "desc": "避障最大旋转减速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngAcceleration (Idle)",
+                    "desc": "最大角加速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngDeceleration (Idle)",
+                    "desc": "最大角减速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngSpeed (Idle)",
+                    "desc": "最大角速度（空载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngAcceleration (Full Load)",
+                    "desc": "最大角加速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngDeceleration (Full Load)",
+                    "desc": "最大角减速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngSpeed (Full Load)",
+                    "desc": "最大角速度（满载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateDiameter",
+                    "desc": "旋转直径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxClimbingAngle",
+                    "desc": "爬坡能力",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "totalLoadWeight",
+                    "desc": "额定负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "selfWeight",
+                    "desc": "自重",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "wheelSpace",
+                    "desc": "轮间距",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNX",
+                    "desc": "轴中心X坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNY",
+                    "desc": "轴中心Y坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNZ",
+                    "desc": "轴中心Z坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "steerChassis": {
+            "desc": "通用舵轮底盘",
+            "privateAttrs": [
+                {
+                    "key": "headOffset(Idle)",
+                    "desc": "距离车头距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "tailOffset(Idle)",
+                    "desc": "距离车尾距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "leftOffset(Idle)",
+                    "desc": "距离左侧距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rightOffset(Idle)",
+                    "desc": "距离右侧距离（空载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "headOffset (Full Load)",
+                    "desc": "距离车头距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "tailOffset (Full Load)",
+                    "desc": "距离车尾距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "leftOffset (Full Load)",
+                    "desc": "距离左侧距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rightOffset (Full Load)",
+                    "desc": "距离右侧距离（满载）",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "wheelsNum",
+                    "desc": "轮组个数",
+                    "unit": "个",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "maxAcceleration(Idle)",
+                    "desc": "最大线加速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDeceleration(Idle)",
+                    "desc": "最大线减速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxSpeed(Idle)",
+                    "desc": "最大速度（空载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxAcceleration (Full Load)",
+                    "desc": "最大线加速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDeceleration (Full Load)",
+                    "desc": "最大线减速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxSpeed (Full Load)",
+                    "desc": "最大速度（满载）",
+                    "unit": "mm/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidMaxDec (Idle)",
+                    "desc": "避障最大减速度（空载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidMaxDec (Full Load)",
+                    "desc": "避障最大减速度（满载）",
+                    "unit": "mm/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidRotMaxAngDec (Idle)",
+                    "desc": "避障最大旋转减速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "avoidRotMaxAngDec (Full Load)",
+                    "desc": "避障最大旋转减速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngAcceleration (Idle)",
+                    "desc": "最大角加速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngDeceleration (Idle)",
+                    "desc": "最大角减速度（空载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngSpeed (Idle)",
+                    "desc": "最大角速度（空载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngAcceleration (Full Load)",
+                    "desc": "最大角加速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngDeceleration (Full Load)",
+                    "desc": "最大角减速度（满载）",
+                    "unit": "°/s2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateMaxAngSpeed (Full Load)",
+                    "desc": "最大角速度（满载）",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotateDiameter",
+                    "desc": "旋转直径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxClimbingAngle",
+                    "desc": "爬坡能力",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "totalLoadWeight",
+                    "desc": "额定负载",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "selfWeight",
+                    "desc": "自重",
+                    "unit": "kg",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNX",
+                    "desc": "X坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNY",
+                    "desc": "Y坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "locCoordNZ",
+                    "desc": "Z坐标",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "COMMUNICATION": {
+        "PIO": {
+            "desc": "通用PIO模块",
+            "privateAttrs": [
+                {
+                    "key": "transType",
+                    "desc": "传输方式",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "transCounts",
+                    "desc": "传输点数",
+                    "unit": "",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "transDis",
+                    "desc": "传输距离",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "transTime",
+                    "desc": "传输时间",
+                    "unit": "s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "modulateType",
+                    "desc": "调制方式",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "RFID": {
+            "desc": "通用RFID模块",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "WAPI": {
+            "desc": "通用WAPI",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "WIFI": {
+            "desc": "通用WIFI模块",
+            "privateAttrs": [
+                {
+                    "key": "decodeType",
+                    "desc": "密码方式",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "wirelessProto",
+                    "desc": "无线标准",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "wirelessCertify",
+                    "desc": "无线认证",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "workFreq",
+                    "desc": "工作频率",
+                    "unit": "HZ",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "bluetooth": {
+            "desc": "通用蓝牙模块",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "fifthGeneration": {
+            "desc": "通用5G模块",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "DRIVEWHEEL": {
+        "diffSteerWheel": {
+            "desc": "通用差速舵轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "wheelSpace",
+                    "desc": "轮间距",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtPos",
+                    "desc": "正限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtNeg",
+                    "desc": "负限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotOmgLmt",
+                    "desc": "转向能力(最大)",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleSensorType",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "relateLeftMotor",
+                    "desc": "左行走电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                },
+                {
+                    "key": "relateRightMotor",
+                    "desc": "右行走电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "diffWheel": {
+            "desc": "通用差速轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "relateMotor",
+                    "desc": "行走电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "horizontalSteerWheel": {
+            "desc": "通用卧式舵轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtPos",
+                    "desc": "正限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtNeg",
+                    "desc": "负限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotOmgLmt",
+                    "desc": "转向能力(最大)",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleSensorType",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "relateRotMotor",
+                    "desc": "转向电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                },
+                {
+                    "key": "relateWalkMotor",
+                    "desc": "行走电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "verticalSteerWheel": {
+            "desc": "通用立式舵轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtPos",
+                    "desc": "正限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtNeg",
+                    "desc": "负限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotOmgLmt",
+                    "desc": "转向能力(最大)",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleSensorType",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "relateRotMotor",
+                    "desc": "转向电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                },
+                {
+                    "key": "relateWalkMotor",
+                    "desc": "行走电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "weakSteerWheel": {
+            "desc": "通用无动力差速轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "wheelSpace",
+                    "desc": "轮间距",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleSensorType",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "weakTurnWheel": {
+            "desc": "通用可控转向轮",
+            "privateAttrs": [
+                {
+                    "key": "wheelRadius",
+                    "desc": "轮半径",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtPos",
+                    "desc": "正限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleLmtNeg",
+                    "desc": "负限位角度",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rotOmgLmt",
+                    "desc": "转向能力(最大)",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angleSensorType",
+                    "desc": "类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "relateRotMotor",
+                    "desc": "转向电机",
+                    "unit": "",
+                    "type": "DATA_FIXED_E"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "DRIVER": {
+        "BDCMotor": {
+            "desc": "通用直流有刷电机",
+            "privateAttrs": [
+                {
+                    "key": "ENCType",
+                    "desc": "编码器类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "ratedSpeed",
+                    "desc": "电机额定转速",
+                    "unit": "RPM",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "bHbrake",
+                    "desc": "是否带抱闸",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "torque",
+                    "desc": "额定扭矩",
+                    "unit": "N*m",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "ratedCurr",
+                    "desc": "额定电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "ratedVolt",
+                    "desc": "额定电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "powerVolt",
+                    "desc": "供电电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "bReverse",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "posKp",
+                    "desc": "位置环Kp值",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "BLDCMotor": {
+            "desc": "通用直流无刷电机",
+            "privateAttrs": [
+                {
+                    "key": "ENCType",
+                    "desc": "编码器类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "initMode",
+                    "desc": "电机初始状态",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "RPM",
+                    "desc": "电机额定转速",
+                    "unit": "RPM",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "bTemper",
+                    "desc": "是否支持电机温度获取",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "bHbrake",
+                    "desc": "是否带抱闸",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "bReverse",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "torque",
+                    "desc": "额定扭矩",
+                    "unit": "N*m",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "gearRatio",
+                    "desc": "减速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "ratedCurr",
+                    "desc": "额定电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "overCurrCoef",
+                    "desc": "过流系数",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "defaultAcc",
+                    "desc": "默认加速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "defaultDec",
+                    "desc": "默认减速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxAcc",
+                    "desc": "电机支持的最大加速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDec",
+                    "desc": "电机支持的最大减速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "PMSMMotor": {
+            "desc": "通用电机",
+            "privateAttrs": [
+                {
+                    "key": "ENCType",
+                    "desc": "编码器类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "initMode",
+                    "desc": "电机初始状态",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "RPM",
+                    "desc": "电机额定转速",
+                    "unit": "RPM",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "bTemper",
+                    "desc": "是否支持电机温度获取",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "bHbrake",
+                    "desc": "是否带抱闸",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "bReverse",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "torque",
+                    "desc": "额定扭矩",
+                    "unit": "N*m",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "gearRatio",
+                    "desc": "减速比",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "ratedCurr",
+                    "desc": "额定电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "overCurrCoef",
+                    "desc": "过流系数",
+                    "unit": "",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "defaultAcc",
+                    "desc": "默认加速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "defaultDec",
+                    "desc": "默认减速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxAcc",
+                    "desc": "电机支持的最大加速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "maxDec",
+                    "desc": "电机支持的最大减速度",
+                    "unit": "r/s^2",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "subDriver": {
+            "desc": "通用驱动",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "inputVoltage",
+                    "desc": "输入电压",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "inputCurrent",
+                    "desc": "输入电流",
+                    "unit": "A",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "overloadCapacity",
+                    "desc": "过载能力",
+                    "unit": "倍",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "overloadTime",
+                    "desc": "过载时长",
+                    "unit": "S",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "type",
+                    "desc": "驱动类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "ENERGYCONTROLLER": {
+        "powerController": {
+            "desc": "通用电源控制器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "prechargeController": {
+            "desc": "通用预充控制器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "EXTENDEDLNTERFACE": {
+        "IOModule": {
+            "desc": "通用IO模块",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "bipolar",
+                    "desc": "双极晶体管类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "ethernetSwitch": {
+            "desc": "通用以太网交换机",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "safetyIOModule": {
+            "desc": "通用安全IO模块",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "INTERGRATEDCONTROLLER": {
+        "safetyController": {
+            "desc": "通用安全控制器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "subIntergratedController": {
+            "desc": "通用集成控制器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "LIGHT": {
+        "lamp": {
+            "desc": "通用灯带",
+            "privateAttrs": [
+                {
+                    "key": "lightType",
+                    "desc": "指示灯类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "lightColor",
+                    "desc": "指示灯颜色",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "warningLight": {
+            "desc": "通用警示灯",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "MAINCPU": {
+        "subMainCPU": {
+            "desc": "通用主控制器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "isWithGyro",
+                    "desc": "是否有板载陀螺仪",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "isWithUpCamera",
+                    "desc": "是否有板载上读码头",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "isWithDownCamera",
+                    "desc": "是否有板载下读码头",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "SCREEN": {
+        "segDisplays": {
+            "desc": "通用数码管",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "subScreen": {
+            "desc": "通用显示屏",
+            "privateAttrs": [
+                {
+                    "key": "resolutionWidth",
+                    "desc": "分辨率宽",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionHeight",
+                    "desc": "分辨率高",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "screenSize",
+                    "desc": "屏幕尺寸",
+                    "unit": "inch",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionWidth",
+                    "desc": "分辨率宽",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionHeight",
+                    "desc": "分辨率高",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "screenSize",
+                    "desc": "屏幕尺寸",
+                    "unit": "inch",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "SENSOR": {
+        "3DLaser": {
+            "desc": "通用3D激光",
+            "privateAttrs": [
+                {
+                    "key": "waveLength",
+                    "desc": "波长",
+                    "unit": "nm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "antiLight",
+                    "desc": "抗光干扰",
+                    "unit": "klux",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "scanDirect",
+                    "desc": "扫描方向",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "usageMode",
+                    "desc": "应用方式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "ABZEncode": {
+            "desc": "通用磁栅编码器",
+            "privateAttrs": [
+                {
+                    "key": "lineCount",
+                    "desc": "线数",
+                    "unit": "",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "isInvert",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "PT": {
+            "desc": "通用光电开关",
+            "privateAttrs": [
+                {
+                    "key": "antiLight",
+                    "desc": "抗光干扰",
+                    "unit": "klux",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "blindZone",
+                    "desc": "盲区",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "pointAngleMin",
+                    "desc": "指向角最小值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "pointAngleMax",
+                    "desc": "指向角最大值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "detecteDistence",
+                    "desc": "最大测量距离",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "accuracy",
+                    "desc": "测量精度",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "TOF": {
+            "desc": "通用TOF",
+            "privateAttrs": [
+                {
+                    "key": "resolutionH",
+                    "desc": "分辨率H",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionW",
+                    "desc": "分辨率W",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "detectDistance",
+                    "desc": "检测距离",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "TOFCamera": {
+            "desc": "通用3DTOF",
+            "privateAttrs": [
+                {
+                    "key": "resolutionH",
+                    "desc": "分辨率H",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionW",
+                    "desc": "分辨率W",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "absoluteValueEncode": {
+            "desc": "通用绝对式编码器",
+            "privateAttrs": [
+                {
+                    "key": "absEncodeType",
+                    "desc": "编码器类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "resolutionMode",
+                    "desc": "分辨率模式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "isInvert",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "codeReader": {
+            "desc": "通用读码器",
+            "privateAttrs": [
+                {
+                    "key": "focalLength",
+                    "desc": "焦距",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "exposure",
+                    "desc": "曝光时长范围",
+                    "unit": "s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "scanRangeHorizonStart",
+                    "desc": "水平视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeHorizonEnd",
+                    "desc": "水平视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalStart",
+                    "desc": "垂直视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalEnd",
+                    "desc": "垂直视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionH",
+                    "desc": "分辨率H",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionW",
+                    "desc": "分辨率W",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "codecMode",
+                    "desc": "视频编码标准",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "frameRate",
+                    "desc": "最大帧率",
+                    "unit": "fps",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resultType",
+                    "desc": "识别结果类型",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "resultValue",
+                    "desc": "识别结果",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "scanDistence",
+                    "desc": "有效扫描距离",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "accuracy",
+                    "desc": "识别精度",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "collisionBaro": {
+            "desc": "通用气动碰撞条",
+            "privateAttrs": [
+                {
+                    "key": "thresholdBaro",
+                    "desc": "气压阈值",
+                    "unit": "Pa",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "collisionPize": {
+            "desc": "通用压电碰撞条",
+            "privateAttrs": [
+                {
+                    "key": "normalVol",
+                    "desc": "正常电压值",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "thresholdVol",
+                    "desc": "浮动阈值",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "triggerVol",
+                    "desc": "触发电压值",
+                    "unit": "V",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "comDo": {
+            "desc": "通用DO器件",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "gyro": {
+            "desc": "通用陀螺仪",
+            "privateAttrs": [
+                {
+                    "key": "yawRangeMin",
+                    "desc": "偏航角最小值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "yawRangeMax",
+                    "desc": "偏航角最大值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rollRangeMin",
+                    "desc": "翻滚角最小值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "rollRangeMax",
+                    "desc": "翻滚角最大值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "pitchRangeMin",
+                    "desc": "俯仰角最小值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "pitchRangeMax",
+                    "desc": "俯仰角最大值",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "angularResolution",
+                    "desc": "角度分辨率",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "accelerationResolution",
+                    "desc": "加速度分辩率",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "accelerationAccuracy",
+                    "desc": "加速度精度",
+                    "unit": "°/s",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "incrementalEncode": {
+            "desc": "通用增量式编码器",
+            "privateAttrs": [
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "lineCount",
+                    "desc": "线数",
+                    "unit": "",
+                    "type": "DATA_INT32"
+                },
+                {
+                    "key": "isInvert",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "infrared": {
+            "desc": "通用红外模块",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "laser": {
+            "desc": "通用激光",
+            "privateAttrs": [
+                {
+                    "key": "waveLength",
+                    "desc": "波长",
+                    "unit": "nm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "antiLight",
+                    "desc": "抗光干扰",
+                    "unit": "klux",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "scanDirect",
+                    "desc": "扫描方向",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "usageMode",
+                    "desc": "应用方式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "proximitySensor": {
+            "desc": "通用接近传感器",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "pullWireEncode": {
+            "desc": "通用拉线编码器",
+            "privateAttrs": [
+                {
+                    "key": "wheelCirc",
+                    "desc": "轮周长",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "absEncodeType",
+                    "desc": "编码器类型",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "resolutionMode",
+                    "desc": "分辨率模式",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "isInvert",
+                    "desc": "是否反向",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "stereo": {
+            "desc": "通用双目",
+            "privateAttrs": [
+                {
+                    "key": "focalLength",
+                    "desc": "焦距",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "exposure",
+                    "desc": "曝光时长范围",
+                    "unit": "s",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "needCalib",
+                    "desc": "是否需要标定",
+                    "unit": "",
+                    "type": "DATA_BOOL"
+                },
+                {
+                    "key": "scanRangeHorizonStart",
+                    "desc": "水平视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeHorizonEnd",
+                    "desc": "水平视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalStart",
+                    "desc": "垂直视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalEnd",
+                    "desc": "垂直视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionH",
+                    "desc": "分辨率H",
+                    "unit": "",
+                    "type": "DATA_COMBOX"
+                },
+                {
+                    "key": "codecMode",
+                    "desc": "视频编码标准",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "frameRate",
+                    "desc": "最大帧率",
+                    "unit": "fps",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeHorizonStart",
+                    "desc": "水平视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeHorizonEnd",
+                    "desc": "水平视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalStart",
+                    "desc": "垂直视场角起始",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanRangeVerticalEnd",
+                    "desc": "垂直视场角终止",
+                    "unit": "°",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionH",
+                    "desc": "分辨率H",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "resolutionW",
+                    "desc": "分辨率W",
+                    "unit": "PPI",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "codecMode",
+                    "desc": "视频编码标准",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "frameRate",
+                    "desc": "最大帧率",
+                    "unit": "fps",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "scanDistence",
+                    "desc": "有效扫描距离",
+                    "unit": "mm",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "tempSensor": {
+            "desc": "通用温感传感器",
+            "privateAttrs": [
+                {
+                    "key": "threshold",
+                    "desc": "检测阈值",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "temperatureRangeMin",
+                    "desc": "温度最小值",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                },
+                {
+                    "key": "temperatureRangeMax",
+                    "desc": "温度最大值",
+                    "unit": "℃",
+                    "type": "DATA_DOUBLE"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "ultrasonicSensor": {
+            "desc": "通用超声传感器",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        },
+        "weighSensor": {
+            "desc": "通用称重传感器",
+            "privateAttrs": [],
+            "interfaces": [],
+            "structParams": []
+        }
+    },
+    "SENSORPROCESSOR": {
+        "TOFProcessor": {
+            "desc": "通用TOF处理器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "binocularCameraProcessor": {
+            "desc": "通用双目处理器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "encoderProcessor": {
+            "desc": "通用编码器处理器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "ultrasonicProcessor": {
+            "desc": "通用超声处理器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        },
+        "weighProcessor": {
+            "desc": "通用称重处理器",
+            "privateAttrs": [
+                {
+                    "key": "chipPlatform",
+                    "desc": "芯片平台",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "softwareSpec",
+                    "desc": "软件规格",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                },
+                {
+                    "key": "offsetAddress",
+                    "desc": "偏移地址拨码",
+                    "unit": "",
+                    "type": "DATA_STRING"
+                }
+            ],
+            "interfaces": [],
+            "structParams": []
+        }
+    }
+}
