@@ -1,13 +1,25 @@
-node_modules/
-dist/
-build/
-.env
-.DS_Store
-.github_token
-github_upload.py
+# AMR Studio V4 Ignore Rules
 
 # Python
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 venv/
-.pytest_cache/
+.env
+
+# Model Artifacts (Local Only)
+backend/saved_projects/
+backend/backend_runtime.log
+frontend/frontend_runtime.log
+*.cmodel
+*.model
+*.debug.json
+
+# ━━━ CRITICAL: ABI DESC PROTOCOL ISOLATION ━━━
+# These files are restricted to local environment and MUST NOT be uploaded to GitHub.
+*controller_model_abi_desc*
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+.DS_Store

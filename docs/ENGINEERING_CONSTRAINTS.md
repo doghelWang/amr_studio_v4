@@ -38,6 +38,8 @@
 - **数据格式冻结 (Data Format Freeze)**：前端界面的任何优化、重构或交互增强，**严禁改变**前后端既有的数据交换格式（JSON Schema）。
 - **解析无损性 (Parsing Integrity)**：UI 组件的逻辑调整不得影响 `ImportService` 和 `ExportService` 的运行，确保 100% 的数据解析兼容性。
 
-## 8. 文档维护与隐私规范 (Documentation & Privacy)
-- **同步更新承诺 (README Sync)**：每次代码重大更新后，必须同步更新 `README.md`。
-- **个人信息脱敏 (Privacy Protection)**：**严禁**在 `README.md` 或任何公开文档中展示用户姓名、敏感联系方式或私有路径。所有贡献者标识应使用职能名或团队匿名。
+## 9. 核心协议安全红线 (Protocol Security)
+- **物理隔离要求 (Local Only)**：
+  - `controller_model_abi_desc` 系列文件（包含 `.proto`, `.pb.cc`, `.pb.h`, `_pb2.py`）被定义为**绝密核心资产**。
+  - 严禁将其上传至任何公共或私有远程 Git 仓库。
+  - 本地环境必须通过 `.gitignore` 强制忽略此类文件。
