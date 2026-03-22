@@ -107,11 +107,15 @@ def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...
         
         # 3. Split
         split_out = temp_dir / "split"
+        split_out.mkdir(parents=True, exist_ok=True)
+        (split_out / "modules").mkdir(parents=True, exist_ok=True)
+        
         comp_desc_json = decode_out / "CompDesc.json"
         
         if not comp_desc_json.exists():
-             raise HTTPException(status_code=400, detail="Invalid cmodel: CompDesc.json missing")
+             raise HTTPException(status_code=400, detail=f"Invalid cmodel: CompDesc.json missing at {comp_desc_json}")
             
+        print(f"DEBUG: Splitting {comp_desc_json} into {split_out}", flush=True)
         split_comp_desc(str(comp_desc_json), str(split_out))
         
         # 4. Save to DataManager (Physical persistence)
@@ -133,6 +137,8 @@ def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...
             "full_json": full_json
         }
     except Exception as e:
+        import traceback
+        traceback.print_exc()
         shutil.rmtree(temp_dir, ignore_errors=True)
         logging.exception("Upload Error")
         raise HTTPException(status_code=500, detail=str(e))
@@ -188,4 +194,4 @@ if frontend_dist.exists():
 if __name__ == "__main__":
     print(f"🚀 Initializing AMR Studio V4 Backend...")
     print(f"📁 Projects Directory: {SAVED_PROJECTS_DIR}")
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+    uvicorn.run(app, host="0.0.0.0", port=8005)

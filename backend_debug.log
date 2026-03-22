@@ -366,3 +366,26 @@ Traceback (most recent call last):
     orig_st = os.lstat(name, dir_fd=dirfd)
 FileNotFoundError: [Errno 2] No such file or directory: '/var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpt66kc97v/decoded/temp_extracted'
 INFO:root:Cleanup skipped for debug. Temp dir: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpt66kc97v
+DEBUG:asyncio:Using selector: KqueueSelector
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[50:69]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[71:123]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[125:137]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[139:163]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[167:22574]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data
+DEBUG:python_multipart.multipart:Calling on_part_begin with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[50:69]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[71:120]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_header_field with data[122:134]
+DEBUG:python_multipart.multipart:Calling on_header_value with data[136:160]
+DEBUG:python_multipart.multipart:Calling on_header_end with no data
+DEBUG:python_multipart.multipart:Calling on_headers_finished with no data
+DEBUG:python_multipart.multipart:Calling on_part_data with data[164:22571]
+DEBUG:python_multipart.multipart:Calling on_part_end with no data
+DEBUG:python_multipart.multipart:Calling on_end with no data

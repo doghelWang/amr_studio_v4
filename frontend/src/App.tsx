@@ -36,6 +36,13 @@ const STEP_COMPONENTS = [
     MountingStep, WiringStep, AbilityStep, AuditStep,
 ];
 
+import { 
+    apiFetchAbilities, 
+    apiUpdateAbilities, 
+    apiUpdateComponent,
+    apiCompileAndDownload 
+} from './services/api_v2';
+
 export default function App() {
     const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
@@ -52,6 +59,16 @@ export default function App() {
         return () => window.removeEventListener('keydown', handler);
     }, [canUndo, canRedo]);
 
+    // 1. Fetch abilities when project changes
+    useEffect(() => {
+        if (projectId) {
+            apiFetchAbilities(projectId).then(abilities => {
+                // Merge with existing config
+                loadProject({ ...config, abilities });
+            }).catch(err => console.error("Failed to fetch abilities:", err));
+        }
+    }, [projectId]);
+
     const handleImport = async () => {
         const input = document.createElement('input');
         input.type = 'file';
@@ -64,10 +81,13 @@ export default function App() {
                 const res = await axios.post('http://localhost:8002/api/v1/models/upload', formData);
                 if (res.data.status === 'success') {
                     console.log('Upload Success, Project ID:', res.data.project_id);
-                    setProjectId(res.data.project_id);
+                    const pId = res.data.project_id;
+                    setProjectId(pId);
                     try {
                         const parsedConfig = ImportService.parseCompDesc(res.data.full_json);
-                        loadProject(parsedConfig as any);
+                        // Fetch real abilities from API to ensure sync
+                        const abilities = await apiFetchAbilities(pId);
+                        loadProject({ ...parsedConfig, abilities } as any);
                         message.success(`已导入并打散模块: ${file.name}`);
                     } catch (err) {
                         console.error('Hydration parsing failed:', err);
@@ -88,19 +108,28 @@ export default function App() {
             return;
         }
         try {
-            message.loading({ content: '后端正在拼装重构 CModel...', key: 'compile' });
-            const res = await axios.post(`http://localhost:8002/api/v1/models/${projectId}/compile`, {}, { responseType: 'blob' });
+            message.loading({ content: '正在同步修改到云端...', key: 'export', duration: 0 });
             
-            const url = URL.createObjectURL(new Blob([res.data]));
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${projectId}_packed.cmodel`;
-            a.click();
-            URL.revokeObjectURL(url);
+            // 1. Sync Abilities
+            await apiUpdateAbilities(projectId, config.abilities);
             
-            message.success({ content: '模型封装并成功下载！', key: 'compile' });
-        } catch { 
-            message.error({ content: '后端编译防篡改重组失败！', key: 'compile' }); 
+            // 2. Sync modified components (Simplified: sync all for robustness)
+            // In a real app, we would only sync dirty ones.
+            const syncTasks = config.components.map(c => {
+                const payload = ExportService.exportToCompDesc({ ...config, components: [c] }).more_module_info[0].module_componets[0];
+                return apiUpdateComponent(projectId, c.id, payload);
+            });
+            await Promise.all(syncTasks);
+
+            message.loading({ content: '云端正在拼装重构 CModel...', key: 'export', duration: 0 });
+            
+            // 3. Compile & Download
+            await apiCompileAndDownload(projectId);
+            
+            message.success({ content: '模型封装并成功下载！', key: 'export' });
+        } catch (err) { 
+            console.error('Export/Compile Error:', err);
+            message.error({ content: '后端同步或编译失败，请检查协议一致性', key: 'export' }); 
         }
     };
 

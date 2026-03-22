@@ -43,24 +43,54 @@ def encode_cmodel(blueprint_path, output_cmodel_path):
     print("Resolving module references and assembling tree...")
     full_json = resolve_refs(blueprint, base_dir)
     
-    print("Parsing JSON into Protobuf (Message_Module_Info)...")
+    # 1. Build CompDesc.model
+    print("Parsing CompDesc JSON into Protobuf...")
     comp_obj = controller_model_comp_desc_pb2.Message_Module_Info()
     ParseDict(full_json, comp_obj, ignore_unknown_fields=False)
+    comp_model_data = comp_obj.SerializeToString()
     
-    temp_model_path = os.path.join(base_dir, "CompDesc_rebuilt.model")
-    with open(temp_model_path, "wb") as f:
-        f.write(comp_obj.SerializeToString())
-        
+    # 2. Build AbiSet.model (If JSON exists)
+    abi_model_data = None
+    abi_json_path = os.path.join(base_dir, "AbiSet.json")
+    if os.path.exists(abi_json_path):
+        print("Rebuilding AbiSet.model from JSON...")
+        with open(abi_json_path, "r", encoding="utf-8") as f:
+            abi_json = json.load(f)
+        abi_obj = controller_model_abi_set_pb2.Controller_Ability()
+        ParseDict(abi_json, abi_obj, ignore_unknown_fields=False)
+        abi_model_data = abi_obj.SerializeToString()
+
+    # 3. Build FuncDesc.model (If JSON exists)
+    func_model_data = None
+    func_json_path = os.path.join(base_dir, "FuncDesc.json")
+    if os.path.exists(func_json_path):
+        print("Rebuilding FuncDesc.model from JSON...")
+        with open(func_json_path, "r", encoding="utf-8") as f:
+            func_json = json.load(f)
+        func_obj = controller_model_abi_desc_pb2.Robot_Description()
+        ParseDict(func_json, func_obj, ignore_unknown_fields=False)
+        func_model_data = func_obj.SerializeToString()
+
     print(f"Zipping into {output_cmodel_path}...")
     with zipfile.ZipFile(output_cmodel_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        # Write our newly built CompDesc.model
-        zipf.write(temp_model_path, "CompDesc.model")
+        # Write CompDesc
+        zipf.writestr("CompDesc.model", comp_model_data)
         
-        # Pull in the other original models if they exist in base_dir
-        for other in ["AbiSet.model", "FuncDesc.model", "ModelFileDesc.json"]:
-            oth_path = os.path.join(base_dir, other)
-            if os.path.exists(oth_path):
-                zipf.write(oth_path, other)
+        # Write AbiSet
+        if abi_model_data:
+            zipf.writestr("AbiSet.model", abi_model_data)
+        elif os.path.exists(os.path.join(base_dir, "AbiSet.model")):
+            zipf.write(os.path.join(base_dir, "AbiSet.model"), "AbiSet.model")
+
+        # Write FuncDesc
+        if func_model_data:
+            zipf.writestr("FuncDesc.model", func_model_data)
+        elif os.path.exists(os.path.join(base_dir, "FuncDesc.model")):
+            zipf.write(os.path.join(base_dir, "FuncDesc.model"), "FuncDesc.model")
+            
+        # Others
+        if os.path.exists(os.path.join(base_dir, "ModelFileDesc.json")):
+            zipf.write(os.path.join(base_dir, "ModelFileDesc.json"), "ModelFileDesc.json")
 
     print(f"Successfully encoded and verified generation of {output_cmodel_path}")
 

@@ -1,0 +1,297 @@
+{
+  "version": "V1.0",
+  "function": [
+    {
+      "type": "locationAbility",
+      "desc": "\u5b9a\u4f4d\u80fd\u529b",
+      "child_function": [
+        {
+          "type": "navi",
+          "desc": "\u5bfc\u822a",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "combox_param": {
+                "comb_name": "naviType",
+                "key": "NAVI_INERTANCE",
+                "desc": "\u60ef\u6027\u5bfc\u822a",
+                "array_attr": [
+                  {
+                    "attr_params": [
+                      {
+                        "key": "funName",
+                        "type": "STRING_E",
+                        "string_value": "gyro"
+                      },
+                      {
+                        "key": "relatedGyro",
+                        "type": "FIXED_E",
+                        "string_fix": "gyro",
+                        "fixedSource": [
+                          "sensor/gyro"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "clone_enable": true
+            },
+            {
+              "key": "naviUniqueKey_57997",
+              "combox_param": {
+                "comb_name": "naviType",
+                "key": "NAVI_SLAM",
+                "desc": "slam\u5bfc\u822a",
+                "array_attr": [
+                  {
+                    "attr_params": [
+                      {
+                        "key": "funName",
+                        "type": "STRING_E",
+                        "string_value": "slam"
+                      },
+                      {
+                        "key": "relatedLaser",
+                        "type": "FIXED_E",
+                        "string_fix": "laser-front",
+                        "fixedSource": [
+                          "sensor/laser",
+                          "sensor/3DLaser"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "clone_enable": true
+            },
+            {
+              "key": "naviUniqueKey_21218",
+              "combox_param": {
+                "comb_name": "naviType",
+                "key": "NAVI_CODE",
+                "desc": "\u4e8c\u7ef4\u7801\u5bfc\u822a",
+                "array_attr": [
+                  {
+                    "attr_params": [
+                      {
+                        "key": "funName",
+                        "type": "STRING_E",
+                        "string_value": "QR"
+                      },
+                      {
+                        "key": "relatedCodeReader",
+                        "type": "FIXED_E",
+                        "string_fix": "smart camera",
+                        "fixedSource": [
+                          "sensor/codeReader"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              "clone_enable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "HCI",
+      "desc": "\u4eba\u673a\u4ea4\u4e92",
+      "child_function": [
+        {
+          "type": "led",
+          "desc": "\u706f\u5149",
+          "attr": [
+            {
+              "key": "ledUniqueKey",
+              "combox_param": {
+                "comb_name": "ledType",
+                "key": "noLed",
+                "desc": "\u65e0\u6307\u793a\u706f"
+              },
+              "clone_enable": true
+            }
+          ]
+        },
+        {
+          "type": "button",
+          "desc": "\u6309\u94ae",
+          "attr": [
+            {
+              "key": "btnUniqueKey",
+              "combox_param": {
+                "comb_name": "btnType",
+                "key": "noBtn",
+                "desc": "\u65e0\u6309\u94ae"
+              },
+              "clone_enable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "safetyAbility",
+      "desc": "\u5b89\u5168\u80fd\u529b",
+      "child_function": [
+        {
+          "type": "safetyIO",
+          "desc": "\u5b89\u5168IO",
+          "attr": [
+            {
+              "key": "safetyIOUniqueKey",
+              "combox_param": {
+                "comb_name": "safeIOType",
+                "key": "noSafeIO",
+                "desc": "\u65e0\u5b89\u5168IO"
+              },
+              "clone_enable": true
+            },
+            {
+              "key": "safetyIOUniqueKey_16047",
+              "combox_param": {
+                "comb_name": "safeIOType",
+                "key": "SAFETY_IO_EMC_STOP",
+                "desc": "\u6025\u505c\u6309\u94ae",
+                "array_attr": [
+                  {
+                    "attr_params": [
+                      {
+                        "key": "relatedEmcBtn",
+                        "type": "FIXED_E",
+                        "string_fix": "button-emc",
+                        "fixedSource": [
+                          "button/subButton"
+                        ]
+                      }
+                    ]
+                  }
+                ],
+                "combox_attr": [
+                  {
+                    "comb_name": "emcMode",
+                    "key": "freerun",
+                    "desc": "\u8fdb\u5165freerun\u6a21\u5f0f"
+                  }
+                ]
+              },
+              "clone_enable": true
+            }
+          ]
+        },
+        {
+          "type": "safetySensor",
+          "desc": "\u907f\u969c\u4f20\u611f\u5668",
+          "attr": [
+            {
+              "key": "safetySensorUniqueKey",
+              "combox_param": {
+                "comb_name": "sensorType",
+                "key": "noSafeSensor",
+                "desc": "\u65e0\u5b89\u5168\u4f20\u611f\u5668"
+              },
+              "clone_enable": true
+            }
+          ]
+        },
+        {
+          "type": "safetyRound",
+          "desc": "\u907f\u969c\u8303\u56f4",
+          "attr": [
+            {
+              "key": "safetyRoundUniqueKey",
+              "combox_param": {
+                "comb_name": "RoundType",
+                "key": "BOX_ROUND",
+                "desc": "\u6846\u4f53\u907f\u969c",
+                "array_attr": [
+                  {
+                    "attr_params": [
+                      {
+                        "key": "centerX",
+                        "type": "INT32_E",
+                        "int32_value": 0
+                      },
+                      {
+                        "key": "centerY",
+                        "type": "INT32_E",
+                        "int32_value": 0
+                      },
+                      {
+                        "key": "centerZ",
+                        "type": "INT32_E",
+                        "int32_value": 99
+                      },
+                      {
+                        "key": "boxLength",
+                        "type": "INT32_E",
+                        "int32_value": 1495
+                      },
+                      {
+                        "key": "boxwidth",
+                        "type": "INT32_E",
+                        "int32_value": 1083
+                      },
+                      {
+                        "key": "boxheight",
+                        "type": "INT32_E",
+                        "int32_value": 198
+                      }
+                    ]
+                  }
+                ]
+              },
+              "clone_enable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "distMeasureAbility",
+      "desc": "\u900f\u4f20\u6d4b\u8ddd",
+      "child_function": [
+        {
+          "type": "distSensor",
+          "desc": "\u6d4b\u8ddd",
+          "attr": [
+            {
+              "key": "distSensorUniqueKey",
+              "combox_param": {
+                "comb_name": "distType",
+                "key": "noDistSensor",
+                "desc": "\u65e0\u6d4b\u8ddd\u4f20\u611f\u5668"
+              },
+              "clone_enable": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "actorAbility",
+      "desc": "\u6267\u884c\u673a\u6784\u80fd\u529b",
+      "child_function": [
+        {
+          "type": "actor",
+          "desc": "\u6267\u884c\u673a\u6784",
+          "attr": [
+            {
+              "key": "moduleType",
+              "combox_param": {
+                "comb_name": "moduleType",
+                "key": "noActor",
+                "desc": "\u65e0\u6267\u884c\u673a\u6784"
+              },
+              "clone_enable": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
