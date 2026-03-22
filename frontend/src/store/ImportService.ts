@@ -10,12 +10,7 @@ import {
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
 
-/**
- * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
- * Performs deep mapping from snake_case (Protobuf) to camelCase (Frontend Store).
- */
 export class ImportService {
-    /** Maps raw snake_case category keys from proto to frontend MainModuleType enum */
     private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
         'chassis':               'CHASSIS',
         'drive_wheel':           'DRIVEWHEEL',
@@ -37,10 +32,8 @@ export class ImportService {
         'autobody':              'AUTOBODY',
     };
 
-    /**
-     * Parses a CompDesc JSON and returns a partial RobotConfig.
-     */
     static parseCompDesc(json: any): Partial<RobotConfig> {
+        console.log('DEBUG [ImportService]: Starting parseCompDesc with raw JSON:', json);
         const components: ComponentConfig[] = [];
 
         if (json.more_module_info && Array.isArray(json.more_module_info)) {
@@ -49,12 +42,13 @@ export class ImportService {
             });
         }
 
+        // Initialize identity with robust defaults
         const identity = {
             robotName: json.robot_name || 'Imported_AMR',
             version: json.version || '1.0.0',
             materialCode: '',
             alias: '',
-            venderName: '',
+            venderName: 'SEER',
             navigationMethod: 'LASER_SLAM' as const,
             driveType: 'STANDARD_DIFF' as const,
             chassisShape: 'BOX' as const,
@@ -63,15 +57,25 @@ export class ImportService {
             chassisHeight: 400,
         };
 
+        // ━━━ KEY FIX: Find CHASSIS component and SYNC identity ━━━
+        const chassis = components.find(c => c.category === 'CHASSIS');
+        if (chassis) {
+            console.log('DEBUG [ImportService]: Found Chassis Component:', chassis);
+            if (chassis.shape) {
+                identity.chassisShape = chassis.shape.type as any;
+                identity.chassisLength = chassis.shape.length || 1200;
+                identity.chassisWidth = chassis.shape.width || 800;
+                identity.chassisHeight = chassis.shape.height || 400;
+            }
+            identity.alias = chassis.alias;
+        }
+
+        console.log(`DEBUG [ImportService]: Extracted ${components.length} components.`);
         return { components, identity };
     }
 
-    /**
-     * Deeply parses the abilities JSON from snake_case to Store-aligned camelCase.
-     */
     static parseAbilities(json: any): ControllerAbility {
         if (!json || !json.function_ability) return abilityRegistry as any;
-
         return {
             functionAbility: json.function_ability.map((func: any) => ({
                 type: func.type,
@@ -134,26 +138,16 @@ export class ImportService {
 
         const uuid = gen.module_uuid?.string_value || uuidv4();
 
-        // Private Attributes (Snake -> Camel)
-        const rawPrivateAttr = comp.private_attr;
-        const privateAttrList: any[] = rawPrivateAttr?.private_attrs ?? [];
-
-        const privateAttrs: AttributeGroup[] = privateAttrList.map((grp: any) => ({
-            key: grp.key || '',
-            desc: grp.desc || '',
-            boolDeprecated: grp.bool_deprecated,
-            elements: (grp.array_base_ele || []).map((attr: any) => this.mapAttribute(attr)),
-        }));
-
-        // Interfaces (Snake -> Camel)
-        const rawIface = comp.interface_params;
-        const ifaceList: any[] = rawIface?.interface_group ?? [];
+        // ── Interfaces ──
+        // BACKEND PATH: comp.interface_params.interface_group
+        const rawIface = comp.interface_params || {};
+        const ifaceList: any[] = rawIface.interface_group || rawIface.interface_params_array || [];
 
         const interfaces: InterfaceConfig[] = ifaceList.map((inf: any) => ({
             key: inf.key,
             type: inf.type,
             path: inf.path,
-            desc: inf.desc,
+            desc: inf.desc || inf.key,
             interfaceUuid: inf.interface_uuid || uuidv4(),
             linkedInterfaceUuid: inf.linked_interface_uuid || [],
             linkAttrs: inf.link_attrs,
@@ -161,21 +155,38 @@ export class ImportService {
             interfaceParams: inf.interface_params,
         }));
 
-        // Shape
+        // ── Shape ──
         let shape: ComponentConfig['shape'];
-        if (gen.module_shape && !Array.isArray(gen.module_shape)) {
+        if (gen.module_shape) {
             const s = gen.module_shape;
-            if (s.box) shape = { type: 'BOX', length: s.box.size_len, width: s.box.size_width, height: s.box.size_height };
-            else if (s.cylinder) shape = { type: 'CYLINDER', diameter: s.cylinder.diameter, height: s.cylinder.height };
-            else if (s.sphere) shape = { type: 'SPHERE', diameter: s.sphere.diameter };
+            const shapeType = s.shape_type || 'ENUM_BOX';
+            if (shapeType === 'ENUM_BOX' || s.box) {
+                const box = s.box || {};
+                shape = { type: 'BOX', length: box.size_len || 0, width: box.size_width || 0, height: box.size_height || 0 };
+            } else if (shapeType === 'ENUM_CYLINDER' || s.cylinder) {
+                const cyl = s.cylinder || {};
+                shape = { type: 'CYLINDER', diameter: cyl.diameter || 0, height: cyl.height || 0 };
+            } else if (s.sphere) {
+                shape = { type: 'SPHERE', diameter: s.sphere.diameter || 0 };
+            }
         }
+
+        // ── Attributes ──
+        const rawPrivateAttr = comp.private_attr || {};
+        const privateAttrs: AttributeGroup[] = (rawPrivateAttr.private_attrs || []).map((grp: any) => ({
+            key: grp.key || '',
+            desc: grp.desc || '',
+            elements: (grp.array_base_ele || grp.elements || []).map((attr: any) => this.mapAttribute(attr)),
+        }));
 
         const structExtend = struct.extend_params ?? [];
 
         return {
             id: uuid,
             name: gen.module_name?.string_value || type,
-            alias: gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value || type,
+            alias: gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value 
+                   || gen.module_desc?.string_value 
+                   || type,
             type,
             category,
             parentNodeUuid: parentUuid
@@ -190,7 +201,7 @@ export class ImportService {
             mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
             mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
             privateAttrs,
-            interfaceAbility: comp.interface_ability,
+            interfaceAbility: comp.interface_ability || {},
             interfaces,
             shape,
             generalAttr: gen,
@@ -200,9 +211,6 @@ export class ImportService {
         };
     }
 
-    /**
-     * Maps a single Message_Base_Element to SmartAttribute (Snake -> Camel)
-     */
     private static mapAttribute(attr: any): SmartAttribute {
         return {
             key: attr.key,
@@ -216,7 +224,7 @@ export class ImportService {
             boolHide: attr.bool_hide,
             boolNoeditable: attr.bool_noeditable,
             boolMustfill: attr.bool_mustfill,
-            boolBasic: attr.bool_basic,
+            boolBasic: true, // IMPORTANT: Imported attributes must be visible
             fixedSource: attr.fixed_source,
             comboType: attr.combo_type ? {
                 typeKey: attr.combo_type.type_key,
@@ -249,6 +257,7 @@ export class ImportService {
     }
 
     private static findExtend(params: any[], key: string): number {
-        return params?.find((p: any) => p.key === key)?.double_value || 0;
+        const p = params?.find((p: any) => p.key === key);
+        return p?.double_value || p?.float_value || 0;
     }
 }

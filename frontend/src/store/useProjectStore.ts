@@ -239,10 +239,14 @@ export const useProjectStore = create<ProjectState>()(
                     isDirty: false
                 }),
 
-                loadProject: (config) => set({
-                    config,
-                    isDirty: false
-                }),
+                loadProject: (config) => {
+                    console.log('STORE: loading new config into state...', config);
+                    set({
+                        config,
+                        activeComponentId: config.components.length > 0 ? config.components[0].id : null,
+                        isDirty: false
+                    });
+                },
 
                 updateAbilityAttribute: (funcType, childKey, commonAttrKey, attrKey, value, subAttrKey) => set((state) => ({
                     config: {

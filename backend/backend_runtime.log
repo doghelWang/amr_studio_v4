@@ -26,3 +26,114 @@ INFO:     127.0.0.1:54035 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1
 INFO:     127.0.0.1:54952 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55034 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55132 - "GET /api/v1/models/proj_e0a9272d/abilities HTTP/1.1" 200 OK
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/decoded
+DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/decoded/CompDesc.json...
+Split complete. Extracted 20 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpncr6p70b/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_c131e543
+DataManager: Copying FuncDesc.model
+DataManager: Copying AbiSet.json
+DataManager: Copying CompDesc.model
+DataManager: Copying AbiSet.model
+DataManager: Copying FuncDesc.json
+DataManager: Copying ModelFileDesc.json
+INFO:     127.0.0.1:55396 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55396 - "GET /api/v1/models/proj_c131e543/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55396 - "GET /api/v1/models/proj_c131e543/abilities HTTP/1.1" 200 OK
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/decoded
+DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/decoded/CompDesc.json...
+Split complete. Extracted 20 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpf15h6ana/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_ee651d9d
+DataManager: Copying FuncDesc.model
+DataManager: Copying AbiSet.json
+DataManager: Copying CompDesc.model
+DataManager: Copying AbiSet.model
+DataManager: Copying FuncDesc.json
+DataManager: Copying ModelFileDesc.json
+INFO:     127.0.0.1:56178 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56178 - "GET /api/v1/models/proj_ee651d9d/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56178 - "GET /api/v1/models/proj_ee651d9d/abilities HTTP/1.1" 200 OK
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/decoded
+DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/decoded/CompDesc.json...
+Split complete. Extracted 20 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp7q59oe2k/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_2a281663
+DataManager: Copying FuncDesc.model
+DataManager: Copying AbiSet.json
+DataManager: Copying CompDesc.model
+DataManager: Copying AbiSet.model
+DataManager: Copying FuncDesc.json
+DataManager: Copying ModelFileDesc.json
+INFO:     127.0.0.1:58369 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58369 - "GET /api/v1/models/proj_2a281663/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58369 - "GET /api/v1/models/proj_2a281663/abilities HTTP/1.1" 200 OK
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/decoded
+DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/decoded/CompDesc.json...
+Split complete. Extracted 20 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmph430b1d3/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_086460dc
+DataManager: Copying FuncDesc.model
+DataManager: Copying AbiSet.json
+DataManager: Copying CompDesc.model
+DataManager: Copying AbiSet.model
+DataManager: Copying FuncDesc.json
+DataManager: Copying ModelFileDesc.json
+INFO:     127.0.0.1:59077 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59077 - "GET /api/v1/models/proj_086460dc/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59077 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59110 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59110 - "GET /api/v1/models/proj_086460dc/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59192 - "GET /api/v1/models/proj_086460dc/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59249 - "GET /api/v1/models/proj_086460dc/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59249 - "GET /api/v1/models/proj_086460dc/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59251 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59361 - "GET /api/v1/models/proj_086460dc/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59361 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49160 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49160 - "GET /api/v1/models/proj_086460dc/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "GET /api/v1/models/proj_086460dc/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "GET /api/v1/models/proj_086460dc/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "GET /api/v1/models/proj_086460dc/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "GET /api/v1/models/proj_086460dc/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50151 - "GET /api/v1/models/proj_086460dc/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+DECODER: Starting decode of /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/ModelSet312.cmodel into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/decoded
+DECODER: Files extracted: ['FuncDesc.model', 'CompDesc.model', 'AbiSet.model', 'ModelFileDesc.json']
+DECODER: Decoding complete. Results in /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/decoded
+DEBUG: Splitting /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/decoded/CompDesc.json into /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/split
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/decoded/CompDesc.json...
+Split complete. Extracted 20 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/split/blueprint_CompDesc.json
+DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpxmhkwa7q/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_58fe3006
+DataManager: Copying FuncDesc.model
+DataManager: Copying AbiSet.json
+DataManager: Copying CompDesc.model
+DataManager: Copying AbiSet.model
+DataManager: Copying FuncDesc.json
+DataManager: Copying ModelFileDesc.json
+INFO:     127.0.0.1:53464 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53464 - "GET /api/v1/models/proj_58fe3006/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53520 - "GET /api/v1/models/proj_58fe3006/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53522 - "GET /api/v1/models/proj_58fe3006/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53573 - "GET /api/v1/models/proj_58fe3006/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53766 - "GET /api/v1/models/proj_58fe3006/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53805 - "GET /api/v1/models/proj_58fe3006/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53924 - "GET /api/v1/models/proj_58fe3006/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53968 - "GET /api/v1/models/proj_58fe3006/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK

@@ -13,6 +13,13 @@ import { ExportService } from './services/ExportService';
 import { ImportService } from './store/ImportService';
 import axios from 'axios';
 
+import { 
+    apiFetchAbilities, 
+    apiUpdateAbilities, 
+    apiUpdateComponent,
+    apiCompileAndDownload 
+} from './services/api_v2';
+
 import { IdentityStep } from './components/wizard/IdentityStep';
 import { ChassisStep } from './components/wizard/ChassisStep';
 import { ComponentLibraryStep } from './components/wizard/ComponentLibraryStep';
@@ -36,17 +43,11 @@ const STEP_COMPONENTS = [
     MountingStep, WiringStep, AbilityStep, AuditStep,
 ];
 
-import { 
-    apiFetchAbilities, 
-    apiUpdateAbilities, 
-    apiUpdateComponent,
-    apiCompileAndDownload 
-} from './services/api_v2';
-
 export default function App() {
     const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
+    const [messageApi, contextHolder] = message.useMessage();
 
     // Keyboard shortcuts
     useEffect(() => {
@@ -59,12 +60,12 @@ export default function App() {
         return () => window.removeEventListener('keydown', handler);
     }, [canUndo, canRedo]);
 
-    // 1. Fetch abilities when project changes
+    // 1. Fetch abilities when project changes (Initial load or switching)
     useEffect(() => {
-        if (projectId) {
+        if (projectId && !config.abilities?.functionAbility?.length) {
+            console.log('APP: useEffect fetching missing abilities for project:', projectId);
             apiFetchAbilities(projectId).then(abilitiesRaw => {
                 const abilities = ImportService.parseAbilities(abilitiesRaw);
-                // Merge with existing config
                 loadProject({ ...config, abilities });
             }).catch(err => console.error("Failed to fetch abilities:", err));
         }
@@ -77,28 +78,35 @@ export default function App() {
         input.onchange = async (e: any) => {
             try {
                 const file = e.target.files[0];
+                messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
+                
                 const formData = new FormData();
                 formData.append('file', file);
                 const res = await axios.post('http://localhost:8005/api/v1/models/upload', formData);
+                
                 if (res.data.status === 'success') {
-                    console.log('Upload Success, Project ID:', res.data.project_id);
                     const pId = res.data.project_id;
+                    const rawJson = res.data.full_json;
+                    
+                    const abilitiesRaw = await apiFetchAbilities(pId);
+                    const abilities = ImportService.parseAbilities(abilitiesRaw);
+                    const parsed = ImportService.parseCompDesc(rawJson);
+                    
+                    const fullConfig: any = { 
+                        identity: parsed.identity,
+                        components: parsed.components,
+                        abilities 
+                    };
+                    
+                    console.log('APP: Final consolidated config before loadProject:', fullConfig);
+                    
                     setProjectId(pId);
-                    try {
-                        const parsedConfig = ImportService.parseCompDesc(res.data.full_json);
-                        // Fetch and deeply parse abilities
-                        const abilitiesRaw = await apiFetchAbilities(pId);
-                        const abilities = ImportService.parseAbilities(abilitiesRaw);
-                        loadProject({ ...parsedConfig, abilities } as any);
-                        message.success(`已导入并打散模块: ${file.name}`);
-                    } catch (err) {
-                        console.error('Hydration parsing failed:', err);
-                        message.warning('模块打散成功但本地全景树渲染遇到异常，请查阅控制台');
-                    }
+                    loadProject(fullConfig);
+                    messageApi.success({ content: `成功导入并同步: ${file.name}`, key: 'import' });
                 }
             } catch (err) { 
                 console.error('Import Error:', err);
-                message.error('导入失败，请检查服务状态'); 
+                messageApi.error({ content: '导入失败，请检查服务状态', key: 'import' }); 
             }
         };
         input.click();
@@ -106,32 +114,25 @@ export default function App() {
 
     const handleExport = async () => {
         if (!projectId) {
-            message.warning("无活跃工程，请先导入！");
+            messageApi.warning("无活跃工程，请先导入！");
             return;
         }
         try {
-            message.loading({ content: '正在同步修改到云端...', key: 'export', duration: 0 });
-            
-            // 1. Sync Abilities
+            messageApi.loading({ content: '正在同步修改到云端...', key: 'export', duration: 0 });
             await apiUpdateAbilities(projectId, config.abilities);
             
-            // 2. Sync modified components (Simplified: sync all for robustness)
-            // In a real app, we would only sync dirty ones.
             const syncTasks = config.components.map(c => {
                 const payload = ExportService.exportToCompDesc({ ...config, components: [c] }).more_module_info[0].module_componets[0];
                 return apiUpdateComponent(projectId, c.id, payload);
             });
             await Promise.all(syncTasks);
 
-            message.loading({ content: '云端正在拼装重构 CModel...', key: 'export', duration: 0 });
-            
-            // 3. Compile & Download
+            messageApi.loading({ content: '云端正在拼装重构 CModel...', key: 'export', duration: 0 });
             await apiCompileAndDownload(projectId);
-            
-            message.success({ content: '模型封装并成功下载！', key: 'export' });
+            messageApi.success({ content: '模型封装并成功下载！', key: 'export' });
         } catch (err) { 
-            console.error('Export/Compile Error:', err);
-            message.error({ content: '后端同步或编译失败，请检查协议一致性', key: 'export' }); 
+            console.error('Export Error:', err);
+            messageApi.error({ content: '导出失败，请检查后端状态', key: 'export' }); 
         }
     };
 
@@ -140,6 +141,7 @@ export default function App() {
 
     return (
         <div className="app-layout">
+            {contextHolder}
             {/* ━━━ Sidebar ━━━ */}
             <aside className="app-sidebar">
                 <div className="sidebar-logo">
