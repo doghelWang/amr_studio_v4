@@ -17,7 +17,6 @@ import {
     apiFetchAbilities, 
     apiUpdateAbilities, 
     apiUpdateComponent,
-    apiCompileAndDownload 
 } from './services/api_v2';
 
 import { IdentityStep } from './components/wizard/IdentityStep';
@@ -43,6 +42,9 @@ const STEP_COMPONENTS = [
     MountingStep, WiringStep, AbilityStep, AuditStep,
 ];
 
+const BACKEND_URL = "http://localhost:8002";
+
+
 export default function App() {
     const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
@@ -60,16 +62,12 @@ export default function App() {
         return () => window.removeEventListener('keydown', handler);
     }, [canUndo, canRedo]);
 
-    // 1. Fetch abilities when project changes (Initial load or switching)
-    useEffect(() => {
-        if (projectId && !config.abilities?.functionAbility?.length) {
-            console.log('APP: useEffect fetching missing abilities for project:', projectId);
-            apiFetchAbilities(projectId).then(abilitiesRaw => {
-                const abilities = ImportService.parseAbilities(abilitiesRaw);
-                loadProject({ ...config, abilities });
-            }).catch(err => console.error("Failed to fetch abilities:", err));
-        }
-    }, [projectId]);
+    const printAudit = (title: string, audit: string[]) => {
+        if (!audit) return;
+        console.group(`%c 📊 ${title} Audit Log`, 'color: #1890ff; font-weight: bold;');
+        audit.forEach(line => console.log(line));
+        console.groupEnd();
+    };
 
     const handleImport = async () => {
         const input = document.createElement('input');
@@ -82,57 +80,72 @@ export default function App() {
                 
                 const formData = new FormData();
                 formData.append('file', file);
-                const res = await axios.post('http://localhost:8005/api/v1/models/upload', formData);
+                const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
                 
                 if (res.data.status === 'success') {
                     const pId = res.data.project_id;
-                    const rawJson = res.data.full_json;
+                    printAudit(`Import [${pId}]`, res.data.audit);
                     
                     const abilitiesRaw = await apiFetchAbilities(pId);
                     const abilities = ImportService.parseAbilities(abilitiesRaw);
-                    const parsed = ImportService.parseCompDesc(rawJson);
+                    const parsed = ImportService.parseCompDesc(res.data.full_json);
                     
-                    const fullConfig: any = { 
-                        identity: parsed.identity,
-                        components: parsed.components,
-                        abilities 
-                    };
-                    
-                    console.log('APP: Final consolidated config before loadProject:', fullConfig);
-                    
+                    const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
                     setProjectId(pId);
                     loadProject(fullConfig);
-                    messageApi.success({ content: `成功导入并同步: ${file.name}`, key: 'import' });
+                    messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
                 }
             } catch (err) { 
                 console.error('Import Error:', err);
-                messageApi.error({ content: '导入失败，请检查服务状态', key: 'import' }); 
+                messageApi.error({ content: '导入失败', key: 'import' }); 
             }
         };
         input.click();
     };
 
     const handleExport = async () => {
-        if (!projectId) {
-            messageApi.warning("无活跃工程，请先导入！");
-            return;
-        }
+        if (!projectId) return messageApi.warning("请先导入！");
         try {
-            messageApi.loading({ content: '正在同步修改到云端...', key: 'export', duration: 0 });
-            await apiUpdateAbilities(projectId, config.abilities);
+            messageApi.loading({ content: '正在同步修改...', key: 'export', duration: 0 });
             
-            const syncTasks = config.components.map(c => {
-                const payload = ExportService.exportToCompDesc({ ...config, components: [c] }).more_module_info[0].module_componets[0];
-                return apiUpdateComponent(projectId, c.id, payload);
-            });
-            await Promise.all(syncTasks);
+            const mappedAbilities = ExportService.exportAbilities(config.abilities);
+            await apiUpdateAbilities(projectId, mappedAbilities);
+            
+            // Minimal Identity Sync
+            const chassis = config.components.find(c => c.category === 'CHASSIS');
+            if (chassis) {
+                await apiUpdateComponent(projectId, chassis.id, {
+                    general_attr: { 
+                        module_name: { string_value: config.identity.robotName },
+                        module_shape: { shape_type: 'ENUM_BOX', box: { size_len: config.identity.chassisLength, size_width: config.identity.chassisWidth, size_height: config.identity.chassisHeight } }
+                    }
+                });
+            }
 
-            messageApi.loading({ content: '云端正在拼装重构 CModel...', key: 'export', duration: 0 });
-            await apiCompileAndDownload(projectId);
-            messageApi.success({ content: '模型封装并成功下载！', key: 'export' });
+            // Sync Mounting
+            await Promise.all(config.components.map(c => apiUpdateComponent(projectId, c.id, {
+                struct_param: { extend_params: [
+                    { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
+                    { key: 'locCoordROLL', double_value: c.mountRoll }, { key: 'locCoordPITCH', double_value: c.mountPitch }, { key: 'locCoordYAW', double_value: c.mountYaw }
+                ]}
+            })));
+
+            messageApi.loading({ content: '正在重构 CModel...', key: 'export', duration: 0 });
+            const res = await axios.post(`${BACKEND_URL}/api/v1/models/${projectId}/compile`);
+            
+            if (res.data.status === 'success') {
+                printAudit(`Export [${projectId}]`, res.data.audit);
+                const link = document.createElement('a');
+                link.href = `${BACKEND_URL}${res.data.download_url}`;
+                link.setAttribute('download', `${projectId}_packed.cmodel`);
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+                messageApi.success({ content: '导出下载成功！', key: 'export' });
+            }
         } catch (err) { 
             console.error('Export Error:', err);
-            messageApi.error({ content: '导出失败，请检查后端状态', key: 'export' }); 
+            messageApi.error({ content: '导出失败', key: 'export' }); 
         }
     };
 
@@ -142,77 +155,40 @@ export default function App() {
     return (
         <div className="app-layout">
             {contextHolder}
-            {/* ━━━ Sidebar ━━━ */}
             <aside className="app-sidebar">
-                <div className="sidebar-logo">
-                    <div className="logo-icon">⚡</div>
-                    <span className="logo-text">AMR Studio</span>
-                </div>
-
+                <div className="sidebar-logo"><div className="logo-icon">⚡</div><span className="logo-text">AMR Studio</span></div>
                 <nav className="sidebar-nav">
                     <div className="sidebar-section-label">配置向导</div>
                     {STEPS.map((step, i) => (
-                        <div
-                            key={step.key}
-                            className={`nav-item ${i === currentStep ? 'active' : ''}`}
-                            onClick={() => setStep(i)}
-                        >
-                            <span className="nav-icon">{step.icon}</span>
-                            <span className="nav-label">{step.label}</span>
-                            {i === currentStep && (
-                                <span className="nav-badge">{i + 1}/7</span>
-                            )}
+                        <div key={step.key} className={`nav-item ${i === currentStep ? 'active' : ''}`} onClick={() => setStep(i)}>
+                            <span className="nav-icon">{step.icon}</span><span className="nav-label">{step.label}</span>
+                            {i === currentStep && <span className="nav-badge">{i + 1}/7</span>}
                         </div>
                     ))}
                 </nav>
-
                 <div className="sidebar-bottom">
-                    <button className="sidebar-action-btn" onClick={handleImport}>
-                        <ImportOutlined /> 导入 .cmodel
-                    </button>
-                    <button className="sidebar-action-btn primary" onClick={handleExport}>
-                        <ExportOutlined /> 导出配置
-                    </button>
+                    <button className="sidebar-action-btn" onClick={handleImport}><ImportOutlined /> 导入 .cmodel</button>
+                    <button className="sidebar-action-btn primary" onClick={handleExport}><ExportOutlined /> 导出配置</button>
                 </div>
             </aside>
-
-            {/* ━━━ Main ━━━ */}
             <main className="app-main">
-                {/* Top Bar */}
                 <header className="app-topbar">
                     <div className="topbar-breadcrumb">
                         <span className="step-number">Step {currentStep + 1}</span>
                         <span className="step-title">{currentStepInfo.label}</span>
                         <span className="step-desc">— {currentStepInfo.desc}</span>
                     </div>
-
                     <div className="topbar-actions">
-                        <Tooltip title="撤销 ⌘Z">
-                            <button className="topbar-btn" disabled={!canUndo} onClick={() => undo()}>
-                                <UndoOutlined />
-                            </button>
-                        </Tooltip>
-                        <Tooltip title="重做 ⌘⇧Z">
-                            <button className="topbar-btn" disabled={!canRedo} onClick={() => redo()}>
-                                <RedoOutlined />
-                            </button>
-                        </Tooltip>
+                        <Tooltip title="撤销 ⌘Z"><button className="topbar-btn" disabled={!canUndo} onClick={() => undo()}><UndoOutlined /></button></Tooltip>
+                        <Tooltip title="重做 ⌘⇧Z"><button className="topbar-btn" disabled={!canRedo} onClick={() => redo()}><RedoOutlined /></button></Tooltip>
                         <div className="topbar-divider" />
-                        <span style={{
-                            color: 'var(--text-muted)', fontSize: 12,
-                            fontFamily: 'var(--font-mono)'
-                        }}>
-                            {config.identity.robotName}
-                            {isDirty && <span style={{ color: 'var(--orange)', marginLeft: 6 }}>●</span>}
+                        <span style={{ color: 'var(--text-muted)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+                            {config.identity.robotName} {isDirty && <span style={{ color: 'var(--orange)', marginLeft: 6 }}>●</span>}
                         </span>
                     </div>
                 </header>
-
-                {/* Content */}
                 <div className="content-area grid-bg">
-                    <div className="content-grid content-enter" key={currentStep}>
-                        <StepComponent />
-                    </div>
+                    <div className="content-grid content-enter" key={currentStep}><StepComponent /></div>
                 </div>
             </main>
         </div>

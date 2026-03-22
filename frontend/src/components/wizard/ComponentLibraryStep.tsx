@@ -203,10 +203,12 @@ export const ComponentLibraryStep: React.FC = () => {
                                             {COMPONENT_STEPS.find(s => s.categories.includes(comp.category))?.icon || <AppstoreOutlined />}
                                         </div>
                                         <div style={{ flex: 1, minWidth: 0 }}>
-                                            <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>
-                                                {comp.alias || comp.name}
+                                            <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                {comp.alias}
                                             </div>
-                                            <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{comp.type}</div>
+                                            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+                                                {comp.name}
+                                            </div>
                                         </div>
                                         <Button
                                             type="text" size="small" danger

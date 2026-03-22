@@ -1,0 +1,280 @@
+{
+  "general_attr": {
+    "module_name": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "string_value": "gyro",
+      "desc": "模块名称",
+      "bool_parse": true
+    },
+    "module_desc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "string_value": "板载陀螺仪",
+      "desc": "模块描述",
+      "bool_parse": true
+    },
+    "module_uuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "string_value": "4202415039d54d8b8702065873899d42",
+      "desc": "模块Uuid",
+      "bool_parse": true,
+      "bool_hide": true
+    },
+    "version_info": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "string_value": "V1.0/2025-07-28 14:34:29.910",
+      "desc": "版本信息",
+      "bool_parse": true
+    },
+    "module_3d_icon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "string_value": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "bool_parse": true
+    },
+    "sub_sys_type": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "SensorSys"
+      },
+      "desc": "子系统",
+      "bool_parse": true
+    },
+    "main_module_type": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "SENSOR",
+        "type_desc": "\n"
+      },
+      "desc": "主类型",
+      "bool_parse": true
+    },
+    "sub_module_type": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "gyro",
+        "type_desc": "\u000b"
+      },
+      "desc": "子类型",
+      "bool_parse": true
+    },
+    "vender_name": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "HIKROBOT"
+      },
+      "desc": "供应商",
+      "bool_parse": true
+    },
+    "module_dsc_type": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "SPI_ON_BOARD"
+      },
+      "desc": "设备型号",
+      "bool_parse": true
+    },
+    "module_icon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "string_value": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "bool_parse": true
+    },
+    "module_shape": {
+      "shape_type": "ENUM_BOX",
+      "box": {
+        "size_len": 20,
+        "size_width": 20,
+        "size_height": 2
+      }
+    },
+    "extend_params": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "bool_parse": true,
+        "bool_hide": true
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "string_value": "陀螺仪"
+      }
+    ]
+  },
+  "private_attr": {
+    "private_attrs": [
+      {
+        "key": "sensorAttr",
+        "desc": "传感属性",
+        "array_base_ele": [
+          {
+            "key": "yawRangeMin",
+            "desc": "偏航角最小值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "yawRangeMax",
+            "desc": "偏航角最大值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "rollRangeMin",
+            "desc": "翻滚角最小值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "rollRangeMax",
+            "desc": "翻滚角最大值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "pitchRangeMin",
+            "desc": "俯仰角最小值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "pitchRangeMax",
+            "desc": "俯仰角最大值",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": -180,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "angularResolution",
+            "desc": "角度分辨率",
+            "type": "DATA_DOUBLE",
+            "unit": "°",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 180,
+            "double_minvalue": 0,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "accelerationResolution",
+            "desc": "加速度分辩率",
+            "type": "DATA_DOUBLE",
+            "unit": "°/s",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 360,
+            "double_minvalue": 0,
+            "array_cmob_ele": []
+          },
+          {
+            "key": "accelerationAccuracy",
+            "desc": "加速度精度",
+            "type": "DATA_DOUBLE",
+            "unit": "°/s",
+            "bool_hide": true,
+            "bool_basic": true,
+            "double_value": 0,
+            "double_maxvalue": 360,
+            "double_minvalue": 0,
+            "array_cmob_ele": []
+          }
+        ]
+      }
+    ]
+  },
+  "interface_ability": {},
+  "interface_params": {
+    "interface_group": []
+  },
+  "struct_param": {
+    "extend_params": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "double_value": 0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "combo_type": {
+          "type_key": "a6c2a0ccb9da489c8d58d7a583493893"
+        }
+      }
+    ],
+    "segmented_limits_params": []
+  }
+}

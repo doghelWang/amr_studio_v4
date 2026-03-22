@@ -219,6 +219,7 @@ export interface FunctionAbility {
 export interface ControllerAbility {
     version: string;
     functionAbility: FunctionAbility[];
+    componentAbility?: any[]; // To preserve radar/motor entity lists
 }
 
 // ━━━ Top-Level Robot Config ━━━

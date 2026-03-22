@@ -13,3 +13,35 @@
 17:27:47 [vite] hmr update /src/App.tsx
 17:27:57 [vite] hmr update /src/App.tsx
 17:28:09 [vite] hmr update /src/App.tsx
+17:29:38 [vite] hmr update /src/App.tsx
+17:33:50 [vite] hmr update /src/App.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx
+17:34:12 [vite] hmr update /src/App.tsx
+17:35:51 [vite] hmr update /src/App.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx
+17:36:01 [vite] hmr update /src/App.tsx
+17:52:36 [vite] hmr update /src/App.tsx
+17:53:03 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+17:53:10 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+17:53:38 [vite] hmr update /src/App.tsx
+17:53:50 [vite] hmr update /src/App.tsx
+17:54:20 [vite] hmr update /src/App.tsx
+17:55:29 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+17:55:58 [vite] hmr update /src/App.tsx
+18:21:56 [vite] hmr update /src/App.tsx
+18:22:11 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+18:22:20 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx
+18:25:06 [vite] hmr update /src/App.tsx
+18:27:28 [vite] hmr update /src/App.tsx
+18:29:16 [vite] hmr update /src/App.tsx
+18:30:09 [vite] hmr update /src/App.tsx
+18:30:15 [vite] hmr update /src/App.tsx
+18:33:43 [vite] hmr update /src/App.tsx
+18:40:50 [vite] hmr update /src/App.tsx
+18:40:50 [vite] hmr update /src/App.tsx, /src/components/wizard/ComponentPropertyPanel.tsx
+18:48:06 [vite] hmr update /src/App.tsx
+18:53:05 [vite] hmr update /src/App.tsx
+18:56:39 [vite] hmr update /src/App.tsx
+18:56:39 [vite] hmr update /src/App.tsx, /src/components/wizard/ComponentPropertyPanel.tsx
+18:57:55 [vite] hmr update /src/App.tsx
+18:59:05 [vite] hmr update /src/components/wizard/IdentityStep.tsx
+18:59:28 [vite] hmr update /src/App.tsx
+18:59:48 [vite] hmr update /src/App.tsx

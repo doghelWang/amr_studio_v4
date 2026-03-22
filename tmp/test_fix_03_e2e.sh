@@ -1,5 +1,5 @@
 #!/bin/bash
-BASE_URL="http://localhost:8005/api/v1"
+BASE_URL="http://localhost:8006/api/v1"
 SAMPLE_CMODEL="docs/ModelSet39.cmodel"
 
 echo "--- Starting E2E Verification (Fix-03) ---"

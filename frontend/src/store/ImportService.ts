@@ -35,14 +35,12 @@ export class ImportService {
     static parseCompDesc(json: any): Partial<RobotConfig> {
         console.log('DEBUG [ImportService]: Starting parseCompDesc with raw JSON:', json);
         const components: ComponentConfig[] = [];
-
         if (json.more_module_info && Array.isArray(json.more_module_info)) {
             json.more_module_info.forEach((group: any) => {
                 this.processModuleGroup(group, components, null);
             });
         }
 
-        // Initialize identity with robust defaults
         const identity = {
             robotName: json.robot_name || 'Imported_AMR',
             version: json.version || '1.0.0',
@@ -57,26 +55,25 @@ export class ImportService {
             chassisHeight: 400,
         };
 
-        // ━━━ KEY FIX: Find CHASSIS component and SYNC identity ━━━
         const chassis = components.find(c => c.category === 'CHASSIS');
-        if (chassis) {
-            console.log('DEBUG [ImportService]: Found Chassis Component:', chassis);
-            if (chassis.shape) {
-                identity.chassisShape = chassis.shape.type as any;
+        if (chassis && chassis.shape) {
+            if (chassis.shape.type === 'BOX') {
                 identity.chassisLength = chassis.shape.length || 1200;
                 identity.chassisWidth = chassis.shape.width || 800;
                 identity.chassisHeight = chassis.shape.height || 400;
             }
-            identity.alias = chassis.alias;
         }
 
-        console.log(`DEBUG [ImportService]: Extracted ${components.length} components.`);
         return { components, identity };
     }
 
     static parseAbilities(json: any): ControllerAbility {
         if (!json || !json.function_ability) return abilityRegistry as any;
+        
+        console.log('DEBUG [ImportService]: parseAbilities saving all metadata.');
         return {
+            version: json.version || 'V1.0',
+            componentAbility: json.component_ability || [], // PRESERVE THIS!
             functionAbility: json.function_ability.map((func: any) => ({
                 type: func.type,
                 desc: func.desc,
@@ -95,13 +92,18 @@ export class ImportService {
             key: common.key,
             type: common.type,
             arrayParam: common.array_param ? {
+                groupKey: common.array_param.group_key,
                 groupName: common.array_param.group_name,
+                boolMustfill: common.array_param.bool_mustfill,
                 attrParams: (common.array_param.attr_params || []).map((p: any) => this.mapAttribute(p))
             } : undefined,
             comboxParam: common.combox_param ? {
+                key: common.combox_param.key,
                 desc: common.combox_param.desc,
+                tips: common.combox_param.tips,
+                comboxSource: common.combox_param.combox_source || 'NORMAL',
                 value: common.combox_param.value,
-                options: (common.combox_param.options || []).map((o: any) => ({
+                options: (common.combox_param.normal_combox || []).map((o: any) => ({
                     key: o.key,
                     desc: o.desc,
                     arrayCmobEle: (o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
@@ -138,9 +140,7 @@ export class ImportService {
 
         const uuid = gen.module_uuid?.string_value || uuidv4();
 
-        // ── Interfaces ──
-        // BACKEND PATH: comp.interface_params.interface_group
-        const rawIface = comp.interface_params || {};
+        const rawIface = comp.interface_params || comp.interface_param || {};
         const ifaceList: any[] = rawIface.interface_group || rawIface.interface_params_array || [];
 
         const interfaces: InterfaceConfig[] = ifaceList.map((inf: any) => ({
@@ -155,7 +155,6 @@ export class ImportService {
             interfaceParams: inf.interface_params,
         }));
 
-        // ── Shape ──
         let shape: ComponentConfig['shape'];
         if (gen.module_shape) {
             const s = gen.module_shape;
@@ -166,12 +165,9 @@ export class ImportService {
             } else if (shapeType === 'ENUM_CYLINDER' || s.cylinder) {
                 const cyl = s.cylinder || {};
                 shape = { type: 'CYLINDER', diameter: cyl.diameter || 0, height: cyl.height || 0 };
-            } else if (s.sphere) {
-                shape = { type: 'SPHERE', diameter: s.sphere.diameter || 0 };
             }
         }
 
-        // ── Attributes ──
         const rawPrivateAttr = comp.private_attr || {};
         const privateAttrs: AttributeGroup[] = (rawPrivateAttr.private_attrs || []).map((grp: any) => ({
             key: grp.key || '',
@@ -224,7 +220,7 @@ export class ImportService {
             boolHide: attr.bool_hide,
             boolNoeditable: attr.bool_noeditable,
             boolMustfill: attr.bool_mustfill,
-            boolBasic: true, // IMPORTANT: Imported attributes must be visible
+            boolBasic: true, 
             fixedSource: attr.fixed_source,
             comboType: attr.combo_type ? {
                 typeKey: attr.combo_type.type_key,

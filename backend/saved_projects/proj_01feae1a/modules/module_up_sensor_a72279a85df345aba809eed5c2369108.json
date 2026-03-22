@@ -1,0 +1,339 @@
+{
+  "general_attr": {
+    "module_name": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "string_value": "up_sensor",
+      "desc": "模块名称",
+      "bool_parse": true
+    },
+    "module_desc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "string_value": "自制&接近传感器,SP12-04BNA,索迪龙，4mm",
+      "desc": "模块描述",
+      "bool_parse": true
+    },
+    "module_uuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "string_value": "a72279a85df345aba809eed5c2369108",
+      "desc": "模块Uuid",
+      "bool_parse": true,
+      "bool_hide": true
+    },
+    "version_info": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "string_value": "V1.0/2025-07-28 14:34:17.462",
+      "desc": "版本信息",
+      "bool_parse": true,
+      "bool_noeditable": true
+    },
+    "module_3d_icon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "string_value": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "bool_parse": true
+    },
+    "sub_sys_type": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "SensorSys"
+      },
+      "desc": "子系统",
+      "bool_parse": true
+    },
+    "main_module_type": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "SENSOR",
+        "type_desc": "\n"
+      },
+      "desc": "主类型",
+      "bool_parse": true
+    },
+    "sub_module_type": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "proximitySensor",
+        "type_desc": "\u0013"
+      },
+      "desc": "子类型",
+      "bool_parse": true
+    },
+    "vender_name": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "HIKROBOT"
+      },
+      "desc": "供应商",
+      "bool_parse": true
+    },
+    "module_dsc_type": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "combo_type": {
+        "type_key": "HIKROBOT"
+      },
+      "desc": "设备型号",
+      "bool_parse": true
+    },
+    "module_icon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "string_value": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "bool_parse": true
+    },
+    "module_shape": {
+      "shape_type": "ENUM_BOX",
+      "box": {
+        "size_len": 24,
+        "size_width": 24,
+        "size_height": 55
+      }
+    },
+    "extend_params": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "bool_parse": true,
+        "bool_hide": true
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "string_value": "PX-SP12-04BNA",
+        "desc": "模块原始名称",
+        "bool_parse": true
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "string_value": "接近传感器",
+        "bool_parse": true
+      }
+    ]
+  },
+  "private_attr": {
+    "private_attrs": []
+  },
+  "interface_ability": {
+    "bus_interface_ability": [
+      {
+        "bus_interface_type": "PI",
+        "bus_interface_nums": 1
+      },
+      {
+        "bus_interface_type": "DO",
+        "bus_interface_nums": 1
+      }
+    ]
+  },
+  "interface_params": {
+    "interface_Group": [
+      {
+        "key": "PI_1",
+        "type": "PI",
+        "desc": "PI_1",
+        "interface_uuid": "61d78d087b1a420585396af5cf932a27",
+        "interface_attrs": {
+          "interface_params_array": [
+            {
+              "key": "VIN",
+              "type": "DATA_DOUBLE",
+              "double_value": 0.0,
+              "double_maxvalue": 999.0,
+              "double_minvalue": 0.0,
+              "unit": "V",
+              "desc": "额定输入电压",
+              "bool_parse": true
+            },
+            {
+              "key": "IIN",
+              "type": "DATA_DOUBLE",
+              "double_value": 0.0,
+              "double_maxvalue": 999999.0,
+              "double_minvalue": 0.0,
+              "unit": "mA",
+              "desc": "额定输入电流",
+              "bool_parse": true
+            }
+          ]
+        },
+        "interface_params": {}
+      },
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "desc": "DO_1",
+        "interface_uuid": "35640c7f74ea4490810f9a39eb1bc14c",
+        "linked_interface_uuid": [
+          "3848b724a8b84ca9800a3256b3cc6a88"
+        ],
+        "interface_attrs": {
+          "interface_params_array": [
+            {
+              "key": "MODE",
+              "type": "DATA_COMBOX",
+              "combo_type": {
+                "type_key": "NPN",
+                "type_desc": "NPN",
+                "type_groups": [
+                  {
+                    "key": "NPN",
+                    "desc": "NPN"
+                  },
+                  {
+                    "key": "PNP",
+                    "desc": "PNP"
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "bool_parse": true
+            },
+            {
+              "key": "DIS",
+              "type": "DATA_DOUBLE",
+              "double_value": 8.0,
+              "double_maxvalue": 999.0,
+              "double_minvalue": 0.0,
+              "unit": "mm",
+              "desc": "检测距离",
+              "bool_parse": true
+            },
+            {
+              "key": "OPEVOL",
+              "type": "DATA_DOUBLE",
+              "double_value": 0.713,
+              "double_maxvalue": 999.0,
+              "double_minvalue": 0.0,
+              "unit": "V",
+              "desc": "动作电压",
+              "bool_parse": true
+            }
+          ]
+        },
+        "interface_params": {
+          "interface_params_array": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "combo_type": {
+                "type_key": "0",
+                "type_desc": "0",
+                "type_groups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "bool_parse": true,
+              "bool_hide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "combo_type": {
+                "type_key": "NO",
+                "type_desc": "常开",
+                "type_groups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "bool_parse": true
+            }
+          ]
+        }
+      }
+    ],
+    "interfaceGroup": []
+  },
+  "struct_param": {
+    "extend_params": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "double_value": 0,
+        "bool_parse": true,
+        "bool_hide": true,
+        "bool_mustfill": true
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "combo_type": {
+          "type_key": "a6c2a0ccb9da489c8d58d7a583493893"
+        },
+        "bool_parse": true
+      }
+    ],
+    "segmented_limits_params": []
+  }
+}

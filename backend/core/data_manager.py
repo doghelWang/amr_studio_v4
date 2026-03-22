@@ -75,7 +75,20 @@ def update_component(project_id: str, module_uuid: str, payload_delta: dict) -> 
     def deep_update(d, u):
         import collections.abc
         for k, v in u.items():
-            if isinstance(v, collections.abc.Mapping):
+            if k in d and isinstance(d[k], list) and isinstance(v, list):
+                d_list = d[k]
+                for u_item in v:
+                    if isinstance(u_item, dict):
+                        # Match by 'key' or 'type' (Ability items use 'type')
+                        ukey = u_item.get("key") or u_item.get("type")
+                        match = next((item for item in d_list if isinstance(item, dict) and (item.get("key") == ukey or item.get("type") == ukey)), None)
+                        if match:
+                            deep_update(match, u_item)
+                        else:
+                            d_list.append(u_item)
+                    elif u_item not in d_list:
+                        d_list.append(u_item)
+            elif isinstance(v, collections.abc.Mapping):
                 d[k] = deep_update(d.get(k, {}), v)
             else:
                 d[k] = v
@@ -111,7 +124,20 @@ def update_ability(project_id: str, payload_delta: dict) -> bool:
     def deep_update(d, u):
         import collections.abc
         for k, v in u.items():
-            if isinstance(v, collections.abc.Mapping):
+            if k in d and isinstance(d[k], list) and isinstance(v, list):
+                d_list = d[k]
+                for u_item in v:
+                    if isinstance(u_item, dict):
+                        # Match by 'key' or 'type' (Ability items use 'type')
+                        ukey = u_item.get("key") or u_item.get("type")
+                        match = next((item for item in d_list if isinstance(item, dict) and (item.get("key") == ukey or item.get("type") == ukey)), None)
+                        if match:
+                            deep_update(match, u_item)
+                        else:
+                            d_list.append(u_item)
+                    elif u_item not in d_list:
+                        d_list.append(u_item)
+            elif isinstance(v, collections.abc.Mapping):
                 d[k] = deep_update(d.get(k, {}), v)
             else:
                 d[k] = v
