@@ -7,9 +7,9 @@ import zipfile
 # Add schemas_pb to Python path
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "schemas_pb"))
 try:
-    import controller_model_comp_desc_pb2
-    import controller_model_abi_set_pb2
-    import controller_model_abi_desc_pb2
+    import comp_desc_runtime as controller_model_comp_desc_pb2
+    import abi_set_runtime as controller_model_abi_set_pb2
+    import abi_desc_runtime as controller_model_abi_desc_pb2
 except ImportError as e:
     sys.exit(1)
 
