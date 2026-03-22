@@ -14,6 +14,7 @@ import {
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentConfig, MainModuleType, InterfaceConfig } from '../../store/types';
 import { SmartFormGrouped } from '../common/SmartForm';
+import ComponentPropertyPanel from './ComponentPropertyPanel';
 import masterRegistry from '../../store/master_registry.json';
 
 // HMR Trigger: Guided component workflow v1.2
@@ -85,7 +86,7 @@ const CATEGORY_NAMES: Record<string, string> = {
 
 export const ComponentLibraryStep: React.FC = () => {
     const { 
-        config, activeComponentId, 
+        config, activeComponentId, projectId,
         addComponent, removeComponent, 
         setActiveComponent, updateAttribute,
         updateStructuralParam, updateShape,
@@ -266,10 +267,11 @@ export const ComponentLibraryStep: React.FC = () => {
                                 <Tabs defaultActiveKey="attrs" className="glass-tabs custom-tabs">
                                     <TabPane tab={<span><SettingOutlined /> 私有属性</span>} key="attrs">
                                         <div style={{ padding: '0 16px 16px' }}>
-                                            <SmartFormGrouped
-                                                groups={selected.privateAttrs}
-                                                onGroupChange={(groupKey, attrKey, value, subKey) => updateAttribute(selected.id, groupKey, attrKey, value, subKey)}
-                                            />
+                                            { projectId ? (
+                                                <ComponentPropertyPanel projectId={projectId} selectedUuid={selected.id} />
+                                            ) : (
+                                                <div style={{padding: 24, textAlign: 'center'}}>请先[导入]并打散工程以激活单体参数面板</div>
+                                            )}
                                         </div>
                                     </TabPane>
                                     

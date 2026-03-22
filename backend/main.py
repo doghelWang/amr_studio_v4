@@ -74,58 +74,110 @@ async def save_project(payload: Dict[str, Any]):
         json.dump(payload, f, indent=4, ensure_ascii=False)
     return {"status": "ok", "projectId": p_id}
 
-@app.post("/api/v1/import/deserialize")
-async def deserialize_cmodel(file: UploadFile = File(...)):
-    print(f"API: deserialize_cmodel called for {file.filename}")
-    import zipfile, shutil, tempfile, subprocess
+from fastapi import Body
+from core import data_manager
+import uuid
+import tempfile
+import shutil
+from skills_v2.cmodel_decoder.decoder import decode_cmodel
+from skills_v2.model_splitter.splitter import split_comp_desc
+from skills_v2.cmodel_encoder.encoder import encode_cmodel
+
+import logging
+logging.basicConfig(filename='backend_debug.log', level=logging.DEBUG)
+
+from fastapi import BackgroundTasks
+
+@app.post("/api/v1/models/upload")
+def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
+    print(f"DEBUG: upload_cmodel called for {file.filename}", flush=True)
+    project_id = f"proj_{uuid.uuid4().hex[:8]}"
     
     temp_dir = Path(tempfile.mkdtemp())
     try:
-        # 1. Save and Extract ZIP
-        zip_path = temp_dir / file.filename
-        with open(zip_path, "wb") as f:
+        # 1. Save ZIP
+        cmodel_path = temp_dir / file.filename
+        with open(cmodel_path, "wb") as f:
             shutil.copyfileobj(file.file, f)
             
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(temp_dir)
-            
-        comp_desc_path = temp_dir / "CompDesc.model"
-        if not comp_desc_path.exists():
-            raise HTTPException(status_code=400, detail="Missing CompDesc.model in archive")
-            
-        # 2. Execute Deserializer Script
-        script_path = BASE_DIR / "skills" / "model_deserializer" / "scripts" / "deserialize_model.py"
-        json_out_path = temp_dir / "CompDesc.json"
+        # 2. Decode
+        decode_out = temp_dir / "decoded"
+        decode_out.mkdir(parents=True, exist_ok=True)
+        decode_cmodel(str(cmodel_path), str(decode_out))
         
-        # Note: deserialize_model.py uses protoc --decode_raw, ensure it's in PATH
-        cmd = [sys.executable, str(script_path), str(comp_desc_path), "-o", str(json_out_path)]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        # 3. Split
+        split_out = temp_dir / "split"
+        comp_desc_json = decode_out / "CompDesc.json"
         
-        if result.returncode != 0:
-            print(f"Deserialization failed: {result.stderr}")
-            raise HTTPException(status_code=500, detail=f"Deserialization failed: {result.stderr}")
+        if not comp_desc_json.exists():
+             raise HTTPException(status_code=400, detail="Invalid cmodel: CompDesc.json missing")
             
-        # 3. Read and Return JSON
-        if not json_out_path.exists():
-             raise HTTPException(status_code=500, detail="Deserializer failed to produce JSON output")
-             
-        with open(json_out_path, "r", encoding='utf-8') as f:
-            return json.load(f)
-            
-    finally:
-        shutil.rmtree(temp_dir)
+        split_comp_desc(str(comp_desc_json), str(split_out))
+        
+        # 4. Save to DataManager (Physical persistence)
+        with open(split_out / "blueprint_CompDesc.json", "r", encoding="utf-8") as f:
+            blueprint = json.load(f)
 
-@app.post("/api/v1/generate")
-async def generate_cmodel(payload: Dict[str, Any]):
+        with open(comp_desc_json, "r", encoding="utf-8") as f:
+            full_json = json.load(f)
+            
+        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), decode_out)
+        
+        # Schedule cleanup
+        background_tasks.add_task(shutil.rmtree, str(temp_dir), ignore_errors=True)
+        
+        return {
+            "status": "success",
+            "project_id": project_id,
+            "blueprint": blueprint,
+            "full_json": full_json
+        }
+    except Exception as e:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+        logging.exception("Upload Error")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/models/{project_id}/components/{module_uuid}")
+async def get_component_api(project_id: str, module_uuid: str):
+    comp = data_manager.get_component(project_id, module_uuid)
+    if not comp:
+        raise HTTPException(status_code=404, detail="Component not found")
+    return comp
+
+@app.patch("/api/v1/models/{project_id}/components/{module_uuid}")
+async def update_component_api(project_id: str, module_uuid: str, payload: dict = Body(...)):
+    success = data_manager.update_component(project_id, module_uuid, payload)
+    if not success:
+         raise HTTPException(status_code=404, detail="Component not found or update failed")
+    return {"status": "success"}
+
+@app.get("/api/v1/models/{project_id}/abilities")
+async def get_abilities_api(project_id: str):
+    abilities = data_manager.get_ability(project_id)
+    if not abilities:
+        raise HTTPException(status_code=404, detail="Abilities not found for this project")
+    return abilities
+
+@app.patch("/api/v1/models/{project_id}/abilities")
+async def update_abilities_api(project_id: str, payload: dict = Body(...)):
+    success = data_manager.update_ability(project_id, payload)
+    if not success:
+        raise HTTPException(status_code=404, detail="Update abilities failed")
+    return {"status": "success"}
+
+@app.post("/api/v1/models/{project_id}/compile")
+async def compile_cmodel_api(project_id: str):
+    print(f"API: compile_cmodel_api called for {project_id}")
     try:
-        from core.schema_builder import CustomCompDescBuilder
-        template = BASE_DIR / "templates" / "CompDesc.model"
-        builder = CustomCompDescBuilder(str(template))
-        zip_path = builder.build_from_payload(payload)
-        return FileResponse(zip_path, media_type="application/zip", filename=os.path.basename(zip_path))
+        blueprint_path = str(data_manager.get_project_dir(project_id) / "blueprint_CompDesc.json")
+        output_cmodel = str(data_manager.get_project_dir(project_id) / f"{project_id}_packed.cmodel")
+        
+        encode_cmodel(blueprint_path, output_cmodel)
+        return FileResponse(output_cmodel, media_type="application/zip", filename=f"{project_id}_packed.cmodel")
     except Exception as e:
         import traceback
         traceback.print_exc()
+        print(f"Compile Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 # --- 2. STATIC HOSTING ---

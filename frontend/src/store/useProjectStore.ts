@@ -10,6 +10,8 @@ import masterRegistry from './master_registry.json';
 import abilityRegistry from './ability_registry.json';
 
 interface ProjectState {
+    projectId: string | null;
+    setProjectId: (id: string | null) => void;
     config: RobotConfig;
     activeComponentId: string | null;
     isDirty: boolean;
@@ -69,6 +71,8 @@ export const useProjectStore = create<ProjectState>()(
     persist(
         temporal(
             (set, get) => ({
+                projectId: null,
+                setProjectId: (id) => set({ projectId: id }),
                 config: createInitialConfig(),
                 activeComponentId: null,
                 isDirty: false,

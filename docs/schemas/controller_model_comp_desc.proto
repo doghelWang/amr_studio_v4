@@ -1,0 +1,211 @@
+syntax = "proto3";
+//添加命名空间
+package AMR_MODEL_NSP;
+
+
+enum MESSAGE_BASE_DATA_TYPE { 
+		DATA_BYTES = 0; 
+		DATA_STRING = 1; 
+		DATA_IP = 3; 
+		DATA_BOOL = 4;
+		DATA_INT32 = 5;
+		DATA_UINT32 = 6;
+		DATA_INT64 = 7;
+		DATA_UINT64 = 8;
+		DATA_FLOAT = 9;
+		DATA_DOUBLE = 10;
+		DATA_COMBOX = 11; //新增的数据类型为枚举一样的，类似于枚举的东西
+		DATA_FIXED_E = 12;
+}
+
+message Message_Combox_Item{
+	string key = 1;				// 英文key值
+	string desc = 2;			// 中文描述
+	repeated Message_Base_Element array_cmob_ele = 3;  //comb下拉框附属内容
+}
+
+message Message_Combox_Type{
+	string type_key = 1;							
+	string type_desc = 2; 							//实际类型值，可以填写空，或者默认某个值；
+	repeated Message_Combox_Item  type_groups = 3;	//所有的下拉框的枚举，都采用Message_Combox_Type
+}
+
+message Message_Base_Element{
+	//基础属性
+	string key = 1;  //这个key和属性名保持一致（也可以用这个名字作为显示的名称）  ，这个基础属性主要是为了描述某些字段的一些边界参数
+	MESSAGE_BASE_DATA_TYPE type = 2;	        // 与下面oneof同步使用，表示数据类型
+	oneof oneof_value {
+		string string_value = 10;
+		bool bool_value = 11;            //bool sting byte 类型的时候就不需要max和min
+		int32 int32_value = 12;
+		uint32 uint32_value = 13;
+		int64 int64_value = 14;
+		uint64 uint64_value = 15;
+		float float_value = 16;
+		double double_value = 17;
+		bytes bytes_value = 18;
+		string ip_value = 19;
+		string string_fix = 20;              //默认值，开始可以默认为空,默认要填写的值；
+		Message_Combox_Type combo_type = 21; //combox下拉框类型的数据 
+	}
+	
+	oneof oneof_maxValue {
+		int32 int32_maxvalue = 30;
+		uint32 uint32_maxvalue = 31;
+		int64 int64_maxvalue = 32;
+		uint64 uint64_maxvalue = 33;
+		float float_maxvalue = 34;
+		double double_maxvalue = 35;
+	}
+	
+	oneof oneof_minValue {
+		int32 int32_minvalue = 40;
+		uint32 uint32_minvalue = 41;
+		int64 int64_minvalue = 42;
+		uint64 uint64_minvalue = 43;
+		float float_minvalue = 44;
+		double double_minvalue = 45;
+	}
+	string unit = 50;									 // 单位：deg ,rad,m,cm,mm；有些可以没有；
+	string desc = 51;        // 展示的名字,考虑中英文的时候要注意进行处理；
+	bool   bool_parse = 52;   //是否需要语义解析
+	bool   bool_hide = 53;//是否需要界面展示，默认都是要展示的，不要展示的填写一下值即可
+	bool   bool_noeditable = 54;  //是否不可编辑，默认可编辑,所以默认不填
+	bool   bool_mustfill = 55;    //是否必填，默认非必填
+	bool   bool_basic = 56;		//是否为基本信息
+	repeated string fixed_source = 57;                   // 当type是fixed时，指定数据源，采用绝对路径形式；
+}
+
+message Message_Base_Group_Element{
+	//基础属性,以这个为准
+	string key = 1;//该组的属性，主要用来标记，如果这个值是空的，那就不要显示了
+	string desc = 2;//对应的中英文，主要用来界面显示，一个组；
+	repeated Message_Base_Element array_base_ele = 3;//实际的每个列表式的信息
+	bool bool_deprecated = 4;                 //此字段是否废弃
+}
+
+enum MESSAGE_SHAPE_TYPE{
+	ENUM_SPHERE = 0;  //球体
+	ENUM_BOX = 1;  //立方体
+	ENUM_CYLINDER = 2;//圆柱
+}
+message Message_Sphere{
+	uint32 diameter = 1;//直径
+	bool bool_deprecated = 4;    //此字段是否废弃
+}
+message Message_BOX{
+	uint32 size_len = 1;
+	uint32 size_width =2;
+	uint32 size_height = 3;
+	bool bool_deprecated = 4;    //此字段是否废弃
+}
+message Message_CYLINDER{
+	uint32  diameter = 1;//直径
+	uint32  height = 2; //高度
+	bool bool_deprecated = 3;    //此字段是否废弃
+}
+message Message_Module_Shape{
+	MESSAGE_SHAPE_TYPE shape_type = 1;     //形状枚举
+	bool bool_deprecated = 2;                 //此字段是否废弃
+	oneof oneof_value{
+		Message_Sphere sphere = 10;
+		Message_BOX   box = 11;
+		Message_CYLINDER cylinder = 12;
+	}
+}
+message Message_Module_General_Attribute{
+	//模块的通用属性定义，各个模块这些参数基本都是有的
+	Message_Base_Element module_name =1; //模块名称,可以重命名，但是要保证唯一性，只能英文，用于后续api可以调用访问；
+	Message_Base_Element module_desc  = 3; //用于展示的名称，
+	Message_Base_Element module_uuid =4; //唯一标识，该标识只有在实例化后才有这个属性，没有实例化的时候该属性是没有的；
+	Message_Base_Element version_info =5;//版本信息，用于以后扩展，不同的部件或者模块扩充或者重构使用；
+
+	Message_Base_Element module_3d_icon = 6; //预留以后展示3D模型的模型文件url；这个url为相对路径，且url有规则，最后一层路径即是其名称
+	Message_Base_Element sub_sys_type = 7;// 所属子系统，该字段不是必须的，有就归类，没有就算了
+	Message_Base_Element main_module_type = 8; //模块主类型，该字段设计为stirng，不用枚举，是为了以后扩展，以及后续该字段可能用于做规则匹配使用的
+	Message_Base_Element sub_module_type = 9; //模块子类型，同上；主子类型如果有从属关系要注意下，看看是否要设计单独的数据结构
+	Message_Base_Element vender_name = 10;//供应商名称；可能作为规则匹配使用；
+	Message_Base_Element module_dsc_type = 11;//设备型号; 一般就是具体的某某型号，如果没有，可以填写通用或者*
+	Message_Base_Element module_icon =12;//模块图片url地址；
+	
+	//描述通用形状
+	Message_Module_Shape module_shape = 13;//模块的形状;
+	bool bool_deprecated = 14;                 //此字段是否废弃
+	
+	repeated Message_Base_Element extend_params = 20;//扩展字段后续
+	
+}
+
+message Message_Struct_Param{
+	//结构参数，存放实际安装位置信息；
+	repeated Message_Base_Element extend_params = 1;
+	repeated Message_Base_Group_Element segmented_limits_params = 2;
+	bool bool_deprecated = 3;            //此字段是否废弃
+}
+
+
+message Message_Module_Private_Attribute{
+	repeated Message_Base_Group_Element private_attrs = 1; //都是通用可扩展的属性；按照各个文件里面去读取
+	bool bool_deprecated = 2;            //此字段是否废弃
+}
+
+message Message_Bus_Interface_Element{
+	string bus_interface_type = 1;  //接口主类，四大类
+	string bus_interface_sub_type = 2;  //接口子类，每种大类下有不同的子类
+	int32  bus_interface_nums = 3;  //该接口的数量信息；
+	bool bool_deprecated = 4;            //此字段是否废弃
+}
+message Message_Interface_Ability{
+	//接口能力描述，主要描述他有几个接口，以及对应的类型是什么
+	repeated Message_Bus_Interface_Element bus_interface_ability = 1;//具体的每种接口的数量和类型；
+	bool bool_deprecated = 2;            //此字段是否废弃
+}
+
+message Message_Interface_Attribute {
+	repeated Message_Base_Element interface_params_array = 1;//具体的参数字段
+	bool bool_deprecated = 2;           //此字段是否废弃
+}
+
+message Message_Interface_Param_Group {
+	//具体的实例化后的接口数据了，主要是那些总线的参数信息；
+	string key = 1; // 接口名 CAN0, CAN1
+	string type = 2; // 类型名 CAN
+	string path = 3; // 指向具体接口模板路径 
+	string desc = 4; // 接口具体名描述
+	string interface_uuid = 5;//实例化后要给这个接口进行唯一编号，否则无法进行匹配
+	repeated string linked_interface_uuid = 6;//关联的另一边的uuid；确保id保持同步；
+	repeated Message_Combox_Item link_attrs = 7;       //接口的逻辑属性，如总线、非总线(key/value形式)；
+	Message_Interface_Attribute interface_attrs = 8;   //接口属性(新建时填写，后续不可修改，根据不同的器件子类型属性可能不同)
+	Message_Interface_Attribute interface_params = 9;  //接口参数(在拓扑连接时可修改)
+	bool bool_deprecated = 10;               //此字段是否废弃
+}
+
+message Message_Interface_Param {
+	repeated Message_Interface_Param_Group interface_Group = 1;
+	float node_pos_x = 2;			 // X节点坐标
+	float node_pos_y = 3;			 // Y节点坐标
+	bool bool_deprecated = 4;           // 此字段是否废弃
+}
+
+message Message_Module_Componets{
+	Message_Module_General_Attribute general_attr = 1;   //元件/部件通用属性；
+	Message_Module_Private_Attribute private_attr = 2;   //元件私有属性；
+	Message_Interface_Ability interface_ability = 3;     //接口能力
+	Message_Interface_Param interface_params = 4;        //具体的实例化了的接口参数
+	Message_Struct_Param struct_param = 5;               //结构安装参数
+	bool bool_deprecated = 6;                            //此字段是否废弃
+	bool bool_disable = 7;                              //模块是否启用,默认都启用
+}
+
+message Message_Module_Info{
+	string module_group_name = 1;//模块（组合）名称；
+	string module_group_uuid = 2;//实例化后的id，这个id更多是用来实例化用
+	string module_sys = 3;	// 模块(包含组合模块)子系统
+	repeated Message_Module_Componets module_componets = 4;//可能是元件组合,也可能是独立的一个，背包库中有的;复合结构时，要对里面的uuid编号进行重新编码，否则可能会重复，一切按照module的这个大info来定义；
+	repeated Message_Module_Info more_module_info = 5;//嵌套的组合模块，可能这个模型文件信息里面是模块再套模块；
+	string model_version = 6;   //模型版本号
+}
+
+
+
+

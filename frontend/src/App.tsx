@@ -37,7 +37,7 @@ const STEP_COMPONENTS = [
 ];
 
 export default function App() {
-    const { config, isDirty, loadProject } = useProjectStore();
+    const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
 
@@ -59,41 +59,49 @@ export default function App() {
         input.onchange = async (e: any) => {
             try {
                 const file = e.target.files[0];
-                let parsedConfig: any;
-
-                if (file.name.endsWith('.cmodel')) {
-                    const formData = new FormData();
-                    formData.append('file', file);
-                    // Use the current origin or a configurable base URL
-                    const res = await axios.post('http://localhost:8002/api/v1/import/deserialize', formData);
-                    parsedConfig = ImportService.parseCompDesc(res.data);
-                } else {
-                    const text = await file.text();
-                    parsedConfig = ImportService.parseCompDesc(JSON.parse(text));
+                const formData = new FormData();
+                formData.append('file', file);
+                const res = await axios.post('http://localhost:8002/api/v1/models/upload', formData);
+                if (res.data.status === 'success') {
+                    console.log('Upload Success, Project ID:', res.data.project_id);
+                    setProjectId(res.data.project_id);
+                    try {
+                        const parsedConfig = ImportService.parseCompDesc(res.data.full_json);
+                        loadProject(parsedConfig as any);
+                        message.success(`已导入并打散模块: ${file.name}`);
+                    } catch (err) {
+                        console.error('Hydration parsing failed:', err);
+                        message.warning('模块打散成功但本地全景树渲染遇到异常，请查阅控制台');
+                    }
                 }
-
-                loadProject(parsedConfig as any);
-                message.success(`已导入: ${file.name}`);
             } catch (err) { 
                 console.error('Import Error:', err);
-                message.error('导入失败，请检查文件格式'); 
+                message.error('导入失败，请检查服务状态'); 
             }
         };
         input.click();
     };
 
-    const handleExport = () => {
+    const handleExport = async () => {
+        if (!projectId) {
+            message.warning("无活跃工程，请先导入！");
+            return;
+        }
         try {
-            const exported = ExportService.exportToCompDesc(config);
-            const blob = new Blob([JSON.stringify(exported, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
+            message.loading({ content: '后端正在拼装重构 CModel...', key: 'compile' });
+            const res = await axios.post(`http://localhost:8002/api/v1/models/${projectId}/compile`, {}, { responseType: 'blob' });
+            
+            const url = URL.createObjectURL(new Blob([res.data]));
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${config.identity.robotName}_v${config.identity.version}.cmodel`;
+            a.download = `${projectId}_packed.cmodel`;
             a.click();
             URL.revokeObjectURL(url);
-            message.success('导出成功');
-        } catch { message.error('导出失败'); }
+            
+            message.success({ content: '模型封装并成功下载！', key: 'compile' });
+        } catch { 
+            message.error({ content: '后端编译防篡改重组失败！', key: 'compile' }); 
+        }
     };
 
     const StepComponent = STEP_COMPONENTS[currentStep];
