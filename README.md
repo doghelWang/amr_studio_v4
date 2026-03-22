@@ -40,7 +40,8 @@ AMR Studio V4 是一款面向工业级自动移动机器人（AMR）设计的高
 
 ## 📜 维护约束 (Development Rules)
 - **协议唯一性**：前后端数据交换必须对齐官方 CamelCase 规范。
-- **文档同步**：根据 `docs/ENGINEERING_CONSTRAINTS.md` 第 8 条，**每次代码更新后必须同步更新本 README 文件**，完善部署说明与更新记录。
+- **文档同步**：每次更新后必须同步维护 README 文件。
+- **隐私保护**：严禁在文档中包含个人敏感信息（如姓名）。
 
 ---
-**王菲菲设计工程师团队 & Gemini AI 联合出品**
+**AMR 设计工程师团队 & Gemini AI 联合出品**

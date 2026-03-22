@@ -17,7 +17,7 @@
 ## 3. 状态同步策略 (Sync Strategy)
 - **约束**：
   - **分支覆盖而非原子替换**：修改深层嵌套属性（如电机减速比）时，前端应发送完整的父分支（如整个 `private_attr`），后端执行 `deep_update`。
-  - **智能合并 (Backend)**：后端 `deep_update` 在处理列表（Array）时，必须基于 `key` 或 `type` 字段进行匹配合并，严禁直接覆盖整个数组。
+  - **智能合并 (Backend)**：后端 `deep_update` 在处理列表（Array）时，必须基于 `key` 或 `type`字段进行匹配合并，严禁直接覆盖整个数组。
 
 ## 4. 后端性能与安全 (Backend Integrity)
 - **约束**：
@@ -38,7 +38,6 @@
 - **数据格式冻结 (Data Format Freeze)**：前端界面的任何优化、重构或交互增强，**严禁改变**前后端既有的数据交换格式（JSON Schema）。
 - **解析无损性 (Parsing Integrity)**：UI 组件的逻辑调整不得影响 `ImportService` 和 `ExportService` 的运行，确保 100% 的数据解析兼容性。
 
-## 8. 文档维护规范 (Documentation Maintenance)
-- **同步更新承诺 (README Sync)**：
-  - 每次执行代码功能变更、协议调整或 UI 重大更新后，**必须同步更新**根目录下的 `README.md`。
-  - 内容必须涵盖：最新的部署步骤（如端口变动）、项目内容更新描述以及本次更新的重要里程碑。
+## 8. 文档维护与隐私规范 (Documentation & Privacy)
+- **同步更新承诺 (README Sync)**：每次代码重大更新后，必须同步更新 `README.md`。
+- **个人信息脱敏 (Privacy Protection)**：**严禁**在 `README.md` 或任何公开文档中展示用户姓名、敏感联系方式或私有路径。所有贡献者标识应使用职能名或团队匿名。
