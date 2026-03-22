@@ -10,20 +10,23 @@ import {
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
 
+/**
+ * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
+ * FULLY ALIGNED WITH CAMELCASE JSON (Default Protobuf Mapping).
+ */
 export class ImportService {
     private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
         'chassis':               'CHASSIS',
-        'drive_wheel':           'DRIVEWHEEL',
+        'driveWheel':            'DRIVEWHEEL',
         'driver':                'DRIVER',
         'sensor':                'SENSOR',
-        'sensor_processor':      'SENSORPROCESSOR',
-        'main_cpu':              'MAINCPU',
-        'maincpu':               'MAINCPU',
-        'intergrated_controller': 'INTERGRATEDCONTROLLER',
+        'sensorProcessor':       'SENSORPROCESSOR',
+        'mainCPU':               'MAINCPU',
+        'intergratedController': 'INTERGRATEDCONTROLLER',
         'communication':         'COMMUNICATION',
-        'extended_interface':    'EXTENDEDLNTERFACE',
+        'extendedInterface':     'EXTENDEDLNTERFACE',
         'battery':               'BATTERY',
-        'energy_controller':     'ENERGYCONTROLLER',
+        'energyController':      'ENERGYCONTROLLER',
         'button':                'BUTTON',
         'screen':                'SCREEN',
         'light':                 'LIGHT',
@@ -33,16 +36,20 @@ export class ImportService {
     };
 
     static parseCompDesc(json: any): Partial<RobotConfig> {
-        console.log('DEBUG [ImportService]: Starting parseCompDesc with raw JSON:', json);
+        console.log('DEBUG [ImportService]: parseCompDesc keys:', Object.keys(json));
         const components: ComponentConfig[] = [];
-        if (json.more_module_info && Array.isArray(json.more_module_info)) {
-            json.more_module_info.forEach((group: any) => {
+        
+        // Protocol check
+        const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
+
+        if (json[infoKey] && Array.isArray(json[infoKey])) {
+            json[infoKey].forEach((group: any) => {
                 this.processModuleGroup(group, components, null);
             });
         }
 
         const identity = {
-            robotName: json.robot_name || 'Imported_AMR',
+            robotName: json.robotName || json.robot_name || 'Imported_AMR',
             version: json.version || '1.0.0',
             materialCode: '',
             alias: '',
@@ -57,27 +64,25 @@ export class ImportService {
 
         const chassis = components.find(c => c.category === 'CHASSIS');
         if (chassis && chassis.shape) {
-            if (chassis.shape.type === 'BOX') {
-                identity.chassisLength = chassis.shape.length || 1200;
-                identity.chassisWidth = chassis.shape.width || 800;
-                identity.chassisHeight = chassis.shape.height || 400;
-            }
+            identity.chassisLength = chassis.shape.length || 1200;
+            identity.chassisWidth = chassis.shape.width || 800;
+            identity.chassisHeight = chassis.shape.height || 400;
         }
 
         return { components, identity };
     }
 
     static parseAbilities(json: any): ControllerAbility {
-        if (!json || !json.function_ability) return abilityRegistry as any;
+        const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
+        if (!json || !json[funcKey]) return abilityRegistry as any;
         
-        console.log('DEBUG [ImportService]: parseAbilities saving all metadata.');
         return {
             version: json.version || 'V1.0',
-            componentAbility: json.component_ability || [], // PRESERVE THIS!
-            functionAbility: json.function_ability.map((func: any) => ({
+            componentAbility: json.componentAbility || json.component_ability || [],
+            functionAbility: json[funcKey].map((func: any) => ({
                 type: func.type,
                 desc: func.desc,
-                childFunction: (func.child_function || []).map((child: any) => ({
+                childFunction: (func.childFunction || func.child_function || []).map((child: any) => ({
                     key: child.key,
                     desc: child.desc,
                     tips: child.tips,
@@ -91,101 +96,101 @@ export class ImportService {
         return {
             key: common.key,
             type: common.type,
-            arrayParam: common.array_param ? {
-                groupKey: common.array_param.group_key,
-                groupName: common.array_param.group_name,
-                boolMustfill: common.array_param.bool_mustfill,
-                attrParams: (common.array_param.attr_params || []).map((p: any) => this.mapAttribute(p))
+            arrayParam: (common.arrayParam || common.array_param) ? {
+                groupKey: (common.arrayParam || common.array_param).groupKey || (common.arrayParam || common.array_param).group_key,
+                groupName: (common.arrayParam || common.array_param).groupName || (common.arrayParam || common.array_param).group_name,
+                boolMustfill: (common.arrayParam || common.array_param).boolMustfill || (common.arrayParam || common.array_param).bool_mustfill,
+                attrParams: ((common.arrayParam || common.array_param).attrParams || (common.arrayParam || common.array_param).attr_params || []).map((p: any) => this.mapAttribute(p))
             } : undefined,
-            comboxParam: common.combox_param ? {
-                key: common.combox_param.key,
-                desc: common.combox_param.desc,
-                tips: common.combox_param.tips,
-                comboxSource: common.combox_param.combox_source || 'NORMAL',
-                value: common.combox_param.value,
-                options: (common.combox_param.normal_combox || []).map((o: any) => ({
+            comboxParam: (common.comboxParam || common.combox_param) ? {
+                key: (common.comboxParam || common.combox_param).key,
+                desc: (common.comboxParam || common.combox_param).desc,
+                tips: (common.comboxParam || common.combox_param).tips,
+                comboxSource: (common.comboxParam || common.combox_param).comboxSource || (common.comboxParam || common.combox_param).combox_source || 'NORMAL',
+                value: (common.comboxParam || common.combox_param).value,
+                options: ((common.comboxParam || common.combox_param).normalCombox || (common.comboxParam || common.combox_param).normal_combox || []).map((o: any) => ({
                     key: o.key,
                     desc: o.desc,
-                    arrayCmobEle: (o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
+                    arrayCmobEle: (o.arrayCmobEle || o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
                 }))
             } : undefined
         };
     }
 
     private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null) {
-        const groupName = group.module_group_name || '';
-        const groupUuid = group.module_group_uuid || uuidv4();
+        const groupName = group.moduleGroupName || group.module_group_name || '';
+        const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
+        
+        // Supports both moduleComponets and module_componets
+        const componentsArr = group.moduleComponets || group.module_componets;
 
-        if (group.module_componets) {
-            group.module_componets.forEach((comp: any) => {
+        if (componentsArr && Array.isArray(componentsArr)) {
+            componentsArr.forEach((comp: any) => {
                 const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid);
                 list.push(config);
             });
         }
 
-        if (group.more_module_info) {
-            group.more_module_info.forEach((sub: any) => this.processModuleGroup(sub, list, parentUuid));
+        const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
+        if (group[infoKey]) {
+            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, parentUuid));
         }
     }
 
     private static mapToComponent(
         comp: any, groupName: string, groupUuid: string, parentUuid: string | null
     ): ComponentConfig {
-        const gen = comp.general_attr || {};
-        const struct = comp.struct_param || {};
+        const gen = comp.generalAttr || comp.general_attr || {};
+        const struct = comp.structParam || comp.struct_param || {};
 
-        const rawCat = gen.main_module_type?.combo_type?.type_key || 'chassis';
+        const rawCat = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'chassis';
         const category = (ImportService.CATEGORY_MAP[rawCat] || rawCat.toUpperCase()) as MainModuleType;
-        const type = gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
+        const type = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
 
-        const uuid = gen.module_uuid?.string_value || uuidv4();
+        const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
 
-        const rawIface = comp.interface_params || comp.interface_param || {};
-        const ifaceList: any[] = rawIface.interface_group || rawIface.interface_params_array || [];
+        const rawIface = comp.interfaceParams || comp.interface_params || comp.interface_param || {};
+        const ifaceList: any[] = rawIface.interfaceGroup || rawIface.interface_group || [];
 
         const interfaces: InterfaceConfig[] = ifaceList.map((inf: any) => ({
             key: inf.key,
             type: inf.type,
             path: inf.path,
             desc: inf.desc || inf.key,
-            interfaceUuid: inf.interface_uuid || uuidv4(),
-            linkedInterfaceUuid: inf.linked_interface_uuid || [],
-            linkAttrs: inf.link_attrs,
-            interfaceAttrs: inf.interface_attrs,
-            interfaceParams: inf.interface_params,
+            interfaceUuid: inf.interfaceUuid || inf.interface_uuid || uuidv4(),
+            linkedInterfaceUuid: inf.linkedInterfaceUuid || inf.linked_interface_uuid || [],
+            linkAttrs: inf.linkAttrs || inf.link_attrs,
+            interfaceAttrs: inf.interfaceAttrs || inf.interface_attrs,
+            interfaceParams: inf.interfaceParams || inf.interface_params,
         }));
 
         let shape: ComponentConfig['shape'];
-        if (gen.module_shape) {
-            const s = gen.module_shape;
-            const shapeType = s.shape_type || 'ENUM_BOX';
-            if (shapeType === 'ENUM_BOX' || s.box) {
-                const box = s.box || {};
-                shape = { type: 'BOX', length: box.size_len || 0, width: box.size_width || 0, height: box.size_height || 0 };
-            } else if (shapeType === 'ENUM_CYLINDER' || s.cylinder) {
-                const cyl = s.cylinder || {};
-                shape = { type: 'CYLINDER', diameter: cyl.diameter || 0, height: cyl.height || 0 };
-            }
+        const s = gen.moduleShape || gen.module_shape;
+        if (s) {
+            if (s.box) shape = { type: 'BOX', length: s.box.sizeLen || s.box.size_len || 0, width: s.box.sizeWidth || s.box.size_width || 0, height: s.box.sizeHeight || s.box.size_height || 0 };
+            else if (s.cylinder) shape = { type: 'CYLINDER', diameter: s.cylinder.diameter || 0, height: s.cylinder.height || 0 };
         }
 
-        const rawPrivateAttr = comp.private_attr || {};
-        const privateAttrs: AttributeGroup[] = (rawPrivateAttr.private_attrs || []).map((grp: any) => ({
+        const rawPrivateAttr = comp.privateAttr || comp.private_attr || {};
+        const privateAttrs: AttributeGroup[] = (rawPrivateAttr.privateAttrs || rawPrivateAttr.private_attrs || []).map((grp: any) => ({
             key: grp.key || '',
             desc: grp.desc || '',
-            elements: (grp.array_base_ele || grp.elements || []).map((attr: any) => this.mapAttribute(attr)),
+            elements: (grp.arrayBaseEle || grp.array_base_ele || []).map((attr: any) => this.mapAttribute(attr)),
         }));
 
-        const structExtend = struct.extend_params ?? [];
+        const structExtend = struct.extendParams || struct.extend_params || [];
 
         return {
             id: uuid,
-            name: gen.module_name?.string_value || type,
-            alias: gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value 
-                   || gen.module_desc?.string_value 
+            name: gen.moduleName?.stringValue || gen.module_name?.string_value || type,
+            alias: gen.extendParams?.find((p: any) => p.key === 'module_alias')?.stringValue 
+                   || gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value
+                   || gen.moduleDesc?.stringValue || gen.module_desc?.string_value
                    || type,
             type,
             category,
             parentNodeUuid: parentUuid
+                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.comboType?.typeKey
                 || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.combo_type?.type_key
                 || null,
             moduleGroupName: groupName,
@@ -197,13 +202,13 @@ export class ImportService {
             mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
             mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
             privateAttrs,
-            interfaceAbility: comp.interface_ability || {},
+            interfaceAbility: comp.interfaceAbility || comp.interface_ability || {},
             interfaces,
             shape,
             generalAttr: gen,
-            rawStructParam: struct.segmented_limits_params,
-            disabled: comp.bool_disable,
-            deprecated: comp.bool_deprecated,
+            rawStructParam: struct.segmentedLimitsParams || struct.segmented_limits_params,
+            disabled: comp.boolDisable || comp.bool_disable,
+            deprecated: comp.boolDeprecated || comp.bool_deprecated,
         };
     }
 
@@ -213,47 +218,45 @@ export class ImportService {
             desc: attr.desc || attr.key,
             type: attr.type || 'DATA_DOUBLE',
             value: this.extractValue(attr),
-            maxValue: attr.double_maxvalue ?? attr.int32_maxvalue ?? attr.float_maxvalue,
-            minValue: attr.double_minvalue ?? attr.int32_minvalue ?? attr.float_minvalue,
+            maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue ?? attr.floatMaxvalue ?? attr.double_maxvalue ?? attr.int32_maxvalue,
+            minValue: attr.doubleMinvalue ?? attr.int32Minvalue ?? attr.floatMinvalue ?? attr.double_minvalue ?? attr.int32_minvalue,
             unit: attr.unit,
-            boolParse: attr.bool_parse,
-            boolHide: attr.bool_hide,
-            boolNoeditable: attr.bool_noeditable,
-            boolMustfill: attr.bool_mustfill,
+            boolParse: attr.boolParse ?? attr.bool_parse,
+            boolHide: attr.boolHide ?? attr.bool_hide,
+            boolNoeditable: attr.boolNoeditable ?? attr.bool_noeditable,
+            boolMustfill: attr.boolMustfill ?? attr.bool_mustfill,
             boolBasic: true, 
-            fixedSource: attr.fixed_source,
-            comboType: attr.combo_type ? {
-                typeKey: attr.combo_type.type_key,
-                typeDesc: attr.combo_type.type_desc,
-                typeGroups: (attr.combo_type.type_groups || []).map((g: any) => ({
+            fixedSource: attr.fixedSource || attr.fixed_source,
+            comboType: (attr.comboType || attr.combo_type) ? {
+                typeKey: (attr.comboType || attr.combo_type).typeKey || (attr.comboType || attr.combo_type).type_key,
+                typeDesc: (attr.comboType || attr.combo_type).typeDesc || (attr.comboType || attr.combo_type).type_desc,
+                typeGroups: ((attr.comboType || attr.combo_type).typeGroups || (attr.comboType || attr.combo_type).type_groups || []).map((g: any) => ({
                     key: g.key,
                     desc: g.desc,
-                    arrayCmobEle: (g.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub))
+                    arrayCmobEle: (g.arrayCmobEle || g.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub))
                 }))
             } : undefined,
-            arrayCmobEle: (attr.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub)),
+            arrayCmobEle: (attr.arrayCmobEle || attr.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub)),
         };
     }
 
     private static extractValue(attr: any) {
-        switch (attr.type) {
-            case 'DATA_STRING': return attr.string_value;
-            case 'DATA_DOUBLE': return attr.double_value;
-            case 'DATA_FLOAT': return attr.float_value;
-            case 'DATA_INT32': return attr.int32_value;
-            case 'DATA_UINT32': return attr.uint32_value;
-            case 'DATA_INT64': return attr.int64_value;
-            case 'DATA_UINT64': return attr.uint64_value;
-            case 'DATA_BOOL': return attr.bool_value;
-            case 'DATA_IP': return attr.ip_value;
-            case 'DATA_COMBOX': return attr.combo_type?.type_key;
-            case 'DATA_FIXED_E': return attr.string_fix;
-            default: return attr.double_value ?? attr.string_value;
-        }
+        // Support both Camel and Snake value accessors
+        return attr.stringValue ?? attr.string_value ??
+               attr.doubleValue ?? attr.double_value ??
+               attr.floatValue ?? attr.float_value ??
+               attr.int32Value ?? attr.int32_value ??
+               attr.uint32Value ?? attr.uint32_value ??
+               attr.int64Value ?? attr.int64_value ??
+               attr.uint64Value ?? attr.uint64_value ??
+               attr.boolValue ?? attr.bool_value ??
+               attr.ipValue ?? attr.ip_value ??
+               (attr.comboType || attr.combo_type)?.typeKey ?? (attr.comboType || attr.combo_type)?.type_key ??
+               attr.stringFix ?? attr.string_fix;
     }
 
     private static findExtend(params: any[], key: string): number {
         const p = params?.find((p: any) => p.key === key);
-        return p?.double_value || p?.float_value || 0;
+        return p?.doubleValue ?? p?.double_value ?? p?.floatValue ?? p?.float_value ?? 0;
     }
 }

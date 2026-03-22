@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Spin, Empty, InputNumber, Switch, Select, message, Input, Card, Tag } from 'antd';
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
+import { useProjectStore } from '../../store/useProjectStore';
 
 interface Props {
   projectId: string | null;
@@ -10,6 +11,8 @@ interface Props {
 export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUuid }) => {
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const { updateAttribute } = useProjectStore();
+  const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
     if (projectId && selectedUuid) {
@@ -27,66 +30,94 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     }
   }, [projectId, selectedUuid]);
 
-  const handleAttrChange = async (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
-     if (!projectId) return;
-     
-     // Build delta payload
-     const deltaPayload = {
-         private_attr: {
-            private_attrs: [
-                 {
-                     key: groupKey,
-                     array_base_ele: [ { key: eleKey, [typeKey]: newValue } ]
-                 }
-            ]
-         }
-     };
-     
-     try {
-         await apiUpdateComponent(projectId, selectedUuid, deltaPayload);
-         // Refresh local state to show change (Simulated for speed)
-         message.success(`属性 ${eleKey} 已更新`);
-     } catch (err) {
-         message.error('增量提交失败');
-     }
+  const syncPrivateAttrs = async (newFullData: any) => {
+      if (!projectId || !selectedUuid) return;
+      try {
+          messageApi.loading({ content: '保存修改...', key: 'sync', duration: 0 });
+          await apiUpdateComponent(projectId, selectedUuid, { 
+              private_attr: newFullData.private_attr, 
+              privateAttr: newFullData.privateAttr 
+          });
+          messageApi.success({ content: '已保存', key: 'sync' });
+      } catch (err) {
+          messageApi.error({ content: '同步失败', key: 'sync' });
+      }
+  };
+
+  const handleValueUpdate = (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
+      console.log(`%c ✏️ UI MODIFY: [${eleKey}] -> ${newValue} (Type: ${typeKey})`, 'color: #eb2f96; font-weight: bold;');
+      
+      const newData = JSON.parse(JSON.stringify(compData));
+      
+      const updateInTree = (nodes: any[]) => {
+          for (let node of nodes) {
+              if (node.key === eleKey) {
+                  // Double-write for protocol robustness
+                  if (typeKey === 'combo_type' || typeKey === 'comboType') {
+                      if (!node.combo_type) node.combo_type = {};
+                      if (!node.comboType) node.comboType = {};
+                      node.combo_type.type_key = newValue;
+                      node.comboType.typeKey = newValue;
+                  } else {
+                      node[typeKey] = newValue;
+                  }
+                  return true;
+              }
+              
+              // Recurse into COMBOX groups
+              const combo = node.comboType || node.combo_type;
+              if (combo) {
+                  const groups = combo.typeGroups || combo.type_groups || [];
+                  for (let group of groups) {
+                      const subs = group.arrayCmobEle || group.array_cmob_ele || [];
+                      if (updateInTree(subs)) return true;
+                  }
+              }
+          }
+          return false;
+      };
+
+      const privateAttrBranch = newData.privateAttr || newData.private_attr || {};
+      const groups = privateAttrBranch.privateAttrs || privateAttrBranch.private_attrs || [];
+      const targetGroup = groups.find((g: any) => g.key === groupKey);
+      
+      if (targetGroup) {
+          updateInTree(targetGroup.arrayBaseEle || targetGroup.array_base_ele || []);
+      }
+
+      setCompData(newData);
+      syncPrivateAttrs(newData);
+      updateAttribute(selectedUuid, groupKey, eleKey, newValue);
   };
 
   const renderAttribute = (ele: any, groupKey: string, depth = 0) => {
-    // Determine value and keys
-    const numericValue = ele.double_value !== undefined ? ele.double_value : ele.float_value;
-    const numKey = ele.double_value !== undefined ? 'double_value' : 'float_value';
-    const intValue = ele.int32_value !== undefined ? ele.int32_value : (ele.uint32_value !== undefined ? ele.uint32_value : ele.int64_value);
-    const intKey = ele.int32_value !== undefined ? 'int32_value' : (ele.uint32_value !== undefined ? ele.uint32_value : ele.int64_value);
+    const combo = ele.comboType || ele.combo_type;
+    const typeKey = combo?.typeKey || combo?.type_key;
+    const groups = combo?.typeGroups || combo?.type_groups || [];
+
+    const numericValue = ele.doubleValue ?? ele.double_value ?? ele.floatValue ?? ele.float_value;
+    const numType = (ele.doubleValue !== undefined || ele.double_value !== undefined) ? 'doubleValue' : 'floatValue';
+    
+    const intValue = ele.int32Value ?? ele.int32_value ?? ele.uint32Value ?? ele.uint32_value ?? ele.int64Value ?? ele.int64_value;
+    const intType = (ele.int32Value !== undefined || ele.int32_value !== undefined) ? 'int32Value' : 'int64Value';
 
     let inputNode = null;
 
     if (numericValue !== undefined) {
-        inputNode = (
-            <InputNumber 
-                style={{ width: '100%' }} 
-                value={numericValue} 
-                onChange={(v) => handleAttrChange(groupKey, ele.key, parseFloat(v as any), numKey)} 
-            />
-        );
+        inputNode = <InputNumber style={{ width: '100%' }} value={numericValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, numType)} />;
     } else if (intValue !== undefined) {
-        inputNode = (
-            <InputNumber 
-                style={{ width: '100%' }} 
-                value={intValue} 
-                onChange={(v) => handleAttrChange(groupKey, ele.key, parseInt(v as any), intKey)} 
-            />
-        );
-    } else if (ele.bool_value !== undefined) {
-        inputNode = <Switch checked={ele.bool_value} onChange={(v) => handleAttrChange(groupKey, ele.key, v, 'bool_value')} />;
-    } else if (ele.string_value !== undefined) {
-        inputNode = <Input value={ele.string_value} onChange={(e) => handleAttrChange(groupKey, ele.key, e.target.value, 'string_value')} />;
-    } else if (ele.combo_type) {
+        inputNode = <InputNumber style={{ width: '100%' }} value={intValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, intType)} />;
+    } else if (ele.boolValue !== undefined || ele.bool_value !== undefined) {
+        inputNode = <Switch checked={ele.boolValue ?? ele.bool_value} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
+    } else if (ele.stringValue !== undefined || ele.string_value !== undefined) {
+        inputNode = <Input value={ele.stringValue ?? ele.string_value} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
+    } else if (combo) {
         inputNode = (
             <Select 
-                value={ele.combo_type.type_key} 
+                value={typeKey} 
                 style={{ width: '100%' }}
-                options={[{ label: ele.combo_type.type_key, value: ele.combo_type.type_key }]}
-                disabled
+                options={groups.map((g: any) => ({ label: g.desc || g.key, value: g.key }))}
+                onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'comboType')}
             />
         );
     }
@@ -94,19 +125,16 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     return (
         <div key={ele.key} style={{ marginBottom: 12, marginLeft: depth * 16 }}>
             <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: depth > 0 ? 400 : 600, color: depth > 0 ? 'var(--text-muted)' : 'var(--text-primary)' }}>
-                    {ele.desc || ele.key}
-                </span>
+                <span style={{ fontWeight: depth > 0 ? 400 : 600 }}>{ele.desc || ele.key}</span>
                 {ele.unit && <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>{ele.unit}</span>}
             </div>
             {inputNode}
 
-            {/* ━━━ RECURSIVE RENDERING FOR NESTED COMBOX ATTRIBUTES ━━━ */}
-            {ele.combo_type && ele.combo_type.type_groups && (
-                <div style={{ marginTop: 8, borderLeft: '2px solid var(--accent-soft)', paddingLeft: 12 }}>
-                    {ele.combo_type.type_groups
-                        .filter((g: any) => g.key === ele.combo_type.type_key)
-                        .flatMap((g: any) => g.array_cmob_ele || [])
+            {combo && groups && (
+                <div style={{ marginTop: 8, borderLeft: '2px solid var(--accent-soft)', paddingLeft: 12, marginBottom: 16 }}>
+                    {groups
+                        .filter((g: any) => g.key === typeKey)
+                        .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || [])
                         .map((sub: any) => renderAttribute(sub, groupKey, depth + 1))
                     }
                 </div>
@@ -115,27 +143,24 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     );
   };
 
-  if (loading) return <div style={{ textAlign: 'center', padding: 40 }}><Spin tip="加载组件私有参数..." /></div>;
-  if (!compData) return <Empty description="无法获取组件详情" />;
+  if (loading) return <div style={{ textAlign: 'center', padding: 40 }}><Spin /></div>;
+  if (!compData) return <Empty description="选择一个组件进行编辑" />;
 
-  const groups = compData.private_attr?.private_attrs || compData.private_attrs || [];
-  const moduleName = compData.general_attr?.module_name?.string_value || 'Unknown';
+  const privateAttr = compData.privateAttr || compData.private_attr || {};
+  const groups = privateAttr.privateAttrs || privateAttr.private_attrs || [];
+  const gen = compData.generalAttr || compData.general_attr || {};
+  const moduleName = gen.moduleName?.stringValue || gen.module_name?.string_value || 'Unknown';
 
   return (
     <div className="property-panel-container">
+      {contextHolder}
       <div style={{ marginBottom: 16, padding: '0 4px' }}>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4 }}>模型原名 (module_name)</div>
-          <Tag color="cyan" style={{ fontFamily: 'var(--font-mono)' }}>{moduleName}</Tag>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 4 }}>模型节点标识</div>
+          <Tag color="blue" style={{ fontFamily: 'var(--font-mono)' }}>{moduleName}</Tag>
       </div>
-
       {groups.map((group: any) => (
-        <Card 
-            key={group.key} 
-            title={group.desc || group.key} 
-            size="small" 
-            style={{ marginBottom: 16, borderRadius: 8, background: 'rgba(255,255,255,0.01)' }}
-        >
-          {(group.array_base_ele || group.elements || []).map((ele: any) => renderAttribute(ele, group.key))}
+        <Card key={group.key} title={group.desc || group.key} size="small" style={{ marginBottom: 16, borderRadius: 8, background: 'rgba(255,255,255,0.01)' }}>
+          {(group.arrayBaseEle || group.array_base_ele || []).map((ele: any) => renderAttribute(ele, group.key))}
         </Card>
       ))}
     </div>

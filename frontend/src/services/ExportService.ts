@@ -2,22 +2,17 @@ import { RobotConfig, ComponentConfig, SmartAttribute, AttributeGroup, Controlle
 
 /**
  * Service to export V4 store state back to .cmodel structure.
- * Rigorously aligned with Protobuf schemas.
+ * Rigorously aligned with Protobuf schemas (including specific CamelCase fields).
  */
 export class ExportService {
     static exportToCompDesc(config: RobotConfig): any {
         const { identity, components } = config;
-
-        // Group components
         const groupsMap = new Map<string, { name: string, uuid: string, sys?: string, components: ComponentConfig[] }>();
+        
         components.forEach(c => {
             const gid = c.moduleGroupUuid || 'default_group';
             if (!groupsMap.has(gid)) {
-                groupsMap.set(gid, {
-                    name: c.moduleGroupName || 'Default Group',
-                    uuid: gid,
-                    components: []
-                });
+                groupsMap.set(gid, { name: c.moduleGroupName || 'Default Group', uuid: gid, components: [] });
             }
             groupsMap.get(gid)?.components.push(c);
         });
@@ -37,16 +32,11 @@ export class ExportService {
         };
     }
 
-    /**
-     * Maps frontend Store Ability structure back to strict Protobuf-aligned JSON.
-     * Preserves metadata like component_ability.
-     */
     public static exportAbilities(abilities: ControllerAbility): any {
         if (!abilities || !abilities.functionAbility) return abilities;
-
         return {
             version: abilities.version || 'V1.0',
-            component_ability: abilities.componentAbility || [], // REFILL ORIG DATA
+            component_ability: abilities.componentAbility || [],
             function_ability: abilities.functionAbility.map(func => ({
                 type: func.type,
                 desc: func.desc,
@@ -67,12 +57,14 @@ export class ExportService {
                             key: a.comboxParam.key || a.key,
                             desc: a.comboxParam.desc,
                             tips: a.comboxParam.tips,
-                            combox_source: a.comboxParam.comboxSource || 'NORMAL',
                             value: a.comboxParam.value,
-                            normal_combox: a.comboxParam.options?.map(o => ({
+                            combox_source: a.comboxParam.comboxSource,
+                            // ━━━ PROTO ALIGNMENT: normalCombox ━━━
+                            normalCombox: a.comboxParam.options?.map(o => ({
                                 key: o.key,
                                 desc: o.desc,
-                                array_cmob_ele: o.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
+                                // ━━━ PROTO ALIGNMENT: arrayCmobEle ━━━
+                                arrayCmobEle: o.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
                             }))
                         } : undefined
                     }))
@@ -87,8 +79,8 @@ export class ExportService {
                 ...c.generalAttr,
                 module_name: { type: 'DATA_STRING', string_value: c.name, bool_parse: true },
                 module_uuid: { type: 'DATA_STRING', string_value: c.id, bool_parse: true, bool_hide: true },
-                main_module_type: { type: 'DATA_COMBOX', combo_type: { type_key: c.category }, bool_parse: true },
-                sub_module_type: { type: 'DATA_COMBOX', combo_type: { type_key: c.type }, bool_parse: true },
+                main_module_type: { type: 'DATA_COMBOX', combo_type: { typeKey: c.category }, bool_parse: true },
+                sub_module_type: { type: 'DATA_COMBOX', combo_type: { typeKey: c.type }, bool_parse: true },
                 extend_params: [
                     ...(c.generalAttr?.extend_params || []).filter((p: any) => p.key !== 'module_alias'),
                     { key: 'module_alias', type: 'DATA_STRING', string_value: c.alias, bool_parse: true }
@@ -99,13 +91,14 @@ export class ExportService {
             },
             interface_ability: c.interfaceAbility || {},
             interface_params: {
+                // ━━━ PROTO ALIGNMENT: interfaceGroup ━━━
                 interfaceGroup: c.interfaces.map(inf => ({
                     key: inf.key,
                     type: inf.type,
                     path: inf.path,
                     desc: inf.desc,
                     interface_uuid: inf.interfaceUuid,
-                    linked_interface_uuid: inf.linked_interface_uuid || [],
+                    linked_interface_uuid: inf.linkedInterfaceUuid || [],
                     link_attrs: inf.linkAttrs,
                     interface_attrs: inf.interfaceAttrs,
                     interface_params: inf.interfaceParams,
@@ -119,7 +112,7 @@ export class ExportService {
                     { key: 'locCoordROLL', type: 'DATA_DOUBLE', double_value: c.mountRoll, bool_parse: true, bool_hide: true, bool_mustfill: true },
                     { key: 'locCoordPITCH', type: 'DATA_DOUBLE', double_value: c.mountPitch, bool_parse: true, bool_hide: true, bool_mustfill: true },
                     { key: 'locCoordYAW', type: 'DATA_DOUBLE', double_value: c.mountYaw, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    ...(c.parentNodeUuid ? [{ key: 'parentNodeUuid', type: 'DATA_COMBOX', combo_type: { type_key: c.parentNodeUuid }, bool_parse: true }] : [])
+                    ...(c.parentNodeUuid ? [{ key: 'parentNodeUuid', type: 'DATA_COMBOX', combo_type: { typeKey: c.parentNodeUuid }, bool_parse: true }] : [])
                 ],
                 segmented_limits_params: c.rawStructParam || []
             },
@@ -162,15 +155,16 @@ export class ExportService {
             case 'DATA_UINT64': base.uint64_value = String(attr.value); break;
             case 'DATA_BOOL': base.bool_value = Boolean(attr.value); break;
             case 'DATA_COMBOX': 
+                // ━━━ CRITICAL PROTO ALIGNMENT: typeKey, typeDesc, typeGroups ━━━
                 base.combo_type = attr.comboType ? {
-                    type_key: attr.comboType.typeKey,
-                    type_desc: attr.comboType.typeDesc,
-                    type_groups: attr.comboType.typeGroups?.map(g => ({
+                    typeKey: attr.comboType.typeKey,
+                    typeDesc: attr.comboType.typeDesc,
+                    typeGroups: attr.comboType.typeGroups?.map(g => ({
                         key: g.key,
                         desc: g.desc,
-                        array_cmob_ele: g.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
+                        arrayCmobEle: g.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
                     }))
-                } : { type_key: attr.value }; 
+                } : { typeKey: attr.value }; 
                 break;
             case 'DATA_FIXED_E': base.string_fix = attr.value; break;
         }

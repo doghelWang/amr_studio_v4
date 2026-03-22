@@ -17,10 +17,8 @@ from google.protobuf.json_format import MessageToJson
 
 def decode_cmodel(cmodel_path, output_dir):
     audit = []
-    audit.append(f"IMPORT_START: {os.path.basename(cmodel_path)}")
-    
     zip_size = os.path.getsize(cmodel_path)
-    audit.append(f"STEP1_RAW_ZIP: {zip_size} bytes")
+    audit.append(f"IMPORT_START: {os.path.basename(cmodel_path)} ({zip_size} bytes)")
     
     if not os.path.exists(output_dir):
         os.makedirs(output_dir, exist_ok=True)
@@ -28,13 +26,7 @@ def decode_cmodel(cmodel_path, output_dir):
     with zipfile.ZipFile(cmodel_path, 'r') as zip_ref:
         zip_ref.extractall(output_dir)
     
-    extracted_files = os.listdir(output_dir)
-    audit.append(f"STEP2_EXTRACTED: {len(extracted_files)} files")
-    for f in extracted_files:
-        f_path = os.path.join(output_dir, f)
-        if os.path.isfile(f_path):
-            audit.append(f"  - {f}: {os.path.getsize(f_path)} bytes")
-
+    # ━━━ CRITICAL: USE DEFAULT JSON MAPPING (CamelCase) ━━━
     model_mapping = [
         ("CompDesc.model", controller_model_comp_desc_pb2.Message_Module_Info, "CompDesc.json"),
         ("AbiSet.model", controller_model_abi_set_pb2.Controller_Ability, "AbiSet.json"),
@@ -46,19 +38,17 @@ def decode_cmodel(cmodel_path, output_dir):
         if os.path.exists(path):
             with open(path, "rb") as f:
                 binary_data = f.read()
-                audit.append(f"STEP3_DESERIALIZE: {model_name} ({len(binary_data)} bytes)")
-                
                 obj = pb_class()
                 obj.ParseFromString(binary_data)
                 
+                # NO 'preserving_proto_field_name' -> result is official CamelCase JSON
                 json_str = MessageToJson(
                     obj, 
-                    preserving_proto_field_name=True, 
                     always_print_fields_with_no_presence=True
                 )
                 
                 with open(os.path.join(output_dir, json_name), "w", encoding="utf-8") as out_f:
                     out_f.write(json_str)
-                audit.append(f"  -> {json_name}: {len(json_str)} chars")
+                audit.append(f"  - Generated {json_name}: {len(json_str)} chars")
 
     return audit

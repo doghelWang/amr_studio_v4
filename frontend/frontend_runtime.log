@@ -45,3 +45,82 @@
 18:59:05 [vite] hmr update /src/components/wizard/IdentityStep.tsx
 18:59:28 [vite] hmr update /src/App.tsx
 18:59:48 [vite] hmr update /src/App.tsx
+19:05:15 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+19:08:56 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+19:09:23 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+19:09:40 [vite] hmr update /src/App.tsx
+19:09:40 [vite] Internal server error: /Users/wangfeifei/code/amr_studio_v4/frontend/src/App.tsx: Missing catch or finally clause. (108:8)
+
+  106 |     const handleExport = async () => {
+  107 |         if (!projectId) return messageApi.warning("请先导入！");
+> 108 |         try {
+      |         ^
+  109 |             messageApi.loading({ content: '正在执行构建前校验...', key: 'export', duration: 0 });
+  110 |             
+  111 |             // ━━━ PRE-EXPORT VERIFICATION ━━━
+  Plugin: vite:react-babel
+  File: /Users/wangfeifei/code/amr_studio_v4/frontend/src/App.tsx:108:8
+  106|      const handleExport = async () => {
+  107|          if (!projectId) return messageApi.warning("请先导入！");
+  108|          try {
+     |          ^
+  109|              messageApi.loading({ content: '正在执行构建前校验...', key: 'export', duration: 0 });
+  110|              
+      at constructor (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.parseTryStatement (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13224:12)
+      at TypeScriptParserMixin.parseStatementContent (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12804:21)
+      at TypeScriptParserMixin.parseStatementContent (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseArrowExpression (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12075:10)
+      at TypeScriptParserMixin.parseAsyncArrowFromCallExpression (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11264:10)
+      at TypeScriptParserMixin.parseAsyncArrowFromCallExpression (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9766:18)
+      at TypeScriptParserMixin.parseCoverCallAndAsyncArrowHead (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11194:27)
+      at TypeScriptParserMixin.parseSubscript (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11120:19)
+      at TypeScriptParserMixin.parseSubscript (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9272:18)
+      at TypeScriptParserMixin.parseSubscripts (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11094:19)
+      at TypeScriptParserMixin.parseExprSubscripts (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11085:17)
+      at TypeScriptParserMixin.parseUpdate (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9786:20)
+      at /Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10800:39
+      at TypeScriptParserMixin.allowInAnd (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseMaybeAssignAllowIn (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:10800:17)
+      at TypeScriptParserMixin.parseVar (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13384:91)
+      at TypeScriptParserMixin.parseVarStatement (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13230:10)
+      at TypeScriptParserMixin.parseVarStatement (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9408:31)
+      at TypeScriptParserMixin.parseStatementContent (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12851:23)
+      at TypeScriptParserMixin.parseStatementContent (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/Users/wangfeifei/code/amr_studio_v4/frontend/node_modules/@babel/parser/lib/index.js:9385:20)
+19:10:00 [vite] hmr update /src/App.tsx
+19:13:27 [vite] hmr update /src/App.tsx
+19:21:22 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+19:36:18 [vite] hmr update /src/App.tsx
+19:37:16 [vite] hmr update /src/App.tsx
+19:40:38 [vite] hmr update /src/App.tsx
+19:44:46 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx
+19:48:46 [vite] hmr update /src/components/wizard/ComponentPropertyPanel.tsx

@@ -17,6 +17,7 @@ import {
     apiFetchAbilities, 
     apiUpdateAbilities, 
     apiUpdateComponent,
+    apiFetchComponentDetails
 } from './services/api_v2';
 
 import { IdentityStep } from './components/wizard/IdentityStep';
@@ -44,14 +45,12 @@ const STEP_COMPONENTS = [
 
 const BACKEND_URL = "http://localhost:8002";
 
-
 export default function App() {
     const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
 
-    // Keyboard shortcuts
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
             const mod = e.metaKey || e.ctrlKey;
@@ -77,19 +76,15 @@ export default function App() {
             try {
                 const file = e.target.files[0];
                 messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
-                
                 const formData = new FormData();
                 formData.append('file', file);
                 const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
-                
                 if (res.data.status === 'success') {
                     const pId = res.data.project_id;
                     printAudit(`Import [${pId}]`, res.data.audit);
-                    
                     const abilitiesRaw = await apiFetchAbilities(pId);
                     const abilities = ImportService.parseAbilities(abilitiesRaw);
                     const parsed = ImportService.parseCompDesc(res.data.full_json);
-                    
                     const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
                     setProjectId(pId);
                     loadProject(fullConfig);
@@ -106,12 +101,34 @@ export default function App() {
     const handleExport = async () => {
         if (!projectId) return messageApi.warning("请先导入！");
         try {
-            messageApi.loading({ content: '正在同步修改...', key: 'export', duration: 0 });
+            messageApi.loading({ content: '正在执行构建前校验...', key: 'export', duration: 0 });
             
+            // ━━━ PRE-EXPORT INTEGRITY AUDIT ━━━
+            const motorLeft = config.components.find(c => c.name === 'motor-left' || c.alias.includes('电机'));
+            if (motorLeft) {
+                const serverData = await apiFetchComponentDetails(projectId, motorLeft.id);
+                console.group('%c 🔍 Pre-Export Integrity Audit', 'color: #722ed1; font-weight: bold;');
+                const findVal = (nodes: any[], key: string): any => {
+                    for (let n of nodes) {
+                        if (n.key === key) return n.double_value || n.float_value || n.int32_value || n.bool_value || n.string_value;
+                        if (n.combo_type?.type_groups) {
+                            for (let g of n.combo_type.type_groups) {
+                                const res = findVal(g.array_cmob_ele || [], key);
+                                if (res !== undefined) return res;
+                            }
+                        }
+                    }
+                };
+                const ratio = findVal(serverData.private_attr?.private_attrs?.flatMap((g: any) => g.array_base_ele || []) || [], 'gearRatio') 
+                           || findVal(serverData.private_attr?.private_attrs?.flatMap((g: any) => g.array_base_ele || []) || [], 'reductionRatio');
+                console.log(`[${motorLeft.name}] gearRatio/reductionRatio on SERVER: %c${ratio}`, 'color: #52c41a; font-weight: bold;');
+                console.groupEnd();
+            }
+
+            messageApi.loading({ content: '正在同步全局配置与连线...', key: 'export', duration: 0 });
             const mappedAbilities = ExportService.exportAbilities(config.abilities);
             await apiUpdateAbilities(projectId, mappedAbilities);
             
-            // Minimal Identity Sync
             const chassis = config.components.find(c => c.category === 'CHASSIS');
             if (chassis) {
                 await apiUpdateComponent(projectId, chassis.id, {
@@ -122,7 +139,6 @@ export default function App() {
                 });
             }
 
-            // Sync Mounting
             await Promise.all(config.components.map(c => apiUpdateComponent(projectId, c.id, {
                 struct_param: { extend_params: [
                     { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
@@ -130,7 +146,7 @@ export default function App() {
                 ]}
             })));
 
-            messageApi.loading({ content: '正在重构 CModel...', key: 'export', duration: 0 });
+            messageApi.loading({ content: '云端重组 CModel 中...', key: 'export', duration: 0 });
             const res = await axios.post(`${BACKEND_URL}/api/v1/models/${projectId}/compile`);
             
             if (res.data.status === 'success') {
@@ -141,11 +157,11 @@ export default function App() {
                 document.body.appendChild(link);
                 link.click();
                 link.remove();
-                messageApi.success({ content: '导出下载成功！', key: 'export' });
+                messageApi.success({ content: '模型构建成功并下载！', key: 'export' });
             }
         } catch (err) { 
             console.error('Export Error:', err);
-            messageApi.error({ content: '导出失败', key: 'export' }); 
+            messageApi.error({ content: '构建失败', key: 'export' }); 
         }
     };
 

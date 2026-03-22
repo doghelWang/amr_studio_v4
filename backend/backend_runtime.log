@@ -1,126 +1,114 @@
-INFO:     Started server process [30671]
+INFO:     Started server process [35081]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
 DEBUG: upload_cmodel called for ModelSet312.cmodel
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpb_71wkvt/decoded/CompDesc.json...
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp4tczls5_/decoded/CompDesc.json...
 Split complete. Extracted 20 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpb_71wkvt/split/blueprint_CompDesc.json
-DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpb_71wkvt/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_579b8c68
-DataManager: Copying FuncDesc.model
-DataManager: Copying AbiSet.json
-DataManager: Copying CompDesc.model
-DataManager: Copying AbiSet.model
-DataManager: Copying FuncDesc.json
-DataManager: Copying ModelFileDesc.json
-INFO:     127.0.0.1:64511 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "GET /api/v1/models/proj_579b8c68/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "OPTIONS /api/v1/models/proj_579b8c68/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "OPTIONS /api/v1/models/proj_579b8c68/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_579b8c68/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64523 - "OPTIONS /api/v1/models/proj_579b8c68/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "OPTIONS /api/v1/models/proj_579b8c68/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "OPTIONS /api/v1/models/proj_579b8c68/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_579b8c68/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "OPTIONS /api/v1/models/proj_579b8c68/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "OPTIONS /api/v1/models/proj_579b8c68/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_579b8c68/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "OPTIONS /api/v1/models/proj_579b8c68/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64531 - "OPTIONS /api/v1/models/proj_579b8c68/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "OPTIONS /api/v1/models/proj_579b8c68/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "OPTIONS /api/v1/models/proj_579b8c68/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "OPTIONS /api/v1/models/proj_579b8c68/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_579b8c68/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "OPTIONS /api/v1/models/proj_579b8c68/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64531 - "OPTIONS /api/v1/models/proj_579b8c68/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "OPTIONS /api/v1/models/proj_579b8c68/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "OPTIONS /api/v1/models/proj_579b8c68/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "OPTIONS /api/v1/models/proj_579b8c68/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "PATCH /api/v1/models/proj_579b8c68/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_579b8c68/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64531 - "PATCH /api/v1/models/proj_579b8c68/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_579b8c68/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "PATCH /api/v1/models/proj_579b8c68/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "PATCH /api/v1/models/proj_579b8c68/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_579b8c68/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "PATCH /api/v1/models/proj_579b8c68/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_579b8c68/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "PATCH /api/v1/models/proj_579b8c68/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64531 - "PATCH /api/v1/models/proj_579b8c68/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_579b8c68/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64531 - "PATCH /api/v1/models/proj_579b8c68/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_579b8c68/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64527 - "PATCH /api/v1/models/proj_579b8c68/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64511 - "PATCH /api/v1/models/proj_579b8c68/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64529 - "PATCH /api/v1/models/proj_579b8c68/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
-DEBUG: Entering compile_cmodel_api for proj_579b8c68
-ENCODER: Building /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_579b8c68/proj_579b8c68_packed.cmodel from /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_579b8c68/blueprint_CompDesc.json
-ENCODER: Done. Final size: 19203
-INFO:     127.0.0.1:64529 - "POST /api/v1/models/proj_579b8c68/compile HTTP/1.1" 200 OK
-INFO:     127.0.0.1:64543 - "GET /downloads/proj_579b8c68/proj_579b8c68_packed.cmodel HTTP/1.1" 200 OK
-DEBUG: upload_cmodel called for ModelSet312.cmodel
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp_jcwkrsk/decoded/CompDesc.json...
-Split complete. Extracted 20 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp_jcwkrsk/split/blueprint_CompDesc.json
-DataManager: Copying artifacts from /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp_jcwkrsk/decoded to /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_57fd760b
-DataManager: Copying FuncDesc.model
-DataManager: Copying AbiSet.json
-DataManager: Copying CompDesc.model
-DataManager: Copying AbiSet.model
-DataManager: Copying FuncDesc.json
-DataManager: Copying ModelFileDesc.json
-INFO:     127.0.0.1:49214 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "GET /api/v1/models/proj_57fd760b/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "OPTIONS /api/v1/models/proj_57fd760b/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "OPTIONS /api/v1/models/proj_57fd760b/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "OPTIONS /api/v1/models/proj_57fd760b/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "OPTIONS /api/v1/models/proj_57fd760b/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "OPTIONS /api/v1/models/proj_57fd760b/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "OPTIONS /api/v1/models/proj_57fd760b/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "OPTIONS /api/v1/models/proj_57fd760b/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "OPTIONS /api/v1/models/proj_57fd760b/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "OPTIONS /api/v1/models/proj_57fd760b/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "OPTIONS /api/v1/models/proj_57fd760b/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "OPTIONS /api/v1/models/proj_57fd760b/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "OPTIONS /api/v1/models/proj_57fd760b/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "OPTIONS /api/v1/models/proj_57fd760b/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "OPTIONS /api/v1/models/proj_57fd760b/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "OPTIONS /api/v1/models/proj_57fd760b/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "OPTIONS /api/v1/models/proj_57fd760b/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "OPTIONS /api/v1/models/proj_57fd760b/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "OPTIONS /api/v1/models/proj_57fd760b/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "OPTIONS /api/v1/models/proj_57fd760b/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "OPTIONS /api/v1/models/proj_57fd760b/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "OPTIONS /api/v1/models/proj_57fd760b/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "PATCH /api/v1/models/proj_57fd760b/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "PATCH /api/v1/models/proj_57fd760b/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "PATCH /api/v1/models/proj_57fd760b/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "PATCH /api/v1/models/proj_57fd760b/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "PATCH /api/v1/models/proj_57fd760b/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "PATCH /api/v1/models/proj_57fd760b/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "PATCH /api/v1/models/proj_57fd760b/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "PATCH /api/v1/models/proj_57fd760b/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "PATCH /api/v1/models/proj_57fd760b/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "PATCH /api/v1/models/proj_57fd760b/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "PATCH /api/v1/models/proj_57fd760b/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49239 - "PATCH /api/v1/models/proj_57fd760b/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49214 - "PATCH /api/v1/models/proj_57fd760b/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49245 - "PATCH /api/v1/models/proj_57fd760b/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49241 - "PATCH /api/v1/models/proj_57fd760b/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49243 - "PATCH /api/v1/models/proj_57fd760b/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49237 - "PATCH /api/v1/models/proj_57fd760b/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
-DEBUG: Entering compile_cmodel_api for proj_57fd760b
-ENCODER: Building /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_57fd760b/proj_57fd760b_packed.cmodel from /Users/wangfeifei/code/amr_studio_v4/backend/saved_projects/proj_57fd760b/blueprint_CompDesc.json
-ENCODER: Done. Final size: 22732
-INFO:     127.0.0.1:49237 - "POST /api/v1/models/proj_57fd760b/compile HTTP/1.1" 200 OK
-INFO:     127.0.0.1:49249 - "GET /downloads/proj_57fd760b/proj_57fd760b_packed.cmodel HTTP/1.1" 200 OK
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp4tczls5_/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:64461 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64461 - "GET /api/v1/models/proj_1cad053c/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64461 - "GET /api/v1/models/proj_1cad053c/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64467 - "GET /api/v1/models/proj_1cad053c/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64467 - "GET /api/v1/models/proj_1cad053c/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64467 - "OPTIONS /api/v1/models/proj_1cad053c/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 82bd967322c54e888ef9aaf9752aded0 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.privateAttr.privateAttrs[key:boardAttr].arrayBaseEle[key:type].comboType.typeKey: [MOTOR_SERVO_TYPE_KINCO] -> [MOTOR_SERVO_TYPE_ZAPI]
+DISK_AUDIT: [VALUE_CHANGE] root.privateAttr.privateAttrs[key:boardAttr].arrayBaseEle[key:type].combo_type.type_key: [None] -> [MOTOR_SERVO_TYPE_ZAPI]
+INFO:     127.0.0.1:64467 - "PATCH /api/v1/models/proj_1cad053c/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64467 - "GET /api/v1/models/proj_1cad053c/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64467 - "OPTIONS /api/v1/models/proj_1cad053c/abilities HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating AbilitySet <<<
+DISK_AUDIT: [VALUE_CHANGE] root.component_ability: [None] -> [[{'type': 'laser', 'entity': ['PEPPERL_FUCHS_R2000', 'SICK_TIM561', 'HOKUYO_UST20LX', 'SICK_LMS111', 'HOKUYO_UAM05', 'TIM510', 'HOKUYO_UST05LA', 'STS_NET_HOKUYO', 'KELI', 'SICK_NANO_SCAN3', 'RS16_LASER', 'LS16_LASER', 'TIM240', 'BLUESEA_LDS_50C', 'HINSON_LE50821', 'WANJI716', 'JIUWUM30E', 'MR_LS_01H', 'MR_LS_02H', 'SAGITAR_HELIOS_16P', 'MR_LS_01F_S1533', 'MR_LS_01W_N2525', 'BLUESEA_LDS_E300E', 'ORD_MS200', 'KELI_KLM', 'HINSON_LE50821_2', 'LIVOX_MID360', 'OL_LR1F', 'SICK_TIM473', 'MR_LS_02F_N3010', 'BLUESEA_LDS_E200E', 'MR_LS_03F_N3010', 'MR_LS_02W_S1525', 'SSTK_STL1_5', 'SSTK_STL1_6', 'SIMU_3DLASER', 'SIMU_LASER', 'GAZEBO_LASER', 'SIMU_LASER_OBS', 'MR_LS_01F_S1533_BLACK', 'MR_LS_01H_N2725', 'OMD25M-R2000-B23-V1V1D-SD-1L', 'OMD30M-R2000-B23-V1V1D-HD-1L', 'OMD30M-R2000-B23-V1V1D-1L', 'TIM561-2050101', 'UST-20LX', 'LMS111-10100', 'UAM-05LP-T301', 'TIM510-9950000S01', 'TIM510-9950000S08', 'UST-05LA', 'UST-05LN', 'STL1-3', 'NANS3-AAAZ30AN1', 'TIM240-2050300', 'LDS-50C-C30E', 'WLR-716', 'MR-LS-01H-N2725', 'MR-LS-01H-N2725N', 'MR-LS-02H-S2725', 'RS-LS-RS-HELIOS16P', 'MR-LS-01F-S1533-BLACK', 'MR-LS-01F-S1533-MIDDLE', 'LDS-E300-E', 'MID-360', 'TIM473-2050106', 'MR-LS-02F-N3010', 'WLR-718H', 'MR-LS-04H-N2005', 'STL1-6', 'LTME-02A-JK-YQ1', 'STL1-6A', 'STL1-6C', 'MICS3-CBAZ90PZ1P01']}, {'type': 'motor', 'entity': ['yk-100SV04202-0750K-012', 'EC-SV08D1-050M01BB', 'EC-SV08D1-050M01NB', 'Myk-80SV04302-0750G-036', '100SV04202_0750K_012', 'MCXL501TAF3KM', 'MCXL501TAFUKM']}]]
+DISK_AUDIT: [VALUE_CHANGE] root.function_ability: [None] -> [[{'type': 'locationAbility', 'desc': '定位能力', 'child_function': [{'key': '', 'desc': '导航', 'tips': '导航', 'attr': [{'key': 'naviUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'naviType', 'desc': '导航类型', 'tips': '导航类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}]}, {'type': 'HCI', 'desc': '人机交互', 'child_function': [{'key': '', 'desc': '灯光', 'tips': '灯光', 'attr': [{'key': 'ledUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'ledType', 'desc': '灯光类型', 'tips': '灯光类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}, {'key': '', 'desc': '按钮', 'tips': '按钮', 'attr': [{'key': 'btnUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'btnType', 'desc': '按钮类型', 'tips': '按钮类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}]}, {'type': 'safetyAbility', 'desc': '安全能力', 'child_function': [{'key': '', 'desc': '安全IO', 'tips': '安全IO', 'attr': [{'key': 'safetyIOUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'safeIOType', 'desc': '安全IO类型', 'tips': '安全IO类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}, {'key': '', 'desc': '避障传感器', 'tips': '避障传感器', 'attr': [{'key': 'safetySensorUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'sensorType', 'desc': '传感器类型', 'tips': '传感器类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}, {'key': '', 'desc': '避障范围', 'tips': '避障范围', 'attr': [{'key': 'safetyRoundUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'RoundType', 'desc': '避障范围类型', 'tips': '避障范围类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}]}, {'type': 'distMeasureAbility', 'desc': '透传测距', 'child_function': [{'key': '', 'desc': '测距', 'tips': '测距', 'attr': [{'key': 'distSensorUniqueKey', 'type': 'COMBOX_E', 'combox_param': {'key': 'distType', 'desc': '测距传感器', 'tips': '测距传感器', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}]}, {'type': 'actorAbility', 'desc': '执行机构能力', 'child_function': [{'key': '', 'desc': '执行机构', 'tips': '执行机构', 'attr': [{'key': 'moduleType', 'type': 'COMBOX_E', 'combox_param': {'key': 'moduleType', 'desc': '模块类型', 'tips': '模块类型', 'combox_source': 'CUSTOM_E', 'normalCombox': []}}]}]}]]
+INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component a6c2a0ccb9da489c8d58d7a583493893 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_name.string_value: [None] -> [Imported_AMR]
+DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.shape_type: [None] -> [ENUM_BOX]
+DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_len: [None] -> [1476]
+DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_width: [None] -> [1063]
+DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_height: [None] -> [178]
+INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64515 - "OPTIONS /api/v1/models/proj_1cad053c/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component a6c2a0ccb9da489c8d58d7a583493893 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component aef1e94374684741ab5aa36d1162f5f0 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 450}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64515 - "PATCH /api/v1/models/proj_1cad053c/components/aef1e94374684741ab5aa36d1162f5f0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64515 - "OPTIONS /api/v1/models/proj_1cad053c/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64519 - "OPTIONS /api/v1/models/proj_1cad053c/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 82bd967322c54e888ef9aaf9752aded0 <<<INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64515 - "OPTIONS /api/v1/models/proj_1cad053c/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_1cad053c/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64523 - "OPTIONS /api/v1/models/proj_1cad053c/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64517 - "PATCH /api/v1/models/proj_1cad053c/components/82bd967322c54e888ef9aaf9752aded0 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64515 - "OPTIONS /api/v1/models/proj_1cad053c/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_1cad053c/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64523 - "OPTIONS /api/v1/models/proj_1cad053c/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64517 - "OPTIONS /api/v1/models/proj_1cad053c/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component ca465f7732c043d09c33251d3e71cb0e <<<INFO:     127.0.0.1:64515 - "OPTIONS /api/v1/models/proj_1cad053c/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': -450}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64513 - "OPTIONS /api/v1/models/proj_1cad053c/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64521 - "OPTIONS /api/v1/models/proj_1cad053c/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64523 - "OPTIONS /api/v1/models/proj_1cad053c/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_1cad053c/components/ca465f7732c043d09c33251d3e71cb0e HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component baa1c9403ec24ad4924283322ff4af95 <<<DISK_AUDIT: >>> Updating component 13e6b0ff93bc49e2a89a214744cae88b <<<
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+
+DISK_AUDIT: >>> Updating component 82c4bc5d93dd40bfafc57e81773a6173 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 700}, {'key': 'locCoordY', 'double_value': 500}, {'key': 'locCoordZ', 'double_value': 50}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]INFO:     127.0.0.1:64515 - "PATCH /api/v1/models/proj_1cad053c/components/baa1c9403ec24ad4924283322ff4af95 HTTP/1.1" 200 OK
+
+DISK_AUDIT: >>> Updating component d2001a74c8b14cc8a6d67c8c4dca15c3 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/components/13e6b0ff93bc49e2a89a214744cae88b HTTP/1.1" 200 OK
+
+DISK_AUDIT: >>> Updating component c42343264c884ff2a0ca3fee8fc81997 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+DISK_AUDIT: >>> Updating component 639dde0162a3442489651066aaf9cdc7 <<<
+INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_1cad053c/components/82c4bc5d93dd40bfafc57e81773a6173 HTTP/1.1" 200 OK
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64523 - "PATCH /api/v1/models/proj_1cad053c/components/d2001a74c8b14cc8a6d67c8c4dca15c3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64527 - "PATCH /api/v1/models/proj_1cad053c/components/c42343264c884ff2a0ca3fee8fc81997 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_1cad053c/components/639dde0162a3442489651066aaf9cdc7 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 2dce6a0eb00c48ad9e16b1ab111a5de1 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]DISK_AUDIT: >>> Updating component b55630cb09d44f65ad482e9202714f1b <<<
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+DISK_AUDIT: >>> Updating component 30ce17ed495f40a6b90d85158c1d6f08 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 508}, {'key': 'locCoordY', 'double_value': -181}, {'key': 'locCoordZ', 'double_value': 100}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 90}]]
+INFO:     127.0.0.1:64515 - "PATCH /api/v1/models/proj_1cad053c/components/2dce6a0eb00c48ad9e16b1ab111a5de1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/components/b55630cb09d44f65ad482e9202714f1b HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 349a2134e3494755a776854914f78c83 <<<DISK_AUDIT: >>> Updating component 4202415039d54d8b8702065873899d42 <<<
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]DISK_AUDIT: >>> Updating component 5cd062a3b2df4938b1c1a06a61645f1f <<<DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 40}, {'key': 'locCoordZ', 'double_value': 145}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 180}]]
+
+
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': -40}, {'key': 'locCoordZ', 'double_value': 100}, {'key': 'locCoordROLL', 'double_value': 180}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 180}]]INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_1cad053c/components/30ce17ed495f40a6b90d85158c1d6f08 HTTP/1.1" 200 OK
+
+INFO:     127.0.0.1:64523 - "PATCH /api/v1/models/proj_1cad053c/components/4202415039d54d8b8702065873899d42 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 07719f03c3634193aed300c01012bff3 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+DISK_AUDIT: >>> Updating component 820decb04dd74f6480b7b9e6c8a2f7d8 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 700}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 80}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64525 - "PATCH /api/v1/models/proj_1cad053c/components/5cd062a3b2df4938b1c1a06a61645f1f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64527 - "PATCH /api/v1/models/proj_1cad053c/components/349a2134e3494755a776854914f78c83 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component a72279a85df345aba809eed5c2369108 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64513 - "PATCH /api/v1/models/proj_1cad053c/components/07719f03c3634193aed300c01012bff3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64515 - "PATCH /api/v1/models/proj_1cad053c/components/820decb04dd74f6480b7b9e6c8a2f7d8 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64521 - "PATCH /api/v1/models/proj_1cad053c/components/a72279a85df345aba809eed5c2369108 HTTP/1.1" 200 OK
+DISK_AUDIT: >>> Updating component 3cc65206187a4fb08c223ed77ddcf4c3 <<<
+DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
+INFO:     127.0.0.1:64523 - "PATCH /api/v1/models/proj_1cad053c/components/3cc65206187a4fb08c223ed77ddcf4c3 HTTP/1.1" 200 OK
+DEBUG: Entering compile_cmodel_api for proj_1cad053c
+ENCODER: Injecting modules with structural fidelity...
+INFO:     127.0.0.1:64523 - "POST /api/v1/models/proj_1cad053c/compile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64532 - "GET /downloads/proj_1cad053c/proj_1cad053c_packed.cmodel HTTP/1.1" 200 OK
