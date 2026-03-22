@@ -1,33 +1,64 @@
 import React, { useState, useMemo } from 'react';
 import { 
-    Layout, Typography, Button, Space, Modal, Card, 
-    Empty, Form, Input, InputNumber, Select, 
-    Row, Col, Tag, Divider, List, Tabs
+    Typography, Button, Space, Modal, Card, 
+    Empty, Form, Input, Select, 
+    Row, Col, Tag, Divider, Tree, Badge
 } from 'antd';
 import { 
     PlusOutlined, DeleteOutlined, 
     SettingOutlined, SearchOutlined,
     AppstoreOutlined, BuildOutlined,
-    QuestionCircleOutlined
+    QuestionCircleOutlined,
+    DeploymentUnitOutlined,
+    NodeIndexOutlined
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
-import masterRegistry from '../../store/master_registry.json';
 
 const { Title, Text } = Typography;
-const { Option } = Select;
 
 export const ComponentLibraryStep: React.FC = () => {
-    const { config, addComponent, removeComponent, activeComponentId, setActiveComponent } = useProjectStore();
+    const { config, removeComponent, activeComponentId, setActiveComponent } = useProjectStore();
     const [isAddModalOpen, setIsAddModal] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
 
     const components = config.components;
+
+    // ━━━ OPTIMIZATION: Transform Flat List to Hardware Tree ━━━
+    const treeData = useMemo(() => {
+        const map: Record<string, any> = {};
+        const roots: any[] = [];
+
+        // 1. Initialize nodes
+        components.forEach(c => {
+            map[c.id] = {
+                title: (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        <span style={{ fontWeight: 500 }}>{c.alias}</span>
+                        <Text type="secondary" style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>[{c.name}]</Text>
+                    </div>
+                ),
+                key: c.id,
+                icon: <BuildOutlined />,
+                children: []
+            };
+        });
+
+        // 2. Build Hierarchy
+        components.forEach(c => {
+            if (c.parentNodeUuid && map[c.parentNodeUuid]) {
+                map[c.parentNodeUuid].children.push(map[c.id]);
+            } else {
+                roots.push(map[c.id]);
+            }
+        });
+
+        return roots;
+    }, [components]);
 
     return (
         <div className="content-grid" style={{ height: 'calc(100vh - 160px)', display: 'flex', flexDirection: 'column' }}>
             <div className="section-title">
-                <AppstoreOutlined /> 3. 骨架装配与组件配置
+                <AppstoreOutlined /> 3. 骨架装配与硬件拓扑 (Hardware Skeleton)
             </div>
 
             <div style={{ 
@@ -35,82 +66,54 @@ export const ComponentLibraryStep: React.FC = () => {
                 display: 'flex', 
                 gap: 0, 
                 overflow: 'hidden',
-                background: '#1c2128', // Solid Dark
+                background: '#1c2128',
                 borderRadius: 12,
                 border: '1px solid var(--border-strong)',
                 boxShadow: '0 20px 50px rgba(0,0,0,0.4)'
             }}>
-                {/* ━━━ Left: Sidebar List ━━━ */}
+                {/* ━━━ Left: Hardware Tree ━━━ */}
                 <div style={{ 
-                    width: 320, 
+                    width: 350, 
                     display: 'flex', 
                     flexDirection: 'column', 
                     borderRight: '1px solid var(--border-default)',
                     background: 'rgba(0,0,0,0.2)'
                 }}>
-                    <div style={{ padding: '16px', borderBottom: '1px solid var(--border-default)' }}>
+                    <div style={{ padding: '16px', borderBottom: '1px solid var(--border-default)', display: 'flex', gap: 8 }}>
                         <Button 
                             type="primary" 
                             icon={<PlusOutlined />} 
-                            block 
+                            style={{ flex: 1, height: 36, borderRadius: 6 }}
                             onClick={() => setIsAddModal(true)}
-                            style={{ height: 40, borderRadius: 8, fontWeight: 600 }}
                         >
-                            添加新组件
+                            新增挂载
                         </Button>
+                        <Button icon={<NodeIndexOutlined />} style={{ width: 36 }} />
                     </div>
 
-                    <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
+                    <div style={{ flex: 1, overflowY: 'auto', padding: '12px' }}>
                         {components.length === 0 ? (
-                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无组件" style={{ marginTop: 40 }} />
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无硬件挂载" />
                         ) : (
-                            <List
-                                dataSource={components}
-                                renderItem={comp => (
-                                    <div 
-                                        key={comp.id}
-                                        onClick={() => setActiveComponent(comp.id)}
-                                        className={`component-item ${activeComponentId === comp.id ? 'active' : ''}`}
-                                        style={{
-                                            padding: '12px 16px',
-                                            borderRadius: 8,
-                                            cursor: 'pointer',
-                                            marginBottom: 4,
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 12,
-                                            transition: 'all 0.2s',
-                                            background: activeComponentId === comp.id ? 'var(--accent-soft)' : 'transparent',
-                                            border: '1px solid',
-                                            borderColor: activeComponentId === comp.id ? 'var(--accent)' : 'transparent'
-                                        }}
-                                    >
-                                        <div style={{ 
-                                            width: 32, height: 32, 
-                                            borderRadius: 6, 
-                                            background: 'var(--bg-main)', 
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                            border: '1px solid var(--border-default)'
-                                        }}>
-                                            <BuildOutlined style={{ color: activeComponentId === comp.id ? 'var(--accent)' : 'var(--text-muted)' }} />
-                                        </div>
-                                        <div style={{ flex: 1, minWidth: 0 }}>
-                                            <div style={{ fontWeight: 600, fontSize: 13, color: activeComponentId === comp.id ? '#fff' : 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                {comp.alias}
-                                            </div>
-                                            <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-                                                {comp.name}
-                                            </div>
-                                        </div>
-                                        <Button 
-                                            type="text" size="small" danger
-                                            icon={<DeleteOutlined />}
-                                            onClick={e => { e.stopPropagation(); removeComponent(comp.id); }}
-                                        />
-                                    </div>
-                                )}
+                            <Tree
+                                showIcon
+                                defaultExpandAll
+                                treeData={treeData}
+                                selectedKeys={activeComponentId ? [activeComponentId] : []}
+                                onSelect={(keys) => keys[0] && setActiveComponent(keys[0] as string)}
+                                blockNode
+                                className="custom-hardware-tree"
+                                style={{ background: 'transparent' }}
                             />
                         )}
+                    </div>
+                    
+                    <div style={{ padding: 12, background: 'rgba(0,0,0,0.1)', borderTop: '1px solid var(--border-default)' }}>
+                        <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 8 }}>拓扑概准</div>
+                        <Space split={<Divider type="vertical" />}>
+                            <Badge status="processing" text={<span style={{fontSize: 11, color: 'var(--text-muted)'}}>总数: {components.length}</span>} />
+                            <Badge status="success" text={<span style={{fontSize: 11, color: 'var(--text-muted)'}}>在线</span>} />
+                        </Space>
                     </div>
                 </div>
 
@@ -118,17 +121,46 @@ export const ComponentLibraryStep: React.FC = () => {
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#0d1117' }}>
                     {activeComponentId ? (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ padding: '16px 24px', borderBottom: '1px solid var(--border-default)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <div>
-                                    <Tag color="blue" style={{ marginBottom: 4 }}>{components.find(c => c.id === activeComponentId)?.category}</Tag>
-                                    <Title level={4} style={{ margin: 0 }}>{components.find(c => c.id === activeComponentId)?.alias}</Title>
+                            {/* Dashboard Header */}
+                            <div style={{ padding: '20px 24px', borderBottom: '1px solid var(--border-default)', background: 'linear-gradient(to right, rgba(88,166,255,0.05), transparent)' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                    <div>
+                                        <Space size={4} style={{ marginBottom: 8 }}>
+                                            <Tag color="cyan" bordered={false}>{components.find(c => c.id === activeComponentId)?.category}</Tag>
+                                            <Tag color="purple" bordered={false}>{components.find(c => c.id === activeComponentId)?.type}</Tag>
+                                        </Space>
+                                        <Title level={3} style={{ margin: 0, color: '#f0f6fc' }}>
+                                            {components.find(c => c.id === activeComponentId)?.alias}
+                                        </Title>
+                                    </div>
+                                    <Space>
+                                        <Button icon={<DeleteOutlined />} danger onClick={() => removeComponent(activeComponentId)}>移除</Button>
+                                        <Button type="primary" ghost icon={<SettingOutlined />}>参数标定</Button>
+                                    </Space>
                                 </div>
-                                <Space>
-                                    <Button icon={<SettingOutlined />}>高级设置</Button>
-                                    <Button icon={<QuestionCircleOutlined />} />
-                                </Space>
+                                
+                                <Divider style={{ margin: '16px 0', opacity: 0.5 }} />
+                                
+                                {/* ━━━ OPTIMIZATION: Interface Resource Dashboard ━━━ */}
+                                <Row gutter={40}>
+                                    <Col>
+                                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>已用/总接口 (Ability)</div>
+                                        <Space size={12} style={{ marginTop: 4 }}>
+                                            <div className="res-mini-tag"><span>CAN</span> <strong>1/2</strong></div>
+                                            <div className="res-mini-tag"><span>DI</span> <strong>4/8</strong></div>
+                                            <div className="res-mini-tag"><span>DO</span> <strong>2/4</strong></div>
+                                        </Space>
+                                    </Col>
+                                    <Col>
+                                        <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>空间位姿 (6-DOF)</div>
+                                        <div style={{ marginTop: 4, fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--accent)' }}>
+                                            X:{components.find(c => c.id === activeComponentId)?.mountX} Y:{components.find(c => c.id === activeComponentId)?.mountY}
+                                        </div>
+                                    </Col>
+                                </Row>
                             </div>
-                            <div style={{ flex: 1, overflowY: 'auto', padding: 24 }}>
+
+                            <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px' }}>
                                 <ComponentPropertyPanel 
                                     projectId={useProjectStore.getState().projectId} 
                                     selectedUuid={activeComponentId} 
@@ -136,29 +168,41 @@ export const ComponentLibraryStep: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <Empty description="选择一个组件以查看和编辑其详细参数" />
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.5 }}>
+                            <DeploymentUnitOutlined style={{ fontSize: 60, marginBottom: 20 }} />
+                            <Title level={5}>请在左侧硬件树中选择节点</Title>
+                            <Text type="secondary">点击节点可进入详细参数标定界面</Text>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Add Component Modal Placeholder */}
             <Modal title="从库中选择组件" open={isAddModalOpen} onCancel={() => setIsAddModal(false)} footer={null} width={800}>
                 <Input prefix={<SearchOutlined />} placeholder="搜索组件 (雷达, 电机, 控制器...)" style={{ marginBottom: 20 }} />
                 <div style={{ height: 400, overflowY: 'auto' }}>
-                    {/* Registry List would go here */}
                     <Text type="secondary">注册表组件加载中...</Text>
                 </div>
             </Modal>
 
             <style>{`
-                .component-item:hover {
-                    background: rgba(255,255,255,0.05) !important;
+                .custom-hardware-tree .ant-tree-node-content-wrapper {
+                    padding: 4px 8px !important;
+                    border-radius: 6px !important;
+                    transition: all 0.2s !important;
                 }
-                .component-item.active:hover {
-                    background: var(--accent-soft) !important;
+                .custom-hardware-tree .ant-tree-node-selected {
+                    background-color: var(--accent-soft) !important;
+                    color: var(--accent) !important;
                 }
+                .res-mini-tag {
+                    font-size: 10px;
+                    background: rgba(255,255,255,0.05);
+                    padding: 2px 8px;
+                    border-radius: 4px;
+                    border: 1px solid var(--border-default);
+                }
+                .res-mini-tag span { color: var(--text-muted); margin-right: 4px; }
+                .res-mini-tag strong { color: var(--accent); }
             `}</style>
         </div>
     );
