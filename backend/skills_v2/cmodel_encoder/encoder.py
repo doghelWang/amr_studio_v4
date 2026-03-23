@@ -11,7 +11,8 @@ try:
     import abi_set_runtime as controller_model_abi_set_pb2
     import abi_desc_runtime as controller_model_abi_desc_pb2
 except ImportError as e:
-    sys.exit(1)
+    print(f"ImportError in encoder.py: {e}", file=sys.stderr)
+    raise
 
 from google.protobuf.json_format import ParseDict
 

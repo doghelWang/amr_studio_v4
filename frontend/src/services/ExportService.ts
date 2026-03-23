@@ -64,7 +64,7 @@ export class ExportService {
                                 key: o.key,
                                 desc: o.desc,
                                 // ━━━ PROTO ALIGNMENT: arrayCmobEle ━━━
-                                arrayCmobEle: o.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
+                                arrayCmobEle: o.arrayAttr?.map((sub: any) => this.mapAttributeToCModel(sub))
                             }))
                         } : undefined
                     }))

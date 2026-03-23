@@ -38,6 +38,22 @@ AMR Studio V4 是一款面向工业级自动移动机器人（AMR）设计的高
 3. 启动开发环境：`npm run dev -- --port 3001`。
    - **访问地址：http://localhost:3001**
 
+## 🐛 常见错误及解决办法 (Known Issues & Solutions)
+
+### 1. 后端: `ImportError: cannot import name 'runtime_version' from 'google.protobuf'`
+- **现象描述**：执行 `python main.py` 时以 exit 1 退出，报错包含上述信息。
+- **原因分析**：自动安装的 `protobuf` 依赖版本 (3.10.0) 库过旧，与使用新版协议栈生成的 `_pb2.py` 文件不兼容。
+- **解决办法**：在虚拟环境中单独升级 `protobuf` 依赖，运行：
+  ```bash
+  pip install --upgrade protobuf
+  ```
+
+### 2. 前端: `error TS2339: Property 'arrayCmobEle' does not exist...`
+- **现象描述**：执行 `npm run build` 或 `npm run dev` 报错 TS2339 出现在 `ExportService.ts`。
+- **原因分析**：`src/services/ExportService.ts` 文件中，对下拉框子选项数组属性和协议发生错位，对象类型定义为 `arrayAttr`。
+- **解决办法**：修改 `ExportService.ts` 第 67 行，将 `o.arrayCmobEle` 替换为正确的键名 `o.arrayAttr` 即可。
+
+
 ## 📜 维护约束 (Development Rules)
 - **协议唯一性**：前后端数据交换必须对齐官方 CamelCase 规范。
 - **文档同步**：每次更新后必须同步维护 README 文件。
