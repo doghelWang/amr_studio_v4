@@ -255,8 +255,19 @@ export class ImportService {
                attr.stringFix ?? attr.string_fix;
     }
 
-    private static findExtend(params: any[], key: string): number {
-        const p = params?.find((p: any) => p.key === key);
-        return p?.doubleValue ?? p?.double_value ?? p?.floatValue ?? p?.float_value ?? 0;
+    /**
+     * Maps a raw library entity (e.g. 3DLaser-Common.json) to a live ComponentConfig.
+     */
+    static mapEntityToComponent(entityJson: any): ComponentConfig {
+        const comp = (entityJson.moduleComponets || entityJson.module_componets || [])[0];
+        if (!comp) throw new Error("Invalid entity JSON: no components found");
+
+        const groupName = entityJson.moduleGroupName || "LibraryGroup";
+        const groupUuid = uuidv4();
+        
+        // Generate a FRESH ID for this instance
+        const newId = uuidv4();
+        
+        const mapped = this.mapToComponent(comp, groupName, groupUuid, null);
+        return { ...mapped, id: newId };
     }
-}

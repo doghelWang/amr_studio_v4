@@ -113,5 +113,50 @@ def compile_cmodel_api(project_id: str):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/v1/resources/boards")
+def list_boards_api():
+    boards = []
+    host_dir = Path("docs/files/board_desc/host")
+    if host_dir.exists():
+        for f in host_dir.glob("*.json"):
+            with open(f, "r", encoding="utf-8") as file:
+                data = json.load(file)
+                board_id = list(data.keys())[0]
+                info = data[board_id].get("基本信息", {})
+                boards.append({
+                    "id": board_id,
+                    "name": info.get("name"),
+                    "desc": info.get("desc"),
+                    "full_data": data[board_id]
+                })
+    return boards
+
+@app.get("/api/v1/resources/modules")
+def list_modules_api():
+    entities = {}
+    base_path = Path("docs/files/modulelibrary/ModuleEntity")
+    if not base_path.exists(): return []
+    
+    # Categories: SensorSys, DriverSys, etc.
+    for sys_dir in base_path.iterdir():
+        if sys_dir.is_dir():
+            sys_name = sys_dir.name
+            entities[sys_name] = []
+            # Internal files
+            internal_dir = sys_dir / "Internal"
+            if internal_dir.exists():
+                for f in internal_dir.glob("*.json"):
+                    try:
+                        with open(f, "r", encoding="utf-8") as file:
+                            data = json.load(file)
+                            # Basic summary for card display
+                            entities[sys_name].append({
+                                "file_name": f.name,
+                                "moduleGroupName": data.get("moduleGroupName"),
+                                "full_data": data
+                            })
+                    except: continue
+    return entities
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8002)
