@@ -1,16 +1,17 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { message, Tooltip } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
     AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined,
     ImportOutlined, ExportOutlined,
-    UndoOutlined, RedoOutlined,
+    UndoOutlined, RedoOutlined, PlusOutlined,
 } from '@ant-design/icons';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
 import { useUIStore } from './store/useUIStore';
 import { ExportService } from './services/ExportService';
 import { ImportService } from './store/ImportService';
+import { WelcomeScreen } from './components/WelcomeScreen';
 import axios from 'axios';
 
 import { 
@@ -46,11 +47,13 @@ const STEP_COMPONENTS = [
 const BACKEND_URL = "http://localhost:8002";
 
 export default function App() {
-    const { config, isDirty, loadProject, projectId, setProjectId } = useProjectStore();
+    const { config, isDirty, loadProject, resetProject, projectId, setProjectId } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
     const importRef = useRef<HTMLInputElement>(null);
+    // ── Welcome screen: show on initial load until user picks an action
+    const [showWelcome, setShowWelcome] = useState(true);
 
     const handleImportClick = () => importRef.current?.click();
 
@@ -71,9 +74,11 @@ export default function App() {
         console.groupEnd();
     };
 
-    const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+    const handleImport = async (e: React.ChangeEvent<HTMLInputElement> | File) => {
+        const file = e instanceof File ? e : e.target.files?.[0];
         if (!file) return;
+        // If called from WelcomeScreen, also close it
+        setShowWelcome(false);
         try {
             messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
             const formData = new FormData();
@@ -94,9 +99,19 @@ export default function App() {
             console.error('Import Error:', err);
             messageApi.error({ content: '导入失败', key: 'import' }); 
         } finally {
-            // Reset input so the same file can be imported again
-            e.target.value = '';
+            if (!(e instanceof File) && e.target) e.target.value = '';
         }
+    };
+
+    // Handler for the hidden input (legacy sidebar button)
+    const handleImportChange = (e: React.ChangeEvent<HTMLInputElement>) => handleImport(e);
+
+    // WelcomeScreen handler for "Create New"
+    const handleCreateNew = () => {
+        resetProject();
+        setProjectId(null);
+        setStep(0);
+        setShowWelcome(false);
     };
 
     const handleExport = async () => {
@@ -172,6 +187,15 @@ export default function App() {
     return (
         <div className="app-layout">
             {contextHolder}
+            {/* ── Welcome Screen (shown on first load) ── */}
+            {showWelcome && (
+                <div style={{ position: 'fixed', inset: 0, zIndex: 9999 }}>
+                    <WelcomeScreen
+                        onCreateNew={handleCreateNew}
+                        onImport={(file) => handleImport(file)}
+                    />
+                </div>
+            )}
             <aside className="app-sidebar">
                 <div className="sidebar-logo"><div className="logo-icon">⚡</div><span className="logo-text">AMR Studio</span></div>
                 <nav className="sidebar-nav">
@@ -190,8 +214,9 @@ export default function App() {
                         ref={importRef} 
                         style={{ display: 'none' }} 
                         accept=".cmodel,.json"
-                        onChange={handleImport}
+                        onChange={handleImportChange}
                     />
+                    <button className="sidebar-action-btn" onClick={() => setShowWelcome(true)}><PlusOutlined /> 新建项目</button>
                     <button className="sidebar-action-btn" onClick={handleImportClick}><ImportOutlined /> 导入 .cmodel</button>
                     <button className="sidebar-action-btn primary" onClick={handleExport}><ExportOutlined /> 导出配置</button>
                 </div>

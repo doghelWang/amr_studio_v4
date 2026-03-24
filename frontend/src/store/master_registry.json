@@ -252,7 +252,12 @@
                     "type": "DATA_DOUBLE"
                 }
             ],
-            "interfaces": [],
+            "interfaces": [
+                {
+                    "name": "CAN_1",
+                    "type": "CAN"
+                }
+            ],
             "structParams": []
         },
         "linear": {

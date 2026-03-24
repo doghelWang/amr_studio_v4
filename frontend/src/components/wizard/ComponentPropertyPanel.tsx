@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Spin, Empty, InputNumber, Switch, Select, message, 
-    Input, Card, Tag, Tabs, Divider, List, Space, Typography 
+    Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert
 } from 'antd';
 import { 
     EnvironmentOutlined, 
     IdcardOutlined, 
     SettingOutlined, 
     DeploymentUnitOutlined,
-    InfoCircleOutlined
+    InfoCircleOutlined,
+    EyeOutlined,
+    EyeInvisibleOutlined,
 } from '@ant-design/icons';
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
 
 const { Text } = Typography;
+const { Panel } = Collapse;
 
 interface Props {
   projectId: string | null;
@@ -23,6 +26,7 @@ interface Props {
 export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUuid }) => {
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const { config, updateAttribute, updateStructuralParam } = useProjectStore();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -31,6 +35,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
                          selectedStoreComponent?.category === 'CONTROL' || 
                          selectedStoreComponent?.category === 'IO_BOARD';
 
+  // ━━━ Try to fetch from backend if projectId is available ━━━
   useEffect(() => {
     if (projectId && selectedUuid) {
       setLoading(true);
@@ -40,10 +45,13 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
             setLoading(false);
         })
         .catch(err => {
-            console.error(err);
+            console.warn('[ComponentPropertyPanel] Backend fetch failed, using store data:', err);
             setCompData(null);
             setLoading(false);
         });
+    } else {
+      // No project loaded → clear any stale backend data, use store data
+      setCompData(null);
     }
   }, [projectId, selectedUuid]);
 
@@ -62,47 +70,65 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
   };
 
   const handleValueUpdate = (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
-      const newData = JSON.parse(JSON.stringify(compData));
-      
-      const updateInTree = (nodes: any[]) => {
-          for (let node of nodes) {
-              if (node.key === eleKey) {
-                  if (typeKey === 'combo_type' || typeKey === 'comboType') {
-                      if (!node.combo_type) node.combo_type = {};
-                      if (!node.comboType) node.comboType = {};
-                      node.combo_type.type_key = newValue;
-                      node.comboType.typeKey = newValue;
-                  } else {
-                      node[typeKey] = newValue;
+      if (compData) {
+          // ── Backend-loaded mode ──
+          const newData = JSON.parse(JSON.stringify(compData));
+          
+          const updateInTree = (nodes: any[]) => {
+              for (let node of nodes) {
+                  if (node.key === eleKey) {
+                      if (typeKey === 'combo_type' || typeKey === 'comboType') {
+                          if (!node.combo_type) node.combo_type = {};
+                          if (!node.comboType) node.comboType = {};
+                          node.combo_type.type_key = newValue;
+                          node.comboType.typeKey = newValue;
+                      } else {
+                          node[typeKey] = newValue;
+                      }
+                      return true;
                   }
-                  return true;
-              }
-              const combo = node.comboType || node.combo_type;
-              if (combo) {
-                  const groups = combo.typeGroups || combo.type_groups || [];
-                  for (let group of groups) {
-                      const subs = group.arrayCmobEle || group.array_cmob_ele || [];
-                      if (updateInTree(subs)) return true;
+                  const combo = node.comboType || node.combo_type;
+                  if (combo) {
+                      const groups = combo.typeGroups || combo.type_groups || [];
+                      for (let group of groups) {
+                          const subs = group.arrayCmobEle || group.array_cmob_ele || [];
+                          if (updateInTree(subs)) return true;
+                      }
                   }
               }
-          }
-          return false;
-      };
+              return false;
+          };
 
-      const privateAttrBranch = newData.privateAttr || newData.private_attr || {};
-      const groups = privateAttrBranch.privateAttrs || privateAttrBranch.private_attrs || [];
-      const targetGroup = groups.find((g: any) => g.key === groupKey);
-      
-      if (targetGroup) {
-          updateInTree(targetGroup.arrayBaseEle || targetGroup.array_base_ele || []);
+          const privateAttrBranch = newData.privateAttr || newData.private_attr || {};
+          const groups = privateAttrBranch.privateAttrs || privateAttrBranch.private_attrs || [];
+          const targetGroup = groups.find((g: any) => g.key === groupKey);
+          
+          if (targetGroup) {
+              updateInTree(targetGroup.arrayBaseEle || targetGroup.array_base_ele || []);
+          }
+
+          setCompData(newData);
+          syncPrivateAttrs(newData);
       }
 
-      setCompData(newData);
-      syncPrivateAttrs(newData);
+      // Always update the Zustand store for consistency
       updateAttribute(selectedUuid, groupKey, eleKey, newValue);
   };
 
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // renderAttribute: renders an individual attribute element
+  // Supports boolHide via showAdvanced toggle
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   const renderAttribute = (ele: any, groupKey: string, depth = 0) => {
+    // Hide motionCenterAttr for CHASSIS (extracted to ChassisStep)
+    if (selectedStoreComponent?.category === 'CHASSIS' && groupKey === 'motionCenterAttr') {
+        return null;
+    }
+
+    // Respect boolHide unless user toggled advanced view
+    const isHidden = ele.boolHide === true;
+    if (isHidden && !showAdvanced) return null;
+
     const combo = ele.comboType || ele.combo_type;
     const typeKey = combo?.typeKey || combo?.type_key;
     const groups = combo?.typeGroups || combo?.type_groups || [];
@@ -111,40 +137,56 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     const numType = (ele.doubleValue !== undefined || ele.double_value !== undefined) ? 'doubleValue' : 'floatValue';
     const intValue = ele.int32Value ?? ele.int32_value ?? ele.uint32Value ?? ele.uint32_value ?? ele.int64Value ?? ele.int64_value;
     const intType = (ele.int32Value !== undefined || ele.int32_value !== undefined) ? 'int32Value' : 'int64Value';
+    
+    // Handle SmartAttribute from store (value field)
+    const storeValue = ele.value;
 
     let inputNode = null;
     if (numericValue !== undefined) {
-        inputNode = <InputNumber disabled={isFixedHardware} style={{ width: '100%' }} value={numericValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, numType)} />;
+        inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={numericValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, numType)} />;
     } else if (intValue !== undefined) {
-        inputNode = <InputNumber disabled={isFixedHardware} style={{ width: '100%' }} value={intValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, intType)} />;
+        inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={intValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, intType)} />;
     } else if (ele.boolValue !== undefined || ele.bool_value !== undefined) {
-        inputNode = <Switch disabled={isFixedHardware} checked={ele.boolValue ?? ele.bool_value} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
+        inputNode = <Switch disabled={isFixedHardware || ele.boolNoeditable} checked={ele.boolValue ?? ele.bool_value} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
     } else if (ele.stringValue !== undefined || ele.string_value !== undefined) {
-        inputNode = <Input disabled={isFixedHardware} value={ele.stringValue ?? ele.string_value} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
+        inputNode = <Input disabled={isFixedHardware || ele.boolNoeditable} value={ele.stringValue ?? ele.string_value} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
     } else if (combo) {
         inputNode = (
             <Select 
-                disabled={isFixedHardware}
+                disabled={isFixedHardware || ele.boolNoeditable}
                 value={typeKey} 
                 style={{ width: '100%' }}
                 options={groups.map((g: any) => ({ label: g.desc || g.key, value: g.key }))}
                 onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'comboType')}
             />
         );
+    } else if (storeValue !== undefined && storeValue !== null) {
+        // Fallback: store SmartAttribute with .value field
+        if (typeof storeValue === 'number') {
+            inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={storeValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'doubleValue')} />;
+        } else if (typeof storeValue === 'boolean') {
+            inputNode = <Switch disabled={isFixedHardware || ele.boolNoeditable} checked={storeValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
+        } else {
+            inputNode = <Input disabled={isFixedHardware || ele.boolNoeditable} value={String(storeValue)} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
+        }
     }
 
     return (
-        <div key={ele.key} style={{ marginBottom: 12, marginLeft: depth * 16 }}>
-            <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
-                <span style={{ fontWeight: depth > 0 ? 400 : 600 }}>{ele.desc || ele.key}</span>
+        <div key={ele.key} style={{ marginBottom: 12, marginLeft: depth * 16, opacity: isHidden ? 0.65 : 1 }}>
+            <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: depth > 0 ? 400 : 600 }}>
+                    {ele.desc || ele.key}
+                    {ele.boolMustfill && <Tag color="error" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px' }}>必填</Tag>}
+                    {isHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>高级</Tag>}
+                </span>
                 {ele.unit && <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>{ele.unit}</span>}
             </div>
-            {inputNode}
+            {inputNode || <Text type="secondary" style={{ fontSize: 11 }}>-</Text>}
             {combo && groups && (
                 <div style={{ marginTop: 8, borderLeft: '2px solid var(--accent-soft)', paddingLeft: 12, marginBottom: 16 }}>
                     {groups
                         .filter((g: any) => g.key === typeKey)
-                        .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || [])
+                        .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || g.arrayAttr || [])
                         .map((sub: any) => renderAttribute(sub, groupKey, depth + 1))
                     }
                 </div>
@@ -153,13 +195,40 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     );
   };
 
+  // ━━━ Render a group of attributes (from either backend or store format) ━━━
+  const renderGroup = (group: any) => {
+      // group might be from backend (arrayBaseEle) or from store (elements)
+      const elems = group.arrayBaseEle || group.array_base_ele || group.elements || [];
+      const rendered = elems.map((ele: any) => renderAttribute(ele, group.key)).filter(Boolean);
+      if (rendered.length === 0) return null;
+      return (
+          <Card key={group.key} title={group.desc || group.key} size="small" 
+                style={{ marginBottom: 12, borderRadius: 8, background: 'rgba(255,255,255,0.01)' }}>
+              {rendered}
+          </Card>
+      );
+  };
+
   if (loading) return <div style={{ textAlign: 'center', padding: 40 }}><Spin /></div>;
   if (!selectedStoreComponent) return <Empty description="选择一个组件进行查看" />;
 
-  const privateAttr = compData?.privateAttr || compData?.private_attr || {};
-  const groups = privateAttr.privateAttrs || privateAttr.private_attrs || [];
-  const gen = compData?.generalAttr || compData?.general_attr || {};
-  const moduleName = gen.moduleName?.stringValue || gen.module_name?.string_value || selectedStoreComponent.name;
+  // ━━━ CRITICAL FIX: Use backend data when available, otherwise fall back to Zustand store ━━━
+  // Backend data format: compData.privateAttr.privateAttrs[].arrayBaseEle[]
+  // Store data format: selectedStoreComponent.privateAttrs[].elements[]
+  const backendPrivateAttr = compData?.privateAttr || compData?.private_attr || {};
+  const backendGroups = backendPrivateAttr.privateAttrs || backendPrivateAttr.private_attrs || [];
+  
+  // Use store as primary when no backend data (no projectId / fresh component)
+  const storeGroups = selectedStoreComponent.privateAttrs || [];
+  
+  const activeGroups = backendGroups.length > 0 ? backendGroups : storeGroups;
+  const hasAttributes = activeGroups.length > 0;
+
+  const gen = compData?.generalAttr || compData?.general_attr || selectedStoreComponent.generalAttr || {};
+  const moduleName = (gen.moduleName?.stringValue || gen.module_name?.string_value || selectedStoreComponent.name) ?? selectedStoreComponent.name;
+
+  // Interfaces: prefer store interfaces array
+  const activeInterfaces = selectedStoreComponent.interfaces || [];
 
   const tabItems = [
       {
@@ -208,6 +277,12 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
                       <Text type="secondary" style={{ fontSize: 11 }}>分类 (Category)</Text>
                       <Tag color="cyan">{selectedStoreComponent.category}</Tag>
                   </List.Item>
+                  {selectedStoreComponent.moduleGroupName && (
+                      <List.Item style={{ flexDirection: 'column', alignItems: 'flex-start', border: 'none' }}>
+                          <Text type="secondary" style={{ fontSize: 11 }}>模块组 (Group)</Text>
+                          <Tag color="geekblue">{selectedStoreComponent.moduleGroupName}</Tag>
+                      </List.Item>
+                  )}
               </List>
           )
       },
@@ -221,13 +296,29 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
                           <Tag color="orange" icon={<InfoCircleOutlined />} bordered={false}>固化硬件资源不可修改</Tag>
                       </div>
                   )}
-                  {groups.length === 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="无私有属性" /> : 
-                      groups.map((group: any) => (
-                        <Card key={group.key} title={group.desc || group.key} size="small" style={{ marginBottom: 12, borderRadius: 8, background: 'rgba(255,255,255,0.01)' }}>
-                          {(group.arrayBaseEle || group.array_base_ele || []).map((ele: any) => renderAttribute(ele, group.key))}
-                        </Card>
-                      ))
-                  }
+                  {/* Advanced Toggle */}
+                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 12 }}>
+                      <Button 
+                          size="small" 
+                          type="text" 
+                          icon={showAdvanced ? <EyeInvisibleOutlined /> : <EyeOutlined />}
+                          onClick={() => setShowAdvanced(v => !v)}
+                          style={{ color: 'var(--text-muted)', fontSize: 11 }}
+                      >
+                          {showAdvanced ? '隐藏高级属性' : '展开高级属性'}
+                      </Button>
+                  </div>
+                  {!hasAttributes ? (
+                      <Alert 
+                          message="该模块暂无私有属性数据"
+                          description="模块数据来自资源库，若库中无该模块的私有属性定义，则此处为空。您仍可编辑安装标定及标识属性。"
+                          type="info"
+                          showIcon
+                          style={{ marginBottom: 16 }}
+                      />
+                  ) : (
+                      activeGroups.map((group: any) => renderGroup(group)).filter(Boolean)
+                  )}
               </div>
           )
       },
@@ -235,32 +326,53 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
           key: 'interfaces',
           label: <Space><DeploymentUnitOutlined />接口资源</Space>,
           children: (
-              <List
-                  size="small"
-                  dataSource={selectedStoreComponent.interfaces}
-                  renderItem={item => (
-                      <List.Item style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                          <Space direction="vertical" size={0} style={{ width: '100%' }}>
-                              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                  <Text strong style={{ color: 'var(--accent)' }}>{item.key}</Text>
-                                  <Tag color="default" style={{ margin: 0 }}>{item.type}</Tag>
-                              </div>
-                              <Text type="secondary" style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>UUID: {item.interfaceUuid}</Text>
-                          </Space>
-                      </List.Item>
-                  )}
-                  locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="该模块无declared接口" /> }}
-              />
+              activeInterfaces.length === 0 ? (
+                  <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="该模块无已声明接口" />
+              ) : (
+                  <List
+                      size="small"
+                      dataSource={activeInterfaces}
+                      renderItem={item => (
+                          <List.Item style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                              <Space direction="vertical" size={0} style={{ width: '100%' }}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                      <Text strong style={{ color: 'var(--accent)' }}>{item.key}</Text>
+                                      <Tag color="default" style={{ margin: 0 }}>{item.type}</Tag>
+                                  </div>
+                                  {item.desc && item.desc !== item.key && (
+                                      <Text type="secondary" style={{ fontSize: 10 }}>{item.desc}</Text>
+                                  )}
+                                  <Text type="secondary" style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>UUID: {item.interfaceUuid}</Text>
+                              </Space>
+                          </List.Item>
+                      )}
+                  />
+              )
           )
       }
   ];
 
+  let visibleTabs = tabItems;
+  if (selectedStoreComponent.category === 'CHASSIS') {
+      visibleTabs = tabItems.filter(t => t.key !== 'mounting' && t.key !== 'interfaces');
+  }
+
   return (
     <div className="property-panel-container" style={{ padding: '0 8px' }}>
       {contextHolder}
+      {!projectId && hasAttributes && (
+          <Alert 
+              message="实时模式 (本地)" 
+              description="当前未加载项目文件，属性数据来自组件库定义，修改将实时保存在内存中。"
+              type="info" 
+              showIcon 
+              closable 
+              style={{ marginBottom: 12, fontSize: 11 }}
+          />
+      )}
       <Tabs 
-        defaultActiveKey="mounting" 
-        items={tabItems} 
+        defaultActiveKey={selectedStoreComponent.category === 'CHASSIS' ? 'identity' : 'private'}
+        items={visibleTabs} 
         size="small"
         className="custom-property-tabs"
       />

@@ -1,13 +1,63 @@
 import React from 'react';
-import { Form, Input, Select, Row, Col, Divider, Card, Space, Typography } from 'antd';
+import { Form, Input, Select, Row, Col, Divider, Card, Space, Typography, Alert, Tag } from 'antd';
 import { 
     RobotOutlined, TagOutlined, DeploymentUnitOutlined, 
-    RocketOutlined, ShoppingOutlined, AuditOutlined 
+    RocketOutlined, ShoppingOutlined, AuditOutlined,
+    RadarChartOutlined, ThunderboltOutlined, CheckCircleOutlined
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 
 const { Option } = Select;
 const { Text, Title } = Typography;
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Linkage maps: navigation method → required sensors
+// driveType → recommended wheel group
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const NAV_SENSOR_MAP: Record<string, { label: string; color: string; sensorHint: string }> = {
+    LASER_SLAM: {
+        label: '激光 SLAM',
+        color: 'blue',
+        sensorHint: '必须在【感知避障】中添加导航激光雷达（2D或3D），并关联至导航功能。',
+    },
+    VISUAL_SLAM: {
+        label: '视觉 SLAM',
+        color: 'purple',
+        sensorHint: '必须在【感知避障】中添加立体相机（深度相机），用于视觉里程计。',
+    },
+    QR_CODE: {
+        label: '二维码导航',
+        color: 'green',
+        sensorHint: '必须在【感知避障】中添加向下二维码相机，以保证地标识别准确率。',
+    },
+};
+
+const DRIVE_WHEEL_MAP: Record<string, { label: string; color: string; wheelHint: string; wheelTemplate: string }> = {
+    STANDARD_DIFF: {
+        label: '标准差速',
+        color: 'cyan',
+        wheelHint: '推荐轮组：DIFF_WHEELS（差速轮组），含左右驱动轮各1个。',
+        wheelTemplate: 'DIFF_WHEELS(差速轮组)',
+    },
+    SINGLE_STEER: {
+        label: '单舵轮',
+        color: 'gold',
+        wheelHint: '推荐轮组：DIFF_STEER_WHEEL（单差速舵轮），含1个主动舵轮。',
+        wheelTemplate: 'DIFF_STEER_WHEEL(单差速舵轮)',
+    },
+    DUAL_STEER: {
+        label: '双舵轮',
+        color: 'orange',
+        wheelHint: '推荐轮组：DIFF_STEER_WHEELS_DOUBL（双差速舵轮），含2个主动舵轮。',
+        wheelTemplate: 'DIFF_STEER_WHEELS_DOUBL(双差速舵轮)',
+    },
+    OMNI_WHEEL: {
+        label: '全向轮',
+        color: 'magenta',
+        wheelHint: '推荐轮组：全向底盘轮组（3~4轮麦克纳姆轮或万向轮）。',
+        wheelTemplate: 'VER_STEER_WHEELS_DOUBL(双立式舵轮)',
+    },
+};
 
 export const IdentityStep: React.FC = () => {
     const { config, setIdentity } = useProjectStore();
@@ -16,6 +66,9 @@ export const IdentityStep: React.FC = () => {
     const handleUpdate = (fields: any) => {
         setIdentity({ ...identity, ...fields });
     };
+
+    const navInfo = NAV_SENSOR_MAP[identity.navigationMethod] || NAV_SENSOR_MAP['LASER_SLAM'];
+    const driveInfo = DRIVE_WHEEL_MAP[identity.driveType] || DRIVE_WHEEL_MAP['STANDARD_DIFF'];
 
     return (
         <div className="content-grid">
@@ -37,7 +90,7 @@ export const IdentityStep: React.FC = () => {
                                     <Form.Item label="机器人名称 (robotName)">
                                         <Input 
                                             prefix={<RobotOutlined style={{ color: 'var(--text-muted)' }} />}
-                                            placeholder="例如: AgileX_Hunter_SE" 
+                                            placeholder="例如: amr_your_define" 
                                             value={identity.robotName}
                                             onChange={e => handleUpdate({ robotName: e.target.value })}
                                         />
@@ -59,7 +112,7 @@ export const IdentityStep: React.FC = () => {
                                 <Col span={12}>
                                     <Form.Item label="供应商 (venderName)">
                                         <Input 
-                                            placeholder="SEER / AgileX / ..." 
+                                            placeholder="hikrobot / SEER / AgileX / ..." 
                                             value={identity.venderName}
                                             onChange={e => handleUpdate({ venderName: e.target.value })}
                                         />
@@ -99,6 +152,15 @@ export const IdentityStep: React.FC = () => {
                                 </Select>
                             </Form.Item>
 
+                            {/* ━━━ Navigation Linkage Hint ━━━ */}
+                            <Alert
+                                message={<span><RadarChartOutlined style={{ marginRight: 6 }} />传感器关联要求</span>}
+                                description={navInfo.sensorHint}
+                                type="info"
+                                showIcon={false}
+                                style={{ marginBottom: 16, fontSize: 11, borderRadius: 8 }}
+                            />
+
                             <Form.Item label="驱动类型 (driveType)">
                                 <Select 
                                     value={identity.driveType}
@@ -106,19 +168,26 @@ export const IdentityStep: React.FC = () => {
                                 >
                                     <Option value="STANDARD_DIFF">标准差速 (Standard Diff)</Option>
                                     <Option value="SINGLE_STEER">单舵轮 (Single Steer)</Option>
-                                    <Option value="DOUBLE_STEER">双舵轮 (Double Steer)</Option>
+                                    <Option value="DUAL_STEER">双舵轮 (Dual Steer)</Option>
                                     <Option value="OMNI_WHEEL">全向轮 (Omni Wheel)</Option>
                                 </Select>
                             </Form.Item>
 
-                            <Divider style={{ margin: '12px 0', borderColor: 'var(--border-subtle)' }} />
-                            
-                            <Space direction="vertical" size={4}>
-                                <Text type="secondary" style={{ fontSize: 12 }}>
-                                    <DeploymentUnitOutlined style={{ marginRight: 6 }} />
-                                    提示：驱动类型决定了后期 Ability 步骤中可用的运动控制模型。
-                                </Text>
-                            </Space>
+                            {/* ━━━ Drive Type Linkage Hint ━━━ */}
+                            <Alert
+                                message={<span><ThunderboltOutlined style={{ marginRight: 6 }} />推荐轮组模板</span>}
+                                description={
+                                    <Space direction="vertical" size={4}>
+                                        <span>{driveInfo.wheelHint}</span>
+                                        <Tag color={driveInfo.color} icon={<CheckCircleOutlined />}>
+                                            {driveInfo.wheelTemplate}
+                                        </Tag>
+                                    </Space>
+                                }
+                                type="success"
+                                showIcon={false}
+                                style={{ fontSize: 11, borderRadius: 8 }}
+                            />
                         </Form>
                     </Card>
                 </Col>

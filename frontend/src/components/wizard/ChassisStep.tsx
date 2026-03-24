@@ -1,17 +1,68 @@
-import React from 'react';
-import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography } from 'antd';
-import { BuildOutlined, ColumnWidthOutlined, HolderOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
+import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip } from 'antd';
+import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
+import { PowerSystemStep } from './PowerSystemStep';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
 
 export const ChassisStep: React.FC = () => {
-    const { config, setIdentity } = useProjectStore();
+    const { config, setIdentity, updateAttribute } = useProjectStore();
     const { identity } = config;
 
     const handleUpdate = (fields: any) => {
         setIdentity(fields);
+    };
+
+    const chassisComponent = config.components.find(c => c.category === 'CHASSIS');
+    const privateAttrs = chassisComponent ? chassisComponent.privateAttrs : [];
+    
+    // Find motionCenterAttr group
+    const motionCenterGroup = privateAttrs.find(g => g.key === 'motionCenterAttr');
+
+    // ━━━ CRITICAL FIX: Auto-initialize motionCenterAttr when missing ━━━
+    useEffect(() => {
+        if (!chassisComponent) return;
+        const hasGroup = chassisComponent.privateAttrs?.find(g => g.key === 'motionCenterAttr');
+        if (!hasGroup) {
+            // Initialize with identity defaults
+            const idleHead = identity.headOffset ?? identity.chassisLength / 2;
+            const idleTail = identity.tailOffset ?? identity.chassisLength / 2;
+            const idleLeft = identity.leftOffset ?? identity.chassisWidth / 2;
+            const idleRight = identity.rightOffset ?? identity.chassisWidth / 2;
+
+            const initAttrs = [
+                { key: 'headOffset(Idle)', desc: '前向距(空载)', type: 'DATA_DOUBLE' as const, value: idleHead, unit: 'mm', boolParse: true, boolMustfill: true },
+                { key: 'tailOffset(Idle)', desc: '后向距(空载)', type: 'DATA_DOUBLE' as const, value: idleTail, unit: 'mm', boolParse: true, boolMustfill: true },
+                { key: 'leftOffset(Idle)', desc: '左向距(空载)', type: 'DATA_DOUBLE' as const, value: idleLeft, unit: 'mm', boolParse: true, boolMustfill: true },
+                { key: 'rightOffset(Idle)', desc: '右向距(空载)', type: 'DATA_DOUBLE' as const, value: idleRight, unit: 'mm', boolParse: true, boolMustfill: true },
+                { key: 'headOffset (Full Load)', desc: '前向距(满载)', type: 'DATA_DOUBLE' as const, value: idleHead, unit: 'mm', boolParse: true },
+                { key: 'tailOffset (Full Load)', desc: '后向距(满载)', type: 'DATA_DOUBLE' as const, value: idleTail, unit: 'mm', boolParse: true },
+                { key: 'leftOffset (Full Load)', desc: '左向距(满载)', type: 'DATA_DOUBLE' as const, value: idleLeft, unit: 'mm', boolParse: true },
+                { key: 'rightOffset (Full Load)', desc: '右向距(满载)', type: 'DATA_DOUBLE' as const, value: idleRight, unit: 'mm', boolParse: true },
+            ];
+
+            useProjectStore.getState().updateComponent(chassisComponent.id, {
+                privateAttrs: [
+                    ...(chassisComponent.privateAttrs || []),
+                    { key: 'motionCenterAttr', desc: '运动中心偏移', elements: initAttrs }
+                ]
+            });
+        }
+    }, [chassisComponent?.id]);
+
+    const motionCenterEles = motionCenterGroup ? motionCenterGroup.elements : [];
+
+    const getMotionCenterVal = (key: string) => {
+        const ele = motionCenterEles.find(e => e.key === key) as any;
+        return ele ? (ele.value ?? ele.doubleValue ?? ele.double_value ?? 0) : 0;
+    };
+
+    const setMotionCenterVal = (key: string, v: number | null) => {
+        if (chassisComponent) {
+            updateAttribute(chassisComponent.id, 'motionCenterAttr', key, v ?? 0);
+        }
     };
 
     // Calculate normalized preview dimensions
@@ -19,16 +70,20 @@ export const ChassisStep: React.FC = () => {
     const rectWidth = identity.chassisWidth * previewScale;
     const rectHeight = identity.chassisLength * previewScale;
     
-    // Motion center relative to top-left of the bounding box
-    // (headOffset is distance from front edge to center)
-    const centerX = identity.leftOffset * previewScale;
-    const centerY = identity.headOffset * previewScale;
+    const headIdle = getMotionCenterVal('headOffset(Idle)') || identity.headOffset;
+    const leftIdle = getMotionCenterVal('leftOffset(Idle)') || identity.leftOffset;
+    
+    const centerX = leftIdle * previewScale;
+    const centerY = headIdle * previewScale;
+
 
     return (
-        <div className="content-grid">
-            <div className="section-title">
-                <BuildOutlined /> 2. 底盘规格与动力学包络
-            </div>
+        <div className="content-grid" style={{ padding: 0 }}>
+            <Tabs defaultActiveKey="chassis" tabPosition="top" style={{ padding: '0 24px' }}>
+                <Tabs.TabPane tab={<span><BuildOutlined /> 底盘参数</span>} key="chassis">
+                    <div className="section-title" style={{ marginTop: 16 }}>
+                        <BuildOutlined /> 2. 底盘规格与动力学包络
+                    </div>
 
             <Row gutter={24}>
                 {/* ━━━ Physical Dimensions ━━━ */}
@@ -79,26 +134,32 @@ export const ChassisStep: React.FC = () => {
                                 </Select>
                             </Form.Item>
 
-                            <Divider orientation="left" plain><small>运动中心偏移 (Offsets)</small></Divider>
+                            <Divider orientation="left" plain>
+                                <small>运动中心偏移 - 空载 (Idle)  
+                                    <Tooltip title="以底盘运动中心为原点，到四周边界的距离。空载与满载可独立设置，默认值相同。">
+                                        <InfoCircleOutlined style={{ marginLeft: 6, color: 'var(--text-muted)' }} />
+                                    </Tooltip>
+                                </small>
+                            </Divider>
                             
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item label="前向偏移 (Head Offset)">
+                                    <Form.Item label="前向距 (Head Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={identity.headOffset} 
+                                            value={getMotionCenterVal('headOffset(Idle)')} 
                                             suffix="mm"
-                                            onChange={v => handleUpdate({ headOffset: v })} 
+                                            onChange={v => setMotionCenterVal('headOffset(Idle)', v)}
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="后向偏移 (Tail Offset)">
+                                    <Form.Item label="后向距 (Tail Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={identity.tailOffset} 
+                                            value={getMotionCenterVal('tailOffset(Idle)')} 
                                             suffix="mm"
-                                            onChange={v => handleUpdate({ tailOffset: v })} 
+                                            onChange={v => setMotionCenterVal('tailOffset(Idle)', v)}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -106,23 +167,51 @@ export const ChassisStep: React.FC = () => {
 
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item label="左侧偏移 (Left Offset)">
+                                    <Form.Item label="左向距 (Left Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={identity.leftOffset} 
+                                            value={getMotionCenterVal('leftOffset(Idle)')} 
                                             suffix="mm"
-                                            onChange={v => handleUpdate({ leftOffset: v })} 
+                                            onChange={v => setMotionCenterVal('leftOffset(Idle)', v)}
                                         />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="右侧偏移 (Right Offset)">
+                                    <Form.Item label="右向距 (Right Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={identity.rightOffset} 
+                                            value={getMotionCenterVal('rightOffset(Idle)')} 
                                             suffix="mm"
-                                            onChange={v => handleUpdate({ rightOffset: v })} 
+                                            onChange={v => setMotionCenterVal('rightOffset(Idle)', v)}
                                         />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+
+                            <Divider orientation="left" plain><small>运动中心偏移 - 满载 (Full Load)</small></Divider>
+                            
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="前向距 (Head Offset)">
+                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('headOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('headOffset (Full Load)', v)} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="后向距 (Tail Offset)">
+                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('tailOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('tailOffset (Full Load)', v)} />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="左向距 (Left Offset)">
+                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('leftOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('leftOffset (Full Load)', v)} />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="右向距 (Right Offset)">
+                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('rightOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('rightOffset (Full Load)', v)} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -195,6 +284,14 @@ export const ChassisStep: React.FC = () => {
                     </Card>
                 </Col>
             </Row>
+                </Tabs.TabPane>
+                
+                <Tabs.TabPane tab={<span><ThunderboltOutlined /> 动力配置聚合</span>} key="power">
+                    <div style={{ marginTop: 16, height: 'calc(100vh - 200px)' }}>
+                        <PowerSystemStep />
+                    </div>
+                </Tabs.TabPane>
+            </Tabs>
         </div>
     );
 };

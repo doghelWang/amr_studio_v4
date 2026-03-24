@@ -49,11 +49,11 @@ interface ProjectState {
 }
 
 const DEFAULT_IDENTITY: RobotIdentity = {
-    robotName: 'New_AMR',
+    robotName: 'amr_your_define',
     version: '1.0.0',
     materialCode: '',
     alias: '',
-    venderName: 'SEER',
+    venderName: 'hikrobot',
     navigationMethod: 'LASER_SLAM',
     driveType: 'STANDARD_DIFF',
     chassisShape: 'BOX',

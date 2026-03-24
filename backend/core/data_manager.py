@@ -1,9 +1,25 @@
 import os
 import json
 import shutil
+import tempfile
+import threading
 import collections.abc
+from collections import defaultdict
 from pathlib import Path
 
+_file_locks = defaultdict(threading.Lock)
+
+def atomic_write_json(data, target_file):
+    target_file = Path(target_file)
+    fd, temp_path = tempfile.mkstemp(dir=target_file.parent, prefix="._tmp_", suffix=".json")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            json.dump(data, f, ensure_ascii=False, indent=2)
+        os.replace(temp_path, target_file)
+    except Exception as e:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+        raise e
 BASE_DIR = Path(__file__).parent.parent
 DB_DIR = BASE_DIR / "saved_projects"
 
@@ -80,23 +96,23 @@ def update_component(project_id: str, module_uuid: str, payload_delta: dict) -> 
     m_dir = get_project_dir(project_id) / "modules"
     target_file = next(m_dir.glob(f"*{module_uuid}*.json"), None)
     if not target_file: return False
-    with open(target_file, "r", encoding="utf-8") as file:
-        data = json.load(file)
-    print(f"DISK_AUDIT: >>> Updating component {module_uuid} <<<", flush=True)
-    deep_update(data, payload_delta)
-    with open(target_file, "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=2)
+    with _file_locks[str(target_file)]:
+        with open(target_file, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        print(f"DISK_AUDIT: >>> Updating component {module_uuid} <<<", flush=True)
+        deep_update(data, payload_delta)
+        atomic_write_json(data, target_file)
     return True
 
 def update_ability(project_id: str, payload_delta: dict) -> bool:
     fpath = get_project_dir(project_id) / "AbiSet.json"
     if not fpath.exists(): return False
-    with open(fpath, "r", encoding="utf-8") as file:
-        data = json.load(file)
-    print(f"DISK_AUDIT: >>> Updating AbilitySet <<<", flush=True)
-    deep_update(data, payload_delta)
-    with open(fpath, "w", encoding="utf-8") as file:
-        json.dump(data, file, ensure_ascii=False, indent=2)
+    with _file_locks[str(fpath)]:
+        with open(fpath, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        print(f"DISK_AUDIT: >>> Updating AbilitySet <<<", flush=True)
+        deep_update(data, payload_delta)
+        atomic_write_json(data, fpath)
     return True
 
 def get_component(project_id: str, module_uuid: str):

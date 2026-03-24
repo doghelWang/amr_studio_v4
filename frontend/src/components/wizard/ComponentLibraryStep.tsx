@@ -46,17 +46,27 @@ export const ComponentLibraryStep: React.FC = () => {
 
     const components = config.components;
 
+
     const subSteps = [
         { title: '底盘配置', description: '完善底盘属性', categories: ['CHASSIS'], systems: ['ChassisSys'], icon: <RobotOutlined /> },
-        { title: '核心主控', description: '主控及扩展板', categories: ['MAINCPU', 'CONTROL', 'IO_BOARD', 'INTERGRATEDCONTROLLER'], systems: ['ControlSys'], icon: <DeploymentUnitOutlined /> },
-        { title: '动力系统', description: '轮组、电机、驱动器', categories: ['ACTOR', 'DRIVER', 'MOTOR', 'DRIVEWHEEL'], systems: ['DriverSys', 'ActorSys'], icon: <ThunderboltOutlined /> },
-        { title: '感知避障', description: '激光、相机、超声波', categories: ['LASER', 'CAMERA', 'TOF', 'SENSOR'], systems: ['SensorSys'], icon: <RadarChartOutlined /> },
+        { title: '核心控制板', description: '主控制器 / 扩展控制板', categories: ['MAINCPU', 'CONTROL', 'IO_BOARD', 'INTERGRATEDCONTROLLER'], systems: ['ControlSys'], icon: <DeploymentUnitOutlined /> },
+        { title: '动力系统', description: '轮组、电机、驱动器、编码器', categories: ['ACTOR', 'DRIVER', 'MOTOR', 'DRIVEWHEEL'], systems: ['DriverSys', 'ActorSys', 'SensorSys'],
+            // Encoder-type sensors also belong here
+            encoderKeywords: ['encoder', 'encode', '编码器', '拉线', '角度编码'],
+            icon: <ThunderboltOutlined /> },
+        { title: '感知避障', description: '激光雷达、相机、超声波、IMU', categories: ['LASER', 'CAMERA', 'TOF', 'SENSOR'],
+            // Exclude encoder-type sensors (they belong to power system)
+            excludeKeywords: ['encoder', 'encode', '编码器', '拉线', '角度编码'],
+            systems: ['SensorSys'],
+            navigationAlert: true,
+            icon: <RadarChartOutlined /> },
         { title: '电源管理', description: '电池及充电模块', categories: ['BATTERY', 'ENERGYCONTROLLER'], systems: ['EnergySys'], icon: <ThunderboltOutlined /> },
-        { title: '触点交互', description: '按钮及紧急停止', categories: ['BUTTON'], systems: ['InteractiveSys'], icon: <SafetyCertificateOutlined /> },
+        { title: '触点交互', description: '按鈕及紧急停止', categories: ['BUTTON'], systems: ['InteractiveSys'], icon: <SafetyCertificateOutlined /> },
         { title: '信息显示', description: '显示屏、指示灯', categories: ['DISPLAY', 'SCREEN'], systems: ['InteractiveSys'], icon: <DesktopOutlined />, optional: true },
         { title: '灯带氛围', description: 'LED 状态灯条', categories: ['LED', 'LIGHT'], systems: ['InteractiveSys'], icon: <BulbOutlined />, optional: true },
         { title: '其他扩展', description: 'IO模块、其他传感器', categories: ['IO', 'OTHER', 'COMMUNICATION', 'AUTOBODY'], systems: ['CommunicateSys', 'AutobodySys'], icon: <ControlOutlined /> },
     ];
+
 
     useEffect(() => {
         setLoadingLibrary(true);
@@ -72,8 +82,29 @@ export const ComponentLibraryStep: React.FC = () => {
     }, []);
 
     const filteredComponents = useMemo(() => {
-        const allowedCategories = subSteps[currentSubStep - 1].categories;
-        return components.filter(c => allowedCategories.includes(c.category));
+        const step = subSteps[currentSubStep - 1];
+        const allowedCategories = step.categories;
+        const excludeKws: string[] = (step as any).excludeKeywords || [];
+        const encoderKws: string[] = (step as any).encoderKeywords || [];
+
+        return components.filter(c => {
+            const catMatch = allowedCategories.includes(c.category);
+            const alias = (c.alias || '').toLowerCase();
+            const name = (c.name || '').toLowerCase();
+            const searchStr = alias + ' ' + name;
+
+            // If this step has explict encoder keywords → include encoder-matching components even when category doesn't match
+            if (encoderKws.length > 0 && encoderKws.some(kw => searchStr.includes(kw))) {
+                return true;
+            }
+            // If not a category match, exclude
+            if (!catMatch) return false;
+            // Exclude components matching excludeKeywords
+            if (excludeKws.length > 0 && excludeKws.some(kw => searchStr.includes(kw))) {
+                return false;
+            }
+            return true;
+        });
     }, [components, currentSubStep]);
 
     const treeData = useMemo(() => {
@@ -392,17 +423,62 @@ export const ComponentLibraryStep: React.FC = () => {
                                                   e.file_name.toLowerCase().includes(searchTerm.toLowerCase());
                                 if (!matchSearch) return false;
 
-                                const typeKey = getModuleType(e);
-                                const t = typeKey.toUpperCase();
-                                
-                                // Direct match
-                                if (currentStepInfo.categories.includes(t)) return true;
-                                
-                                // Special Mapping: integrated controller mapping
-                                if (t === 'INTERGRATEDCONTROLLER' && currentStepInfo.categories.includes('CONTROL')) return true;
-                                if (t === 'MAINCPU' && currentStepInfo.categories.includes('CONTROL')) return true;
-                                
-                                return false;
+                                const rawTypeKey = getModuleType(e);
+                                const rawLower = rawTypeKey.toLowerCase();
+                                const fileName = (e.file_name || '').toLowerCase();
+                                const groupName = (e.moduleGroupName || '').toLowerCase();
+                                const searchStr = rawLower + ' ' + fileName + ' ' + groupName;
+
+                                // ━━━ Normalize IO-board typeKeys into IO_BOARD ━━━
+                                // Source JSONs use 'extendedlnterface' (lowercase l - typo), 'extendedInterface', 'ioModule'
+                                let normalizedType: string;
+                                if (
+                                    rawLower === 'extendedlnterface' || rawLower === 'extendedinterface' ||
+                                    rawLower === 'iomodule' || rawLower === 'safetyiomodule'
+                                ) {
+                                    normalizedType = 'IO_BOARD';
+                                } else if (rawLower === 'safetycontroller') {
+                                    normalizedType = 'CONTROL';
+                                } else if (rawLower === 'powercontroller') {
+                                    normalizedType = 'ENERGYCONTROLLER';
+                                } else {
+                                    normalizedType = rawTypeKey.toUpperCase();
+                                }
+
+                                const excludeKws: string[] = (currentStepInfo as any).excludeKeywords || [];
+                                const encoderKws: string[] = (currentStepInfo as any).encoderKeywords || [];
+
+                                // ━━━ Encoder keyword inclusion ━━━
+                                // If this step wants encoders, include if encoder keyword matches
+                                if (encoderKws.length > 0 && encoderKws.some(kw => searchStr.includes(kw))) {
+                                    return true;
+                                }
+
+                                // ━━━ Linkage Filter for Chassis ━━━
+                                if (normalizedType === 'CHASSIS' || currentStepInfo.categories.includes('CHASSIS')) {
+                                    if (config.identity.driveType === 'STANDARD_DIFF' && !fileName.includes('diff')) return false;
+                                    if (config.identity.driveType === 'SINGLE_STEER' && !fileName.includes('single')) return false;
+                                    if (config.identity.driveType === 'DUAL_STEER' && !fileName.includes('double') && !fileName.includes('dual')) return false;
+                                }
+
+                                // ━━━ Category match ━━━
+                                if (!currentStepInfo.categories.includes(normalizedType)) {
+                                    // Fallback: INTERGRATEDCONTROLLER maps to CONTROL category
+                                    if (normalizedType === 'INTERGRATEDCONTROLLER' && currentStepInfo.categories.includes('CONTROL')) {
+                                        // allow through, will be checked below
+                                    } else if (normalizedType === 'MAINCPU' && currentStepInfo.categories.includes('CONTROL')) {
+                                        // allow through
+                                    } else {
+                                        return false;
+                                    }
+                                }
+
+                                // ━━━ Keyword exclusion (e.g. encoder sensors OUT of 感知避障) ━━━
+                                if (excludeKws.length > 0 && excludeKws.some(kw => searchStr.includes(kw))) {
+                                    return false;
+                                }
+
+                                return true;
                             });
                             if (filtered.length === 0) return null;
 
@@ -444,6 +520,12 @@ export const ComponentLibraryStep: React.FC = () => {
                                                             )}
                                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                 <Space size={4}>
+                                                                    {(() => {
+                                                                        const eType = getModuleType(entity).toUpperCase();
+                                                                        return currentStepInfo.categories.includes('LASER') && (config.identity.navigationMethod === 'LASER_SLAM' || config.identity.navigationMethod === 'REFLECTOR') && (eType === 'LASER' || entity.file_name.toLowerCase().includes('laser'));
+                                                                    })() && (
+                                                                        <Tag color="var(--success)" bordered={false} style={{ fontSize: 9, margin: 0 }}>导航必需参数</Tag>
+                                                                    )}
                                                                     <Tag color="default" bordered={false} style={{ fontSize: 9, margin: 0, background: 'rgba(255,255,255,0.05)' }}>MODEL V4</Tag>
                                                                     <Tag color="blue" bordered={false} style={{ fontSize: 9, margin: 0, opacity: 0.8 }}>PREMIUM</Tag>
                                                                 </Space>

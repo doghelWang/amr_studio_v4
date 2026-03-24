@@ -23,9 +23,16 @@ export class ImportService {
         'sensor':                'SENSOR',
         'sensorProcessor':       'SENSORPROCESSOR',
         'mainCPU':               'MAINCPU',
+        'mainCpu':               'MAINCPU',
         'intergratedController': 'INTERGRATEDCONTROLLER',
         'communication':         'COMMUNICATION',
-        'extendedInterface':     'EXTENDEDLNTERFACE',
+        'extendedInterface':     'IO_BOARD',   // canonical
+        'extendedlnterface':     'IO_BOARD',   // typo in source JSONs (lowercase l)
+        'ioModule':              'IO_BOARD',   // submodule type variant
+        'IOModule':              'IO_BOARD',   // uppercase variant
+        'safetyIOModule':        'IO_BOARD',   // safety IO board
+        'safetyController':      'CONTROL',
+        'powerController':       'ENERGYCONTROLLER',
         'battery':               'BATTERY',
         'energyController':      'ENERGYCONTROLLER',
         'button':                'BUTTON',

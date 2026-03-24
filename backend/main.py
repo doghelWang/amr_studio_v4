@@ -30,6 +30,17 @@ SAVED_PROJECTS_DIR.mkdir(exist_ok=True)
 
 app.mount("/downloads", StaticFiles(directory=str(SAVED_PROJECTS_DIR)), name="downloads")
 
+from fastapi import Request
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    import traceback
+    traceback.print_exc()
+    return JSONResponse(
+        status_code=500,
+        content={"error": "InternalServerError", "detail": str(exc), "request_path": request.url.path}
+    )
+
 @app.post("/api/v1/models/upload")
 def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     print(f"DEBUG: upload_cmodel called for {file.filename}", flush=True)
