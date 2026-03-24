@@ -146,31 +146,63 @@ def list_boards_api():
 @app.get("/api/v1/resources/modules")
 def list_modules_api():
     entities = {}
-    # Project root is BASE_DIR.parent
-    base_path = BASE_DIR.parent / "docs" / "reference" / "ModuleLibrary" / "ModuleEntity"
-    if not base_path.exists():
-        print(f"ERROR: Module library path not found at {base_path}", flush=True)
-        return {}
     
-    # Categories: SensorSys, DriverSys, etc.
-    for sys_dir in base_path.iterdir():
-        if sys_dir.is_dir():
-            sys_name = sys_dir.name
-            entities[sys_name] = []
-            # Internal files
-            internal_dir = sys_dir / "Internal"
-            if internal_dir.exists():
-                for f in internal_dir.glob("*.json"):
-                    try:
-                        with open(f, "r", encoding="utf-8") as file:
-                            data = json.load(file)
-                            # Basic summary for card display
-                            entities[sys_name].append({
-                                "file_name": f.name,
-                                "moduleGroupName": data.get("moduleGroupName"),
-                                "full_data": data
-                            })
-                    except: continue
+    # ━━━ NEW: Flat Resource Directory ━━━
+    flat_path = BASE_DIR / "resources" / "modules"
+    if flat_path.exists():
+        for f in flat_path.glob("*.json"):
+            try:
+                with open(f, "r", encoding="utf-8") as file:
+                    data = json.load(file)
+                    # Extract system from metadata or full_data
+                    # Standard: data['system']
+                    # Fallback: data['full_data']['moduleComponets'][0]['generalAttr']['subSysType']['comboType']['typeKey']
+                    sys_name = data.get("system")
+                    if not sys_name:
+                        try:
+                            comp = (data.get("full_data", {}).get("moduleComponets") or data.get("moduleComponets") or [])[0]
+                            sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey")
+                        except: pass
+                    
+                    sys_name = sys_name or "Other"
+                    
+                    if sys_name not in entities: entities[sys_name] = []
+                    
+                    entities[sys_name].append({
+                        "file_name": f.name,
+                        "moduleGroupName": data.get("moduleGroupName") or data.get("full_data", {}).get("moduleGroupName", f.stem),
+                        "system": sys_name,
+                        "category": data.get("category"),
+                        "full_data": data.get("full_data") or data
+                    })
+            except Exception as e:
+                print(f"DEBUG: Failed to parse {f.name}: {e}", flush=True)
+                continue
+
+    # ━━━ LEGACY: Directory-based scanning (for backward compatibility) ━━━
+    base_path = BASE_DIR.parent / "docs" / "reference" / "ModuleLibrary" / "ModuleEntity"
+    if base_path.exists():
+        for sys_dir in base_path.iterdir():
+            if sys_dir.is_dir():
+                sys_name = sys_dir.name
+                if sys_name not in entities: entities[sys_name] = []
+                
+                internal_dir = sys_dir / "Internal"
+                if internal_dir.exists():
+                    for f in internal_dir.glob("*.json"):
+                        # Skip if already loaded in flat path (by filename)
+                        if any(e["file_name"] == f.name for e in entities[sys_name]): continue
+                        
+                        try:
+                            with open(f, "r", encoding="utf-8") as file:
+                                data = json.load(file)
+                                entities[sys_name].append({
+                                    "file_name": f.name,
+                                    "moduleGroupName": data.get("moduleGroupName"),
+                                    "full_data": data
+                                })
+                        except: continue
+    
     return entities
 
 if __name__ == "__main__":

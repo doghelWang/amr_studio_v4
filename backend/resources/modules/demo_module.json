@@ -1,0 +1,21 @@
+{
+  "moduleGroupName": "演示激光雷达 (Demo Lidar)",
+  "system": "SensorSys",
+  "category": "LASER",
+  "vender": "HIKROBOT",
+  "full_data": {
+    "moduleGroupName": "DemoLaser",
+    "moduleComponets": [
+      {
+        "generalAttr": {
+          "moduleName": { "stringValue": "DemoLaser_v1" },
+          "subSysType": { "comboType": { "typeKey": "SensorSys" } },
+          "mainModuleType": { "comboType": { "typeKey": "sensor" } },
+          "subModuleType": { "comboType": { "typeKey": "LASER" } }
+        },
+        "privateAttr": { "privateAttrs": [] },
+        "interfaceAbility": { "busInterfaceAbility": [] }
+      }
+    ]
+  }
+}
