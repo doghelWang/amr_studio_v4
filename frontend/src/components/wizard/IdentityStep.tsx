@@ -26,7 +26,7 @@ export const IdentityStep: React.FC = () => {
             <Row gutter={[24, 24]}>
                 {/* ━━━ Basic Identity ━━━ */}
                 <Col span={14}>
-                    <Card className="smart-card" bordered={false}>
+                    <Card className="smart-card" variant="borderless">
                         <Title level={5} style={{ marginBottom: 20, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 8 }}>
                             <TagOutlined style={{ fontSize: 16 }} /> 身份标识 (Metadata)
                         </Title>
@@ -81,7 +81,7 @@ export const IdentityStep: React.FC = () => {
 
                 {/* ━━━ Configuration Strategy ━━━ */}
                 <Col span={10}>
-                    <Card className="smart-card" bordered={false} style={{ height: '100%' }}>
+                    <Card className="smart-card" variant="borderless" style={{ height: '100%' }}>
                         <Title level={5} style={{ marginBottom: 20, color: 'var(--accent)', display: 'flex', alignItems: 'center', gap: 8 }}>
                             <RocketOutlined style={{ fontSize: 16 }} /> 核心配置策略 (Core Strategy)
                         </Title>
@@ -91,7 +91,7 @@ export const IdentityStep: React.FC = () => {
                                 <Select 
                                     value={identity.navigationMethod}
                                     onChange={v => handleUpdate({ navigationMethod: v })}
-                                    dropdownStyle={{ backgroundColor: 'var(--bg-sidebar)' }}
+                                    styles={{ popup: { root: { backgroundColor: 'var(--bg-sidebar)' } } }}
                                 >
                                     <Option value="LASER_SLAM">激光 SLAM (Laser)</Option>
                                     <Option value="VISUAL_SLAM">视觉 SLAM (Visual)</Option>

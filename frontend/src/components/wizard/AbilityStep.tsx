@@ -1,5 +1,5 @@
-import React from 'react';
-import { ThunderboltOutlined, LinkOutlined, InteractionOutlined } from '@ant-design/icons';
+import React, { useMemo } from 'react';
+import { ThunderboltOutlined, LinkOutlined, InteractionOutlined, DeploymentUnitOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { Collapse, Card, Select, Radio, Input, InputNumber, Space, Tag, Empty, Typography, Divider } from 'antd';
 import { AbilityAttribute, AbilityCommonAttr, ChildAbility, FunctionAbility } from '../../store/types';
@@ -8,14 +8,36 @@ const { Panel } = Collapse;
 const { Option } = Select;
 const { Title, Text } = Typography;
 
+// Mapping of ability keys to allowed component categories
+const CAPABILITY_MAPPING: Record<string, string[]> = {
+    'relatedLaser': ['SENSOR'],
+    'relatedCodeReader': ['SENSOR'],
+    'relatedDriver': ['DRIVER'],
+    'relatedControlBoard': ['MAINCPU', 'INTERGRATEDCONTROLLER'],
+    'relatedBattery': ['BATTERY'],
+    'relatedChassis': ['CHASSIS'],
+    'relatedWheel': ['DRIVEWHEEL', 'DRIVE_WHEEL'],
+    'relatedBumper': ['SENSOR'],
+    'relatedEmergencyStop': ['BUTTON'],
+    'relatedScreen': ['SCREEN']
+};
+
 // Component to render a single AbilityAttribute
 const AbilityAttributeEditor: React.FC<{
     attr: AbilityAttribute;
     onChange: (val: any, subKey?: string) => void;
     components: any[];
 }> = ({ attr, onChange, components }) => {
-    // Check if it's a "Mapping" attribute (relatedLaser, relatedCodeReader, etc.)
+    // Check if it's a "Mapping" attribute
     const isMapping = attr.key.startsWith('related') || attr.boolParse;
+
+    // Filter components based on capability mapping if it's a "related" field
+    const filteredComponents = useMemo(() => {
+        if (!attr.key.startsWith('related')) return components;
+        const allowedCategories = CAPABILITY_MAPPING[attr.key];
+        if (!allowedCategories) return components;
+        return components.filter(c => allowedCategories.includes(c.category));
+    }, [attr.key, components]);
 
     if (isMapping) {
         return (
@@ -23,19 +45,26 @@ const AbilityAttributeEditor: React.FC<{
                 <label>{attr.desc || attr.key} <small className="unit">{attr.unit}</small></label>
                 <Select
                     style={{ width: '100%' }}
-                    placeholder={`选择关联组件`}
+                    placeholder={`选择关联 ${attr.desc || '组件'}`}
                     value={attr.value || undefined}
                     onChange={(val) => onChange(val)}
                     allowClear
                     suffixIcon={<LinkOutlined />}
                     className="mapping-select"
                 >
-                    {components.map(c => (
+                    {filteredComponents.length === 0 ? (
+                        <Option disabled value="none">
+                            <Text type="secondary" style={{ fontSize: 12 }}>未找到匹配此功能的硬件 ({CAPABILITY_MAPPING[attr.key]?.join('/')})</Text>
+                        </Option>
+                    ) : filteredComponents.map(c => (
                         <Option key={c.id} value={c.id}>
-                            <Space>
-                                <Tag color="blue" bordered={false} style={{ fontSize: 10 }}>{c.category}</Tag>
-                                <span>{c.alias || c.name}</span>
-                            </Space>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                                <Space>
+                                    <Tag color="blue" bordered={false} style={{ fontSize: 10 }}>{c.category}</Tag>
+                                    <span>{c.alias || c.name}</span>
+                                </Space>
+                                <DeploymentUnitOutlined style={{ opacity: 0.3, fontSize: 12 }} />
+                            </div>
                         </Option>
                     ))}
                 </Select>

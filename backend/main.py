@@ -116,7 +116,8 @@ def compile_cmodel_api(project_id: str):
 @app.get("/api/v1/resources/boards")
 def list_boards_api():
     boards = []
-    host_dir = Path("docs/files/board_desc/host")
+    # Project root is BASE_DIR.parent
+    host_dir = BASE_DIR.parent / "docs" / "reference" / "ModuleLibrary" / "board_desc" / "host"
     if host_dir.exists():
         for f in host_dir.glob("*.json"):
             with open(f, "r", encoding="utf-8") as file:
@@ -134,8 +135,11 @@ def list_boards_api():
 @app.get("/api/v1/resources/modules")
 def list_modules_api():
     entities = {}
-    base_path = Path("docs/files/modulelibrary/ModuleEntity")
-    if not base_path.exists(): return []
+    # Project root is BASE_DIR.parent
+    base_path = BASE_DIR.parent / "docs" / "reference" / "ModuleLibrary" / "ModuleEntity"
+    if not base_path.exists():
+        print(f"ERROR: Module library path not found at {base_path}", flush=True)
+        return {}
     
     # Categories: SensorSys, DriverSys, etc.
     for sys_dir in base_path.iterdir():

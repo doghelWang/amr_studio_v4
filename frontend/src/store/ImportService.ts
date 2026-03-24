@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 /**
  * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
  * FULLY ALIGNED WITH CAMELCASE JSON (Default Protobuf Mapping).
+ * IMPLEMENTS DUAL-KEY STRATEGY (Camel/Snake).
  */
 export class ImportService {
     private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
@@ -39,7 +40,7 @@ export class ImportService {
         console.log('DEBUG [ImportService]: parseCompDesc keys:', Object.keys(json));
         const components: ComponentConfig[] = [];
         
-        // Protocol check
+        // Protocol check (Dual-Key)
         const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
 
         if (json[infoKey] && Array.isArray(json[infoKey])) {
@@ -51,22 +52,27 @@ export class ImportService {
         const identity = {
             robotName: json.robotName || json.robot_name || 'Imported_AMR',
             version: json.version || '1.0.0',
-            materialCode: '',
-            alias: '',
-            venderName: 'SEER',
-            navigationMethod: 'LASER_SLAM' as const,
-            driveType: 'STANDARD_DIFF' as const,
-            chassisShape: 'BOX' as const,
-            chassisLength: 1200,
-            chassisWidth: 800,
-            chassisHeight: 400,
+            materialCode: json.materialCode || json.material_code || '',
+            alias: json.alias || '',
+            venderName: json.venderName || json.vender_name || 'SEER',
+            navigationMethod: (json.navigationMethod || json.navigation_method || 'LASER_SLAM') as any,
+            driveType: (json.driveType || json.drive_type || 'STANDARD_DIFF') as any,
+            chassisShape: (json.chassisShape || json.chassis_shape || 'BOX') as any,
+            chassisLength: json.chassisLength || json.chassis_length || 1200,
+            chassisWidth: json.chassisWidth || json.chassis_width || 800,
+            chassisHeight: json.chassisHeight || json.chassis_height || 400,
+            // ━━━ NEW OFFSET FIELDS (PROTO COMPLIANT) ━━━
+            headOffset: json.headOffset || json.head_offset || 600,
+            tailOffset: json.tailOffset || json.tail_offset || 600,
+            leftOffset: json.leftOffset || json.left_offset || 400,
+            rightOffset: json.rightOffset || json.right_offset || 400,
         };
 
         const chassis = components.find(c => c.category === 'CHASSIS');
-        if (chassis && chassis.shape) {
-            identity.chassisLength = chassis.shape.length || 1200;
-            identity.chassisWidth = chassis.shape.width || 800;
-            identity.chassisHeight = chassis.shape.height || 400;
+        if (chassis && chassis.shape && chassis.shape.type === 'BOX') {
+            identity.chassisLength = chassis.shape.length || identity.chassisLength;
+            identity.chassisWidth = chassis.shape.width || identity.chassisWidth;
+            identity.chassisHeight = chassis.shape.height || identity.chassisHeight;
         }
 
         return { components, identity };
@@ -111,7 +117,8 @@ export class ImportService {
                 options: ((common.comboxParam || common.combox_param).normalCombox || (common.comboxParam || common.combox_param).normal_combox || []).map((o: any) => ({
                     key: o.key,
                     desc: o.desc,
-                    arrayCmobEle: (o.arrayCmobEle || o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
+                    // ━━━ ALIGNED WITH GEMINI_RULES: arrayAttr in AbiSet ━━━
+                    arrayCmobEle: (o.arrayAttr || o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
                 }))
             } : undefined
         };
@@ -121,7 +128,6 @@ export class ImportService {
         const groupName = group.moduleGroupName || group.module_group_name || '';
         const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
         
-        // Supports both moduleComponets and module_componets
         const componentsArr = group.moduleComponets || group.module_componets;
 
         if (componentsArr && Array.isArray(componentsArr)) {
@@ -167,8 +173,20 @@ export class ImportService {
         let shape: ComponentConfig['shape'];
         const s = gen.moduleShape || gen.module_shape;
         if (s) {
-            if (s.box) shape = { type: 'BOX', length: s.box.sizeLen || s.box.size_len || 0, width: s.box.sizeWidth || s.box.size_width || 0, height: s.box.sizeHeight || s.box.size_height || 0 };
-            else if (s.cylinder) shape = { type: 'CYLINDER', diameter: s.cylinder.diameter || 0, height: s.cylinder.height || 0 };
+            if (s.box) {
+                shape = { 
+                    type: 'BOX', 
+                    length: s.box.sizeLen || s.box.size_len || 0, 
+                    width: s.box.sizeWidth || s.box.size_width || 0, 
+                    height: s.box.sizeHeight || s.box.size_height || 0 
+                };
+            } else if (s.cylinder) {
+                shape = { 
+                    type: 'CYLINDER', 
+                    diameter: s.cylinder.diameter || s.cylinder.diameter || 0, 
+                    height: s.cylinder.height || s.cylinder.height || 0 
+                };
+            }
         }
 
         const rawPrivateAttr = comp.privateAttr || comp.private_attr || {};
@@ -190,8 +208,8 @@ export class ImportService {
             type,
             category,
             parentNodeUuid: parentUuid
-                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.comboType?.typeKey
-                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.combo_type?.type_key
+                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.stringValue
+                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.string_value
                 || null,
             moduleGroupName: groupName,
             moduleGroupUuid: groupUuid,
@@ -212,13 +230,18 @@ export class ImportService {
         };
     }
 
+    private static findExtend(extend: any[], key: string): number {
+        const item = extend?.find((p: any) => p.key === key);
+        return item?.doubleValue ?? item?.double_value ?? 0;
+    }
+
     private static mapAttribute(attr: any): SmartAttribute {
         return {
             key: attr.key,
             desc: attr.desc || attr.key,
             type: attr.type || 'DATA_DOUBLE',
             value: this.extractValue(attr),
-            maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue ?? attr.floatMaxvalue ?? attr.double_maxvalue ?? attr.int32_maxvalue,
+            maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue ?? attr.floatMaxvalue ?? attr.double_minvalue ?? attr.int32_minvalue,
             minValue: attr.doubleMinvalue ?? attr.int32Minvalue ?? attr.floatMinvalue ?? attr.double_minvalue ?? attr.int32_minvalue,
             unit: attr.unit,
             boolParse: attr.boolParse ?? attr.bool_parse,
@@ -241,7 +264,6 @@ export class ImportService {
     }
 
     private static extractValue(attr: any) {
-        // Support both Camel and Snake value accessors
         return attr.stringValue ?? attr.string_value ??
                attr.doubleValue ?? attr.double_value ??
                attr.floatValue ?? attr.float_value ??
@@ -255,19 +277,15 @@ export class ImportService {
                attr.stringFix ?? attr.string_fix;
     }
 
-    /**
-     * Maps a raw library entity (e.g. 3DLaser-Common.json) to a live ComponentConfig.
-     */
     static mapEntityToComponent(entityJson: any): ComponentConfig {
         const comp = (entityJson.moduleComponets || entityJson.module_componets || [])[0];
         if (!comp) throw new Error("Invalid entity JSON: no components found");
 
         const groupName = entityJson.moduleGroupName || "LibraryGroup";
         const groupUuid = uuidv4();
-        
-        // Generate a FRESH ID for this instance
         const newId = uuidv4();
         
         const mapped = this.mapToComponent(comp, groupName, groupUuid, null);
         return { ...mapped, id: newId };
     }
+}

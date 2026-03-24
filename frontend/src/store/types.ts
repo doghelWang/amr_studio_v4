@@ -168,6 +168,10 @@ export interface RobotIdentity {
     chassisLength: number;
     chassisWidth: number;
     chassisHeight: number;
+    headOffset: number;
+    tailOffset: number;
+    leftOffset: number;
+    rightOffset: number;
 }
 
 // ━━━ Ability Models (Matches controller_model_abi_set.proto) ━━━

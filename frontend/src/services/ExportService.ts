@@ -1,183 +1,149 @@
-import { RobotConfig, ComponentConfig, SmartAttribute, AttributeGroup, ControllerAbility } from '../store/types';
+import { RobotConfig, ComponentConfig, SmartAttribute, AttributeGroup, InterfaceConfig } from '../store/types';
 
-/**
- * Service to export V4 store state back to .cmodel structure.
- * Rigorously aligned with Protobuf schemas (including specific CamelCase fields).
- */
 export class ExportService {
-    static exportToCompDesc(config: RobotConfig): any {
-        const { identity, components } = config;
-        const groupsMap = new Map<string, { name: string, uuid: string, sys?: string, components: ComponentConfig[] }>();
-        
-        components.forEach(c => {
-            const gid = c.moduleGroupUuid || 'default_group';
-            if (!groupsMap.has(gid)) {
-                groupsMap.set(gid, { name: c.moduleGroupName || 'Default Group', uuid: gid, components: [] });
-            }
-            groupsMap.get(gid)?.components.push(c);
-        });
-
-        const more_module_info = Array.from(groupsMap.values()).map(group => ({
-            module_group_name: group.name,
-            module_group_uuid: group.uuid,
-            module_sys: group.sys,
-            module_componets: group.components.map(c => this.mapComponentToCModel(c))
-        }));
-
+    /**
+     * Top-level export function.
+     * Aligns memory Store state back to the fragmented CModel structure.
+     * 100% COMPLIANT WITH GEMINI_RULES (CamelCase Standard).
+     */
+    static exportToCModel(config: RobotConfig): any {
         return {
-            robot_name: identity.robotName,
-            version: identity.version,
-            more_module_info,
-            abilities: this.exportAbilities(config.abilities)
+            robotName: config.identity.robotName,
+            version: config.identity.version || '1.0.0',
+            navigationMethod: config.identity.navigationMethod,
+            driveType: config.identity.driveType,
+            chassisShape: config.identity.chassisShape,
+            chassisLength: config.identity.chassisLength,
+            chassisWidth: config.identity.chassisWidth,
+            chassisHeight: config.identity.chassisHeight,
+            headOffset: config.identity.headOffset,
+            tailOffset: config.identity.tailOffset,
+            leftOffset: config.identity.leftOffset,
+            rightOffset: config.identity.rightOffset,
+            moreModuleInfo: config.components
+                .filter(c => !c.parentNodeUuid) // Root components
+                .map(c => this.mapModuleGroup(c, config.components)),
+            functionAbility: this.exportAbilities(config.abilities)
         };
     }
 
-    public static exportAbilities(abilities: ControllerAbility): any {
-        if (!abilities || !abilities.functionAbility) return abilities;
+    private static mapModuleGroup(comp: ComponentConfig, all: ComponentConfig[]): any {
+        const children = all.filter(c => c.parentNodeUuid === comp.id);
         return {
-            version: abilities.version || 'V1.0',
-            component_ability: abilities.componentAbility || [],
-            function_ability: abilities.functionAbility.map(func => ({
-                type: func.type,
-                desc: func.desc,
-                child_function: func.childFunction?.map(child => ({
-                    key: child.key,
-                    desc: child.desc,
-                    tips: child.tips,
-                    attr: child.attr?.map(a => ({
-                        key: a.key,
-                        type: a.type,
-                        array_param: a.arrayParam ? {
-                            group_key: a.arrayParam.groupKey,
-                            group_name: a.arrayParam.groupName,
-                            bool_mustfill: a.arrayParam.boolMustfill,
-                            attr_params: a.arrayParam.attrParams?.map(p => this.mapAttributeToCModel(p))
-                        } : undefined,
-                        combox_param: a.comboxParam ? {
-                            key: a.comboxParam.key || a.key,
-                            desc: a.comboxParam.desc,
-                            tips: a.comboxParam.tips,
-                            value: a.comboxParam.value,
-                            combox_source: a.comboxParam.comboxSource,
-                            // ━━━ PROTO ALIGNMENT: normalCombox ━━━
-                            normalCombox: a.comboxParam.options?.map(o => ({
-                                key: o.key,
-                                desc: o.desc,
-                                // ━━━ PROTO ALIGNMENT: arrayCmobEle ━━━
-                                arrayCmobEle: o.arrayAttr?.map((sub: any) => this.mapAttributeToCModel(sub))
-                            }))
-                        } : undefined
-                    }))
-                }))
-            }))
+            moduleGroupName: comp.moduleGroupName || "LibraryGroup",
+            moduleGroupUuid: comp.moduleGroupUuid,
+            moduleComponets: [this.mapComponentToCModel(comp)],
+            moreModuleInfo: children.map(c => this.mapModuleGroup(c, all))
         };
+    }
+
+    static exportAbilities(abilities: any): any {
+        if (!abilities || !abilities.functionAbility) return undefined;
+        return (abilities.functionAbility || []).map((f: any) => ({
+            type: f.type,
+            desc: f.desc,
+            childFunction: (f.childFunction || []).map((cf: any) => ({
+                key: cf.key,
+                desc: cf.desc,
+                tips: cf.tips,
+                attr: (cf.attr || []).map((a: any) => this.mapAttributeToCModel(a, true)) // AbiSet context
+            }))
+        }));
     }
 
     private static mapComponentToCModel(c: ComponentConfig): any {
         return {
-            general_attr: {
+            generalAttr: {
                 ...c.generalAttr,
-                module_name: { type: 'DATA_STRING', string_value: c.name, bool_parse: true },
-                module_uuid: { type: 'DATA_STRING', string_value: c.id, bool_parse: true, bool_hide: true },
-                main_module_type: { type: 'DATA_COMBOX', combo_type: { typeKey: c.category }, bool_parse: true },
-                sub_module_type: { type: 'DATA_COMBOX', combo_type: { typeKey: c.type }, bool_parse: true },
-                extend_params: [
-                    ...(c.generalAttr?.extend_params || []).filter((p: any) => p.key !== 'module_alias'),
-                    { key: 'module_alias', type: 'DATA_STRING', string_value: c.alias, bool_parse: true }
-                ]
+                moduleName: { type: 'DATA_STRING', stringValue: c.name, boolParse: true },
+                moduleUuid: { type: 'DATA_STRING', stringValue: c.id, boolParse: true },
+                moduleShape: c.shape ? {
+                    shapeType: c.shape.type === 'BOX' ? 'ENUM_BOX' : 'ENUM_CYLINDER',
+                    box: c.shape.type === 'BOX' ? {
+                        sizeLen: c.shape.length,
+                        sizeWidth: c.shape.width,
+                        sizeHeight: c.shape.height
+                    } : undefined,
+                    cylinder: c.shape.type === 'CYLINDER' ? {
+                        diameter: c.shape.diameter,
+                        sizeHeight: c.shape.height
+                    } : undefined
+                } : undefined
             },
-            private_attr: {
-                private_attrs: c.privateAttrs.map(group => this.mapGroupToCModel(group))
-            },
-            interface_ability: c.interfaceAbility || {},
-            interface_params: {
-                // ━━━ PROTO ALIGNMENT: interfaceGroup ━━━
-                interfaceGroup: c.interfaces.map(inf => ({
-                    key: inf.key,
-                    type: inf.type,
-                    path: inf.path,
-                    desc: inf.desc,
-                    interface_uuid: inf.interfaceUuid,
-                    linked_interface_uuid: inf.linkedInterfaceUuid || [],
-                    link_attrs: inf.linkAttrs,
-                    interface_attrs: inf.interfaceAttrs,
-                    interface_params: inf.interfaceParams,
+            privateAttr: {
+                privateAttrs: c.privateAttrs.map(g => ({
+                    key: g.key,
+                    desc: g.desc,
+                    arrayBaseEle: g.elements.map(e => this.mapAttributeToCModel(e, false)) // Component context
                 }))
             },
-            struct_param: {
-                extend_params: [
-                    { key: 'locCoordX', type: 'DATA_DOUBLE', double_value: c.mountX, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    { key: 'locCoordY', type: 'DATA_DOUBLE', double_value: c.mountY, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    { key: 'locCoordZ', type: 'DATA_DOUBLE', double_value: c.mountZ, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    { key: 'locCoordROLL', type: 'DATA_DOUBLE', double_value: c.mountRoll, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    { key: 'locCoordPITCH', type: 'DATA_DOUBLE', double_value: c.mountPitch, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    { key: 'locCoordYAW', type: 'DATA_DOUBLE', double_value: c.mountYaw, bool_parse: true, bool_hide: true, bool_mustfill: true },
-                    ...(c.parentNodeUuid ? [{ key: 'parentNodeUuid', type: 'DATA_COMBOX', combo_type: { typeKey: c.parentNodeUuid }, bool_parse: true }] : [])
-                ],
-                segmented_limits_params: c.rawStructParam || []
+            interfaceAbility: c.interfaceAbility,
+            interfaceParams: {
+                interfaceGroup: c.interfaces.map(i => ({
+                    key: i.key,
+                    type: i.type,
+                    path: i.path,
+                    desc: i.desc,
+                    interfaceUuid: i.interfaceUuid,
+                    linkedInterfaceUuid: i.linkedInterfaceUuid || [],
+                    interfaceAttrs: i.interfaceAttrs,
+                    interfaceParams: i.interfaceParams
+                }))
             },
-            bool_disable: c.disabled,
-            bool_deprecated: c.deprecated,
+            structParam: {
+                extendParams: [
+                    { key: 'locCoordX', type: 'DATA_DOUBLE', doubleValue: c.mountX },
+                    { key: 'locCoordY', type: 'DATA_DOUBLE', doubleValue: c.mountY },
+                    { key: 'locCoordZ', type: 'DATA_DOUBLE', doubleValue: c.mountZ },
+                    { key: 'locCoordROLL', type: 'DATA_DOUBLE', doubleValue: c.mountRoll },
+                    { key: 'locCoordPITCH', type: 'DATA_DOUBLE', doubleValue: c.mountPitch },
+                    { key: 'locCoordYAW', type: 'DATA_DOUBLE', doubleValue: c.mountYaw },
+                    { key: 'parentNodeUuid', type: 'DATA_STRING', stringValue: c.parentNodeUuid || "" }
+                ],
+                segmentedLimitsParams: c.rawStructParam
+            },
+            boolDisable: c.disabled,
+            boolDeprecated: c.deprecated
         };
     }
 
-    private static mapGroupToCModel(group: AttributeGroup): any {
-        return {
-            key: group.key,
-            desc: group.desc,
-            bool_deprecated: group.boolDeprecated,
-            array_base_ele: group.elements.map(attr => this.mapAttributeToCModel(attr))
-        };
-    }
-
-    private static mapAttributeToCModel(attr: SmartAttribute): any {
+    private static mapAttributeToCModel(a: SmartAttribute, isAbility: boolean): any {
         const base: any = {
-            key: attr.key,
-            desc: attr.desc,
-            type: attr.type,
-            unit: attr.unit,
-            bool_parse: attr.boolParse,
-            bool_hide: attr.boolHide,
-            bool_noeditable: attr.boolNoeditable,
-            bool_mustfill: attr.boolMustfill,
-            bool_basic: attr.boolBasic,
-            fixed_source: attr.fixedSource,
+            key: a.key,
+            type: a.type,
+            desc: a.desc,
+            unit: a.unit,
+            boolParse: a.boolParse,
+            boolHide: a.boolHide,
+            boolBasic: a.boolBasic,
+            boolMustfill: a.boolMustfill,
+            boolNoeditable: a.boolNoeditable
         };
 
-        switch (attr.type) {
-            case 'DATA_STRING': base.string_value = attr.value; break;
-            case 'DATA_IP': base.ip_value = attr.value; break;
-            case 'DATA_DOUBLE': base.double_value = Number(attr.value); break;
-            case 'DATA_FLOAT': base.float_value = Number(attr.value); break;
-            case 'DATA_INT32': base.int32_value = Number(attr.value); break;
-            case 'DATA_UINT32': base.uint32_value = Number(attr.value); break;
-            case 'DATA_INT64': base.int64_value = String(attr.value); break;
-            case 'DATA_UINT64': base.uint64_value = String(attr.value); break;
-            case 'DATA_BOOL': base.bool_value = Boolean(attr.value); break;
-            case 'DATA_COMBOX': 
-                // ━━━ CRITICAL PROTO ALIGNMENT: typeKey, typeDesc, typeGroups ━━━
-                base.combo_type = attr.comboType ? {
-                    typeKey: attr.comboType.typeKey,
-                    typeDesc: attr.comboType.typeDesc,
-                    typeGroups: attr.comboType.typeGroups?.map(g => ({
-                        key: g.key,
-                        desc: g.desc,
-                        arrayCmobEle: g.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub))
-                    }))
-                } : { typeKey: attr.value }; 
-                break;
-            case 'DATA_FIXED_E': base.string_fix = attr.value; break;
+        // ALIGNED WITH PROTO TYPES
+        if (a.value !== undefined && a.value !== null) {
+            switch (a.type) {
+                case 'DATA_DOUBLE': base.doubleValue = Number(a.value); break;
+                case 'DATA_INT32': base.int32Value = Math.floor(Number(a.value)); break;
+                case 'DATA_BOOL': base.boolValue = Boolean(a.value); break;
+                case 'DATA_STRING': base.stringValue = String(a.value); break;
+            }
         }
 
-        if (attr.maxValue !== undefined) {
-            if (attr.type === 'DATA_DOUBLE') base.double_maxvalue = attr.maxValue;
-            else if (attr.type === 'DATA_FLOAT') base.float_maxvalue = attr.maxValue;
-            else if (attr.type === 'DATA_INT32') base.int32_maxvalue = attr.maxValue;
-        }
-        if (attr.minValue !== undefined) {
-            if (attr.type === 'DATA_DOUBLE') base.double_minvalue = attr.minValue;
-            else if (attr.type === 'DATA_FLOAT') base.float_minvalue = attr.minValue;
-            else if (attr.type === 'DATA_INT32') base.int32_minvalue = attr.minValue;
+        if (a.maxValue !== undefined) base.doubleMaxvalue = a.maxValue;
+        if (a.minValue !== undefined) base.doubleMinvalue = a.minValue;
+
+        if (a.type === 'DATA_COMBOX' && a.comboType) {
+            base.comboType = {
+                typeKey: a.comboType.typeKey,
+                typeDesc: a.comboType.typeDesc,
+                typeGroups: a.comboType.typeGroups?.map(g => ({
+                    key: g.key,
+                    desc: g.desc,
+                    // ━━━ GEMINI_RULES: arrayAttr vs arrayCmobEle ━━━
+                    [isAbility ? 'arrayAttr' : 'arrayCmobEle']: g.arrayCmobEle?.map(sub => this.mapAttributeToCModel(sub, isAbility))
+                }))
+            };
         }
 
         return base;

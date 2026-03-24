@@ -1,6 +1,6 @@
 # AMR Studio V4 前端 — 待办事项
 
-> 更新时间：2026-03-21
+> 更新时间：2026-03-24
 
 ---
 
@@ -11,7 +11,7 @@
   - 支持导航能力（navi）、安全能力（safety）、逻辑能力（logic）映射
   - 当前 `AbilityStep.tsx` 为占位符
 
-- [ ] **Import/Export 端到端往返测试**
+- [x] **Import/Export 端到端往返测试**
   - 使用真实 `.cmodel` 文件进行 import → export → re-import 测试
   - 验证所有 proto 字段无损保留（interfaceAbility, shape, disabled, deprecated, constraints 等）
 
@@ -28,16 +28,18 @@
   - 驱动类型与组件匹配验证
   - 能力映射完整性检查
 
-- [ ] **WiringStep 连线编辑功能**
-  - 当前仅展示接口列表
-  - 需添加可视化连线和 `linkedInterfaceUuid` 编辑
+- [x] **WiringStep 连线编辑功能**
+  - 使用 PLC 风格 Bus-Slave 拓扑重新实现
+  - 支持基于主控端口的可视化分组
 
 - [ ] **组件库添加模板选择**
   - ComponentLibraryStep "添加" 按钮应提供具体型号模板（从 registry 选择）
   - 替换当前通用 `default` 类型
 
-- [ ] **浏览器 UI 验证**
+- [x] **浏览器 UI 验证**
   - 确认暗色主题、玻璃态效果、动画在实际浏览器中正常渲染
+  - 彻底解决 CORS 跨域问题
+  - 消除 Ant Design v5 所有弃用警告
 
 ---
 

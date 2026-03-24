@@ -6,6 +6,8 @@
 - **标准：官方 CamelCase (驼峰)**。
 - **双重键名保护 (Dual-Key Strategy)**：
   - 后端合并逻辑必须同时支持 SnakeCase 和 CamelCase。
+  - **能力集字段特化 (Ability Schema Exceptions)**：
+    - **COMBOX 选项**: 在 `AbiSet` 协议语境下，下拉框项的子属性数组必须映射为 **`arrayAttr`**，而非组件语境下的 `arrayCmobEle`。
 - **最后一百米归一化 (Last-Mile Normalization)**：
   - **Encoder (后端)**: 在调用 `ParseDict` 序列化之前，必须执行 `proto_final_sync`。该函数强制将所有下划线键名转为 Proto 定义的原始驼峰名，防止数据被 `ParseDict` 静默丢弃。
 
@@ -17,7 +19,7 @@
 ## 3. 状态同步策略 (Sync Strategy)
 - **约束**：
   - **分支覆盖而非原子替换**：修改深层嵌套属性（如电机减速比）时，前端应发送完整的父分支（如整个 `private_attr`），后端执行 `deep_update`。
-  - **智能合并 (Backend)**：后端 `deep_update` 在处理列表（Array）时，必须基于 `key` 或 `type`字段进行匹配合并，严禁直接覆盖整个数组。
+  - **智能合并 (Backend)**：后端 `deep_update` 在处理列表（Array）时，必须基于 `key` 或 `type` 字段进行匹配合并，严禁直接覆盖整个数组。
 
 ## 4. 后端性能与安全 (Backend Integrity)
 - **约束**：
@@ -38,8 +40,6 @@
 - **数据格式冻结 (Data Format Freeze)**：前端界面的任何优化、重构或交互增强，**严禁改变**前后端既有的数据交换格式（JSON Schema）。
 - **解析无损性 (Parsing Integrity)**：UI 组件的逻辑调整不得影响 `ImportService` 和 `ExportService` 的运行，确保 100% 的数据解析兼容性。
 
-## 9. 核心协议安全红线 (Protocol Security)
-- **物理隔离要求 (Local Only)**：
-  - `controller_model_abi_desc` 系列文件（包含 `.proto`, `.pb.cc`, `.pb.h`, `_pb2.py`）被定义为**绝密核心资产**。
-  - 严禁将其上传至任何公共或私有远程 Git 仓库。
-  - 本地环境必须通过 `.gitignore` 强制忽略此类文件。
+## 8. 文档维护与隐私规范 (Documentation & Privacy)
+- **同步更新承诺 (README Sync)**：每次代码重大更新后，必须同步更新 `README.md`。
+- **个人信息脱敏 (Privacy Protection)**：**严禁**在 `README.md` 或任何公开文档中展示用户姓名、敏感联系方式或私有路径。所有贡献者标识应使用职能名或团队匿名。

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { message, Tooltip } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
@@ -50,6 +50,9 @@ export default function App() {
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
+    const importRef = useRef<HTMLInputElement>(null);
+
+    const handleImportClick = () => importRef.current?.click();
 
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
@@ -68,34 +71,32 @@ export default function App() {
         console.groupEnd();
     };
 
-    const handleImport = async () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.cmodel,.json';
-        input.onchange = async (e: any) => {
-            try {
-                const file = e.target.files[0];
-                messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
-                const formData = new FormData();
-                formData.append('file', file);
-                const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
-                if (res.data.status === 'success') {
-                    const pId = res.data.project_id;
-                    printAudit(`Import [${pId}]`, res.data.audit);
-                    const abilitiesRaw = await apiFetchAbilities(pId);
-                    const abilities = ImportService.parseAbilities(abilitiesRaw);
-                    const parsed = ImportService.parseCompDesc(res.data.full_json);
-                    const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
-                    setProjectId(pId);
-                    loadProject(fullConfig);
-                    messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
-                }
-            } catch (err) { 
-                console.error('Import Error:', err);
-                messageApi.error({ content: '导入失败', key: 'import' }); 
+    const handleImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        try {
+            messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
+            const formData = new FormData();
+            formData.append('file', file);
+            const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
+            if (res.data.status === 'success') {
+                const pId = res.data.project_id;
+                printAudit(`Import [${pId}]`, res.data.audit);
+                const abilitiesRaw = await apiFetchAbilities(pId);
+                const abilities = ImportService.parseAbilities(abilitiesRaw);
+                const parsed = ImportService.parseCompDesc(res.data.full_json);
+                const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
+                setProjectId(pId);
+                loadProject(fullConfig);
+                messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
             }
-        };
-        input.click();
+        } catch (err) { 
+            console.error('Import Error:', err);
+            messageApi.error({ content: '导入失败', key: 'import' }); 
+        } finally {
+            // Reset input so the same file can be imported again
+            e.target.value = '';
+        }
     };
 
     const handleExport = async () => {
@@ -183,7 +184,15 @@ export default function App() {
                     ))}
                 </nav>
                 <div className="sidebar-bottom">
-                    <button className="sidebar-action-btn" onClick={handleImport}><ImportOutlined /> 导入 .cmodel</button>
+                    <input 
+                        id="cmodel-import-input"
+                        type="file" 
+                        ref={importRef} 
+                        style={{ display: 'none' }} 
+                        accept=".cmodel,.json"
+                        onChange={handleImport}
+                    />
+                    <button className="sidebar-action-btn" onClick={handleImportClick}><ImportOutlined /> 导入 .cmodel</button>
                     <button className="sidebar-action-btn primary" onClick={handleExport}><ExportOutlined /> 导出配置</button>
                 </div>
             </aside>

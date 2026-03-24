@@ -54,7 +54,7 @@ export const MountingStep: React.FC = () => {
                                                 value={(comp as any)[axis.key] ?? 0}
                                                 onChange={v => updateComponent(comp.id, { [axis.key]: v ?? 0 })}
                                                 style={{ width: '100%' }}
-                                                addonAfter={axis.unit}
+                                                suffix={axis.unit}
                                             />
                                         </Form.Item>
                                     </Col>

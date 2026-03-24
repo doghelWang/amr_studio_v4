@@ -21,7 +21,10 @@ import axios from 'axios';
 const { Title, Text } = Typography;
 
 export const ComponentLibraryStep: React.FC = () => {
-    const { config, addComponent, removeComponent, activeComponentId, setActiveComponent } = useProjectStore();
+    const { 
+        config, addComponentFromConfig, removeComponent, 
+        activeComponentId, setActiveComponent 
+    } = useProjectStore();
     const [isAddModalOpen, setIsAddModal] = useState(false);
     const [libraryData, setLibraryData] = useState<Record<string, any[]>>({});
     const [loadingLibrary, setLoadingLibrary] = useState(false);
@@ -72,7 +75,7 @@ export const ComponentLibraryStep: React.FC = () => {
     const handleAddFromLibrary = (entity: any) => {
         try {
             const newComp = ImportService.mapEntityToComponent(entity.full_data);
-            addComponent(newComp);
+            addComponentFromConfig(newComp);
             setIsAddModal(false);
         } catch (err) {
             console.error("Failed to add component", err);
@@ -135,36 +138,80 @@ export const ComponentLibraryStep: React.FC = () => {
             </div>
 
             {/* ━━━ Component Market Modal ━━━ */}
-            <Modal title="工业级组件超市 (Module Library)" open={isAddModalOpen} onCancel={() => setIsAddModal(false)} footer={null} width={1000} style={{ top: 40 }}>
-                <Input prefix={<SearchOutlined />} placeholder="搜索雷达、电机、IO模块..." style={{ marginBottom: 20 }} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
-                <div style={{ height: 500, overflowY: 'auto' }}>
-                    {loadingLibrary ? <div style={{ textAlign: 'center', padding: 100 }}><Spin tip="索引资源库中..." /></div> : (
-                        Object.keys(libraryData).map(sys => (
-                            <div key={sys} style={{ marginBottom: 32 }}>
-                                <Title level={5} style={{ color: 'var(--accent)', borderLeft: '4px solid var(--accent)', paddingLeft: 12 }}>{sys}</Title>
-                                <Row gutter={[16, 16]}>
-                                    {libraryData[sys].filter(e => e.moduleGroupName.toLowerCase().includes(searchTerm.toLowerCase())).map(entity => (
-                                        <Col span={8} key={entity.file_name}>
-                                            <Card 
-                                                hoverable 
-                                                size="small"
-                                                style={{ background: 'var(--bg-sidebar)', borderColor: 'var(--border-default)' }}
-                                                onClick={() => handleAddFromLibrary(entity)}
-                                            >
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                                                    <BuildOutlined style={{ fontSize: 24, color: 'var(--text-muted)' }} />
-                                                    <div style={{ flex: 1, minWidth: 0 }}>
-                                                        <div style={{ fontWeight: 600, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{entity.moduleGroupName}</div>
-                                                        <Text type="secondary" style={{ fontSize: 11 }}>{entity.file_name}</Text>
-                                                    </div>
-                                                    <PlusCircleOutlined style={{ fontSize: 18, color: 'var(--accent)' }} />
-                                                </div>
-                                            </Card>
-                                        </Col>
-                                    ))}
-                                </Row>
-                            </div>
-                        ))
+            <Modal title={
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <AppstoreOutlined style={{ color: 'var(--accent)' }} />
+                    <span>工业级组件超市 (Module Library)</span>
+                    <Badge count="V4.0 Certified" style={{ backgroundColor: '#52c41a' }} />
+                </div>
+            } open={isAddModalOpen} onCancel={() => setIsAddModal(false)} footer={null} width={1000} style={{ top: 40 }} className="library-modal">
+                <Input prefix={<SearchOutlined />} placeholder="搜索雷达、电机、主控、IO模块..." style={{ marginBottom: 24, height: 40, borderRadius: 8, background: 'rgba(255,255,255,0.02)' }} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                <div style={{ height: 'calc(80vh - 200px)', overflowY: 'auto', paddingRight: 8 }}>
+                    {loadingLibrary ? <div style={{ textAlign: 'center', padding: 100 }}><Spin tip="索引数字孪生资源库中..." /></div> : (
+                        Object.keys(libraryData).map(sys => {
+                            const filtered = libraryData[sys].filter(e => 
+                                e.moduleGroupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                e.file_name.toLowerCase().includes(searchTerm.toLowerCase())
+                            );
+                            if (filtered.length === 0) return null;
+
+                            return (
+                                <div key={sys} style={{ marginBottom: 40 }}>
+                                    <Divider orientation="left" plain>
+                                        <Text strong style={{ color: 'var(--accent)', textTransform: 'uppercase', letterSpacing: 1 }}>{sys}</Text>
+                                    </Divider>
+                                    <Row gutter={[20, 20]}>
+                                        {filtered.map(entity => {
+                                            // Extract interface counts for preview
+                                            const module = entity.full_data?.moduleComponets?.[0] || entity.full_data?.module_componets?.[0];
+                                            const ifaceAbility = module?.interfaceAbility || module?.interface_ability || {};
+                                            const ifaceCounts = (ifaceAbility.busInterfaceAbility || ifaceAbility.bus_interface_ability || [])
+                                                .map((ia: any) => `${ia.busInterfaceNums || ia.bus_interface_nums}x ${ia.busInterfaceType || ia.bus_interface_type}`)
+                                                .join(', ');
+
+                                            return (
+                                                <Col span={8} key={entity.file_name}>
+                                                    <Card 
+                                                        hoverable 
+                                                        variant="borderless"
+                                                        size="small"
+                                                        className="library-card"
+                                                        onClick={() => handleAddFromLibrary(entity)}
+                                                    >
+                                                        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                                                            <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
+                                                                <div style={{ width: 40, height: 40, background: 'rgba(255,255,255,0.03)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                                    <BuildOutlined style={{ fontSize: 20, color: 'var(--accent)' }} />
+                                                                </div>
+                                                                <div style={{ flex: 1, minWidth: 0 }}>
+                                                                    <div style={{ fontWeight: 600, fontSize: 13, color: '#f0f6fc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                        {entity.moduleGroupName}
+                                                                    </div>
+                                                                    <Text type="secondary" style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>{entity.file_name}</Text>
+                                                                </div>
+                                                                <PlusCircleOutlined className="add-icon" style={{ fontSize: 20, color: 'var(--accent)', opacity: 0.3 }} />
+                                                            </div>
+                                                            
+                                                            {ifaceCounts && (
+                                                                <div style={{ flex: 1, background: 'rgba(0,0,0,0.2)', padding: '6px 10px', borderRadius: 4, marginBottom: 8 }}>
+                                                                    <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 2 }}>固定接口资源</div>
+                                                                    <div style={{ fontSize: 11, color: '#58a6ff' }}>{ifaceCounts}</div>
+                                                                </div>
+                                                            )}
+
+                                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                                <Tag color="default" bordered={false} style={{ fontSize: 9, margin: 0, background: 'rgba(255,255,255,0.05)' }}>MODEL V4</Tag>
+                                                                <Text style={{ fontSize: 10, color: '#4d535e' }}>Industrial Grade</Text>
+                                                            </div>
+                                                        </div>
+                                                    </Card>
+                                                </Col>
+                                            );
+                                        })}
+                                    </Row>
+                                </div>
+                            );
+                        })
                     )}
                 </div>
             </Modal>
@@ -172,6 +219,19 @@ export const ComponentLibraryStep: React.FC = () => {
             <style>{`
                 .custom-hardware-tree .ant-tree-node-content-wrapper { padding: 4px 8px !important; border-radius: 6px !important; transition: all 0.2s !important; }
                 .custom-hardware-tree .ant-tree-node-selected { background-color: var(--accent-soft) !important; color: var(--accent) !important; }
+                
+                .library-card { 
+                    background: #1c2128 !important; 
+                    border: 1px solid #30363d !important; 
+                    border-radius: 12px !important;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+                .library-card:hover { 
+                    border-color: var(--accent) !important; 
+                    transform: translateY(-4px);
+                    box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+                }
+                .library-card:hover .add-icon { opacity: 1 !important; transform: scale(1.1); transition: all 0.2s; }
             `}</style>
         </div>
     );

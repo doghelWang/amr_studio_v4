@@ -14,49 +14,84 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
     // 1. Component Audits
     for (const comp of components) {
-        // Check must-fill attributes in grouped elements
+        // A. Attribute Validation (Must-fill & Range)
         const allAttrs = comp.privateAttrs.flatMap(g => g.elements);
         for (const attr of allAttrs) {
-            if (attr.boolMustfill && (attr.value === '' || attr.value === null || attr.value === undefined)) {
+            const val = attr.value;
+            
+            // Must-fill check
+            if (attr.boolMustfill && (val === '' || val === null || val === undefined)) {
                 issues.push({
                     severity: 'ERROR',
                     message: `[${comp.alias || comp.name}] 必填属性 "${attr.desc || attr.key}" 未设置`,
                     nodeId: comp.id,
                 });
             }
-        }
-    }
 
-    // 2. Ability Mapping Audits
-    const naviAbility = config.abilities.functionAbility
-        .find(f => f.type === 'locationAbility')?.childFunction.find(c => c.type === 'navi');
-
-    if (naviAbility) {
-        const naviTypeAttr = naviAbility.attr.find(a => a.key === 'naviUniqueKey')
-            ?.arrayParam?.attrParams.find(ap => ap.key === 'naviType');
-        
-        if (naviTypeAttr?.value === 'LASER_SLAM') {
-            const group = naviTypeAttr.comboType?.typeGroups?.find(g => g.key === 'LASER_SLAM');
-            const relatedLaser = group?.arrayCmobEle?.find(e => e.key === 'relatedLaser');
-            if (!relatedLaser?.value) {
-                issues.push({
-                    severity: 'ERROR',
-                    message: '功能映射：激光SLAM导航未关联激光雷达',
-                    nodeId: 'ability_navi'
-                });
-            } else {
-                // Check if referenced component exists
-                const laserId = relatedLaser.value;
-                if (!components.find(c => c.id === laserId)) {
-                   issues.push({
+            // Range check
+            if (typeof val === 'number') {
+                if (attr.minValue !== undefined && val < attr.minValue) {
+                    issues.push({
                         severity: 'ERROR',
-                        message: '功能映射：激光SLAM关联的激光雷达组件已丢失',
-                        nodeId: 'ability_navi'
+                        message: `[${comp.alias || comp.name}] 属性 "${attr.desc || attr.key}" 低于最小值 (${attr.minValue})`,
+                        nodeId: comp.id,
+                    });
+                }
+                if (attr.maxValue !== undefined && val > attr.maxValue) {
+                    issues.push({
+                        severity: 'ERROR',
+                        message: `[${comp.alias || comp.name}] 属性 "${attr.desc || attr.key}" 高于最大值 (${attr.maxValue})`,
+                        nodeId: comp.id,
                     });
                 }
             }
         }
+
+        // B. Interface Connection Check (Communication only)
+        const COMMUNICATION_TYPES = ['CAN', 'ETHERNET', 'RS485', 'RS232', 'LIN'];
+        for (const iface of comp.interfaces) {
+            const isComm = COMMUNICATION_TYPES.includes(iface.type.toUpperCase());
+            if (isComm && (!iface.linkedInterfaceUuid || iface.linkedInterfaceUuid.length === 0)) {
+                issues.push({
+                    severity: 'WARNING',
+                    message: `[${comp.alias || comp.name}] 通信接口 "${iface.key}" (${iface.type}) 尚未物理连线`,
+                    nodeId: comp.id,
+                });
+            }
+        }
     }
+
+    // 2. Ability Mapping Audits (Recursive check for deep mappings)
+    const checkAbilityAttr = (attr: any, path: string) => {
+        if (attr.key.startsWith('related') && attr.value) {
+            const targetComp = components.find(c => c.id === attr.value);
+            if (!targetComp) {
+                issues.push({
+                    severity: 'ERROR',
+                    message: `功能映射 [${path}]：关联的组件已丢失`,
+                    nodeId: 'ability_error'
+                });
+            }
+        }
+        
+        // Recurse into COMBOX/ARRAY
+        if (attr.type === 'DATA_COMBOX' || attr.type === 'COMBOX') {
+            const combo = attr.comboType || attr.comboxParam;
+            const groups = combo?.typeGroups || combo?.options || [];
+            const activeGroup = groups.find((g: any) => g.key === attr.value);
+            activeGroup?.arrayCmobEle?.forEach((sub: any) => checkAbilityAttr(sub, `${path} > ${activeGroup.desc || activeGroup.key}`));
+        }
+        
+        if (attr.type === 'ARRAY' && attr.arrayParam) {
+            attr.arrayParam.attrParams?.forEach((sub: any) => checkAbilityAttr(sub, path));
+        }
+    };
+
+    config.abilities.functionAbility.forEach(func => {
+        func.childFunction.forEach(child => {
+            child.attr.forEach(common => checkAbilityAttr(common, `${func.desc} > ${child.desc}`));
+        });
+    });
 
     return issues;
 }

@@ -1,6 +1,6 @@
 # AMR Studio V4 前端重构 — 进展报告
 
-> 截止时间：2026-03-21 23:48 CST
+> 截止时间：2026-03-24 08:30 CST
 
 ---
 
@@ -46,6 +46,22 @@
 | `src/index.css` | 500+ 行 CSS：玻璃态卡片、侧边栏导航、分类网格、统计卡片、动画系统 |
 | `src/main.tsx` | Ant Design 暗色 token 覆盖 |
 | `src/App.tsx` | 侧边栏布局 + 头部导入/导出 + 项目名称/版本显示 |
+
+### ✅ Phase 7：专业级电气总线架构 (Step 5)
+
+| 特性 | 说明 |
+|------|------|
+| **Bus-Device Topology** | 采用 PLC 风格。主控端口作为独立总线，管理从站节点的电气连接。 |
+| **Interface Filtering** | 自动过滤通讯（CAN/Eth/485），排除电源/内部接口（PI/PO/LVDS）。 |
+| **Minimalist Aesthetic** | 极简 Master-Slave 节点设计，仅保留“型号/名称/类型”，最大化清晰度。 |
+
+### ✅ Phase 8：系统稳定性与 AntD v5 迁移
+
+| 模块 | 说明 |
+|------|------|
+| **CORS Fix** | 后端添加 `CORSMiddleware` 并重启，彻底解决跨域导入报错。 |
+| **AntD v5 Migration** | 修正 `Card variant`, `Select styles`, `InputNumber suffix` 等 30+ 处弃用警告。 |
+| **Robust Import** | 重构 `App.tsx` 导入逻辑，采用 `useRef` 定位隐藏 File Input，支持自动化操作。 |
 
 ### ✅ Phase 6：构建验证 & 旧代码清理
 

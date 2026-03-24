@@ -21,6 +21,7 @@ interface ProjectState {
 
     // Components
     addComponent: (category: MainModuleType, type: string) => string;
+    addComponentFromConfig: (config: ComponentConfig) => void;
     updateComponent: (id: string, data: Partial<ComponentConfig>) => void;
     removeComponent: (id: string) => void;
     setActiveComponent: (id: string | null) => void;
@@ -58,7 +59,11 @@ const DEFAULT_IDENTITY: RobotIdentity = {
     chassisShape: 'BOX',
     chassisLength: 1200,
     chassisWidth: 800,
-    chassisHeight: 400
+    chassisHeight: 400,
+    headOffset: 600,
+    tailOffset: 600,
+    leftOffset: 400,
+    rightOffset: 400
 };
 
 const createInitialConfig = (): RobotConfig => ({
@@ -77,13 +82,36 @@ export const useProjectStore = create<ProjectState>()(
                 activeComponentId: null,
                 isDirty: false,
 
-                setIdentity: (data) => set((state) => ({
-                    config: {
-                        ...state.config,
-                        identity: { ...state.config.identity, ...data }
-                    },
-                    isDirty: true
-                })),
+                setIdentity: (data) => set((state) => {
+                    const newIdentity = { ...state.config.identity, ...data };
+                    
+                    // ━━━ Bi-directional Calculation Logic ━━━
+                    if ('chassisLength' in data) {
+                        newIdentity.headOffset = Number(data.chassisLength) / 2;
+                        newIdentity.tailOffset = Number(data.chassisLength) / 2;
+                    } else if ('headOffset' in data) {
+                        newIdentity.tailOffset = Number(state.config.identity.chassisLength) - Number(data.headOffset);
+                    } else if ('tailOffset' in data) {
+                        newIdentity.headOffset = Number(state.config.identity.chassisLength) - Number(data.tailOffset);
+                    }
+
+                    if ('chassisWidth' in data) {
+                        newIdentity.leftOffset = Number(data.chassisWidth) / 2;
+                        newIdentity.rightOffset = Number(data.chassisWidth) / 2;
+                    } else if ('leftOffset' in data) {
+                        newIdentity.rightOffset = Number(state.config.identity.chassisWidth) - Number(data.leftOffset);
+                    } else if ('rightOffset' in data) {
+                        newIdentity.leftOffset = Number(state.config.identity.chassisWidth) - Number(data.rightOffset);
+                    }
+
+                    return {
+                        config: {
+                            ...state.config,
+                            identity: newIdentity
+                        },
+                        isDirty: true
+                    };
+                }),
 
                 addComponent: (category, type) => {
                     const id = uuidGen();
@@ -136,6 +164,15 @@ export const useProjectStore = create<ProjectState>()(
                             c.id === id ? { ...c, ...data } : c
                         )
                     },
+                    isDirty: true
+                })),
+
+                addComponentFromConfig: (component) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: [...state.config.components, component]
+                    },
+                    activeComponentId: component.id,
                     isDirty: true
                 })),
 
