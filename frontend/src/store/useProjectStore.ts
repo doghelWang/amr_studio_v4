@@ -66,11 +66,26 @@ const DEFAULT_IDENTITY: RobotIdentity = {
     rightOffset: 400
 };
 
-const createInitialConfig = (): RobotConfig => ({
-    identity: { ...DEFAULT_IDENTITY },
-    components: [],
-    abilities: abilityRegistry as any
-});
+const createInitialConfig = (): RobotConfig => {
+    const identity = { ...DEFAULT_IDENTITY };
+    const chassisId = 'chassis-root';
+    return {
+        identity,
+        components: [{
+            id: chassisId,
+            name: 'chassis',
+            alias: '底盘 (Robot Chassis)',
+            type: 'diffChassis',
+            category: 'CHASSIS',
+            parentNodeUuid: null,
+            mountX: 0, mountY: 0, mountZ: 0,
+            mountRoll: 0, mountPitch: 0, mountYaw: 0,
+            privateAttrs: [],
+            interfaces: []
+        }],
+        abilities: abilityRegistry as any
+    };
+};
 
 export const useProjectStore = create<ProjectState>()(
     persist(
@@ -104,16 +119,33 @@ export const useProjectStore = create<ProjectState>()(
                         newIdentity.leftOffset = Number(state.config.identity.chassisWidth) - Number(data.rightOffset);
                     }
 
+                    // ━━━ Sync Chassis Component ━━━
+                    const components = state.config.components.map(c => {
+                        if (c.category === 'CHASSIS') {
+                            return {
+                                ...c,
+                                alias: `底盘 (${newIdentity.robotName})`,
+                                // Update chassis type based on driveType if needed (e.g. diffChassis, omniChassis)
+                                type: newIdentity.driveType === 'OMNI_WHEEL' ? 'omniChassis' : 'diffChassis'
+                            };
+                        }
+                        return c;
+                    });
+
                     return {
                         config: {
                             ...state.config,
-                            identity: newIdentity
+                            identity: newIdentity,
+                            components
                         },
                         isDirty: true
                     };
                 }),
 
                 addComponent: (category, type) => {
+                    // Prevent duplicate Chassis
+                    if (category === 'CHASSIS') return '';
+
                     const id = uuidGen();
                     const registryInfo = (masterRegistry as any)[category]?.[type];
 
@@ -176,14 +208,22 @@ export const useProjectStore = create<ProjectState>()(
                     isDirty: true
                 })),
 
-                removeComponent: (id) => set((state) => ({
-                    config: {
-                        ...state.config,
-                        components: state.config.components.filter((c) => c.id !== id)
-                    },
-                    activeComponentId: state.activeComponentId === id ? null : state.activeComponentId,
-                    isDirty: true
-                })),
+                removeComponent: (id) => set((state) => {
+                    const compToRemove = state.config.components.find(c => c.id === id);
+                    if (compToRemove?.category === 'CHASSIS') {
+                        console.warn("SYSTEM: Cannot remove root Chassis component.");
+                        return state;
+                    }
+
+                    return {
+                        config: {
+                            ...state.config,
+                            components: state.config.components.filter((c) => c.id !== id)
+                        },
+                        activeComponentId: state.activeComponentId === id ? null : state.activeComponentId,
+                        isDirty: true
+                    };
+                }),
 
                 setActiveComponent: (id) => set({ activeComponentId: id }),
 

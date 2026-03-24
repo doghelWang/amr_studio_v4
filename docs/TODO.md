@@ -32,9 +32,10 @@
   - 使用 PLC 风格 Bus-Slave 拓扑重新实现
   - 支持基于主控端口的可视化分组
 
-- [ ] **组件库添加模板选择**
-  - ComponentLibraryStep "添加" 按钮应提供具体型号模板（从 registry 选择）
-  - 替换当前通用 `default` 类型
+- [x] **组件库添加模板选择 (Step 3 Complete)**
+  - [x] ComponentLibraryStep "新增" 按钮已集成资源库（Registry）。
+  - [x] 实现了顺次装配引导（9步法）。
+  - [x] 支持 Alias 与 Name 双重命名机制。
 
 - [x] **浏览器 UI 验证**
   - 确认暗色主题、玻璃态效果、动画在实际浏览器中正常渲染
