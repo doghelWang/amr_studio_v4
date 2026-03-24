@@ -1,0 +1,286 @@
+{
+	"moduleGroupName": "WARLIGHT-RS-PLS-L563T01",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "WARLIGHT-RS-PLS-L563T01",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "指示灯,L5-63T01,示宽灯,R,5-28V,Mizu2M",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-07-28 14:39:19.661",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "InteractiveSys"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "light",
+						"typeDesc": "\r"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "warningLight",
+						"typeDesc": "\u0001"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 41,
+						"sizeWidth": 12,
+						"sizeHeight": 150
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "WARLIGHT-RS-PLS-L563T01",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "DI",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "DI_1",
+						"type": "DI",
+						"desc": "DI_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "*",
+										"typeDesc": "*",
+										"typeGroups": [
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "PDO",
+										"typeDesc": "PDO",
+										"typeGroups": [
+											{
+												"key": "PDO",
+												"desc": "PDO"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								},
+								{
+									"key": "COLOR",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "LAMP_COLOR_RED",
+										"typeDesc": "LAMP_COLOR_RED",
+										"typeGroups": [
+											{
+												"key": "LAMP_COLOR_RED",
+												"desc": "LAMP_COLOR_RED"
+											},
+											{
+												"key": "LAMP_COLOR_GREEN",
+												"desc": "LAMP_COLOR_GREEN"
+											},
+											{
+												"key": "LAMP_COLOR_BULE",
+												"desc": "LAMP_COLOR_BULE"
+											},
+											{
+												"key": "LAMP_COLOR_YELLOW",
+												"desc": "LAMP_COLOR_YELLOW"
+											},
+											{
+												"key": "LAMP_COLOR_WHITE",
+												"desc": "LAMP_COLOR_WHITE"
+											}
+										]
+									},
+									"desc": "颜色",
+									"boolParse": true
+								},
+								{
+									"key": "VIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999,
+									"doubleMinvalue": 0,
+									"unit": "V",
+									"desc": "额定输入电压",
+									"boolParse": true
+								},
+								{
+									"key": "IIN",
+									"type": "DATA_DOUBLE",
+									"doubleValue": 0,
+									"doubleMaxvalue": 999999,
+									"doubleMinvalue": 0,
+									"unit": "mA",
+									"desc": "额定输入电流",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "activeLevel",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "1",
+										"typeDesc": "高电平生效",
+										"typeGroups": [
+											{
+												"key": "1",
+												"desc": "高电平生效"
+											},
+											{
+												"key": "0",
+												"desc": "低电平生效"
+											}
+										]
+									},
+									"desc": "有效电平",
+									"boolParse": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

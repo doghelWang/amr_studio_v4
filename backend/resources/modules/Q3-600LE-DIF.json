@@ -1,0 +1,501 @@
+{
+    "moduleGroupName": "Q3-600LE-DIF",
+    "moduleComponets": [
+        {
+            "generalAttr": {
+                "moduleName": {
+                    "key": "module_name",
+                    "type": "DATA_STRING",
+                    "stringValue": "Q3-600LE-DIF",
+                    "desc": "模块名称",
+                    "boolParse": true
+                },
+                "moduleDesc": {
+                    "key": "module_desc",
+                    "type": "DATA_STRING",
+                    "desc": "模块描述",
+                    "boolParse": true
+                },
+                "moduleUuid": {
+                    "key": "module_uuid",
+                    "type": "DATA_STRING",
+                    "desc": "模块Uuid",
+                    "boolParse": true,
+                    "boolHide": true
+                },
+                "versionInfo": {
+                    "key": "version_info",
+                    "type": "DATA_STRING",
+                    "stringValue": "V1.0/2025-07-28 14:31:42.063",
+                    "desc": "版本信息",
+                    "boolParse": true,
+                    "boolNoeditable": true
+                },
+                "module3dIcon": {
+                    "key": "module_3d_icon",
+                    "type": "DATA_STRING",
+                    "stringValue": "./ModuleLibrary/3dModelRes/Q3MainFrame.obj",
+                    "desc": "3D模型",
+                    "boolParse": true
+                },
+                "subSysType": {
+                    "key": "sub_sys_type",
+                    "type": "DATA_COMBOX",
+                    "comboType": {
+                        "typeKey": "ChassisSys"
+                    },
+                    "desc": "子系统",
+                    "boolParse": true
+                },
+                "mainModuleType": {
+                    "key": "main_module_type",
+                    "type": "DATA_COMBOX",
+                    "comboType": {
+                        "typeKey": "chassis"
+                    },
+                    "desc": "主类型",
+                    "boolParse": true
+                },
+                "subModuleType": {
+                    "key": "sub_module_type",
+                    "type": "DATA_COMBOX",
+                    "comboType": {
+                        "typeKey": "diffChassis"
+                    },
+                    "desc": "子类型",
+                    "boolParse": true
+                },
+                "venderName": {
+                    "key": "vender_name",
+                    "type": "DATA_COMBOX",
+                    "comboType": {
+                        "typeKey": "HIKROBOT"
+                    },
+                    "desc": "供应商",
+                    "boolParse": true
+                },
+                "moduleDscType": {
+                    "key": "module_dsc_type",
+                    "type": "DATA_COMBOX",
+                    "comboType": {
+                        "typeKey": "HIKROBOT"
+                    },
+                    "desc": "设备型号",
+                    "boolParse": true
+                },
+                "moduleIcon": {
+                    "key": "module_icon",
+                    "type": "DATA_STRING",
+                    "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+                    "desc": "模块图片",
+                    "boolParse": true
+                },
+                "moduleShape": {
+                    "shapeType": "ENUM_BOX",
+                    "box": {
+                        "sizeLen": 950,
+                        "sizeWidth": 650,
+                        "sizeHeight": 250
+                    }
+                },
+                "extendParams": [
+                    {
+                        "key": "material_code",
+                        "type": "DATA_STRING",
+                        "desc": "物料代码",
+                        "boolParse": true,
+                        "boolHide": true
+                    },
+                    {
+                        "key": "module_srcname",
+                        "type": "DATA_STRING",
+                        "stringValue": "Q3-600LE-DIF",
+                        "desc": "模块原始名称",
+                        "boolParse": true,
+                        "boolHide": true
+                    },
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+                ]
+            },
+            "privateAttr": {
+                "privateAttrs": [
+                    {
+                        "key": "motionCenterAttr",
+                        "desc": "运动中心参数",
+                        "arrayBaseEle": [
+                            {
+                                "key": "headOffset(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 475,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离车头距离（空载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "tailOffset(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 475,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离车尾距离（空载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "leftOffset(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 325,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离左侧距离（空载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "rightOffset(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 325,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离右侧距离（空载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "headOffset (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 475,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离车头距离（满载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "tailOffset (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 475,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离车尾距离（满载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "leftOffset (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 325,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离左侧距离（满载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "rightOffset (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 325,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "距离右侧距离（满载）",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            }
+                        ]
+                    },
+                    {
+                        "key": "chassisAttr",
+                        "desc": "底盘参数",
+                        "arrayBaseEle": [
+                            {
+                                "key": "wheelsNum",
+                                "type": "DATA_INT32",
+                                "int32Value": 1,
+                                "int32Maxvalue": 99,
+                                "int32Minvalue": 1,
+                                "unit": "个",
+                                "desc": "轮组个数",
+                                "boolMustfill": true,
+                                "boolBasic": true,
+                                "boolNoeditable":true
+                            },
+                            {
+                                "key": "maxAcceleration(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 1000,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "最大线加速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxDeceleration(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 800,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "最大线减速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxSpeed(Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 2000,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s",
+                                "desc": "最大速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxAcceleration (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 500,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "最大线加速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxDeceleration (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 400,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "最大线减速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxSpeed (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 1800,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s",
+                                "desc": "最大速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "avoidMaxDec (Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 800,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "避障最大减速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "avoidMaxDec (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 500,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm/s2",
+                                "desc": "避障最大减速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "avoidRotMaxAngDec (Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 200,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "避障最大旋转减速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "avoidRotMaxAngDec (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 200,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "避障最大旋转减速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngAcceleration (Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 100,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "最大角加速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngDeceleration (Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 100,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "最大角减速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngSpeed (Idle)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 200,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s",
+                                "desc": "最大角速度（空载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngAcceleration (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 100,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "最大角加速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngDeceleration (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 100,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s2",
+                                "desc": "最大角减速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateMaxAngSpeed (Full Load)",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 200,
+                                "doubleMaxvalue": 360,
+                                "doubleMinvalue": 0,
+                                "unit": "°/s",
+                                "desc": "最大角速度（满载）",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "rotateDiameter",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 995,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "mm",
+                                "desc": "旋转直径",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "maxClimbingAngle",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 5,
+                                "doubleMaxvalue": 90,
+                                "doubleMinvalue": 0,
+                                "unit": "°",
+                                "desc": "爬坡能力",
+                                "boolHide": true
+                            },
+                            {
+                                "key": "totalLoadWeight",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 600,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "kg",
+                                "desc": "额定负载",
+                                "boolHide": true,
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "selfWeight",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 132,
+                                "doubleMaxvalue": 9999,
+                                "doubleMinvalue": 0,
+                                "unit": "kg",
+                                "desc": "自重",
+                                "boolHide": true
+                            }
+                        ]
+                    },
+                    {
+                        "key": "wheelsAttr",
+                        "desc": "轮组属性",
+                        "arrayBaseEle": [
+                            {
+                                "key": "wheelSpace",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 603,
+                                "doubleMaxvalue": 650,
+                                "doubleMinvalue": 1,
+                                "unit": "mm",
+                                "desc": "轮间距",
+                                "boolMustfill": true
+                            },
+                            {
+                                "key": "locCoordNX",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 0,
+                                "doubleMaxvalue": 999,
+                                "doubleMinvalue": -999,
+                                "unit": "mm",
+                                "desc": "轴中心X坐标",
+                                "boolHide": true
+                            },
+                            {
+                                "key": "locCoordNY",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 0,
+                                "doubleMaxvalue": 999,
+                                "doubleMinvalue": -999,
+                                "unit": "mm",
+                                "desc": "轴中心Y坐标",
+                                "boolHide": true
+                            },
+                            {
+                                "key": "locCoordNZ",
+                                "type": "DATA_DOUBLE",
+                                "doubleValue": 0,
+                                "doubleMaxvalue": 999,
+                                "doubleMinvalue": -999,
+                                "unit": "mm",
+                                "desc": "轴中心Z坐标",
+                                "boolHide": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "interfaceAbility": {},
+            "interfaceParams": {}
+        }
+    ]
+}

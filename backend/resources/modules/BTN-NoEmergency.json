@@ -1,0 +1,327 @@
+{
+	"moduleGroupName": "BTN-NoEmergency",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "BTN-NoEmergency",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "非急停按钮",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-11-12 15:13:41.554",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "InteractiveSys",
+						"typeDesc": "\b"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "button",
+						"typeDesc": "\u000E"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "subButton"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/0/sphere.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"sphere": {
+						"diameter": 30
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "BTN-NoEmergency",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "buttonAttr",
+						"desc": "按钮属性",
+						"arrayBaseEle": [
+							{
+								"key": "buttonType",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "BUTTON_COMP_NOT_EMCY",
+									"typeDesc": "非急停按钮",
+									"typeGroups": [
+										{
+											"key": "BUTTON_COMP_NOT_EMCY",
+											"desc": "非急停按钮"
+										},
+										{
+											"key": "BUTTON_COMP_EMCY",
+											"desc": "急停按钮"
+										}
+									]
+								},
+								"desc": "按钮类型",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "switchMode",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "knob",
+									"typeDesc": "旋钮式",
+									"typeGroups": [
+										{
+											"key": "knob",
+											"desc": "旋钮式"
+										},
+										{
+											"key": "push",
+											"desc": "按钮式"
+										}
+									]
+								},
+								"desc": "开关方式",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "buttonLamp",
+								"type": "DATA_COMBOX",
+								"comboType": {
+									"typeKey": "BUTTON_LAMP_NULL",
+									"typeDesc": "无按钮灯",
+									"typeGroups": [
+										{
+											"key": "BUTTON_LAMP_NULL",
+											"desc": "无按钮灯"
+										},
+										{
+											"key": "SOFT_BUTTON_LAMP",
+											"desc": "软件控制按钮灯"
+										},
+										{
+											"key": "HARD_BUTTON_LAMP",
+											"desc": "硬件控制按钮灯"
+										}
+									]
+								},
+								"desc": "按钮灯控制"
+							},
+							{
+								"key": "selfLock",
+								"type": "DATA_BOOL",
+								"boolValue": false,
+								"desc": "是否自锁",
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {
+				"busInterfaceAbility": [
+					{
+						"busInterfaceType": "DO",
+						"busInterfaceNums": 1
+					}
+				]
+			},
+			"interfaceParams": {
+				"interfaceGroup": [
+					{
+						"key": "DO_1",
+						"type": "DO",
+						"desc": "DO_1",
+						"interfaceAttrs": {
+							"interfaceParamsArray": [
+								{
+									"key": "MODE",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NO",
+										"typeDesc": "NO",
+										"typeGroups": [
+											{
+												"key": "NO",
+												"desc": "NO"
+											},
+											{
+												"key": "NC",
+												"desc": "NC"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "HWTAGS",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "BUTT",
+										"typeDesc": "BUTT",
+										"typeGroups": [
+											{
+												"key": "EMO",
+												"desc": "EMO"
+											},
+											{
+												"key": "BUTT",
+												"desc": "BUTT"
+											},
+											{
+												"key": "SWITCH",
+												"desc": "SWITCH"
+											},
+											{
+												"key": "*",
+												"desc": "*"
+											}
+										]
+									},
+									"desc": "硬件标签属性",
+									"boolParse": true
+								}
+							]
+						},
+						"interfaceParams": {
+							"interfaceParamsArray": [
+								{
+									"key": "isReversed",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "0",
+										"typeDesc": "0",
+										"typeGroups": [
+											{
+												"key": "0",
+												"desc": "0"
+											},
+											{
+												"key": "1",
+												"desc": "1"
+											}
+										]
+									},
+									"desc": "是否反向",
+									"boolParse": true,
+									"boolHide": true
+								},
+								{
+									"key": "mode",
+									"type": "DATA_COMBOX",
+									"comboType": {
+										"typeKey": "NO",
+										"typeDesc": "常开",
+										"typeGroups": [
+											{
+												"key": "NO",
+												"desc": "常开"
+											},
+											{
+												"key": "NC",
+												"desc": "常闭"
+											}
+										]
+									},
+									"desc": "模式",
+									"boolParse": true
+								}
+							]
+						}
+					}
+				]
+			}
+		}
+	]
+}

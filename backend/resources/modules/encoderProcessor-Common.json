@@ -1,0 +1,170 @@
+{
+	"moduleGroupName": "encoderProcessor-Common",
+	"moduleComponets": [
+		{
+			"generalAttr": {
+				"moduleName": {
+					"key": "module_name",
+					"type": "DATA_STRING",
+					"stringValue": "encoderProcessor-Common",
+					"desc": "模块名称",
+					"boolParse": true
+				},
+				"moduleDesc": {
+					"key": "module_desc",
+					"type": "DATA_STRING",
+					"stringValue": "通用编码器处理器",
+					"desc": "模块描述",
+					"boolParse": true
+				},
+				"moduleUuid": {
+					"key": "module_uuid",
+					"type": "DATA_STRING",
+					"desc": "模块Uuid",
+					"boolParse": true,
+					"boolHide": true
+				},
+				"versionInfo": {
+					"key": "version_info",
+					"type": "DATA_STRING",
+					"stringValue": "V1.0/2025-08-21 20:01:05.086",
+					"desc": "版本信息",
+					"boolParse": true,
+					"boolNoeditable": true
+				},
+				"module3dIcon": {
+					"key": "module_3d_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/3dModelRes",
+					"desc": "3D模型",
+					"boolParse": true
+				},
+				"subSysType": {
+					"key": "sub_sys_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ControlSys",
+						"typeDesc": "\u0004"
+					},
+					"desc": "子系统",
+					"boolParse": true
+				},
+				"mainModuleType": {
+					"key": "main_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "sensorProcessor",
+						"typeDesc": "\b"
+					},
+					"desc": "主类型",
+					"boolParse": true
+				},
+				"subModuleType": {
+					"key": "sub_module_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "encoderProcessor",
+						"typeDesc": "\u0005"
+					},
+					"desc": "子类型",
+					"boolParse": true
+				},
+				"venderName": {
+					"key": "vender_name",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "供应商",
+					"boolParse": true
+				},
+				"moduleDscType": {
+					"key": "module_dsc_type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "HIKROBOT"
+					},
+					"desc": "设备型号",
+					"boolParse": true
+				},
+				"moduleIcon": {
+					"key": "module_icon",
+					"type": "DATA_STRING",
+					"stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+					"desc": "模块图片",
+					"boolParse": true
+				},
+				"moduleShape": {
+					"shapeType": "ENUM_BOX",
+					"box": {
+						"sizeLen": 100,
+						"sizeWidth": 100,
+						"sizeHeight": 100
+					}
+				},
+				"extendParams": [
+					{
+						"key": "material_code",
+						"type": "DATA_STRING",
+						"desc": "物料代码",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_srcname",
+						"type": "DATA_STRING",
+						"stringValue": "encoderProcessor-Common",
+						"desc": "模块原始名称",
+						"boolParse": true,
+						"boolHide": true
+					},
+					{
+						"key": "module_alias",
+						"type": "DATA_STRING",
+						"desc": "模块别名",
+						"boolParse": true,
+						"boolHide": true
+					}
+				]
+			},
+			"privateAttr": {
+				"privateAttrs": [
+					{
+						"key": "boardAttr",
+						"desc": "控制板属性",
+						"arrayBaseEle": [
+							{
+								"key": "chipPlatform",
+								"type": "DATA_STRING",
+								"stringValue": "",
+								"desc": "芯片平台",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "softwareSpec",
+								"type": "DATA_STRING",
+								"stringValue": "NONE",
+								"desc": "软件规格",
+								"boolMustfill": true,
+								"boolBasic": true
+							},
+							{
+								"key": "offsetAddress",
+								"type": "DATA_STRING",
+								"stringValue": "",
+								"desc": "偏移地址拨码",
+								"boolHide": true,
+								"boolMustfill": true,
+								"boolBasic": true
+							}
+						]
+					}
+				]
+			},
+			"interfaceAbility": {},
+			"interfaceParams": {}
+		}
+	]
+}
