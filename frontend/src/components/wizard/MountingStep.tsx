@@ -56,7 +56,7 @@ export const MountingStep: React.FC = () => {
                 </div>
 
                 <div style={{ flex: 1, overflowY: 'auto', paddingRight: 8 }} className="custom-scrollbar">
-                    {components.map(comp => (
+                    {components.filter(c => c.category !== 'CHASSIS' || c.id !== 'chassis-root').map(comp => (
                         <div 
                             key={comp.id}
                             onClick={() => setActiveId(comp.id)}
