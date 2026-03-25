@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { 
     Typography, Button, Space, Modal, Card, 
     Input, Row, Col, Tag, Divider, Tree, List, Spin,
-    Menu, Badge, Tooltip, Checkbox
+    Menu, Badge, Tooltip, Checkbox, Alert
 } from 'antd';
 import { 
     PlusOutlined, DeleteOutlined, 
@@ -166,24 +166,55 @@ export const ComponentLibraryStep: React.FC = () => {
             const subKey = (c.subModuleTypeKey || '').toLowerCase();
             const searchStr = `${c.name} ${c.alias} ${c.type}`.toLowerCase();
 
-            // ━━━ Metadata-Driven Encoder Inclusion ━━━
-            // If this step specifically allows encoders (via sub-categories), include them
+            // ━━━ Include encoder-type sensors in power system step ━━━
             const subCats = getSubCategories(step);
             const hasEncoderTab = subCats.some(sc => sc.key === 'ENCODER');
             if (hasEncoderTab && (mainKey.includes('sensor') || subKey.includes('encode'))) {
                 return true;
             }
 
-            // If not a category match, exclude
             if (!catMatch) return false;
-            
-            // Exclude components matching excludeKeywords (legacy support)
-            if (excludeKws.length > 0 && excludeKws.some(kw => searchStr.includes(kw))) {
-                return false;
+
+            // ━━━ P4c: Metadata-driven encoder exclusion for perception step ━━━
+            if (excludeKws.length > 0) {
+                // Exclude encoder-category sensors by metadata first
+                if (c.category === 'SENSOR' && subKey.includes('encode')) return false;
+                // Fallback: keyword-based exclusion
+                if (excludeKws.some(kw => searchStr.includes(kw))) return false;
             }
             return true;
         });
     }, [components, currentSubStep]);
+
+    // P2: Navigation validation - check if required sensor type is present
+    const navValidation = useMemo(() => {
+        const navMethod = config.identity.navigationMethod;
+        const step = subSteps[currentSubStep - 1];
+        if (!(step as any).navigationAlert) return null;
+
+        const sensors = components.filter(c => c.category === 'SENSOR');
+        if (navMethod === 'LASER_SLAM' || navMethod === 'REFLECTOR') {
+            const hasLaser = sensors.some(c =>
+                (c.mainModuleTypeKey || '').toLowerCase().includes('laser') ||
+                (c.subModuleTypeKey || '').toLowerCase().includes('laser') ||
+                (c.type || '').toLowerCase().includes('laser')
+            );
+            if (!hasLaser) return { type: 'warning' as const, msg: '激光导航模式要求至少 1 个【激光雷达】，请在感知避障模块中添加并关联导航功能。' };
+        }
+        if (navMethod === 'VISUAL_SLAM') {
+            const hasCam = sensors.some(c =>
+                (c.mainModuleTypeKey || '').toLowerCase().includes('camera') ||
+                (c.subModuleTypeKey || '').toLowerCase().includes('camera') ||
+                (c.type || '').toLowerCase().includes('camera')
+            );
+            if (!hasCam) return { type: 'warning' as const, msg: '视觉导航模式要求至少 1 个【深度/立体相机】，请在感知避障模块中添加。' };
+        }
+        if (navMethod === 'QR_CODE') {
+            const hasCam = sensors.some(c => (c.type || '').toLowerCase().includes('camera') || (c.subModuleTypeKey || '').toLowerCase().includes('camera'));
+            if (!hasCam) return { type: 'warning' as const, msg: '二维码导航模式要求至少 1 个【向下相机】，请在感知避障模块中添加。' };
+        }
+        return { type: 'success' as const, msg: '导航传感器配置完整 ✓' };
+    }, [components, currentSubStep, config.identity.navigationMethod]);
 
     const treeData = useMemo(() => {
         const map: Record<string, any> = {};
@@ -370,6 +401,15 @@ export const ComponentLibraryStep: React.FC = () => {
                                 style={{ background: 'transparent', fontSize: 12 }} 
                             />
                         </div>
+                        {/* P2: Navigation validation alert */}
+                        {navValidation && (
+                            <Alert
+                                type={navValidation.type}
+                                message={navValidation.msg}
+                                showIcon
+                                style={{ marginTop: 16, fontSize: 11, borderRadius: 8 }}
+                            />
+                        )}
                     </div>
                 </div>
 

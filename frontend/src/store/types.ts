@@ -174,6 +174,11 @@ export interface RobotIdentity {
     tailOffset: number;
     leftOffset: number;
     rightOffset: number;
+    // Full-load motion center offsets (P3: optional, defaults to idle values when syncFullLoad=true)
+    headOffsetFull?: number;
+    tailOffsetFull?: number;
+    leftOffsetFull?: number;
+    rightOffsetFull?: number;
 
     // Performance (Added 0325)
     maxSpeed?: number;

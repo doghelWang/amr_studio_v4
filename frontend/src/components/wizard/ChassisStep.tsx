@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
-import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip } from 'antd';
-import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import React, { useEffect, useState } from 'react';
+import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip, Switch } from 'antd';
+import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { PowerSystemStep } from './PowerSystemStep';
 
@@ -10,6 +10,7 @@ const { Title, Text } = Typography;
 export const ChassisStep: React.FC = () => {
     const { config, setIdentity, updateAttribute } = useProjectStore();
     const { identity } = config;
+    const [syncFullLoad, setSyncFullLoad] = useState(true);
 
     const handleUpdate = (fields: any) => {
         setIdentity(fields);
@@ -148,7 +149,7 @@ export const ChassisStep: React.FC = () => {
                             </Form.Item>
 
                             <Divider orientation="left" plain>
-                                <small>运动中心偏移 - 空载 (Idle)  
+                                <small>运动中心偏移 - 空载 (Idle)
                                     <Tooltip title="以底盘运动中心为原点，到四周边界的距离。空载与满载可独立设置，默认值相同。">
                                         <InfoCircleOutlined style={{ marginLeft: 6, color: 'var(--text-muted)' }} />
                                     </Tooltip>
@@ -196,6 +197,70 @@ export const ChassisStep: React.FC = () => {
                                             value={identity.rightOffset} 
                                             suffix="mm" 
                                             onChange={v => handleOffsetChange('rightOffset', v as number)} 
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+
+                            {/* P3: Full-load motion center offsets */}
+                            <Divider orientation="left" plain>
+                                <small style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <span>运动中心偏移 - 满载 (Full Load)</span>
+                                    <Switch
+                                        size="small"
+                                        checkedChildren={<><SyncOutlined /> 同空载</>}
+                                        unCheckedChildren="独立设置"
+                                        checked={syncFullLoad}
+                                        onChange={setSyncFullLoad}
+                                    />
+                                </small>
+                            </Divider>
+
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="前向距 (Full Load Head)">
+                                        <InputNumber 
+                                            style={{ width: '100%' }}
+                                            value={syncFullLoad ? identity.headOffset : (identity.headOffsetFull ?? identity.headOffset)} 
+                                            suffix="mm"
+                                            disabled={syncFullLoad}
+                                            onChange={v => !syncFullLoad && setIdentity({ headOffsetFull: v as number })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="后向距 (Full Load Tail)">
+                                        <InputNumber 
+                                            style={{ width: '100%' }}
+                                            value={syncFullLoad ? identity.tailOffset : (identity.tailOffsetFull ?? identity.tailOffset)} 
+                                            suffix="mm"
+                                            disabled={syncFullLoad}
+                                            onChange={v => !syncFullLoad && setIdentity({ tailOffsetFull: v as number })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                            </Row>
+
+                            <Row gutter={16}>
+                                <Col span={12}>
+                                    <Form.Item label="左向距 (Full Load Left)">
+                                        <InputNumber 
+                                            style={{ width: '100%' }}
+                                            value={syncFullLoad ? identity.leftOffset : (identity.leftOffsetFull ?? identity.leftOffset)} 
+                                            suffix="mm"
+                                            disabled={syncFullLoad}
+                                            onChange={v => !syncFullLoad && setIdentity({ leftOffsetFull: v as number })}
+                                        />
+                                    </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                    <Form.Item label="右向距 (Full Load Right)">
+                                        <InputNumber 
+                                            style={{ width: '100%' }}
+                                            value={syncFullLoad ? identity.rightOffset : (identity.rightOffsetFull ?? identity.rightOffset)} 
+                                            suffix="mm"
+                                            disabled={syncFullLoad}
+                                            onChange={v => !syncFullLoad && setIdentity({ rightOffsetFull: v as number })}
                                         />
                                     </Form.Item>
                                 </Col>
