@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="screen-Common">
+  <Component subsys="InteractiveSys" category="screen" type="subScreen" vender="FLEXEM" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="screen-Common" desc="通用显示屏"/>
+    <Attributes>
+      <Group key="screenAttr" desc="屏幕属性">
+        <Param key="resolutionWidth" type="DATA_DOUBLE" desc="分辨率宽" value="0"/>
+        <Param key="resolutionHeight" type="DATA_DOUBLE" desc="分辨率高" value="0"/>
+        <Param key="screenSize" type="DATA_DOUBLE" desc="屏幕尺寸" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="lamp-Common">
+  <Component subsys="InteractiveSys" category="light" type="lamp" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="lamp-Common" desc="通用灯带"/>
+    <Attributes>
+      <Group key="lightAttr" desc="灯光属性">
+        <Param key="lightType" type="DATA_COMBOX" desc="指示灯类型" selected="projectionLights">
+          <Option key="projectionLights" desc="投影灯"/>
+          <Option key="towerLights" desc="塔灯"/>
+          <Option key="ballLights" desc="球灯"/>
+        </Param>
+        <Param key="lightColor" type="DATA_COMBOX" desc="指示灯颜色" selected="blue">
+          <Option key="blue" desc="蓝色"/>
+          <Option key="RYG" desc="三色"/>
+          <Option key="red&amp;bule" desc="红蓝(一字线型)"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="DI" nums="3"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

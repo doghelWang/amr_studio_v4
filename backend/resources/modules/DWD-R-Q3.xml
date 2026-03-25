@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="DWD-R-Q3">
+  <Component subsys="ChassisSys" category="driveWheel" type="diffWheel" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="DWD-R-Q3" desc=""/>
+    <Attributes>
+      <Group key="wheelAttr" desc="轮属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="90"/>
+      </Group>
+      <Group key="linkMotorAttr" desc="关联电机">
+        <Param key="relateMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

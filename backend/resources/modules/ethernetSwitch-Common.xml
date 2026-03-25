@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="ethernetSwitch-Common">
+  <Component subsys="ControlSys" category="extendedlnterface" type="ethernetSwitch" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="ethernetSwitch-Common" desc="通用以太网交换机"/>
+    <Attributes/>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

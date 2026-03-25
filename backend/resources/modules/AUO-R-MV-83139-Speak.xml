@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="AUO-R-MV-83139-Speak">
+  <Component subsys="InteractiveSys" category="audio" type="audioOut" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="AUO-R-MV-83139-Speak" desc="R-MV-83139-Speak扬声器组件"/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="SPK" nums="1"/>
+      <Instance key="SPK_1" type="SPK"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="infrared-Common">
+  <Component subsys="SensorSys" category="sensor" type="infrared" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="infrared-Common" desc="通用红外模块"/>
+    <Attributes/>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

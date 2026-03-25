@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="bluetooth-Common">
+  <Component subsys="CommunicateSys" category="communication" type="bluetooth" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="bluetooth-Common" desc="通用蓝牙模块"/>
+    <Attributes/>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

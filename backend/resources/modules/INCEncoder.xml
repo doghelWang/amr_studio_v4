@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="INCEncoder">
+  <Component subsys="SensorSys" category="sensor" type="incrementalEncode" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="INCEncoder" desc=""/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="needCalib" type="DATA_BOOL" desc="是否需要标定" value="false"/>
+      </Group>
+      <Group key="encodeAttr" desc="编码器属性">
+        <Param key="lineCount" type="DATA_INT32" desc="线数" value="2500"/>
+        <Param key="isInvert" type="DATA_BOOL" desc="是否反向" value="false"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

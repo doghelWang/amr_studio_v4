@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="audioOut-Common">
+  <Component subsys="InteractiveSys" category="audio" type="audioOut" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="audioOut-Common" desc="通用扬声器"/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="SPK" nums="1"/>
+      <Instance key="SPK_1" type="SPK"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -92,6 +92,19 @@ def deep_update(d, u, path="root"):
                 d[k] = v
     return d
 
+def ensure_module_in_project(project_id: str, module_filename: str, fallback_source_path: Path) -> bool:
+    """Ensures a module file exists in the project sandbox."""
+    p_dir = get_project_dir(project_id)
+    m_dir = p_dir / "modules"
+    os.makedirs(str(m_dir), exist_ok=True)
+    target = m_dir / module_filename
+    if not target.exists():
+        if fallback_source_path.exists():
+            shutil.copy2(fallback_source_path, target)
+            print(f"DISK_AUDIT: [SANDBOX_IMPORT] Copied {module_filename} to project {project_id}", flush=True)
+            return True
+    return target.exists()
+
 def update_component(project_id: str, module_uuid: str, payload_delta: dict) -> bool:
     m_dir = get_project_dir(project_id) / "modules"
     target_file = next(m_dir.glob(f"*{module_uuid}*.json"), None)

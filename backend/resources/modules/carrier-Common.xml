@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="carrier-Common">
+  <Component subsys="AutobodySys" category="autobody" type="carrier" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="carrier-Common" desc="通用载台"/>
+    <Attributes>
+      <Group key="carrierAttr" desc="载台属性">
+        <Param key="ratedLoad" type="DATA_DOUBLE" desc="额定承载" value="0"/>
+        <Param key="carrierType" type="DATA_COMBOX" desc="载台类型" selected="countertop">
+          <Option key="countertop" desc="台面"/>
+          <Option key="disconnectedLocation" desc="断开储位"/>
+          <Option key="flatLocation" desc="平板储位"/>
+          <Option key="fork" desc="货叉"/>
+          <Option key="combLocation" desc="梳齿储位"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

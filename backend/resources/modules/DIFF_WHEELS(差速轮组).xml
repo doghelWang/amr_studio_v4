@@ -1,0 +1,289 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="DIFF_WHEELS(差速轮组)">
+  <Component subsys="ChassisSys" category="driveWheel" type="diffWheel" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="wheel_diff_right" desc=""/>
+    <Attributes>
+      <Group key="wheelAttr" desc="轮属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="90"/>
+      </Group>
+      <Group key="linkMotorAttr" desc="关联电机">
+        <Param key="relateMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+  <Component subsys="ChassisSys" category="driveWheel" type="diffWheel" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="wheel_diff_left" desc=""/>
+    <Attributes>
+      <Group key="wheelAttr" desc="轮属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="90"/>
+      </Group>
+      <Group key="linkMotorAttr" desc="关联电机">
+        <Param key="relateMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="Generic" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="motor_diff_right" desc=""/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_INC">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_FREERUN">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="2000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="false"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="10"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="26.9"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="200"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="200"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="1000"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="1000"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="PI" nums="1"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="PI_1" type="PI"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="Generic" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="motor_diff_left" desc=""/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_INC">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_FREERUN">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="2000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="false"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="10"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="26.9"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="200"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="200"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="1000"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="1000"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="PI" nums="1"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="PI_1" type="PI"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_diff_right" desc="R-Q3一体式驱动组件(驱动轮综合款)V1"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R131"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-DR/D-48/14SA-311AH1"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="2"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="3"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="PO" nums="1"/>
+      <Ability type="CAN" nums="2"/>
+      <Ability type="UART" nums="2"/>
+      <Ability type="RS232" nums="1"/>
+      <Ability type="DI" nums="6"/>
+      <Ability type="AI" nums="2"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="PO_1" type="PO"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="CAN_2" type="CAN">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="UART_1" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="0"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="UART_2" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="RS232_1" type="RS232">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_diff_left" desc="R-Q3一体式驱动组件(驱动轮综合款)V1"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R131"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-DR/D-48/14SA-311AH1"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="2"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="3"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="PO" nums="1"/>
+      <Ability type="CAN" nums="2"/>
+      <Ability type="UART" nums="2"/>
+      <Ability type="RS232" nums="1"/>
+      <Ability type="DI" nums="6"/>
+      <Ability type="AI" nums="2"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="PO_1" type="PO"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="CAN_2" type="CAN">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="UART_1" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="0"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="UART_2" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="RS232_1" type="RS232">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+      </Instance>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

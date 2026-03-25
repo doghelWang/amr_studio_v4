@@ -1,0 +1,148 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="SC-R-fourth-safety controller-NS.02.R-A1">
+  <Component subsys="ControlSys" category="intergratedController" type="safetyController" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="SC-R-fourth-safety controller-NS.02.R-A1" desc="R-四代-安全控制器-NS.02.R-A1&#9;&#10;"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R130"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-IC/I-A-1C0AH1"/>
+        <Param key="offsetAddress" type="DATA_STRING" desc="偏移地址拨码" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="PO" nums="3"/>
+      <Ability type="CAN" nums="2"/>
+      <Ability type="UART" nums="2"/>
+      <Ability type="DO" nums="9"/>
+      <Ability type="DI" nums="12"/>
+      <Ability type="BAR" nums="2"/>
+      <Ability type="PZTB" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="PO_1" type="PO"/>
+      <Instance key="PO_2" type="PO"/>
+      <Instance key="PO_3" type="PO"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="CAN_2" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="UART_1" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="0"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+      </Instance>
+      <Instance key="UART_2" type="UART">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="0"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+      </Instance>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_5" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_6" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_7" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_8" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_9" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_7" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_8" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_9" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_10" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_11" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_12" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="BAR_1" type="BAR">
+        <Param key="pressureThreshold" type="DATA_INT32" desc="气压阈值" value="100"/>
+      </Instance>
+      <Instance key="BAR_2" type="BAR">
+        <Param key="pressureThreshold" type="DATA_INT32" desc="气压阈值" value="100"/>
+      </Instance>
+      <Instance key="PZTB_1" type="PZTB"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

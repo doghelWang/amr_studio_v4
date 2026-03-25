@@ -1,0 +1,150 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="MCPU-RA-MC-R349AD-21BH0">
+  <Component subsys="ControlSys" category="mainCPU" type="subMainCPU" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="MCPU-RA-MC-R349AD-21BH0" desc="R-四代-主控-D.F0.NR-A2"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R349"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-MC-R349AD"/>
+        <Param key="isWithGyro" type="DATA_COMBOX" desc="是否有板载陀螺仪" selected="no">
+          <Option key="no" desc="否"/>
+          <Option key="yes" desc="是"/>
+        </Param>
+        <Param key="isWithUpCamera" type="DATA_COMBOX" desc="是否有板载上读码头" selected="no">
+          <Option key="no" desc="否"/>
+          <Option key="yes" desc="是"/>
+        </Param>
+        <Param key="isWithDownCamera" type="DATA_COMBOX" desc="是否有板载下读码头" selected="no">
+          <Option key="no" desc="否"/>
+          <Option key="yes" desc="是"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="2"/>
+      <Ability type="PO" nums="8"/>
+      <Ability type="RS422" nums="1"/>
+      <Ability type="RS485" nums="3"/>
+      <Ability type="SPI" nums="1"/>
+      <Ability type="CAN" nums="3"/>
+      <Ability type="ETH" nums="4"/>
+      <Ability type="USB" nums="1"/>
+      <Ability type="RS232" nums="1"/>
+      <Ability type="SPK" nums="1"/>
+      <Ability type="SMA" nums="2"/>
+      <Ability type="LVDS" nums="2"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="PI_2" type="PI"/>
+      <Instance key="PO_1" type="PO"/>
+      <Instance key="PO_2" type="PO"/>
+      <Instance key="PO_3" type="PO"/>
+      <Instance key="PO_4" type="PO"/>
+      <Instance key="PO_5" type="PO"/>
+      <Instance key="PO_6" type="PO"/>
+      <Instance key="PO_7" type="PO"/>
+      <Instance key="PO_8" type="PO"/>
+      <Instance key="RS422_1" type="RS422">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="RS485_2" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="RS485_3" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="SPI_1" type="SPI">
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="CAN_2" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="127"/>
+      </Instance>
+      <Instance key="CAN_3" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="73"/>
+      </Instance>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="ETH_2" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="ETH_3" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="ETH_4" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="USB_1" type="USB">
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+      </Instance>
+      <Instance key="RS232_1" type="RS232">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="SPK_1" type="SPK"/>
+      <Instance key="SMA_1" type="SMA"/>
+      <Instance key="SMA_2" type="SMA"/>
+      <Instance key="LVDS_1" type="LVDS">
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="LVDS_2" type="LVDS">
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

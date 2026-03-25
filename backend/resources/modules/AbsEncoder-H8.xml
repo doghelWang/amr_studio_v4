@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="AbsEncoder-H8">
+  <Component subsys="SensorSys" category="sensor" type="absoluteValueEncode" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="AbsEncoder-H8" desc="H8编码器"/>
+    <Attributes>
+      <Group key="encodeAttr" desc="编码器属性">
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="5"/>
+        <Param key="absEncodeType" type="DATA_COMBOX" desc="编码器类型" selected="CANOPEN_ENCODER">
+          <Option key="SSI_ENCODER" desc="SSI编码器"/>
+          <Option key="MOTOR_ENCODER" desc="电机编码器"/>
+          <Option key="CANOPEN_ENCODER" desc="CANOPEN编码器"/>
+          <Option key="CAN_BRT_ENCODER" desc="CAN自定义(BRT)"/>
+        </Param>
+        <Param key="resolutionMode" type="DATA_COMBOX" desc="分辨率模式" selected="RES_BIT_MODE">
+          <Option key="RES_BIT_MODE" desc="位数模式"/>
+          <Option key="RES_NUM_MODE" desc="数值模式"/>
+        </Param>
+        <Param key="isInvert" type="DATA_BOOL" desc="是否反向" value="true"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="LS-MR-LS-01F-S1533">
+  <Component subsys="SensorSys" category="sensor" type="laser" vender="FREE-OPTICS" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="LS-MR-LS-01F-S1533" desc="激光雷达,MR-LS-01F-S1533,25m@90%,270°(黑色)"/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="waveLength" type="DATA_DOUBLE" desc="波长" value="0"/>
+        <Param key="antiLight" type="DATA_DOUBLE" desc="抗光干扰" value="90"/>
+        <Param key="needCalib" type="DATA_BOOL" desc="是否需要标定" value="false"/>
+      </Group>
+      <Group key="scanAttr" desc="扫描属性">
+        <Param key="scanDirect" type="DATA_COMBOX" desc="扫描方向" selected="SCAN_COUNTERCLOCKWISE">
+          <Option key="SCAN_CLOCKWISE" desc="顺时针"/>
+          <Option key="SCAN_COUNTERCLOCKWISE" desc="逆时针"/>
+        </Param>
+        <Param key="usageMode" type="DATA_COMBOX" desc="应用方式" selected="PClOUD_LASER">
+          <Option key="PClOUD_LASER" desc="轮廓激光"/>
+          <Option key="AREA_LASER" desc="区域激光"/>
+          <Option key="PCLOUD_AND_AREA_LASER" desc="轮廓加区域激光"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="ETH" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="2111"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

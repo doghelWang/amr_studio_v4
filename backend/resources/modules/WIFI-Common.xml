@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="WIFI-Common">
+  <Component subsys="CommunicateSys" category="communication" type="WIFI" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="WIFI-Common" desc="通用WIFI模块"/>
+    <Attributes>
+      <Group key="WIFIAttr" desc="WIFI属性">
+        <Param key="decodeType" type="DATA_STRING" desc="密码方式" value=""/>
+        <Param key="wirelessProto" type="DATA_STRING" desc="无线标准" value=""/>
+        <Param key="wirelessCertify" type="DATA_STRING" desc="无线认证" value=""/>
+        <Param key="workFreq" type="DATA_COMBOX" desc="工作频率" selected="2.4G">
+          <Option key="2.4G" desc="2.4G"/>
+          <Option key="5G" desc="5G"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

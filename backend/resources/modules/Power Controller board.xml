@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="Power Controller board">
+  <Component subsys="ControlSys" category="energyController" type="powerController" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="Power Controller board" desc=""/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R318"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-POW/DD-24/6E-2S0AH2"/>
+        <Param key="offsetAddress" type="DATA_STRING" desc="偏移地址拨码" value="1111"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="71"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="binocularCameraProcessor-Common">
+  <Component subsys="ControlSys" category="sensorProcessor" type="binocularCameraProcessor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="binocularCameraProcessor-Common" desc="通用双目处理器"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="offsetAddress" type="DATA_STRING" desc="偏移地址拨码" value=""/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

@@ -432,7 +432,10 @@ export const useProjectStore = create<ProjectState>()(
         ),
         {
             name: 'amr-configurator-v4',
-            partialize: (state) => ({ config: state.config })
+            partialize: (state) => ({ 
+                config: state.config,
+                projectId: state.projectId 
+            })
         }
     )
 );

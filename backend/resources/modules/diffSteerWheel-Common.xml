@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="diffSteerWheel-Common">
+  <Component subsys="ChassisSys" category="driveWheel" type="diffSteerWheel" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="diffSteerWheel-Common" desc="通用差速舵轮"/>
+    <Attributes>
+      <Group key="wheelAttr" desc="基本属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="1"/>
+        <Param key="wheelSpace" type="DATA_DOUBLE" desc="轮间距" value="1"/>
+        <Param key="angleLmtPos" type="DATA_DOUBLE" desc="正限位角度" value="0"/>
+        <Param key="angleLmtNeg" type="DATA_DOUBLE" desc="负限位角度" value="0"/>
+        <Param key="rotOmgLmt" type="DATA_DOUBLE" desc="转向能力(最大)" value="0"/>
+      </Group>
+      <Group key="angleSensor" desc="转向反馈">
+        <Param key="angleSensorType" type="DATA_COMBOX" desc="类型" selected="GROUP_CALI_ABS_EXTERNAL">
+          <Option key="GROUP_CALI_INC_EXTERNAL" desc="增量编码器(外置)"/>
+          <Option key="GROUP_CALI_INC_ABZ" desc="磁栅编码器(ABZ)"/>
+          <Option key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)"/>
+        </Param>
+      </Group>
+      <Group key="linkMotorAttr" desc="电机">
+        <Param key="relateLeftMotor" type="DATA_FIXED_E" desc="左行走电机"/>
+        <Param key="relateRightMotor" type="DATA_FIXED_E" desc="右行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

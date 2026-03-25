@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="CAMERA-MV_SC2000AM">
+  <Component subsys="SensorSys" category="sensor" type="codeReader" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="CAMERA-MV_SC2000AM" desc=""/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="focalLength" type="DATA_DOUBLE" desc="焦距" value="0"/>
+        <Param key="exposure" type="DATA_DOUBLE" desc="曝光时长范围" value="0"/>
+        <Param key="needCalib" type="DATA_BOOL" desc="是否需要标定" value="false"/>
+      </Group>
+      <Group key="pictureAttr" desc="图像属性">
+        <Param key="scanRangeHorizonStart" type="DATA_DOUBLE" desc="水平视场角起始" value="0"/>
+        <Param key="scanRangeHorizonEnd" type="DATA_DOUBLE" desc="水平视场角终止" value="0"/>
+        <Param key="scanRangeVerticalStart" type="DATA_DOUBLE" desc="垂直视场角起始" value="0"/>
+        <Param key="scanRangeVerticalEnd" type="DATA_DOUBLE" desc="垂直视场角终止" value="0"/>
+        <Param key="resolutionH" type="DATA_DOUBLE" desc="分辨率H" value="0"/>
+        <Param key="resolutionW" type="DATA_DOUBLE" desc="分辨率W" value="0"/>
+        <Param key="codecMode" type="DATA_STRING" desc="视频编码标准" value=""/>
+        <Param key="frameRate" type="DATA_DOUBLE" desc="最大帧率" value="0"/>
+      </Group>
+      <Group key="resultAttr" desc="识别属性">
+        <Param key="resultType" type="DATA_STRING" desc="识别结果类型" value=""/>
+        <Param key="resultValue" type="DATA_STRING" desc="识别结果" value=""/>
+        <Param key="scanDistence" type="DATA_DOUBLE" desc="有效扫描距离" value="0"/>
+        <Param key="accuracy" type="DATA_DOUBLE" desc="识别精度" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="ETH" nums="1"/>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="deviceId" type="DATA_STRING" desc="设备id" value=""/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="BDCMotor-Common">
+  <Component subsys="DriverSys" category="driver" type="BDCMotor" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="BDCMotor-Common" desc="通用直流有刷电机"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_NULL">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+        </Param>
+        <Param key="ratedSpeed" type="DATA_INT32" desc="电机额定转速" value="0"/>
+        <Param key="bHbrake" type="DATA_COMBOX" desc="是否带抱闸" selected="WITH_HBRAKE">
+          <Option key="WITH_HBRAKE" desc="带抱闸"/>
+          <Option key="WITHOUT_HBRAKE" desc="不带抱闸"/>
+        </Param>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="0"/>
+        <Param key="ratedVolt" type="DATA_DOUBLE" desc="额定电压" value="0"/>
+        <Param key="powerVolt" type="DATA_DOUBLE" desc="供电电压" value="0"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="posKp" type="DATA_DOUBLE" desc="位置环Kp值" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

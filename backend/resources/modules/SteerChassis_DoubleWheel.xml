@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="SteerChassis_DoubleWheel">
+  <Component subsys="ChassisSys" category="chassis" type="steerChassis" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="SteerChassis_DoubleWheel" desc="双舵轮底盘"/>
+    <Attributes>
+      <Group key="motionCenterAttr" desc="运动中心参数">
+        <Param key="headOffset(Idle)" type="DATA_DOUBLE" desc="距离车头距离（空载）" value="925"/>
+        <Param key="tailOffset(Idle)" type="DATA_DOUBLE" desc="距离车尾距离（空载）" value="925"/>
+        <Param key="leftOffset(Idle)" type="DATA_DOUBLE" desc="距离左侧距离（空载）" value="600"/>
+        <Param key="rightOffset(Idle)" type="DATA_DOUBLE" desc="距离右侧距离（空载）" value="600"/>
+        <Param key="headOffset (Full Load)" type="DATA_DOUBLE" desc="距离车头距离（满载）" value="925"/>
+        <Param key="tailOffset (Full Load)" type="DATA_DOUBLE" desc="距离车尾距离（满载）" value="925"/>
+        <Param key="leftOffset (Full Load)" type="DATA_DOUBLE" desc="距离左侧距离（满载）" value="600"/>
+        <Param key="rightOffset (Full Load)" type="DATA_DOUBLE" desc="距离右侧距离（满载）" value="600"/>
+      </Group>
+      <Group key="chassisAttr" desc="底盘参数">
+        <Param key="wheelsNum" type="DATA_INT32" desc="轮组个数" value="2"/>
+        <Param key="maxAcceleration(Idle)" type="DATA_DOUBLE" desc="最大线加速度（空载）" value="500"/>
+        <Param key="maxDeceleration(Idle)" type="DATA_DOUBLE" desc="最大线减速度（空载）" value="500"/>
+        <Param key="maxSpeed(Idle)" type="DATA_DOUBLE" desc="最大速度（空载）" value="1200"/>
+        <Param key="maxAcceleration (Full Load)" type="DATA_DOUBLE" desc="最大线加速度（满载）" value="500"/>
+        <Param key="maxDeceleration (Full Load)" type="DATA_DOUBLE" desc="最大线减速度（满载）" value="500"/>
+        <Param key="maxSpeed (Full Load)" type="DATA_DOUBLE" desc="最大速度（满载）" value="1000"/>
+        <Param key="avoidMaxDec (Idle)" type="DATA_DOUBLE" desc="避障最大减速度（空载）" value="1000"/>
+        <Param key="avoidMaxDec (Full Load)" type="DATA_DOUBLE" desc="避障最大减速度（满载）" value="500"/>
+        <Param key="avoidRotMaxAngDec (Idle)" type="DATA_DOUBLE" desc="避障最大旋转减速度（空载）" value="200"/>
+        <Param key="avoidRotMaxAngDec (Full Load)" type="DATA_DOUBLE" desc="避障最大旋转减速度（满载）" value="80"/>
+        <Param key="rotateMaxAngAcceleration (Idle)" type="DATA_DOUBLE" desc="最大角加速度（空载）" value="30"/>
+        <Param key="rotateMaxAngDeceleration (Idle)" type="DATA_DOUBLE" desc="最大角减速度（空载）" value="30"/>
+        <Param key="rotateMaxAngSpeed (Idle)" type="DATA_DOUBLE" desc="最大角速度（空载）" value="60"/>
+        <Param key="rotateMaxAngAcceleration (Full Load)" type="DATA_DOUBLE" desc="最大角加速度（满载）" value="30"/>
+        <Param key="rotateMaxAngDeceleration (Full Load)" type="DATA_DOUBLE" desc="最大角减速度（满载）" value="30"/>
+        <Param key="rotateMaxAngSpeed (Full Load)" type="DATA_DOUBLE" desc="最大角速度（满载）" value="60"/>
+        <Param key="rotateDiameter" type="DATA_DOUBLE" desc="旋转直径" value="2205.1077071199948"/>
+        <Param key="maxClimbingAngle" type="DATA_DOUBLE" desc="爬坡能力" value="5"/>
+        <Param key="totalLoadWeight" type="DATA_DOUBLE" desc="额定负载" value="2000"/>
+        <Param key="selfWeight" type="DATA_DOUBLE" desc="自重" value="700"/>
+      </Group>
+      <Group key="wheelsAttr" desc="轮组属性">
+        <Param key="locCoordNX" type="DATA_DOUBLE" desc="X坐标" value="0"/>
+        <Param key="locCoordNY" type="DATA_DOUBLE" desc="Y坐标" value="0"/>
+        <Param key="locCoordNZ" type="DATA_DOUBLE" desc="Z坐标" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

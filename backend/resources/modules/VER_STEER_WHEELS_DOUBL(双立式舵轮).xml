@@ -1,0 +1,641 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="VER_STEER_WHEELS_DOUBL(双立式舵轮)">
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="motor_BR_Rotate" desc="SM020BB-50"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_MULTI_TURN_ABS">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_VELOCITY_ZERO">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="3000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="true"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0.32"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="250"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="6"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="100"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="100"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="400"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="400"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="motor_FL_Rotate" desc="SM020BB-50"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_MULTI_TURN_ABS">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_VELOCITY_ZERO">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="3000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="true"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0.32"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="250"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="6"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="100"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="100"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="400"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="400"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="motor_BR_RUN" desc="SM15030BA-18.9"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_INC">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_FREERUN">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="3000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="true"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="2.39"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="18.9"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="20"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="100"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="100"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="400"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="400"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="motor_FL_RUN" desc="SM15030BA-18.9"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_INC">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_VELOCITY_ZERO">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="3000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="true"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="2.39"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="18.9"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="20"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="2"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="100"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="100"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="400"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="400"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driveWheel" type="verticalSteerWheel" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="Steerwheel_BR" desc=""/>
+    <Attributes>
+      <Group key="wheelAttr" desc="轮属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="75"/>
+        <Param key="angleLmtPos" type="DATA_DOUBLE" desc="正限位角度" value="175"/>
+        <Param key="angleLmtNeg" type="DATA_DOUBLE" desc="负限位角度" value="-175"/>
+        <Param key="rotOmgLmt" type="DATA_DOUBLE" desc="转向能力(最大)" value="72"/>
+      </Group>
+      <Group key="angleSensor" desc="角度传感参数">
+        <Param key="angleSensorType" type="DATA_COMBOX" desc="类型" selected="GROUP_CALI_ABS_INTERNAL">
+          <Option key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+          <Option key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)"/>
+          <Option key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)"/>
+        </Param>
+      </Group>
+      <Group key="linkMotorAttr" desc="电机">
+        <Param key="relateRotMotor" type="DATA_FIXED_E" desc="转向电机"/>
+        <Param key="relateWalkMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_driver_BR_Rotate" desc="IxLII 20.40.48.C"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="0"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="0"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Ability type="ETH" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="DI" nums="9"/>
+      <Ability type="AI" nums="2"/>
+      <Ability type="DO" nums="4"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="3"/>
+      </Instance>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_7" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_8" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_9" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driveWheel" type="verticalSteerWheel" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="Steerwheel_FL" desc=""/>
+    <Attributes>
+      <Group key="wheelAttr" desc="轮属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="75"/>
+        <Param key="angleLmtPos" type="DATA_DOUBLE" desc="正限位角度" value="175"/>
+        <Param key="angleLmtNeg" type="DATA_DOUBLE" desc="负限位角度" value="-175"/>
+        <Param key="rotOmgLmt" type="DATA_DOUBLE" desc="转向能力(最大)" value="72"/>
+      </Group>
+      <Group key="angleSensor" desc="角度传感参数">
+        <Param key="angleSensorType" type="DATA_COMBOX" desc="类型" selected="GROUP_CALI_ABS_INTERNAL">
+          <Option key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+          <Option key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)"/>
+          <Option key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)"/>
+        </Param>
+      </Group>
+      <Group key="linkMotorAttr" desc="电机">
+        <Param key="relateRotMotor" type="DATA_FIXED_E" desc="转向电机"/>
+        <Param key="relateWalkMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_driver_FL_Rotate" desc="IxLII 20.40.48.C"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="0"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="0"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Ability type="ETH" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="DI" nums="9"/>
+      <Ability type="AI" nums="2"/>
+      <Ability type="DO" nums="4"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_7" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_8" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_9" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_driver_BR_RUN" desc="IxLII 30.60.48.C "/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="0"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="0"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Ability type="ETH" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="DI" nums="9"/>
+      <Ability type="DO" nums="4"/>
+      <Ability type="AI" nums="2"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="4"/>
+      </Instance>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_7" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_8" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_9" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+    </Interfaces>
+  </Component>
+  <Component subsys="DriverSys" category="driver" type="subDriver" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="servo_driver_FL_RUN" desc="IxLII 30.60.48.C "/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="inputVoltage" type="DATA_DOUBLE" desc="输入电压" value="0"/>
+        <Param key="inputCurrent" type="DATA_DOUBLE" desc="输入电流" value="0"/>
+        <Param key="overloadCapacity" type="DATA_DOUBLE" desc="过载能力" value="0"/>
+        <Param key="overloadTime" type="DATA_DOUBLE" desc="过载时长" value="0"/>
+        <Param key="type" type="DATA_COMBOX" desc="驱动类型" selected="MOTOR_SERVO_TYPE_AUTO">
+          <Option key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+          <Option key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+          <Option key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+        </Param>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Ability type="ETH" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Ability type="DI" nums="9"/>
+      <Ability type="DO" nums="4"/>
+      <Ability type="AI" nums="2"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="2"/>
+      </Instance>
+      <Instance key="ETH_1" type="ETH">
+        <Param key="DHCP" type="DATA_BOOL" desc="DHCP"/>
+        <Param key="ip" type="DATA_STRING" desc="ip参数" value=""/>
+        <Param key="gate" type="DATA_STRING" desc="网关" value=""/>
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+        <Param key="speed" type="DATA_COMBOX" desc="速度"/>
+      </Instance>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_4" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_5" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_6" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_7" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_8" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_9" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="AI_1" type="AI"/>
+      <Instance key="AI_2" type="AI"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="MOTOR-MCXL501TAFUKM">
+  <Component subsys="DriverSys" category="driver" type="PMSMMotor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="MOTOR-MCXL501TAFUKM" desc="旋转电机-MCXL501TAFUKM"/>
+    <Attributes>
+      <Group key="motorAttr" desc="电机属性">
+        <Param key="ENCType" type="DATA_COMBOX" desc="编码器类型" selected="ENCODER_INC">
+          <Option key="ENCODER_NULL" desc="无"/>
+          <Option key="ENCODER_INC" desc="增量式编码器"/>
+          <Option key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器"/>
+          <Option key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器"/>
+        </Param>
+        <Param key="initMode" type="DATA_COMBOX" desc="电机初始状态" selected="MODE_FREERUN">
+          <Option key="MODE_FREERUN" desc="FREERUN模式"/>
+          <Option key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+        </Param>
+        <Param key="RPM" type="DATA_INT32" desc="电机额定转速" value="3000"/>
+        <Param key="bTemper" type="DATA_BOOL" desc="是否支持电机温度获取" value="false"/>
+        <Param key="bHbrake" type="DATA_BOOL" desc="是否带抱闸" value="false"/>
+        <Param key="bReverse" type="DATA_BOOL" desc="是否反向" value="false"/>
+        <Param key="torque" type="DATA_DOUBLE" desc="额定扭矩" value="0"/>
+        <Param key="gearRatio" type="DATA_DOUBLE" desc="减速比" value="180.76"/>
+        <Param key="ratedCurr" type="DATA_DOUBLE" desc="额定电流" value="0"/>
+        <Param key="overCurrCoef" type="DATA_DOUBLE" desc="过流系数" value="0"/>
+        <Param key="defaultAcc" type="DATA_DOUBLE" desc="默认加速度" value="0"/>
+        <Param key="defaultDec" type="DATA_DOUBLE" desc="默认减速度" value="0"/>
+        <Param key="maxAcc" type="DATA_DOUBLE" desc="电机支持的最大加速度" value="0"/>
+        <Param key="maxDec" type="DATA_DOUBLE" desc="电机支持的最大减速度" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="LINE" nums="1"/>
+      <Ability type="ENCR" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="LINE_1" type="LINE"/>
+      <Instance key="ENCR_1" type="ENCR"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

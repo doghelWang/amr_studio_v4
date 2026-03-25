@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="translation-Common">
+  <Component subsys="ActorSys" category="actor" type="translation" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="translation-Common" desc="通用平移执行机构"/>
+    <Attributes>
+      <Group key="translateAttr" desc="平移属性">
+        <Param key="structureForm" type="DATA_COMBOX" desc="结构形式" selected="electircRoll">
+          <Option key="electircRoll" desc="电滚筒"/>
+          <Option key="selfPowerRoll" desc="自带动力滚筒"/>
+          <Option key="externalPowerRoll" desc="外动力滚筒"/>
+        </Param>
+        <Param key="drivingForm" type="DATA_COMBOX" desc="驱动形式" selected="servo">
+          <Option key="servo" desc="伺服"/>
+          <Option key="controlCard" desc="控制卡"/>
+        </Param>
+        <Param key="maximumSpeed (Idle)" type="DATA_DOUBLE" desc="最大线速度（空载）" value="0"/>
+        <Param key="maximumAcceleration (Idle)" type="DATA_DOUBLE" desc="最大线加速度（空载）" value="0"/>
+        <Param key="maximumDeceleration (Idle)" type="DATA_DOUBLE" desc="最大线减速度（空载）" value="0"/>
+        <Param key="maximumSpeed (Full Load)" type="DATA_DOUBLE" desc="最大线速度（满载）" value="0"/>
+        <Param key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线加速度（满载）" value="0"/>
+        <Param key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线减速度（满载）" value="0"/>
+        <Param key="load" type="DATA_DOUBLE" desc="额定负载" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

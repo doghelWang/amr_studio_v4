@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="SSC-RS-HMI-LED">
+  <Component subsys="InteractiveSys" category="screen" type="subScreen" vender="FLEXEM" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="SSC-RS-HMI-LED" desc="RS-HMI-LED-FD80480S043HIK-4.3/3/R-C"/>
+    <Attributes>
+      <Group key="screenAttr" desc="屏幕属性">
+        <Param key="resolutionWidth" type="DATA_DOUBLE" desc="分辨率宽" value="0"/>
+        <Param key="resolutionHeight" type="DATA_DOUBLE" desc="分辨率高" value="0"/>
+        <Param key="screenSize" type="DATA_DOUBLE" desc="屏幕尺寸" value="4.3"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>
