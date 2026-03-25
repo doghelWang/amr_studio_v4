@@ -217,7 +217,9 @@ export const ComponentLibraryStep: React.FC = () => {
             setPendingComponent(newComp);
             setTempAlias(newComp.alias);
             setTempName(newComp.name);
-            setIsNamingModalOpen(true);
+            // B1 Fix: close library modal FIRST to prevent naming modal being hidden behind it
+            setIsAddModal(false);
+            setTimeout(() => setIsNamingModalOpen(true), 150);
         } catch (err) {
             console.error("Failed to map component", err);
         }
@@ -580,8 +582,9 @@ export const ComponentLibraryStep: React.FC = () => {
                                     return true;
                                 }
 
-                                // ━━━ 0325: Drive Type Filtering (Metadata-Driven) ━━━
-                                if (!showAllModules && (normalizedType === 'DRIVEWHEEL' || currentStepInfo.categories.includes('DRIVEWHEEL'))) {
+                                // ━━━ B4 Fix: Drive Type Filtering - only DRIVEWHEEL entities, not encoders/drivers ━━━
+                                const isDriveWheelModule = normalizedType === 'DRIVEWHEEL' || e.category === 'DRIVEWHEEL';
+                                if (!showAllModules && isDriveWheelModule) {
                                     const driveTarget = config.identity.driveType;
                                     const subKey = comp?.subModuleTypeKey || '';
                                     const lowerSub = subKey.toLowerCase();

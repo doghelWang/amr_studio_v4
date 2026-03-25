@@ -165,10 +165,16 @@ export class ImportService {
 
         // ━━━ 0325: Multi-Component Analysis ━━━
         if (allComponents && allComponents.length > 1) {
+            // ━━━ PRIORITY ORDER: Highest priority first ━━━
+            // driveWheel family MUST come before 'sensor' to prevent complex wheel-encoder
+            // modules (e.g. DIFF_STEER_WHEEL) from being misidentified as encoders.
             const priorities = [
                 'driveWheel', 'diffSteerWheel', 'steerWheel', 'weakSteerWheel',
-                'mainCPU', 'mainCpu', 'intergratedController', 
-                'sensor', 'driver', 'battery', 'button', 'screen', 'light'
+                'horizontalSteerWheel', 'verticalSteerWheel',
+                'chassis',
+                'mainCPU', 'mainCpu', 'intergratedController',
+                'driver', 'battery', 'button', 'screen', 'light',
+                'sensor',
             ];
             let highestPriority = -1;
 

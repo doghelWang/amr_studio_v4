@@ -15,6 +15,19 @@ export const ChassisStep: React.FC = () => {
         setIdentity(fields);
     };
 
+    // B6 Fix: Bidirectional linkage for motion center offsets
+    const handleOffsetChange = (field: string, v: number | null) => {
+        if (v === null || v === undefined) return;
+        const len = identity.chassisLength || 1200;
+        const wid = identity.chassisWidth || 800;
+        const updates: any = { [field]: v };
+        if (field === 'headOffset') updates.tailOffset = Math.max(0, len - v);
+        if (field === 'tailOffset') updates.headOffset = Math.max(0, len - v);
+        if (field === 'leftOffset') updates.rightOffset = Math.max(0, wid - v);
+        if (field === 'rightOffset') updates.leftOffset = Math.max(0, wid - v);
+        setIdentity(updates);
+    };
+
     const chassisComponent = config.components.find(c => c.category === 'CHASSIS');
     const privateAttrs = chassisComponent ? chassisComponent.privateAttrs : [];
     
@@ -149,7 +162,7 @@ export const ChassisStep: React.FC = () => {
                                             style={{ width: '100%' }}
                                             value={identity.headOffset} 
                                             suffix="mm" 
-                                            onChange={v => handleUpdate({ headOffset: v })} 
+                                            onChange={v => handleOffsetChange('headOffset', v as number)} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -159,7 +172,7 @@ export const ChassisStep: React.FC = () => {
                                             style={{ width: '100%' }}
                                             value={identity.tailOffset} 
                                             suffix="mm" 
-                                            onChange={v => handleUpdate({ tailOffset: v })} 
+                                            onChange={v => handleOffsetChange('tailOffset', v as number)} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -172,7 +185,7 @@ export const ChassisStep: React.FC = () => {
                                             style={{ width: '100%' }}
                                             value={identity.leftOffset} 
                                             suffix="mm" 
-                                            onChange={v => handleUpdate({ leftOffset: v })} 
+                                            onChange={v => handleOffsetChange('leftOffset', v as number)} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -182,7 +195,7 @@ export const ChassisStep: React.FC = () => {
                                             style={{ width: '100%' }}
                                             value={identity.rightOffset} 
                                             suffix="mm" 
-                                            onChange={v => handleUpdate({ rightOffset: v })} 
+                                            onChange={v => handleOffsetChange('rightOffset', v as number)} 
                                         />
                                     </Form.Item>
                                 </Col>

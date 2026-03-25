@@ -379,7 +379,8 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
 
   let visibleTabs = tabItems;
   if (selectedStoreComponent.category === 'CHASSIS') {
-      visibleTabs = tabItems.filter(t => t.key !== 'mounting');
+      // Chassis has no mounting coords (it IS the origin) and no external electrical interfaces
+      visibleTabs = tabItems.filter(t => t.key !== 'mounting' && t.key !== 'interfaces');
   }
 
   return (
