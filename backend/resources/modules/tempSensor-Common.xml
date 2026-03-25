@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="tempSensor-Common">
+  <Component subsys="SensorSys" category="sensor" type="tempSensor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="tempSensor-Common" desc="通用温感传感器"/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="threshold" type="DATA_DOUBLE" desc="检测阈值" value="0"/>
+        <Param key="temperatureRangeMin" type="DATA_DOUBLE" desc="温度最小值" value="0"/>
+        <Param key="temperatureRangeMax" type="DATA_DOUBLE" desc="温度最大值" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

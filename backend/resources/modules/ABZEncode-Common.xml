@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="ABZEncode-Common">
+  <Component subsys="SensorSys" category="sensor" type="ABZEncode" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="ABZEncode-Common" desc="通用磁栅编码器"/>
+    <Attributes>
+      <Group key="encodeAttr" desc="编码器属性">
+        <Param key="lineCount" type="DATA_INT32" desc="线数" value="0"/>
+        <Param key="isInvert" type="DATA_BOOL" desc="是否反向" value="false"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

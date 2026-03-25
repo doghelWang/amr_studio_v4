@@ -1,0 +1,50 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="RemoteControl">
+  <Component subsys="InteractiveSys" category="handOperator" type="subHandOperator" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="RemoteControl" desc=""/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="DO" nums="10"/>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_4" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_5" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_6" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_7" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_8" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_9" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_10" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

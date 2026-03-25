@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="lift-Common">
+  <Component subsys="ActorSys" category="actor" type="lift" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="lift-Common" desc="通用举升机构"/>
+    <Attributes>
+      <Group key="liftAttr" desc="举升属性">
+        <Param key="structureForm" type="DATA_COMBOX" desc="结构形式" selected="leadScrewLift">
+          <Option key="leadScrewLift" desc="丝杠举升"/>
+          <Option key="chainLift" desc=" 链条提升"/>
+          <Option key="mastLift" desc="门架"/>
+          <Option key="connectingRodLift" desc="连杆举升"/>
+          <Option key="scissorLift" desc="剪叉举升"/>
+          <Option key="electricPushRodLift" desc="电推杆举升"/>
+        </Param>
+        <Param key="drivingForm" type="DATA_COMBOX" desc="驱动形式" selected="HYD">
+          <Option key="HYD" desc="液压"/>
+          <Option key="servo" desc="伺服"/>
+        </Param>
+        <Param key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" selected="line">
+          <Option key="line" desc="线性"/>
+          <Option key="unline" desc="非线性"/>
+        </Param>
+        <Param key="sensorMode" type="DATA_COMBOX" desc="传感模式" selected="zero">
+          <Option key="zero" desc="零位"/>
+          <Option key="zeroPosSensor" desc="零位+到位传感器"/>
+          <Option key="encoder" desc="绝对编码器"/>
+        </Param>
+        <Param key="lead" type="DATA_DOUBLE" desc="导程" value="0"/>
+        <Param key="totalSpeedRatio" type="DATA_DOUBLE" desc="总速比" value="0"/>
+        <Param key="maximumSpeed (Idle)" type="DATA_DOUBLE" desc="最大线速度（空载）" value="0"/>
+        <Param key="maximumAcceleration (Idle)" type="DATA_DOUBLE" desc="最大线加速度（空载）" value="0"/>
+        <Param key="maximumDeceleration (Idle)" type="DATA_DOUBLE" desc="最大线减速度（空载）" value="0"/>
+        <Param key="maximumSpeed (Full Load)" type="DATA_DOUBLE" desc="最大线速度（满载）" value="0"/>
+        <Param key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线加速度（满载）" value="0"/>
+        <Param key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线减速度（满载）" value="0"/>
+        <Param key="stroke" type="DATA_DOUBLE" desc="行程" value="0"/>
+        <Param key="load" type="DATA_DOUBLE" desc="负载" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="CAN_1" type="CAN"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

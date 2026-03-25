@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="verticalSteerWheel-Common">
+  <Component subsys="ChassisSys" category="driveWheel" type="verticalSteerWheel" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="verticalSteerWheel-Common" desc="通用立式舵轮"/>
+    <Attributes>
+      <Group key="wheelAttr" desc="基本属性">
+        <Param key="wheelRadius" type="DATA_DOUBLE" desc="轮半径" value="1"/>
+        <Param key="angleLmtPos" type="DATA_DOUBLE" desc="正限位角度" value="0"/>
+        <Param key="angleLmtNeg" type="DATA_DOUBLE" desc="负限位角度" value="0"/>
+        <Param key="rotOmgLmt" type="DATA_DOUBLE" desc="转向能力(最大)" value="0"/>
+      </Group>
+      <Group key="angleSensor" desc="转向反馈">
+        <Param key="angleSensorType" type="DATA_COMBOX" desc="类型" selected="GROUP_CALI_ABS_INTERNAL">
+          <Option key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+          <Option key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)"/>
+          <Option key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)"/>
+        </Param>
+      </Group>
+      <Group key="linkMotorAttr" desc="电机">
+        <Param key="relateRotMotor" type="DATA_FIXED_E" desc="转向电机"/>
+        <Param key="relateWalkMotor" type="DATA_FIXED_E" desc="行走电机"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

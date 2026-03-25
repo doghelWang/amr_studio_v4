@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="gyro-Common">
+  <Component subsys="SensorSys" category="sensor" type="gyro" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="gyro-Common" desc="通用陀螺仪"/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="yawRangeMin" type="DATA_DOUBLE" desc="偏航角最小值" value="0"/>
+        <Param key="yawRangeMax" type="DATA_DOUBLE" desc="偏航角最大值" value="0"/>
+        <Param key="rollRangeMin" type="DATA_DOUBLE" desc="翻滚角最小值" value="0"/>
+        <Param key="rollRangeMax" type="DATA_DOUBLE" desc="翻滚角最大值" value="0"/>
+        <Param key="pitchRangeMin" type="DATA_DOUBLE" desc="俯仰角最小值" value="0"/>
+        <Param key="pitchRangeMax" type="DATA_DOUBLE" desc="俯仰角最大值" value="0"/>
+        <Param key="angularResolution" type="DATA_DOUBLE" desc="角度分辨率" value="0"/>
+        <Param key="accelerationResolution" type="DATA_DOUBLE" desc="加速度分辩率" value="0"/>
+        <Param key="accelerationAccuracy" type="DATA_DOUBLE" desc="加速度精度" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="126"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

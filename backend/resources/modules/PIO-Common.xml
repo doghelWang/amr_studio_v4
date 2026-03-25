@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="PIO-Common">
+  <Component subsys="CommunicateSys" category="communication" type="PIO" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="PIO-Common" desc="通用PIO模块"/>
+    <Attributes>
+      <Group key="PIOAttr" desc="PIO属性">
+        <Param key="transType" type="DATA_STRING" desc="传输方式" value=""/>
+        <Param key="transCounts" type="DATA_INT32" desc="传输点数" value="0"/>
+        <Param key="transDis" type="DATA_DOUBLE" desc="传输距离" value="0"/>
+        <Param key="transTime" type="DATA_DOUBLE" desc="传输时间" value="0"/>
+        <Param key="modulateType" type="DATA_STRING" desc="调制方式" value=""/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

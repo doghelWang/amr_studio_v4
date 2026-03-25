@@ -3,8 +3,13 @@
 > vite --port 3001
 
 
-  VITE v5.4.21  ready in 105 ms
+  VITE v5.4.21  ready in 121 ms
 
   ➜  Local:   http://localhost:3001/
   ➜  Network: use --host to expose
   ➜  press h + enter to show help
+09:01:13 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx
+09:03:34 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx
+09:05:53 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx
+09:06:52 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx
+09:09:43 [vite] hmr update /src/components/wizard/ComponentLibraryStep.tsx

@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="charge-Common">
+  <Component subsys="EnergySys" category="battery" type="charge" vender="Generic" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="charge-Common" desc="通用充电继电器"/>
+    <Attributes>
+      <Group key="chargerAttr" desc="充电属性">
+        <Param key="dir" type="DATA_COMBOX" desc="充电方向" selected="AGV_CHARGE_RELAY_DIR_BACK">
+          <Option key="AGV_CHARGE_RELAY_DIR_BACK" desc="尾充"/>
+          <Option key="AGV_CHARGE_RELAY_DIR_LEFT" desc="左侧"/>
+          <Option key="AGV_CHARGE_RELAY_DIR_RIGHT" desc="右侧"/>
+          <Option key="AGV_CHARGE_RELAY_DIR_DOWN" desc="底部"/>
+          <Option key="AGV_CHARGE_RELAY_DIR_FRONT" desc="前部"/>
+          <Option key="AGV_CHARGE_RELAY_DIR_UP" desc="顶部"/>
+        </Param>
+        <Param key="type" type="DATA_COMBOX" desc="类型" selected="IOCharger">
+          <Option key="valveVoltCharger" desc="阀继电器"/>
+          <Option key="IOCharger" desc="IO继电器"/>
+        </Param>
+        <Param key="voltage" type="DATA_DOUBLE" desc="工作电压" value="0"/>
+        <Param key="contactResistance" type="DATA_DOUBLE" desc="接触电阻" value="0"/>
+        <Param key="insulationResistance" type="DATA_DOUBLE" desc="绝缘电阻" value="0"/>
+        <Param key="maxCurrent" type="DATA_DOUBLE" desc="最大工作电流" value="0"/>
+        <Param key="maxTemperature" type="DATA_DOUBLE" desc="最高工作温度" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

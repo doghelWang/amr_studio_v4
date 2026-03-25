@@ -161,41 +161,52 @@ from core import data_manager, resource_adapter
 @app.get("/api/v1/resources/modules")
 def list_modules_api():
     entities = {}
-    flat_path = BASE_DIR / "resources" / "modules"
+    flat_path = Path(BASE_DIR / "resources" / "modules")
     
-    if flat_path.exists():
-        # Support both .json and .xml
-        for f in sorted(flat_path.glob("*")):
-            if f.suffix not in [".json", ".xml"]: continue
+    # 1. First, index all base names
+    all_files = list(flat_path.glob("*"))
+    base_map = {} # stem -> {json: path, xml: path}
+    for f in all_files:
+        if f.suffix not in [".json", ".xml"]: continue
+        stem = f.stem
+        if stem not in base_map: base_map[stem] = {"json": None, "xml": None}
+        base_map[stem][f.suffix[1:]] = f
+
+    # 2. Build aggregated entities
+    for stem, formats in base_map.items():
+        try:
+            data_json = None
+            data_xml = None
             
+            if formats["json"]:
+                with open(formats["json"], "r", encoding="utf-8") as file:
+                    data_json = json.load(file)
+            
+            if formats["xml"]:
+                data_xml = resource_adapter.xml_to_component_json(str(formats["xml"]))
+            
+            # Use XML as primary, JSON as fallback for metadata
+            primary = data_xml or data_json
+            sys_name = "Other"
             try:
-                if f.suffix == ".json":
-                    with open(f, "r", encoding="utf-8") as file:
-                        data = json.load(file)
-                else:
-                    # XML Transmutation
-                    data = resource_adapter.xml_to_component_json(str(f))
-                
-                # Metadata extraction (保持原有逻辑不变)
-                sys_name = data.get("system")
-                if not sys_name:
-                    try:
-                        comp = (data.get("full_data", {}).get("moduleComponets") or data.get("moduleComponets") or [])[0]
-                        sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey")
-                    except: pass
-                
-                sys_name = sys_name or "Other"
-                if sys_name not in entities: entities[sys_name] = []
-                
-                entities[sys_name].append({
-                    "file_name": f.name,
-                    "moduleGroupName": data.get("moduleGroupName") or data.get("full_data", {}).get("moduleGroupName", f.stem),
-                    "system": sys_name,
-                    "category": data.get("category"),
-                    "full_data": data.get("full_data") or data
-                })
-            except Exception as e:
-                print(f"DEBUG: Skipping invalid module {f.name}: {e}", flush=True)
+                comp = (primary.get("moduleComponets") or [])[0]
+                sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey") or "Other"
+            except: pass
+            
+            if sys_name not in entities: entities[sys_name] = []
+            
+            entities[sys_name].append({
+                "module_id": stem,
+                "moduleGroupName": primary.get("moduleGroupName", stem),
+                "system": sys_name,
+                "has_json": formats["json"] is not None,
+                "has_xml": formats["xml"] is not None,
+                "data_json": data_json,
+                "data_xml": data_xml,
+                "file_name": formats["xml"].name if formats["xml"] else formats["json"].name
+            })
+        except Exception as e:
+            print(f"DEBUG: Skipping invalid module {stem}: {e}", flush=True)
 
     return entities
     

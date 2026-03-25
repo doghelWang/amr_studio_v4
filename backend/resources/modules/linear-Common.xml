@@ -1,0 +1,37 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="linear-Common">
+  <Component subsys="ActorSys" category="actor" type="linear" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="linear-Common" desc="通用线性执行机构"/>
+    <Attributes>
+      <Group key="linearAttr" desc="线性属性">
+        <Param key="structureForm" type="DATA_COMBOX" desc="结构形式" selected="clampStretch">
+          <Option key="clampStretch" desc="夹抱伸缩"/>
+          <Option key="liftStretch" desc=" 托举伸缩"/>
+        </Param>
+        <Param key="drivingForm" type="DATA_COMBOX" desc="驱动形式" selected="servo">
+          <Option key="servo" desc="伺服"/>
+        </Param>
+        <Param key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" selected="linear">
+          <Option key="linear" desc="线性"/>
+          <Option key="nolinear" desc="非线性"/>
+        </Param>
+        <Param key="sensorMode" type="DATA_COMBOX" desc="传感模式" selected="zeroSensor">
+          <Option key="zeroSensor" desc="零位"/>
+          <Option key="zeroAndInPlaceSensor" desc="零位+到位传感器"/>
+          <Option key="pullWireSensor" desc="拉线传感器"/>
+          <Option key="ABSEncoderSensor" desc="绝对编码器"/>
+        </Param>
+        <Param key="totalSpeedRatio" type="DATA_DOUBLE" desc="总速比" value="0"/>
+        <Param key="maximumSpeed (Idle)" type="DATA_DOUBLE" desc="最大线速度（空载）" value="0"/>
+        <Param key="maximumAcceleration (Idle)" type="DATA_DOUBLE" desc="最大线加速度（空载）" value="0"/>
+        <Param key="maximumDeceleration (Idle)" type="DATA_DOUBLE" desc="最大线减速度（空载）" value="0"/>
+        <Param key="maximumSpeed (Full Load)" type="DATA_DOUBLE" desc="最大线速度（满载）" value="0"/>
+        <Param key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线加速度（满载）" value="0"/>
+        <Param key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" desc="最大线减速度（满载）" value="0"/>
+        <Param key="stroke" type="DATA_DOUBLE" desc="行程" value="0"/>
+        <Param key="load" type="DATA_DOUBLE" desc="负载" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

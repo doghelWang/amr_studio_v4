@@ -1,82 +1,39 @@
 # AMR Studio V4 - 工业级机器人建模平台
 
-AMR Studio V4 是一款面向工业级自动移动机器人（AMR）设计的高级配置平台。它打通了从底层二进制协议（Protobuf）到高层可视化交互的链路，实现了 100% 位对齐的无损编解码。
+AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置与建模平台。它实现了从语义化描述文件到底层工业协议（Protobuf）的双向无损转换。
 
-## 🚀 重要更新 (2026-03-25) - V4.2 Professional Implementation
-- **全新引导式欢迎页 (Onboarding)**：
-  - 增加了直观的 `WelcomeScreen`，支持"新建模型"与"导入已有机型"的双向流转。
-  - 侧边栏支持随时"新建项目"完全重置状态。
-- **回归 7 步标准向导 (Step-7 Wizard)**：
-  - 整合动力系统入底盘参数 Tab 页，恢复工业标准的 7 步法。
-  - **组件库精细过滤 (4d/4e)**：实现了基于关键词 (`encode`/`encoder`) 的多维度系统间组件共享与排除逻辑。
-- **扁平化资源库 (Flat Library)**：
-  - 新增 `backend/resources/modules/` 统一存放目录。
-  - 支持元数据驱动分类，不再依赖文件夹层级识别硬件类型。
-- **极高保真度 3D 坐标可视化 (Step 4)**：
-  - **CAD 级建模**：实现了基于尺寸参数的真实感底盘本体、激光雷达、深度相机及具备细节的轮组渲染。
-  - **传感视野 (FOV) 展示**：实时渲染激光 (270°) 与相机 (90°) 的视野覆盖范围，支持多视角 (2.5D/Top/Side) 同步。
-  - **坐标系统联动**：实现了与编辑面板的双向实时同步。
-- **动力拓扑结构可视化**：在底盘参数页集成了 Wheel-Centric 拓扑树，支持差速、单/双舵、全向轮组的直观配置。
+## 🚀 核心特性 (Latest Updates)
+- **双态资源引擎 (Hybrid Engine)**：
+  - 支持 **XML (语义化描述)** 与 **JSON (协议原生)** 双格式资源载入。
+  - XML 采用面向人类可读的设计，支持自动补全元数据与显式类型转换。
+- **高鲁棒性向导 UI**：
+  - 9 步法构车流程，支持“底盘-控制-动力-感知”的严谨装配逻辑。
+  - 内置“零 ID 防御”机制，确保新建/导入流程 100% 渲染稳定。
+- **全链路位对齐 (Bit-Perfect)**：
+  - 保证 `.cmodel` 模型在“导入-编辑-导出”全生命周期中结构 100% 保真。
+- **2.5D 可视化空间标定**：
+  - 支持传感器 FOV 与安装位姿的 CAD 级可视化反馈。
 
-## 📅 下步规划 (Next Steps / TODOs)
-1. **安装位姿界面极致优化**: 持续细化轮组 (Wheels)、按钮 (Buttons)、激光 (Lidar) 的三维模型材质与视觉精确度。
-2. **底盘（Chassis）逻辑解耦**: 底盘作为固定原点（(0,0,0)），在安装坐标编辑中已实现解耦，不再重复请求位姿配置。
-3. **电气连接资源完善**: 补全缺失的**网络总线 (Network Bus)** 资源及相关逻辑映射。
-4. **能力审计增强**: 细化接口冲突与静态检查规则。
-
-## 🚀 历史更新 (2026-03-24) - V4.1 Professional Implementation
-- **9步法初步尝试**：验证了分步装配可行性。
-- **属性面板 Store-First**：由后端拉取改为 Zustand Store 优先，解决离线模式下属性空白。
-- **100% 无损闭环 (V4.0)**：通过 `always_print_fields_with_no_presence` 解决了导出收缩问题。
-
-## 📂 项目内容概览
-- **`/backend`**: 基于 FastAPI 的微服务后端。
-  - `core/`: 数据持久化与智能合并逻辑。
-  - `skills_v2/`: 核心编解码、打散、构建引擎。
-  - `saved_projects/`: 项目碎片化存储与物理备份。
-- **`/frontend`**: 基于 React + Ant Design 5.x 的向导式 UI。
-  - `src/store/`: Zustand 状态管理与协议解析。
-  - `src/components/wizard/`: 9 步法构车核心组件。
-- **`/docs`**: 完整的工程文档体系。
-  - `design/`: UI 切片与 PRD 需求文档。
-  - `audit/`: 每日研发审计与问题复盘报告。
-  - `schemas/`: 原始 Protobuf 协议定义。
-
-## 🛠 部署指南
+## 🛠 快速部署
 
 ### 后端环境 (Python 3.14+)
-1. 进入 `backend` 目录。
-2. 创建并激活虚拟环境：`source venv/bin/activate`。
-3. 安装依赖：`pip install -r requirements.txt`。
-4. 启动服务：`python main.py`。
-   - **监听端口：8002**
+1. `cd backend && source venv/bin/activate`
+2. `pip install -r requirements.txt`
+3. `python main.py` (监听端口: 8002)
 
 ### 前端环境 (Node.js 18+)
-1. 进入 `frontend` 目录。
-2. 安装依赖：`npm install`。
-3. 启动开发环境：`npm run dev -- --port 3001`。
-   - **访问地址：http://localhost:3001**
+1. `cd frontend && npm install`
+2. `npm run dev -- --port 3001` (访问地址: http://localhost:3001)
 
-## 🐛 常见错误及解决办法 (Known Issues & Solutions)
+## 📂 项目结构
+- `backend/resources/modules/`：工业组件资源池 (XML/JSON)。
+- `backend/core/resource_adapter.py`：双态转换核心适配器。
+- `.gemini/`：AI 首席工程师的灵魂（Soul）与技能（Skills）定义。
 
-### 1. 后端: `ImportError: cannot import name 'runtime_version' from 'google.protobuf'`
-- **现象描述**：执行 `python main.py` 时以 exit 1 退出，报错包含上述信息。
-- **原因分析**：自动安装的 `protobuf` 依赖版本 (3.10.0) 库过旧，与使用新版协议栈生成的 `_pb2.py` 文件不兼容。
-- **解决办法**：在虚拟环境中单独升级 `protobuf` 依赖，运行：
-  ```bash
-  pip install --upgrade protobuf
-  ```
-
-### 2. 前端: `error TS2339: Property 'arrayCmobEle' does not exist...`
-- **现象描述**：执行 `npm run build` 或 `npm run dev` 报错 TS2339 出现在 `ExportService.ts`。
-- **原因分析**：`src/services/ExportService.ts` 文件中，对下拉框子选项数组属性和协议发生错位，对象类型定义为 `arrayAttr`。
-- **解决办法**：修改 `ExportService.ts` 第 67 行，将 `o.arrayCmobEle` 替换为正确的键名 `o.arrayAttr` 即可。
-
-
-## 📜 维护约束 (Development Rules)
-- **协议唯一性**：前后端数据交换必须对齐官方 CamelCase 规范。
-- **文档同步**：每次更新后必须同步维护 README 文件。
-- **隐私保护**：严禁在文档中包含个人敏感信息（如姓名）。
+## 📜 维护约束 (Mandatory Rules)
+- **隐私保护**：严禁在 README 或公开文档中包含个人敏感信息（如姓名）。
+- **无损性**：任何 UI 优化不得改变底层数据格式。
+- **同步要求**：每次代码重大更新后必须同步更新本 README 文件的部署指南。
 
 ---
 **AMR 设计工程师团队 & Gemini AI 联合出品**

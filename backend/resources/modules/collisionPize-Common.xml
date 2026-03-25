@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="collisionPize-Common">
+  <Component subsys="SensorSys" category="sensor" type="collisionPize" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="collisionPize-Common" desc="通用压电碰撞条"/>
+    <Attributes>
+      <Group key="collisionAttr" desc="传感属性">
+        <Param key="normalVol" type="DATA_DOUBLE" desc="正常电压值" value="0"/>
+        <Param key="thresholdVol" type="DATA_DOUBLE" desc="浮动阈值" value="0"/>
+        <Param key="triggerVol" type="DATA_DOUBLE" desc="触发电压值" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PZTB" nums="1"/>
+      <Instance key="PZTB_1" type="PZTB"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

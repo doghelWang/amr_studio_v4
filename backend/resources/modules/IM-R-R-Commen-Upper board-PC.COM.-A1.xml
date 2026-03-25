@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="IM-R-R-Commen-Upper board-PC.COM.-A1">
+  <Component subsys="ControlSys" category="extendedlnterface" type="interfaceModule" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="IM-R-R-Commen-Upper board-PC.COM.-A1" desc="R-四代-接口板-RS3-A1"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="R130"/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-EI/F-C-1S1AH0"/>
+        <Param key="offsetAddress" type="DATA_STRING" desc="偏移地址拨码" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="PO" nums="4"/>
+      <Ability type="DI" nums="3"/>
+      <Ability type="DO" nums="3"/>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="PO_1" type="PO"/>
+      <Instance key="PO_2" type="PO"/>
+      <Instance key="PO_3" type="PO"/>
+      <Instance key="PO_4" type="PO"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_2" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DI_3" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_2" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="DO_3" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="dialValue" type="DATA_STRING" desc="拨码值" value=""/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

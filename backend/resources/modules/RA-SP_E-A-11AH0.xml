@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="RA-SP_E-A-11AH0">
+  <Component subsys="ControlSys" category="sensorProcessor" type="encoderProcessor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="RA-SP_E-A-11AH0" desc="F6-2000  Encoder sensor_cpu"/>
+    <Attributes>
+      <Group key="boardAttr" desc="控制板属性">
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="RA-SP/E-A-11AH0"/>
+        <Param key="offsetAddress" type="DATA_STRING" desc="偏移地址拨码" value=""/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="CAN_1" type="CAN"/>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

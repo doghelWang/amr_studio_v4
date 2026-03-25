@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="PX-SN18-08BNAE-1">
+  <Component subsys="SensorSys" category="sensor" type="proximitySensor" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="PX-SN18-08BNAE-1" desc="接近传感器,SN18-08BNAE-1,圆形,8mm,12-24V,NPN NO"/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="DO" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

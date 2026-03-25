@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="SDSP-MV-85017(V1.0)-GD">
+  <Component subsys="InteractiveSys" category="screen" type="segDisplays" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="SDSP-MV-85017(V1.0)-GD" desc="MV-85017(V1.0)-GD&#9;&#9;&#9;&#10;"/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="PI" nums="1"/>
+      <Ability type="CAN" nums="1"/>
+      <Instance key="PI_1" type="PI"/>
+      <Instance key="CAN_1" type="CAN">
+        <Param key="resistor" type="DATA_COMBOX" desc="带终端电阻"/>
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="nodeId" type="DATA_INT32" desc="节点Id" value="1"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

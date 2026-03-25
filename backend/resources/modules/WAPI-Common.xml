@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="WAPI-Common">
+  <Component subsys="CommunicateSys" category="communication" type="WAPI" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="WAPI-Common" desc="通用WAPI"/>
+    <Attributes/>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

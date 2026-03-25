@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="warningLight-Common">
+  <Component subsys="InteractiveSys" category="light" type="warningLight" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="warningLight-Common" desc="通用警示灯"/>
+    <Attributes/>
+    <Interfaces>
+      <Ability type="DI" nums="1"/>
+      <Instance key="DI_1" type="DI">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="activeLevel" type="DATA_COMBOX" desc="有效电平"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

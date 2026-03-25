@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="BAT-LSM18-J050LB-T0">
+  <Component subsys="EnergySys" category="battery" type="subBattery" vender="Goldencell" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="BAT-LSM18-J050LB-T0" desc="U铁锂AGV电池,48V24Ah,主副190*133*162,A/Molex/β"/>
+    <Attributes>
+      <Group key="batteryAttr" desc="电池属性">
+        <Param key="capacity" type="DATA_DOUBLE" desc="电池容量" value="24"/>
+        <Param key="stdChargeCurrent" type="DATA_DOUBLE" desc="标准充电电流" value="8"/>
+        <Param key="maxChargeCurrent" type="DATA_DOUBLE" desc="最大充电电流" value="24"/>
+        <Param key="stdDischargeCurrent" type="DATA_DOUBLE" desc="标准放电电流" value="8"/>
+        <Param key="maxDischargeCurrent" type="DATA_DOUBLE" desc="最大放电电流" value="24"/>
+        <Param key="voltage" type="DATA_DOUBLE" desc="额定电压" value="48"/>
+        <Param key="maxPower" type="DATA_DOUBLE" desc="最大功率" value="1152"/>
+        <Param key="resistance" type="DATA_DOUBLE" desc="内阻" value="0"/>
+        <Param key="cycleLife" type="DATA_INT32" desc="循环寿命" value="0"/>
+        <Param key="chargeTempMin" type="DATA_DOUBLE" desc="最低充电温度" value="0"/>
+        <Param key="chargeTempMax" type="DATA_DOUBLE" desc="最高充电温度" value="48"/>
+        <Param key="dischargeTempMin" type="DATA_DOUBLE" desc="最低放电温度" value="-18"/>
+        <Param key="dischargeTempMax" type="DATA_DOUBLE" desc="最高放电温度" value="50"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="BAT" nums="1"/>
+      <Ability type="RS485" nums="1"/>
+      <Ability type="DO" nums="1"/>
+      <Instance key="BAT_1" type="BAT"/>
+      <Instance key="RS485_1" type="RS485">
+        <Param key="baudrate" type="DATA_COMBOX" desc="波特率"/>
+        <Param key="dataBits" type="DATA_INT32" desc="有效数字位" value="1"/>
+        <Param key="patity" type="DATA_COMBOX" desc="奇偶校验"/>
+        <Param key="stopBits" type="DATA_COMBOX" desc="停止位"/>
+        <Param key="protocol" type="DATA_COMBOX" desc="协议"/>
+        <Param key="siteType" type="DATA_COMBOX" desc="类型"/>
+      </Instance>
+      <Instance key="DO_1" type="DO">
+        <Param key="isReversed" type="DATA_COMBOX" desc="是否反向"/>
+        <Param key="mode" type="DATA_COMBOX" desc="模式"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

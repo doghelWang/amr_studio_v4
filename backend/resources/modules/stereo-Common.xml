@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="stereo-Common">
+  <Component subsys="SensorSys" category="sensor" type="stereo" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="stereo-Common" desc="通用双目"/>
+    <Attributes>
+      <Group key="sensorAttr" desc="传感属性">
+        <Param key="focalLength" type="DATA_DOUBLE" desc="焦距" value="0"/>
+        <Param key="exposure" type="DATA_DOUBLE" desc="曝光时长范围" value="0"/>
+        <Param key="needCalib" type="DATA_BOOL" desc="是否需要标定" value="false"/>
+      </Group>
+      <Group key="pictureAttr" desc="图像属性">
+        <Param key="scanRangeHorizonStart" type="DATA_DOUBLE" desc="水平视场角起始" value="0"/>
+        <Param key="scanRangeHorizonEnd" type="DATA_DOUBLE" desc="水平视场角终止" value="0"/>
+        <Param key="scanRangeVerticalStart" type="DATA_DOUBLE" desc="垂直视场角起始" value="0"/>
+        <Param key="scanRangeVerticalEnd" type="DATA_DOUBLE" desc="垂直视场角终止" value="0"/>
+        <Param key="resolutionH" type="DATA_COMBOX" desc="分辨率H" selected="360">
+          <Option key="360" desc="360"/>
+          <Option key="720" desc="720"/>
+        </Param>
+        <Param key="codecMode" type="DATA_STRING" desc="视频编码标准" value=""/>
+        <Param key="frameRate" type="DATA_DOUBLE" desc="最大帧率" value="0"/>
+      </Group>
+      <Group key="pointAttr" desc="深度相机属性">
+        <Param key="scanRangeHorizonStart" type="DATA_DOUBLE" desc="水平视场角起始" value="0"/>
+        <Param key="scanRangeHorizonEnd" type="DATA_DOUBLE" desc="水平视场角终止" value="0"/>
+        <Param key="scanRangeVerticalStart" type="DATA_DOUBLE" desc="垂直视场角起始" value="0"/>
+        <Param key="scanRangeVerticalEnd" type="DATA_DOUBLE" desc="垂直视场角终止" value="0"/>
+        <Param key="resolutionH" type="DATA_DOUBLE" desc="分辨率H" value="0"/>
+        <Param key="resolutionW" type="DATA_DOUBLE" desc="分辨率W" value="0"/>
+        <Param key="codecMode" type="DATA_STRING" desc="视频编码标准" value=""/>
+        <Param key="frameRate" type="DATA_DOUBLE" desc="最大帧率" value="0"/>
+      </Group>
+      <Group key="resultAttr" desc="识别属性">
+        <Param key="scanDistence" type="DATA_DOUBLE" desc="有效扫描距离" value="0"/>
+      </Group>
+    </Attributes>
+    <Interfaces>
+      <Ability type="USB" nums="1"/>
+      <Instance key="USB_1" type="USB">
+        <Param key="port" type="DATA_INT32" desc="端口" value="1"/>
+      </Instance>
+    </Interfaces>
+  </Component>
+</ModuleGroup>

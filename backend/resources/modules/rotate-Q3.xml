@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="rotate-Q3">
+  <Component subsys="ActorSys" category="actor" type="rotate" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/2/cylinder.png">
+    <Identity name="rotate-Q3" desc=""/>
+    <Attributes>
+      <Group key="rotateAttr" desc="私有属性">
+        <Param key="structureForm" type="DATA_COMBOX" desc="结构形式" selected="gearDrive">
+          <Option key="wormGear" desc="蜗轮蜗杆"/>
+          <Option key="gearDrive" desc="齿轮传动"/>
+          <Option key="beltDrive" desc="带传动"/>
+        </Param>
+        <Param key="drivingForm" type="DATA_COMBOX" desc="驱动形式" selected="servo">
+          <Option key="servo" desc="伺服"/>
+        </Param>
+        <Param key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" selected="line">
+          <Option key="line" desc="线性"/>
+          <Option key="unline" desc="非线性"/>
+        </Param>
+        <Param key="sensorMode" type="DATA_COMBOX" desc="传感模式" selected="zero">
+          <Option key="zero" desc="零位"/>
+          <Option key="zeroBlock" desc="零位+弧形检测块"/>
+          <Option key="encoder" desc="绝对式编码"/>
+        </Param>
+        <Param key="lead" type="DATA_DOUBLE" desc="导程" value="0"/>
+        <Param key="totalSpeedRatio" type="DATA_DOUBLE" desc="总速比" value="180.76"/>
+        <Param key="maximumSpeed (Idle)" type="DATA_DOUBLE" desc="最大角速度（空载）" value="100"/>
+        <Param key="maximumAcceleration (Idle)" type="DATA_DOUBLE" desc="最大角加速度（空载）" value="100"/>
+        <Param key="maximumDeceleration (Idle)" type="DATA_DOUBLE" desc="最大角减速度（空载）" value="100"/>
+        <Param key="maximumSpeed (Full Load)" type="DATA_DOUBLE" desc="最大角速度（满载）" value="100"/>
+        <Param key="maximumAcceleration (Full Load)" type="DATA_DOUBLE" desc="最大角加速度（满载）" value="100"/>
+        <Param key="maximumDeceleration (Full Load)" type="DATA_DOUBLE" desc="最大角减速度（满载）" value="100"/>
+        <Param key="negativeLimit" type="DATA_DOUBLE" desc="负限位" value="0"/>
+        <Param key="positiveLimit" type="DATA_DOUBLE" desc="正限位" value="0"/>
+        <Param key="load" type="DATA_DOUBLE" desc="负载" value="600"/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

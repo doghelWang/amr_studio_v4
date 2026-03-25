@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="power-Common">
+  <Component subsys="EnergySys" category="battery" type="power" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="power-Common" desc="通用电源"/>
+    <Attributes>
+      <Group key="powerAttr" desc="能源属性">
+        <Param key="outputCurrent" type="DATA_DOUBLE" desc="输出电流" value="0"/>
+        <Param key="maxInputCurrent" type="DATA_DOUBLE" desc="最大输入电流(AC)" value="0"/>
+        <Param key="minOutputVoltage" type="DATA_DOUBLE" desc="最低输出电压" value="0"/>
+        <Param key="maxOutputVoltage" type="DATA_DOUBLE" desc="最高输出电压" value="0"/>
+        <Param key="minInputVoltage" type="DATA_DOUBLE" desc="最低输入电压" value="0"/>
+        <Param key="maxInputVoltage" type="DATA_DOUBLE" desc="最高输入电压" value="0"/>
+        <Param key="efficiency" type="DATA_DOUBLE" desc="效率" value="0"/>
+        <Param key="factor" type="DATA_DOUBLE" desc="功率因数" value="0"/>
+        <Param key="workTempMin" type="DATA_DOUBLE" desc="最低工作温度" value="0"/>
+        <Param key="workTempMax" type="DATA_DOUBLE" desc="最高工作温度" value="0"/>
+        <Param key="relativeHumidity" type="DATA_DOUBLE" desc="工作相对湿度" value="0"/>
+        <Param key="firmwareVersion" type="DATA_STRING" desc="固件版本" value=""/>
+      </Group>
+    </Attributes>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>

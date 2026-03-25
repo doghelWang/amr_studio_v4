@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<ModuleGroup name="RFID-Common">
+  <Component subsys="CommunicateSys" category="communication" type="RFID" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
+    <Identity name="RFID-Common" desc="通用RFID模块"/>
+    <Attributes/>
+    <Interfaces/>
+  </Component>
+</ModuleGroup>
