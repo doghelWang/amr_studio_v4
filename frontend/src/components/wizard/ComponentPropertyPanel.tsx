@@ -27,7 +27,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const { config, updateAttribute, updateStructuralParam } = useProjectStore();
+  const { config, updateAttribute, updateStructuralParam, linkInterface } = useProjectStore();
   const [messageApi, contextHolder] = message.useMessage();
 
   const selectedStoreComponent = config.components.find(c => c.id === selectedUuid);
@@ -332,20 +332,45 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
                   <List
                       size="small"
                       dataSource={activeInterfaces}
-                      renderItem={item => (
-                          <List.Item style={{ padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                              <Space direction="vertical" size={0} style={{ width: '100%' }}>
-                                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                      <Text strong style={{ color: 'var(--accent)' }}>{item.key}</Text>
-                                      <Tag color="default" style={{ margin: 0 }}>{item.type}</Tag>
-                                  </div>
-                                  {item.desc && item.desc !== item.key && (
-                                      <Text type="secondary" style={{ fontSize: 10 }}>{item.desc}</Text>
-                                  )}
-                                  <Text type="secondary" style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>UUID: {item.interfaceUuid}</Text>
-                              </Space>
-                          </List.Item>
-                      )}
+                      renderItem={item => {
+                          const linkedUuid = (item.linkedInterfaceUuid || [])[0];
+                          
+                          // Find all OTHER compatible interfaces in the project
+                          const availableTargets = config.components
+                            .filter(c => c.id !== selectedUuid)
+                            .flatMap(c => (c.interfaces || []).map(iface => ({
+                                componentAlias: c.alias,
+                                interface: iface
+                            })))
+                            .filter(t => t.interface.type === item.type);
+
+                          return (
+                            <List.Item style={{ padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'block' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+                                    <Space direction="vertical" size={0}>
+                                        <Text strong style={{ color: 'var(--accent)' }}>{item.key}</Text>
+                                        <Text type="secondary" style={{ fontSize: 10 }}>{item.desc || '模块接口'}</Text>
+                                    </Space>
+                                    <Tag color="blue" style={{ margin: 0 }}>{item.type}</Tag>
+                                </div>
+                                <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.05)' }}>
+                                    <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 6 }}>电气连接 / 总线 Host (Network Bus)</div>
+                                    <Select 
+                                        placeholder="未连接 (点击选择总线节点)"
+                                        allowClear
+                                        style={{ width: '100%' }}
+                                        size="small"
+                                        value={linkedUuid}
+                                        onChange={val => linkInterface(selectedUuid, item.interfaceUuid, val)}
+                                        options={availableTargets.map(t => ({
+                                            label: `${t.componentAlias} - ${t.interface.key}`,
+                                            value: t.interface.interfaceUuid
+                                        }))}
+                                    />
+                                </div>
+                            </List.Item>
+                          );
+                      }}
                   />
               )
           )
@@ -354,7 +379,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
 
   let visibleTabs = tabItems;
   if (selectedStoreComponent.category === 'CHASSIS') {
-      visibleTabs = tabItems.filter(t => t.key !== 'mounting' && t.key !== 'interfaces');
+      visibleTabs = tabItems.filter(t => t.key !== 'mounting');
   }
 
   return (

@@ -25,6 +25,7 @@ interface ProjectState {
     updateComponent: (id: string, data: Partial<ComponentConfig>) => void;
     removeComponent: (id: string) => void;
     setActiveComponent: (id: string | null) => void;
+    linkInterface: (sourceUuid: string, sourceIfaceUuid: string, targetIfaceUuid: string | null) => void;
 
     // Attributes (searches inside groups)
     updateAttribute: (componentId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
@@ -63,7 +64,12 @@ const DEFAULT_IDENTITY: RobotIdentity = {
     headOffset: 600,
     tailOffset: 600,
     leftOffset: 400,
-    rightOffset: 400
+    rightOffset: 400,
+    maxSpeed: 1500,
+    maxAccel: 1000,
+    maxDecel: 1000,
+    rotateMaxAngSpeed: 90,
+    rotateMaxAngAcceleration: 180
 };
 
 const createInitialConfig = (): RobotConfig => {
@@ -99,34 +105,56 @@ export const useProjectStore = create<ProjectState>()(
 
                 setIdentity: (data) => set((state) => {
                     const newIdentity = { ...state.config.identity, ...data };
-                    
-                    // ━━━ Bi-directional Calculation Logic ━━━
+                    const oldIdentity = state.config.identity;
+
+                    // ━━━ 0325: Bi-directional Linkage Logic ━━━
+                    // 1. Length Linkage (Head + Tail = Length)
                     if ('chassisLength' in data) {
-                        newIdentity.headOffset = Number(data.chassisLength) / 2;
-                        newIdentity.tailOffset = Number(data.chassisLength) / 2;
+                        const ratio = oldIdentity.chassisLength > 0 ? (newIdentity.chassisLength / oldIdentity.chassisLength) : 1;
+                        newIdentity.headOffset = Math.round(oldIdentity.headOffset * ratio);
+                        newIdentity.tailOffset = newIdentity.chassisLength - newIdentity.headOffset;
                     } else if ('headOffset' in data) {
-                        newIdentity.tailOffset = Number(state.config.identity.chassisLength) - Number(data.headOffset);
+                        newIdentity.tailOffset = Math.max(0, newIdentity.chassisLength - Number(data.headOffset));
                     } else if ('tailOffset' in data) {
-                        newIdentity.headOffset = Number(state.config.identity.chassisLength) - Number(data.tailOffset);
+                        newIdentity.headOffset = Math.max(0, newIdentity.chassisLength - Number(data.tailOffset));
                     }
 
+                    // 2. Width Linkage (Left + Right = Width)
                     if ('chassisWidth' in data) {
-                        newIdentity.leftOffset = Number(data.chassisWidth) / 2;
-                        newIdentity.rightOffset = Number(data.chassisWidth) / 2;
+                        const ratio = oldIdentity.chassisWidth > 0 ? (newIdentity.chassisWidth / oldIdentity.chassisWidth) : 1;
+                        newIdentity.leftOffset = Math.round(oldIdentity.leftOffset * ratio);
+                        newIdentity.rightOffset = newIdentity.chassisWidth - newIdentity.leftOffset;
                     } else if ('leftOffset' in data) {
-                        newIdentity.rightOffset = Number(state.config.identity.chassisWidth) - Number(data.leftOffset);
+                        newIdentity.rightOffset = Math.max(0, newIdentity.chassisWidth - Number(data.leftOffset));
                     } else if ('rightOffset' in data) {
-                        newIdentity.leftOffset = Number(state.config.identity.chassisWidth) - Number(data.rightOffset);
+                        newIdentity.leftOffset = Math.max(0, newIdentity.chassisWidth - Number(data.rightOffset));
                     }
 
-                    // ━━━ Sync Chassis Component ━━━
+                    // ━━━ Sync Identity to Chassis Component Attributes ━━━
                     const components = state.config.components.map(c => {
                         if (c.category === 'CHASSIS') {
+                            // Update chassis privateAttrs to match identity for consistency
+                            const updatedPrivateAttrs = c.privateAttrs.map(group => {
+                                if (group.key === 'motionCenterAttr') {
+                                    return {
+                                        ...group,
+                                        elements: group.elements.map(ele => {
+                                            if (ele.key === 'headOffset(Idle)' || ele.key === 'headOffset (Full Load)') return { ...ele, value: newIdentity.headOffset };
+                                            if (ele.key === 'tailOffset(Idle)' || ele.key === 'tailOffset (Full Load)') return { ...ele, value: newIdentity.tailOffset };
+                                            if (ele.key === 'leftOffset(Idle)' || ele.key === 'leftOffset (Full Load)') return { ...ele, value: newIdentity.leftOffset };
+                                            if (ele.key === 'rightOffset(Idle)' || ele.key === 'rightOffset (Full Load)') return { ...ele, value: newIdentity.rightOffset };
+                                            return ele;
+                                        })
+                                    };
+                                }
+                                return group;
+                            });
+                            
                             return {
                                 ...c,
                                 alias: `底盘 (${newIdentity.robotName})`,
-                                // Update chassis type based on driveType if needed (e.g. diffChassis, omniChassis)
-                                type: newIdentity.driveType === 'OMNI_WHEEL' ? 'omniChassis' : 'diffChassis'
+                                type: newIdentity.driveType === 'OMNI_WHEEL' ? 'omniChassis' : 'diffChassis',
+                                privateAttrs: updatedPrivateAttrs
                             };
                         }
                         return c;
@@ -223,6 +251,27 @@ export const useProjectStore = create<ProjectState>()(
                         activeComponentId: state.activeComponentId === id ? null : state.activeComponentId,
                         isDirty: true
                     };
+                }),
+
+                linkInterface: (sourceUuid, sourceIfaceUuid, targetIfaceUuid) => set((state) => {
+                    const components = state.config.components.map(c => {
+                        if (c.id === sourceUuid) {
+                            return {
+                                ...c,
+                                interfaces: c.interfaces.map(iface => {
+                                    if (iface.interfaceUuid === sourceIfaceUuid) {
+                                        return { 
+                                            ...iface, 
+                                            linkedInterfaceUuid: targetIfaceUuid ? [targetIfaceUuid] : [] 
+                                        };
+                                    }
+                                    return iface;
+                                })
+                            };
+                        }
+                        return c;
+                    });
+                    return { config: { ...state.config, components }, isDirty: true };
                 }),
 
                 setActiveComponent: (id) => set({ activeComponentId: id }),

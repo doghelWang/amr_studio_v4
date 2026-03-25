@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { 
     Typography, Button, Space, Modal, Card, 
     Input, Row, Col, Tag, Divider, Tree, List, Spin,
-    Menu, Badge, Tooltip
+    Menu, Badge, Tooltip, Checkbox
 } from 'antd';
 import { 
     PlusOutlined, DeleteOutlined, 
@@ -25,6 +25,12 @@ import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
 import { ImportService } from '../../store/ImportService';
 import axios from 'axios';
+import { 
+    DifferentialDiagram, 
+    SteerWheelDiagram, 
+    OmniWheelDiagram 
+} from './WheelTypeDiagrams';
+import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
 
 const { Title, Text } = Typography;
 
@@ -42,9 +48,11 @@ export const ComponentLibraryStep: React.FC = () => {
     const [libraryData, setLibraryData] = useState<Record<string, any[]>>({});
     const [loadingLibrary, setLoadingLibrary] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [activeSubCategory, setActiveSubCategory] = useState('ALL');
+    const [showAllModules, setShowAllModules] = useState(false);
     const [currentSubStep, setCurrentSubStep] = useState(1);
 
-    const components = config.components;
+    const components = config.components as ComponentConfig[];
 
 
     const subSteps = [
@@ -67,12 +75,77 @@ export const ComponentLibraryStep: React.FC = () => {
         { title: '其他扩展', description: 'IO模块、其他传感器', categories: ['IO', 'OTHER', 'COMMUNICATION', 'AUTOBODY'], systems: ['CommunicateSys', 'AutobodySys'], icon: <ControlOutlined /> },
     ];
 
+    const getSubCategories = (step: any) => {
+        const cats = step.categories.map((c: string) => c.toUpperCase());
+        // 感知避障
+        if (cats.includes('SENSOR') && !cats.includes('ACTOR')) {
+            return [
+                { key: 'ALL', label: '全部传感器' },
+                { key: 'LASER', label: '激光雷达', types: ['laser', 'lidar', '3DLaser', '3DLidar'] },
+                { key: 'CAMERA', label: '摄像头', types: ['camera', 'vision', 'stereo', 'binocularCameraProcessor'] },
+                { key: 'TOF', label: '深度/TOF', types: ['tof', 'depth', 'TOF'] },
+                { key: 'IMU', label: 'IMU/惯导', types: ['imu', 'gyro', 'GYRO'] },
+                { key: 'ULTRASONIC', label: '超声波', types: ['ultrasonic', 'sonar'] },
+            ];
+        }
+        // 动力系统
+        if (cats.includes('DRIVEWHEEL')) {
+             return [
+                { key: 'ALL', label: '全部动力组件' },
+                { key: 'WHEEL', label: '驱动轮', types: ['driveWheel', 'diffSteerWheel', 'horizontalSteerWheel', 'verticalSteerWheel', 'weakSteerWheel', 'steerWheel'] },
+                { key: 'DRIVER', label: '驱动器', types: ['driver', 'subDriver'] },
+                { key: 'ENCODER', label: '编码器', types: ['incrementalEncode', 'absoluteValueEncode', 'ABS_ENCODE', 'ABZEncode', 'pullWireEncode'] },
+            ];
+        }
+        // 核心控制
+        if (cats.includes('MAINCPU') || cats.includes('IO_BOARD') || cats.includes('CONTROL')) {
+            return [
+                { key: 'ALL', label: '全部控制板' },
+                { key: 'MAIN', label: '主控制器', types: ['mainCPU', 'mainCpu', 'intergratedController'] },
+                { key: 'IO', label: 'IO扩展板', types: ['extendedInterface', 'extendedlnterface', 'ioModule', 'safetyIOModule'] },
+                { key: 'COMM', label: '通信模块', types: ['communication', 'ethernetSwitch', 'WIFI', '5G'] },
+            ];
+        }
+        // 电源交互
+        if (cats.includes('BATTERY') || cats.includes('ENERGYCONTROLLER') || cats.includes('BUTTON') || cats.includes('DISPLAY') || cats.includes('SCREEN')) {
+            return [
+                { key: 'ALL', label: '全部模块' },
+                { key: 'HARDWARE', label: '主体硬件', types: ['battery', 'button', 'screen', 'display', 'lcd', 'audio'] },
+                { key: 'ACCESSORY', label: '外设/辅材', types: ['cable', 'fix', 'charge', 'powerController', 'prechargeController'] },
+            ];
+        }
+        return [];
+    };
+
+
+    useEffect(() => {
+        // Reset sub-category when step index changes
+        setActiveSubCategory('ALL');
+    }, [currentSubStep]);
 
     useEffect(() => {
         setLoadingLibrary(true);
         axios.get('http://localhost:8002/api/v1/resources/modules')
             .then(res => {
-                setLibraryData(res.data);
+                // Decorate data with metadata keys using ImportService
+                const decorated: any = {};
+                Object.keys(res.data).forEach(sys => {
+                    decorated[sys] = res.data[sys].map((entity: any) => {
+                        try {
+                            const mapped = ImportService.mapEntityToComponent(entity.full_data || entity);
+                            return {
+                                ...entity,
+                                mainModuleTypeKey: mapped.mainModuleTypeKey,
+                                subModuleTypeKey: mapped.subModuleTypeKey,
+                                category: mapped.category
+                            };
+                        } catch (e) {
+                            console.error(`Decoration failed for ${entity.moduleGroupName}`, e);
+                            return entity;
+                        }
+                    });
+                });
+                setLibraryData(decorated);
                 setLoadingLibrary(false);
             })
             .catch(err => {
@@ -89,17 +162,22 @@ export const ComponentLibraryStep: React.FC = () => {
 
         return components.filter(c => {
             const catMatch = allowedCategories.includes(c.category);
-            const alias = (c.alias || '').toLowerCase();
-            const name = (c.name || '').toLowerCase();
-            const searchStr = alias + ' ' + name;
+            const mainKey = (c.mainModuleTypeKey || '').toLowerCase();
+            const subKey = (c.subModuleTypeKey || '').toLowerCase();
+            const searchStr = `${c.name} ${c.alias} ${c.type}`.toLowerCase();
 
-            // If this step has explict encoder keywords → include encoder-matching components even when category doesn't match
-            if (encoderKws.length > 0 && encoderKws.some(kw => searchStr.includes(kw))) {
+            // ━━━ Metadata-Driven Encoder Inclusion ━━━
+            // If this step specifically allows encoders (via sub-categories), include them
+            const subCats = getSubCategories(step);
+            const hasEncoderTab = subCats.some(sc => sc.key === 'ENCODER');
+            if (hasEncoderTab && (mainKey.includes('sensor') || subKey.includes('encode'))) {
                 return true;
             }
+
             // If not a category match, exclude
             if (!catMatch) return false;
-            // Exclude components matching excludeKeywords
+            
+            // Exclude components matching excludeKeywords (legacy support)
             if (excludeKws.length > 0 && excludeKws.some(kw => searchStr.includes(kw))) {
                 return false;
             }
@@ -329,12 +407,38 @@ export const ComponentLibraryStep: React.FC = () => {
                             </div>
                         </div>
                     ) : (
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 0.3 }}>
-                            <div style={{ padding: 40, border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '50%', marginBottom: 24 }}>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 1, padding: 40 }}>
+                            {currentSubStep === 3 && (
+                                <div style={{ marginBottom: 40, width: '100%', maxWidth: 700 }}>
+                                    <div style={{ marginBottom: 20, fontSize: 16, fontWeight: 600, color: 'var(--accent)' }}>动力系统示意图 (Power Architecture)</div>
+                                    <Row gutter={20}>
+                                        <Col span={8}>
+                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: config.identity.driveType === 'STANDARD_DIFF' ? '1px solid var(--accent)' : '1px solid transparent' }}>
+                                                <DifferentialDiagram />
+                                            </Card>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: (config.identity.driveType === 'SINGLE_STEER' || config.identity.driveType === 'DUAL_STEER') ? '1px solid var(--accent)' : '1px solid transparent' }}>
+                                                <SteerWheelDiagram />
+                                            </Card>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: config.identity.driveType === 'OMNI_WHEEL' ? '1px solid var(--accent)' : '1px solid transparent' }}>
+                                                <OmniWheelDiagram />
+                                            </Card>
+                                        </Col>
+                                    </Row>
+                                    <div style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted)', textAlign: 'center' }}>
+                                        提示：当前底盘驱动类型为 {DRIVE_TYPE_LABELS[config.identity.driveType]}，请据此添加对应的轮组模块。
+                                    </div>
+                                </div>
+                            )}
+
+                            <div style={{ padding: 40, border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '50%', marginBottom: 24, opacity: 0.3 }}>
                                 <DeploymentUnitOutlined style={{ fontSize: 60, color: 'var(--accent)' }} />
                             </div>
-                            <Title level={5} style={{ color: '#8b949e' }}>就绪并等待参数标定</Title>
-                            <Text type="secondary" style={{ maxWidth: 300, textAlign: 'center' }}>系统已根据左侧进度加载过滤规则。请选中上方“已添加组件”列表中的项开始配置其安装 pose 与私有参数。</Text>
+                            <Title level={5} style={{ color: '#8b949e', opacity: 0.5 }}>就绪并等待参数标定</Title>
+                            <Text type="secondary" style={{ maxWidth: 300, textAlign: 'center', opacity: 0.5 }}>系统已根据左侧进度加载过滤规则。请选中上方“已添加组件”列表中的项开始配置其安装 pose 与私有参数。</Text>
                         </div>
                     )}
                 </div>
@@ -357,6 +461,7 @@ export const ComponentLibraryStep: React.FC = () => {
                 cancelText="取消"
                 width={460}
                 centered
+                zIndex={1200}
                 className="naming-modal"
             >
                 <div style={{ padding: '10px 0' }}>
@@ -414,11 +519,32 @@ export const ComponentLibraryStep: React.FC = () => {
                     <Col flex="1">
                         <Input size="large" prefix={<SearchOutlined />} placeholder="搜索型号、描述、制造商..." style={{ borderRadius: 8, background: 'rgba(255,255,255,0.02)' }} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                     </Col>
+                    <Col>
+                        <Tooltip title="关闭过滤，显示资源库中该分类下的所有模块">
+                            <Checkbox checked={showAllModules} onChange={e => setShowAllModules(e.target.checked)} style={{ color: 'var(--text-muted)', fontSize: 12 }}>
+                                显示全部
+                            </Checkbox>
+                        </Tooltip>
+                    </Col>
+                    {getSubCategories(currentStepInfo).length > 0 && (
+                        <Col>
+                            <Menu 
+                                mode="horizontal" 
+                                selectedKeys={[activeSubCategory]} 
+                                onClick={e => setActiveSubCategory(e.key)}
+                                style={{ background: 'transparent', borderBottom: 'none', lineHeight: '40px' }}
+                                items={getSubCategories(currentStepInfo).map(sub => ({ key: sub.key, label: sub.label }))}
+                            />
+                        </Col>
+                    )}
                 </Row>
                 <div style={{ height: 'calc(80vh - 220px)', overflowY: 'auto', paddingRight: 8 }}>
                     {loadingLibrary ? <div style={{ textAlign: 'center', padding: 100 }}><Spin tip="索引数字孪生资源库中..." /></div> : (
                         Object.keys(libraryData).filter(sys => currentStepInfo.systems.includes(sys)).map(sys => {
                             const filtered = libraryData[sys].filter(e => {
+                                const full = e.full_data || {};
+                                const comp = (full.moduleComponets || full.module_componets || full.moduleComponents || full.module_components || [])[0];
+                                
                                 const matchSearch = e.moduleGroupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                                   e.file_name.toLowerCase().includes(searchTerm.toLowerCase());
                                 if (!matchSearch) return false;
@@ -454,28 +580,45 @@ export const ComponentLibraryStep: React.FC = () => {
                                     return true;
                                 }
 
-                                // ━━━ Linkage Filter for Chassis ━━━
-                                if (normalizedType === 'CHASSIS' || currentStepInfo.categories.includes('CHASSIS')) {
-                                    if (config.identity.driveType === 'STANDARD_DIFF' && !fileName.includes('diff')) return false;
-                                    if (config.identity.driveType === 'SINGLE_STEER' && !fileName.includes('single')) return false;
-                                    if (config.identity.driveType === 'DUAL_STEER' && !fileName.includes('double') && !fileName.includes('dual')) return false;
-                                }
+                                // ━━━ 0325: Drive Type Filtering (Metadata-Driven) ━━━
+                                if (!showAllModules && (normalizedType === 'DRIVEWHEEL' || currentStepInfo.categories.includes('DRIVEWHEEL'))) {
+                                    const driveTarget = config.identity.driveType;
+                                    const subKey = comp?.subModuleTypeKey || '';
+                                    const lowerSub = subKey.toLowerCase();
 
-                                // ━━━ Category match ━━━
-                                if (!currentStepInfo.categories.includes(normalizedType)) {
-                                    // Fallback: INTERGRATEDCONTROLLER maps to CONTROL category
-                                    if (normalizedType === 'INTERGRATEDCONTROLLER' && currentStepInfo.categories.includes('CONTROL')) {
-                                        // allow through, will be checked below
-                                    } else if (normalizedType === 'MAINCPU' && currentStepInfo.categories.includes('CONTROL')) {
-                                        // allow through
-                                    } else {
-                                        return false;
+                                    if (driveTarget === 'STANDARD_DIFF') {
+                                        // diffSteerWheel, diffWheel, or name contains diff
+                                        if (!lowerSub.includes('diff') && !groupName.includes('diff') && !fileName.includes('diff') && !fileName.includes('差速')) return false;
+                                    } else if (driveTarget === 'SINGLE_STEER' || driveTarget === 'DUAL_STEER') {
+                                        // steerWheel, horizontalSteer, verticalSteer
+                                        if (!lowerSub.includes('steer') && !groupName.includes('steer') && !fileName.includes('舵轮')) return false;
+                                    } else if (driveTarget === 'OMNI_WHEEL') {
+                                        // mecanum, omni
+                                        if (!lowerSub.includes('mecanum') && !lowerSub.includes('omni') && !fileName.includes('麦克')) return false;
                                     }
                                 }
 
-                                // ━━━ Keyword exclusion (e.g. encoder sensors OUT of 感知避障) ━━━
-                                if (excludeKws.length > 0 && excludeKws.some(kw => searchStr.includes(kw))) {
-                                    return false;
+                                // ━━━ 0325: Sub-category Filtering (Metadata-Driven) ━━━
+                                if (!showAllModules && activeSubCategory !== 'ALL') {
+                                    const sub = getSubCategories(currentStepInfo).find(s => s.key === activeSubCategory);
+                                    if (sub && sub.types) {
+                                        const mainKey = e.mainModuleTypeKey || '';
+                                        const subKey = e.subModuleTypeKey || '';
+                                        const category = e.category || '';
+                                        
+                                        // Category check (Strict isolation)
+                                        if (activeSubCategory === 'WHEEL' && category !== 'DRIVEWHEEL') return false;
+                                        if (activeSubCategory === 'ENCODER' && (category !== 'SENSOR' && category !== 'ENCODER')) {
+                                            if (!subKey.toLowerCase().includes('encode')) return false;
+                                        }
+
+                                        const matchSub = sub.types.some(t => 
+                                            mainKey.toLowerCase() === t.toLowerCase() || 
+                                            subKey.toLowerCase() === t.toLowerCase() ||
+                                            (e.type_key || '').toLowerCase() === t.toLowerCase()
+                                        );
+                                        if (!matchSub) return false;
+                                    }
                                 }
 
                                 return true;

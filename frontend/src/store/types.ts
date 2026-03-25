@@ -101,6 +101,8 @@ export interface ComponentConfig {
     alias: string;
     type: string;          // Sub-type key (e.g. "diffChassis")
     category: MainModuleType;
+    mainModuleTypeKey?: string; // e.g. "driveWheel", "sensor"
+    subModuleTypeKey?: string;  // e.g. "diffSteerWheel", "laser"
 
     // Physical Hierarchy (from Message_Module_Info)
     parentNodeUuid: string | null;
@@ -172,6 +174,13 @@ export interface RobotIdentity {
     tailOffset: number;
     leftOffset: number;
     rightOffset: number;
+
+    // Performance (Added 0325)
+    maxSpeed?: number;
+    maxAccel?: number;
+    maxDecel?: number;
+    rotateMaxAngSpeed?: number;
+    rotateMaxAngAcceleration?: number;
 }
 
 // ━━━ Ability Models (Matches controller_model_abi_set.proto) ━━━

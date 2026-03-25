@@ -147,9 +147,9 @@ export const ChassisStep: React.FC = () => {
                                     <Form.Item label="前向距 (Head Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={getMotionCenterVal('headOffset(Idle)')} 
-                                            suffix="mm"
-                                            onChange={v => setMotionCenterVal('headOffset(Idle)', v)}
+                                            value={identity.headOffset} 
+                                            suffix="mm" 
+                                            onChange={v => handleUpdate({ headOffset: v })} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -157,9 +157,9 @@ export const ChassisStep: React.FC = () => {
                                     <Form.Item label="后向距 (Tail Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={getMotionCenterVal('tailOffset(Idle)')} 
-                                            suffix="mm"
-                                            onChange={v => setMotionCenterVal('tailOffset(Idle)', v)}
+                                            value={identity.tailOffset} 
+                                            suffix="mm" 
+                                            onChange={v => handleUpdate({ tailOffset: v })} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -170,9 +170,9 @@ export const ChassisStep: React.FC = () => {
                                     <Form.Item label="左向距 (Left Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={getMotionCenterVal('leftOffset(Idle)')} 
-                                            suffix="mm"
-                                            onChange={v => setMotionCenterVal('leftOffset(Idle)', v)}
+                                            value={identity.leftOffset} 
+                                            suffix="mm" 
+                                            onChange={v => handleUpdate({ leftOffset: v })} 
                                         />
                                     </Form.Item>
                                 </Col>
@@ -180,38 +180,60 @@ export const ChassisStep: React.FC = () => {
                                     <Form.Item label="右向距 (Right Offset)">
                                         <InputNumber 
                                             style={{ width: '100%' }}
-                                            value={getMotionCenterVal('rightOffset(Idle)')} 
-                                            suffix="mm"
-                                            onChange={v => setMotionCenterVal('rightOffset(Idle)', v)}
+                                            value={identity.rightOffset} 
+                                            suffix="mm" 
+                                            onChange={v => handleUpdate({ rightOffset: v })} 
                                         />
                                     </Form.Item>
                                 </Col>
                             </Row>
 
-                            <Divider orientation="left" plain><small>运动中心偏移 - 满载 (Full Load)</small></Divider>
+                            <Divider orientation="left" plain>
+                                <small><ThunderboltOutlined style={{ marginRight: 6 }} />运行性能 (Performance)</small>
+                            </Divider>
                             
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item label="前向距 (Head Offset)">
-                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('headOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('headOffset (Full Load)', v)} />
+                                    <Form.Item label="最大线速度">
+                                        <InputNumber 
+                                            style={{ width: '100%' }} 
+                                            value={identity.maxSpeed || 1500} 
+                                            suffix="mm/s" 
+                                            onChange={v => handleUpdate({ maxSpeed: v })} 
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="后向距 (Tail Offset)">
-                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('tailOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('tailOffset (Full Load)', v)} />
+                                    <Form.Item label="最大线加速度">
+                                        <InputNumber 
+                                            style={{ width: '100%' }} 
+                                            value={identity.maxAccel || 1000} 
+                                            suffix="mm/s²" 
+                                            onChange={v => handleUpdate({ maxAccel: v })} 
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>
-
+                            
                             <Row gutter={16}>
                                 <Col span={12}>
-                                    <Form.Item label="左向距 (Left Offset)">
-                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('leftOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('leftOffset (Full Load)', v)} />
+                                    <Form.Item label="最大角速度">
+                                        <InputNumber 
+                                            style={{ width: '100%' }} 
+                                            value={identity.rotateMaxAngSpeed || 90} 
+                                            suffix="°/s" 
+                                            onChange={v => handleUpdate({ rotateMaxAngSpeed: v })} 
+                                        />
                                     </Form.Item>
                                 </Col>
                                 <Col span={12}>
-                                    <Form.Item label="右向距 (Right Offset)">
-                                        <InputNumber style={{ width: '100%' }} value={getMotionCenterVal('rightOffset (Full Load)')} suffix="mm" onChange={v => setMotionCenterVal('rightOffset (Full Load)', v)} />
+                                    <Form.Item label="最大角加速度">
+                                        <InputNumber 
+                                            style={{ width: '100%' }} 
+                                            value={identity.rotateMaxAngAcceleration || 180} 
+                                            suffix="°/s²" 
+                                            onChange={v => handleUpdate({ rotateMaxAngAcceleration: v })} 
+                                        />
                                     </Form.Item>
                                 </Col>
                             </Row>

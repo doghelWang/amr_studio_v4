@@ -32,7 +32,9 @@ export class ImportService {
         'IOModule':              'IO_BOARD',   // uppercase variant
         'safetyIOModule':        'IO_BOARD',   // safety IO board
         'safetyController':      'CONTROL',
-        'powerController':       'ENERGYCONTROLLER',
+        'weakSteerWheel':        'DRIVEWHEEL',
+        'steerWheel':            'DRIVEWHEEL',
+        'diffSteerWheel':        'DRIVEWHEEL',
         'battery':               'BATTERY',
         'energyController':      'ENERGYCONTROLLER',
         'button':                'BUTTON',
@@ -139,7 +141,7 @@ export class ImportService {
 
         if (componentsArr && Array.isArray(componentsArr)) {
             componentsArr.forEach((comp: any) => {
-                const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid);
+                const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid, componentsArr);
                 list.push(config);
             });
         }
@@ -151,15 +153,39 @@ export class ImportService {
     }
 
     private static mapToComponent(
-        comp: any, groupName: string, groupUuid: string, parentUuid: string | null
+        comp: any, groupName: string, groupUuid: string, parentUuid: string | null, allComponents?: any[]
     ): ComponentConfig {
         const gen = comp.generalAttr || comp.general_attr || {};
         const struct = comp.structParam || comp.struct_param || {};
 
-        const rawCat = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'chassis';
-        const category = (ImportService.CATEGORY_MAP[rawCat] || rawCat.toUpperCase()) as MainModuleType;
-        const type = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
+        // ━━━ 0325: Metadata-Driven Type Resolution ━━━
+        // The user suggested using mainModuleType and subModuleType fields directly.
+        let rawMainType = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'chassis';
+        let subTypeKey = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
 
+        // ━━━ 0325: Multi-Component Analysis ━━━
+        if (allComponents && allComponents.length > 1) {
+            const priorities = [
+                'driveWheel', 'diffSteerWheel', 'steerWheel', 'weakSteerWheel',
+                'mainCPU', 'mainCpu', 'intergratedController', 
+                'sensor', 'driver', 'battery', 'button', 'screen', 'light'
+            ];
+            let highestPriority = -1;
+
+            allComponents.forEach(c => {
+                const cGen = c.generalAttr || c.general_attr || {};
+                const cMain = cGen.mainModuleType?.comboType?.typeKey || cGen.main_module_type?.combo_type?.type_key || '';
+                const pIdx = priorities.indexOf(cMain);
+                if (pIdx !== -1 && (highestPriority === -1 || pIdx < highestPriority)) {
+                    highestPriority = pIdx;
+                    rawMainType = cMain;
+                    subTypeKey = cGen.subModuleType?.comboType?.typeKey || cGen.sub_module_type?.combo_type?.type_key || subTypeKey;
+                }
+            });
+            // Use the metadata from the "best" component for category/type
+        }
+
+        const category = (ImportService.CATEGORY_MAP[rawMainType] || rawMainType.toUpperCase()) as MainModuleType;
         const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
 
         const rawIface = comp.interfaceParams || comp.interface_params || comp.interface_param || {};
@@ -205,15 +231,17 @@ export class ImportService {
 
         const structExtend = struct.extendParams || struct.extend_params || [];
 
-        return {
+        const result: ComponentConfig = {
             id: uuid,
-            name: gen.moduleName?.stringValue || gen.module_name?.string_value || type,
+            name: gen.moduleName?.stringValue || gen.module_name?.string_value || subTypeKey,
             alias: gen.extendParams?.find((p: any) => p.key === 'module_alias')?.stringValue 
                    || gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value
                    || gen.moduleDesc?.stringValue || gen.module_desc?.string_value
-                   || type,
-            type,
+                   || subTypeKey,
+            type: subTypeKey,
             category,
+            mainModuleTypeKey: rawMainType,
+            subModuleTypeKey: subTypeKey,
             parentNodeUuid: parentUuid
                 || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.stringValue
                 || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.string_value
@@ -235,6 +263,13 @@ export class ImportService {
             disabled: comp.boolDisable || comp.bool_disable,
             deprecated: comp.boolDeprecated || comp.bool_deprecated,
         };
+
+        // Ensure alias is meaningful
+        if ((!result.alias || result.alias === result.type) && groupName && groupName !== 'LibraryGroup') {
+            result.alias = groupName;
+        }
+
+        return result;
     }
 
     private static findExtend(extend: any[], key: string): number {
@@ -285,14 +320,15 @@ export class ImportService {
     }
 
     static mapEntityToComponent(entityJson: any): ComponentConfig {
-        const comp = (entityJson.moduleComponets || entityJson.module_componets || [])[0];
+        const componentsArr = entityJson.moduleComponets || entityJson.module_componets || [];
+        const comp = componentsArr[0];
         if (!comp) throw new Error("Invalid entity JSON: no components found");
 
         const groupName = entityJson.moduleGroupName || "LibraryGroup";
         const groupUuid = uuidv4();
         const newId = uuidv4();
         
-        const mapped = this.mapToComponent(comp, groupName, groupUuid, null);
+        const mapped = this.mapToComponent(comp, groupName, groupUuid, null, componentsArr);
         return { ...mapped, id: newId };
     }
 }
