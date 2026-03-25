@@ -1,0 +1,16 @@
+<ModuleGroup name="XML-Demo-Sensor">
+    <Component subsys="SensorSys" category="sensor" type="3DLaser" vender="GEMINI-AI" icon="/ModuleLibrary/PictureRes/1/cube.png">
+        <Identity name="XML-Demo-Sensor" desc="由 XML 驱动的演示传感器" />
+        <Attributes>
+            <Group key="sensorAttr" desc="核心传感参数">
+                <Param key="scanFrequency" type="DATA_DOUBLE" value="20.5" unit="Hz" basic="true" />
+                <Param key="isHighPrecision" type="DATA_BOOL" value="true" />
+                <Param key="venderModel" type="DATA_STRING" value="XML-PRO-V1" />
+                <Param key="workMode" type="DATA_COMBOX" selected="MODE_FAST">
+                    <Option key="MODE_FAST" desc="高速模式" />
+                    <Option key="MODE_STABLE" desc="稳定模式" />
+                </Param>
+            </Group>
+        </Attributes>
+    </Component>
+</ModuleGroup>

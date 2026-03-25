@@ -154,35 +154,46 @@ def list_boards_api():
                 })
     return boards
 
+from core import data_manager, resource_adapter
+
+# ... rest of code ...
+
 @app.get("/api/v1/resources/modules")
 def list_modules_api():
     entities = {}
-    
-    # ━━━ NEW: Flat Resource Directory (Unified) ━━━
     flat_path = BASE_DIR / "resources" / "modules"
+    
     if flat_path.exists():
-        for f in flat_path.glob("*.json"):
+        # Support both .json and .xml
+        for f in sorted(flat_path.glob("*")):
+            if f.suffix not in [".json", ".xml"]: continue
+            
             try:
-                with open(f, "r", encoding="utf-8") as file:
-                    data = json.load(file)
-                    # Metadata extraction
-                    sys_name = data.get("system")
-                    if not sys_name:
-                        try:
-                            comp = (data.get("full_data", {}).get("moduleComponets") or data.get("moduleComponets") or [])[0]
-                            sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey")
-                        except: pass
-                    
-                    sys_name = sys_name or "Other"
-                    if sys_name not in entities: entities[sys_name] = []
-                    
-                    entities[sys_name].append({
-                        "file_name": f.name,
-                        "moduleGroupName": data.get("moduleGroupName") or data.get("full_data", {}).get("moduleGroupName", f.stem),
-                        "system": sys_name,
-                        "category": data.get("category"),
-                        "full_data": data.get("full_data") or data
-                    })
+                if f.suffix == ".json":
+                    with open(f, "r", encoding="utf-8") as file:
+                        data = json.load(file)
+                else:
+                    # XML Transmutation
+                    data = resource_adapter.xml_to_component_json(str(f))
+                
+                # Metadata extraction (保持原有逻辑不变)
+                sys_name = data.get("system")
+                if not sys_name:
+                    try:
+                        comp = (data.get("full_data", {}).get("moduleComponets") or data.get("moduleComponets") or [])[0]
+                        sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey")
+                    except: pass
+                
+                sys_name = sys_name or "Other"
+                if sys_name not in entities: entities[sys_name] = []
+                
+                entities[sys_name].append({
+                    "file_name": f.name,
+                    "moduleGroupName": data.get("moduleGroupName") or data.get("full_data", {}).get("moduleGroupName", f.stem),
+                    "system": sys_name,
+                    "category": data.get("category"),
+                    "full_data": data.get("full_data") or data
+                })
             except Exception as e:
                 print(f"DEBUG: Skipping invalid module {f.name}: {e}", flush=True)
 

@@ -1,6 +1,5 @@
-INFO:     Started server process [9740]
+INFO:     Started server process [9803]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
-DISK_AUDIT: [SANDBOX_IMPORT] Copied 3DLaser-Common.json to project proj_test_sandbox
-INFO:     127.0.0.1:54805 - "POST /api/v1/models/proj_test_sandbox/sync_resource HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55031 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK
