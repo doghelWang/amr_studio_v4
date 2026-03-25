@@ -133,6 +133,64 @@ export class ImportService {
         };
     }
 
+    /**
+     * P4e: Parse board_desc JSON to extract public electrical interfaces.
+     * Filters out internal interfaces (PI/PO/LVDS/UART/SPI/I2C) per spec.
+     * Returns an array of InterfaceConfig ready to merge into a component.
+     */
+    static parseBoardInterfaces(boardDescJson: any): InterfaceConfig[] {
+        const interfaces: InterfaceConfig[] = [];
+        const boardKey = Object.keys(boardDescJson)[0];
+        if (!boardKey) return interfaces;
+        const board = boardDescJson[boardKey];
+
+        // ━━━ Public interface types to INCLUDE (from spec) ━━━
+        const INCLUDE_TYPES = ['can', 'rs485', 'rs232', 'di', 'do', 'ai', 'ao'];
+
+        // Helper: extract name array from an interface section
+        const extractSection = (section: Record<string, any[]>, type: string): InterfaceConfig[] => {
+            const entries = section[type];
+            if (!entries || !Array.isArray(entries)) return [];
+            return entries.map((entry: any) => ({
+                key: entry.name || `${type.toUpperCase()}_${uuidv4().slice(0, 4)}`,
+                type: type.toUpperCase(),
+                desc: entry.desc || entry.name || '',
+                interfaceUuid: uuidv4(),
+                path: entry.hard_define || entry.peripheral || '',
+            } as InterfaceConfig));
+        };
+
+        // Scan all sections
+        for (const sectionName of Object.keys(board)) {
+            if (['基本信息', 'mcu'].includes(sectionName)) continue;
+            const section = board[sectionName];
+            if (typeof section !== 'object') continue;
+
+            for (const ifaceType of INCLUDE_TYPES) {
+                const extracted = extractSection(section, ifaceType);
+                interfaces.push(...extracted);
+            }
+        }
+
+        return interfaces;
+    }
+
+    /**
+     * P4e: Enrich a control board component with interfaces parsed from board_desc file.
+     * Merges new interfaces without duplicating existing ones (by key).
+     */
+    static enrichComponentFromBoardDesc(comp: ComponentConfig, boardDescJson: any): ComponentConfig {
+        const newIfaces = this.parseBoardInterfaces(boardDescJson);
+        if (newIfaces.length === 0) return comp;
+
+        const existingKeys = new Set(comp.interfaces.map(i => i.key));
+        const merged = [
+            ...comp.interfaces,
+            ...newIfaces.filter(i => !existingKeys.has(i.key)),
+        ];
+        return { ...comp, interfaces: merged };
+    }
+
     private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null) {
         const groupName = group.moduleGroupName || group.module_group_name || '';
         const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();

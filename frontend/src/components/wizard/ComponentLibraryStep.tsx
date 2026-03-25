@@ -31,6 +31,7 @@ import {
     OmniWheelDiagram 
 } from './WheelTypeDiagrams';
 import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
+import { PowerTopologyPanel } from './PowerTopologyPanel';
 
 const { Title, Text } = Typography;
 
@@ -450,29 +451,10 @@ export const ComponentLibraryStep: React.FC = () => {
                         </div>
                     ) : (
                         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', opacity: 1, padding: 40 }}>
+                            {/* P4d: Power Topology Panel - replaces static architecture diagram */}
                             {currentSubStep === 3 && (
-                                <div style={{ marginBottom: 40, width: '100%', maxWidth: 700 }}>
-                                    <div style={{ marginBottom: 20, fontSize: 16, fontWeight: 600, color: 'var(--accent)' }}>动力系统示意图 (Power Architecture)</div>
-                                    <Row gutter={20}>
-                                        <Col span={8}>
-                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: config.identity.driveType === 'STANDARD_DIFF' ? '1px solid var(--accent)' : '1px solid transparent' }}>
-                                                <DifferentialDiagram />
-                                            </Card>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: (config.identity.driveType === 'SINGLE_STEER' || config.identity.driveType === 'DUAL_STEER') ? '1px solid var(--accent)' : '1px solid transparent' }}>
-                                                <SteerWheelDiagram />
-                                            </Card>
-                                        </Col>
-                                        <Col span={8}>
-                                            <Card size="small" variant="borderless" style={{ background: 'rgba(255,255,255,0.02)', border: config.identity.driveType === 'OMNI_WHEEL' ? '1px solid var(--accent)' : '1px solid transparent' }}>
-                                                <OmniWheelDiagram />
-                                            </Card>
-                                        </Col>
-                                    </Row>
-                                    <div style={{ marginTop: 12, fontSize: 12, color: 'var(--text-muted)', textAlign: 'center' }}>
-                                        提示：当前底盘驱动类型为 {DRIVE_TYPE_LABELS[config.identity.driveType]}，请据此添加对应的轮组模块。
-                                    </div>
+                                <div style={{ marginBottom: 24, width: '100%' }}>
+                                    <PowerTopologyPanel onAddComponent={() => setIsAddModal(true)} />
                                 </div>
                             )}
 
