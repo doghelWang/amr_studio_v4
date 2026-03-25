@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { 
     Typography, Button, Space, Modal, Card, 
     Input, Row, Col, Tag, Divider, Tree, List, Spin,
@@ -52,6 +53,18 @@ export const ComponentLibraryStep: React.FC = () => {
     const [activeSubCategory, setActiveSubCategory] = useState('ALL');
     const [showAllModules, setShowAllModules] = useState(false);
     const [currentSubStep, setCurrentSubStep] = useState(1);
+    const [isManualModalOpen, setIsManualModalOpen] = useState(false);
+    const [manualCategory, setManualCategory] = useState<string>('');
+
+    // Update manual category when sub-step changes or modal opens
+    useEffect(() => {
+        if (isManualModalOpen && !manualCategory) {
+            const currentCats = subSteps[currentSubStep - 1]?.categories || [];
+            if (currentCats.length > 0) {
+                setManualCategory(currentCats[0]);
+            }
+        }
+    }, [isManualModalOpen, currentSubStep]);
 
     const components = config.components as ComponentConfig[];
 
@@ -257,6 +270,34 @@ export const ComponentLibraryStep: React.FC = () => {
         }
     };
 
+    const handleManualAdd = () => {
+        if (!manualCategory) return;
+        
+        const dummyItem = {
+            id: uuidv4(),
+            name: `custom_${manualCategory.toLowerCase()}_${uuidv4().slice(0, 4)}`,
+            category: manualCategory,
+            mainModuleTypeKey: manualCategory,
+            subModuleTypeKey: 'GENERIC',
+            mainModuleType: {
+                typeKey: manualCategory,
+                comboType: { typeKey: manualCategory }
+            },
+            generalAttr: { name: '自定义组件', alias: 'new_component' },
+            structParam: {},
+            privateAttrs: [],
+            interfaces: [],
+            // Default to root if it's the first non-chassis component
+            parentNodeUuid: manualCategory !== 'CHASSIS' ? components.find(c => c.category === 'CHASSIS')?.id : undefined
+        };
+        
+        setPendingComponent(dummyItem);
+        setTempAlias('new_component');
+        setTempName(dummyItem.name);
+        setIsManualModalOpen(false);
+        setTimeout(() => setIsNamingModalOpen(true), 150);
+    };
+
     const handleConfirmAdd = () => {
         if (pendingComponent) {
             const finalComp = { 
@@ -326,17 +367,27 @@ export const ComponentLibraryStep: React.FC = () => {
                                 <div style={{ fontSize: 15, fontWeight: 700, color: '#f0f6fc' }}>{currentStepInfo.title}</div>
                                 <Text type="secondary" style={{ fontSize: 11 }}>{currentStepInfo.description}</Text>
                             </div>
-                            {currentSubStep > 1 && (
-                                <Button 
-                                    type="primary" 
-                                    size="small"
-                                    icon={<PlusOutlined />} 
-                                    onClick={() => setIsAddModal(true)}
-                                    className="add-btn-refined"
-                                >
-                                    新增
-                                </Button>
-                            )}
+                             {currentSubStep > 1 && (
+                                <Space>
+                                    <Button 
+                                        type="primary" 
+                                        icon={<PlusOutlined />} 
+                                        onClick={() => setIsAddModal(true)}
+                                        size="small"
+                                        className="add-btn-refined"
+                                    >
+                                        资源库导入
+                                    </Button>
+                                    <Button 
+                                        icon={<PlusCircleOutlined />} 
+                                        onClick={() => setIsManualModalOpen(true)}
+                                        size="small"
+                                        className="add-btn-refined"
+                                    >
+                                        手动创建
+                                    </Button>
+                                </Space>
+                             )}
                         </div>
                     </div>
 
@@ -348,9 +399,28 @@ export const ComponentLibraryStep: React.FC = () => {
                             </div>
                             {filteredComponents.length === 0 ? (
                                 <div style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center' }}>
-                                    <Text type="secondary" style={{ fontSize: 11 }}>
-                                        {currentSubStep === 1 ? "底盘已固化，请点击查看属性" : "暂无组件，请点击上方“新增”按钮"}
+                                    <Text type="secondary" style={{ fontSize: 11, marginBottom: 16, display: 'block' }}>
+                                        {currentSubStep === 1 ? "底盘已固化，请点击查看属性" : "暂无组件，请点击下方按钮添加"}
                                     </Text>
+                                    <Space size="large">
+                                        <Button 
+                                            type="primary" 
+                                            size="large" 
+                                            icon={<PlusOutlined />} 
+                                            onClick={() => setIsAddModal(true)}
+                                            style={{ height: 50, padding: '0 40px', fontSize: 16, borderRadius: 25 }}
+                                        >
+                                            资源库新增
+                                        </Button>
+                                        <Button 
+                                            size="large" 
+                                            icon={<PlusCircleOutlined />} 
+                                            onClick={() => setIsManualModalOpen(true)}
+                                            style={{ height: 50, padding: '0 40px', fontSize: 16, borderRadius: 25 }}
+                                        >
+                                            手动创建组件
+                                        </Button>
+                                    </Space>
                                 </div>
                             ) : (
                                 <List
@@ -753,6 +823,41 @@ export const ComponentLibraryStep: React.FC = () => {
                 }
                 .naming-modal .ant-modal-title { color: #f0f6fc !important; }
             `}</style>
+
+            {/* Manual Create Modal */}
+            <Modal
+                title="手动创建组件 - 选择分类"
+                open={isManualModalOpen}
+                onCancel={() => setIsManualModalOpen(false)}
+                onOk={handleManualAdd}
+                okText="确认"
+                cancelText="取消"
+                centered
+            >
+                <div style={{ marginBottom: 16, color: 'var(--text-muted)' }}>请选择要创建的组件所属分类：</div>
+                <Menu
+                    mode="vertical"
+                    selectedKeys={[manualCategory]}
+                    onClick={({ key }) => setManualCategory(key)}
+                    items={[
+                        { 
+                            key: 'current', 
+                            label: '当前步骤推荐类别', 
+                            type: 'group',
+                            children: subSteps[currentSubStep - 1].categories.map(cat => ({ key: cat, label: cat }))
+                        },
+                        {
+                            key: 'all',
+                            label: '其他所有类别',
+                            type: 'group',
+                            children: subSteps.flatMap(s => s.categories)
+                                .filter((v, i, a) => a.indexOf(v) === i && !subSteps[currentSubStep - 1].categories.includes(v))
+                                .map(cat => ({ key: cat, label: cat }))
+                        }
+                    ]}
+                    style={{ maxHeight: 400, overflowY: 'auto', border: 'none', background: 'transparent' }}
+                />
+            </Modal>
         </div>
     );
 };

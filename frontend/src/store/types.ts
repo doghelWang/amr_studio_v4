@@ -58,7 +58,7 @@ export interface AttributeGroup {
 // ━━━ Matches Message_Interface_Param_Group ━━━
 export interface InterfaceConfig {
     key: string;               // e.g. "CAN0", "ETH0"
-    type: string;              // e.g. "CAN", "ETHERNET"
+    type: string;              // e.g. "CAN", "ETHERNET", "RS485", "NETWORK"
     path?: string;             // 指向接口的模块路径
     desc?: string;
     interfaceUuid: string;     // Unique ID for this interface instance

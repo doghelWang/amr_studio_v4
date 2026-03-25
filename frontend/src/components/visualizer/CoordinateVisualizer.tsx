@@ -68,10 +68,10 @@ const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, id
 
     // Render FOV (Field of View) for sensors
     const renderFOV = (x: number, y: number, z: number, yaw: number, range: number, angle: number, color: string) => {
-        if (type !== 'iso' && type !== 'top') return null; // Simplified FOV in 2D top or 3D iso
+        if (type !== 'top') return null; // Only show FOV in top view for now
         
-        const segments = 12;
-        const startRad = (yaw - angle / 2) * Math.PI / 180;
+        const segments = 24;
+        const startRad = (-yaw - angle / 2) * Math.PI / 180; // Negative yaw for screen space rotation
         const pts = [];
         pts.push(project(x, y, z));
         for (let i = 0; i <= segments; i++) {
@@ -80,7 +80,18 @@ const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, id
         }
 
         const pointsStr = pts.map(p => `${p.x},${p.y}`).join(' ');
-        return <polygon points={pointsStr} fill={color} opacity={0.15} stroke={color} strokeWidth={1} strokeDasharray="4 2" />;
+        return (
+            <g>
+                <polygon points={pointsStr} fill={color} opacity={0.15} stroke={color} strokeWidth={1} strokeDasharray="4 2" />
+                {/* Orientation Line */}
+                <line 
+                    x1={pts[0].x} y1={pts[0].y} 
+                    x2={project(x + Math.cos(-yaw * Math.PI / 180) * 150, y + Math.sin(-yaw * Math.PI / 180) * 150, z).x} 
+                    y2={project(x + Math.cos(-yaw * Math.PI / 180) * 150, y + Math.sin(-yaw * Math.PI / 180) * 150, z).y} 
+                    stroke={color} strokeWidth={2} 
+                />
+            </g>
+        );
     };
 
     return (
@@ -132,18 +143,23 @@ const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, id
 
                         {/* Shape Layer */}
                         {isWheel ? (
-                            <g>
+                            <g transform={`rotate(${type === 'top' ? -yaw : 0}, ${pos.x}, ${pos.y})`}>
                                 {renderBox(x, y, z, 240, 60, 240, '#21262d', 1, 2)} {/* Tire */}
                                 {renderBox(x, y, z, 120, 70, 120, '#8b949e', 1, 1)} {/* Hub */}
+                                {/* Direction Indicator (Arrow) */}
+                                {type === 'top' && (
+                                    <path d={`M ${pos.x - 20} ${pos.y} L ${pos.x + 20} ${pos.y} L ${pos.x + 10} ${pos.y - 10} M ${pos.x + 20} ${pos.y} L ${pos.x + 10} ${pos.y + 10}`} stroke="var(--accent)" strokeWidth={3} fill="none" transform={`rotate(180, ${pos.x}, ${pos.y})`} />
+                                )}
                             </g>
                         ) : isLidar ? (
                             <g>
                                 {renderBox(x, y, z, 100, 100, 80, '#ff7b72', 1, 2)}
-                                <circle cx={pos.x} cy={pos.y - 10} r={5} fill="#fff" opacity={0.8} />
+                                <circle cx={pos.x} cy={pos.y} r={isActive ? 8 : 4} fill="#fff" opacity={0.8} />
                             </g>
                         ) : isCamera ? (
-                            <g>
+                            <g transform={`rotate(${type === 'top' ? -yaw : 0}, ${pos.x}, ${pos.y})`}>
                                 {renderBox(x, y, z, 80, 120, 60, '#ffa657', 1, 2)}
+                                <rect x={pos.x + 20} y={pos.y - 5} width={10} height={10} fill="#fff" opacity={0.8} />
                             </g>
                         ) : (
                             <circle cx={pos.x} cy={pos.y} r={6} fill={isActive ? 'var(--accent)' : '#fff'} filter={isActive ? "url(#glow)" : ""} stroke="#000" strokeWidth={1} />

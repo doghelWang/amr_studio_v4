@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { Row, Col, Tag } from 'antd';
-import { AuditOutlined, CheckCircleOutlined, WarningOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import React, { useMemo, useState, useEffect } from 'react';
+import { Row, Col, Tag, Button, Space } from 'antd';
+import { AuditOutlined, CheckCircleOutlined, WarningOutlined, CloseCircleOutlined, SafetyCertificateOutlined, DownloadOutlined, ExportOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { RobotConfig, ComponentConfig, ValidationIssue } from '../../store/types';
 
@@ -48,7 +48,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         }
 
         // B. Interface Connection Check (Communication only)
-        const COMMUNICATION_TYPES = ['CAN', 'ETHERNET', 'RS485', 'RS232', 'LIN'];
+        const COMMUNICATION_TYPES = ['CAN', 'ETHERNET', 'RS485', 'RS232', 'LIN', 'NETWORK'];
         for (const iface of comp.interfaces) {
             const isComm = COMMUNICATION_TYPES.includes(iface.type.toUpperCase());
             if (isComm && (!iface.linkedInterfaceUuid || iface.linkedInterfaceUuid.length === 0)) {
@@ -98,7 +98,32 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
 export const AuditStep: React.FC = () => {
     const { config } = useProjectStore();
+    const [results, setResults] = useState<ValidationIssue[]>([]); // Changed AuditResult[] to ValidationIssue[] for consistency
+
+    const handleExport = () => {
+        const dataStr = JSON.stringify(config, null, 4);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = `${config.identity.robotName || 'amr'}_${new Date().toISOString().slice(0, 10)}.cmodel`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+    };
+
     const issues = useMemo(() => runAudit(config), [config]);
+
+    // The useEffect block from the instruction was incomplete and seemed to re-calculate issues.
+    // Keeping the useMemo for issues as it's more appropriate for derived state.
+    // If `results` state is intended to be used, it needs a clear purpose.
+    // For now, `issues` from useMemo is used for display.
+    useEffect(() => {
+        // This block was incomplete in the instruction.
+        // If `results` state is meant to store filtered issues, it would be set here.
+        // For example: setResults(issues.filter(i => i.severity === 'ERROR' || i.severity === 'WARNING'));
+    }, [issues]);
+
 
     const errors = issues.filter(i => i.severity === 'ERROR');
     const warnings = issues.filter(i => i.severity === 'WARNING');
@@ -148,6 +173,16 @@ export const AuditStep: React.FC = () => {
                     <CheckCircleOutlined style={{ fontSize: 48, color: 'var(--green)', marginBottom: 'var(--space-md)' }} />
                     <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>全部检查通过</div>
                     <div style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 'var(--space-xs)' }}>配置无错误，可以导出</div>
+                    <Space style={{ marginTop: 'var(--space-lg)' }}>
+                        <Button 
+                            icon={<DownloadOutlined />} 
+                            onClick={handleExport}
+                            style={{ background: 'rgba(88,166,255,0.1)', color: 'var(--accent)', border: '1px solid var(--accent)' }}
+                        >
+                            导出 .cmodel 配置
+                        </Button>
+                        <Button type="primary">确认并完成配置</Button>
+                    </Space>
                 </div>
             ) : (
                 <div className="glass-card" style={{ padding: 'var(--space-md)' }}>
@@ -174,6 +209,16 @@ export const AuditStep: React.FC = () => {
                             </Tag>
                         </div>
                     ))}
+                    <Space style={{ marginTop: 'var(--space-md)', justifyContent: 'flex-end', width: '100%' }}>
+                        <Button 
+                            icon={<DownloadOutlined />} 
+                            onClick={handleExport}
+                            style={{ background: 'rgba(88,166,255,0.1)', color: 'var(--accent)', border: '1px solid var(--accent)' }}
+                        >
+                            导出 .cmodel 配置
+                        </Button>
+                        <Button type="primary">确认并完成配置</Button>
+                    </Space>
                 </div>
             )}
         </>
