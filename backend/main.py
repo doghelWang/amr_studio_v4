@@ -87,8 +87,19 @@ def get_component_api(project_id: str, module_uuid: str):
     if not comp: raise HTTPException(status_code=404)
     return comp
 
+@app.post("/api/v1/models/{project_id}/sync_resource")
+def sync_resource_api(project_id: str, file_name: str = Body(embed=True)):
+    global_source = BASE_DIR / "resources" / "modules" / file_name
+    success = data_manager.ensure_module_in_project(project_id, file_name, global_source)
+    return {"status": "success" if success else "error"}
+
 @app.patch("/api/v1/models/{project_id}/components/{module_uuid}")
-def update_component_api(project_id: str, module_uuid: str, payload: dict = Body(...)):
+def update_component_api(project_id: str, module_uuid: str, payload: dict = Body(...), file_name: str = Body(None)):
+    # If file_name is provided, ensure it's in sandbox first
+    if file_name:
+        global_source = BASE_DIR / "resources" / "modules" / file_name
+        data_manager.ensure_module_in_project(project_id, file_name, global_source)
+    
     success = data_manager.update_component(project_id, module_uuid, payload)
     return {"status": "success" if success else "error"}
 
