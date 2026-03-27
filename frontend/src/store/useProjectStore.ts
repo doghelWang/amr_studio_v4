@@ -8,6 +8,7 @@ import type {
 } from './types';
 import masterRegistry from './master_registry.json';
 import abilityRegistry from './ability_registry.json';
+import { apiFetchSchemas } from '../services/api_v2';
 
 interface ProjectState {
     projectId: string | null;
@@ -16,24 +17,26 @@ interface ProjectState {
     activeComponentId: string | null;
     isDirty: boolean;
 
-    // Identity
+    // --- Identity & Global ---
     setIdentity: (data: Partial<RobotIdentity>) => void;
 
-    // Components
+    // --- Components ---
     addComponent: (category: MainModuleType, type: string) => string;
     addComponentFromConfig: (config: ComponentConfig) => void;
     updateComponent: (id: string, data: Partial<ComponentConfig>) => void;
     removeComponent: (id: string) => void;
     setActiveComponent: (id: string | null) => void;
+    
+    // --- Interfaces & Topology ---
     linkInterface: (sourceUuid: string, sourceIfaceUuid: string, targetIfaceUuid: string | null) => void;
 
-    // Attributes (searches inside groups)
+    // --- Attributes ---
     updateAttribute: (componentId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
 
-    // Interfaces
+    // --- Physical Interfaces ---
     updateInterface: (componentId: string, interfaceUuid: string, data: Partial<InterfaceConfig>) => void;
 
-    // Structural & Shape
+    // --- Structural & Positional ---
     updateStructuralParam: (componentId: string, data: Partial<{
         parentNodeUuid: string | null;
         mountX: number; mountY: number; mountZ: number;
@@ -41,12 +44,16 @@ interface ProjectState {
     }>) => void;
     updateShape: (componentId: string, shape: ComponentConfig['shape']) => void;
 
-    // Global
+    // --- Global Actions ---
     resetProject: () => void;
     loadProject: (config: RobotConfig) => void;
 
-    // Abilities
+    // --- Ability Config ---
     updateAbilityAttribute: (funcType: string, childKey: string, commonAttrKey: string, attrKey: string, value: any, subAttrKey?: string) => void;
+
+    // --- Schema Registry (Dynamic XML Metadata) ---
+    schemaRegistry: Record<string, any>;
+    fetchSchemas: () => Promise<void>;
 }
 
 const DEFAULT_IDENTITY: RobotIdentity = {
@@ -107,8 +114,7 @@ export const useProjectStore = create<ProjectState>()(
                     const newIdentity = { ...state.config.identity, ...data };
                     const oldIdentity = state.config.identity;
 
-                    // ━━━ 0325: Bi-directional Linkage Logic ━━━
-                    // 1. Length Linkage (Head + Tail = Length)
+                    // Linkage: Head + Tail = Length
                     if ('chassisLength' in data) {
                         const ratio = oldIdentity.chassisLength > 0 ? (newIdentity.chassisLength / oldIdentity.chassisLength) : 1;
                         newIdentity.headOffset = Math.round(oldIdentity.headOffset * ratio);
@@ -119,7 +125,7 @@ export const useProjectStore = create<ProjectState>()(
                         newIdentity.headOffset = Math.max(0, newIdentity.chassisLength - Number(data.tailOffset));
                     }
 
-                    // 2. Width Linkage (Left + Right = Width)
+                    // Linkage: Left + Right = Width
                     if ('chassisWidth' in data) {
                         const ratio = oldIdentity.chassisWidth > 0 ? (newIdentity.chassisWidth / oldIdentity.chassisWidth) : 1;
                         newIdentity.leftOffset = Math.round(oldIdentity.leftOffset * ratio);
@@ -130,10 +136,9 @@ export const useProjectStore = create<ProjectState>()(
                         newIdentity.leftOffset = Math.max(0, newIdentity.chassisWidth - Number(data.rightOffset));
                     }
 
-                    // ━━━ Sync Identity to Chassis Component Attributes ━━━
+                    // Sync Identity to Chassis attributes
                     const components = state.config.components.map(c => {
                         if (c.category === 'CHASSIS') {
-                            // Update chassis privateAttrs to match identity for consistency
                             const updatedPrivateAttrs = c.privateAttrs.map(group => {
                                 if (group.key === 'motionCenterAttr') {
                                     return {
@@ -171,28 +176,44 @@ export const useProjectStore = create<ProjectState>()(
                 }),
 
                 addComponent: (category, type) => {
-                    // Prevent duplicate Chassis
-                    if (category === 'CHASSIS') return '';
+                    if (category === 'CHASSIS') return ''; 
 
                     const id = uuidGen();
-                    const registryInfo = (masterRegistry as any)[category]?.[type];
+                    const state = get();
+                    
+                    // Priority: Dynamic XML Schema Registry
+                    let schemaInfo = Object.values(state.schemaRegistry).find(
+                        (s: any) => s.key === type || s.category === category || s.aliases?.includes(type)
+                    );
 
-                    // Map flat privateAttrs from registry to a default AttributeGroup
-                    const privateAttrs: AttributeGroup[] = [{
-                        key: 'private_group',
-                        desc: '私有属性',
-                        elements: (registryInfo?.privateAttrs || []).map((attr: any) => ({
+                    const registryInfo = schemaInfo || (masterRegistry as any)[category]?.[type];
+
+                    const privateAttrs: AttributeGroup[] = (registryInfo?.privateAttributes || registryInfo?.privateAttrs || []).map((group: any) => ({
+                        key: group.key || 'private_group',
+                        desc: group.label || group.desc || '私有属性',
+                        elements: (group.elements || []).map((attr: any) => ({
                             ...attr,
-                            value: attr.type === 'DATA_BOOL' ? false
-                                 : (attr.type === 'DATA_STRING' ? '' : 0),
-                            boolBasic: true // Default to basic for visibility
+                            value: attr.value !== undefined ? attr.value : (attr.type === 'DATA_BOOL' ? false : (attr.type === 'DATA_STRING' ? '' : 0)),
+                            boolBasic: true 
                         }))
-                    }];
+                    }));
+
+                    if (privateAttrs.length === 0 && registryInfo?.privateAttrs) {
+                        privateAttrs.push({
+                            key: 'private_group',
+                            desc: '私有属性',
+                            elements: registryInfo.privateAttrs.map((attr: any) => ({
+                                ...attr,
+                                value: attr.value !== undefined ? attr.value : (attr.type === 'DATA_BOOL' ? false : (attr.type === 'DATA_STRING' ? '' : 0)),
+                                boolBasic: true 
+                            }))
+                        });
+                    }
 
                     const newComponent: ComponentConfig = {
                         id,
                         name: `${type}_${get().config.components.length + 1}`,
-                        alias: registryInfo?.desc || type,
+                        alias: registryInfo?.label || registryInfo?.desc || type,
                         type,
                         category,
                         parentNodeUuid: null,
@@ -202,6 +223,7 @@ export const useProjectStore = create<ProjectState>()(
                         interfaces: (registryInfo?.interfaces || []).map((inf: any) => ({
                             key: inf.key || inf.name,
                             type: inf.type,
+                            label: inf.label || inf.name,
                             interfaceUuid: uuidGen(),
                         }))
                     };
@@ -276,7 +298,6 @@ export const useProjectStore = create<ProjectState>()(
 
                 setActiveComponent: (id) => set({ activeComponentId: id }),
 
-                // Update an attribute inside a specific group
                 updateAttribute: (componentId, groupKey, attrKey, value, subKey) => set((state) => ({
                     config: {
                         ...state.config,
@@ -291,7 +312,6 @@ export const useProjectStore = create<ProjectState>()(
                                         elements: group.elements.map((attr) => {
                                             if (attr.key !== attrKey) return attr;
                                             
-                                            // Handle nested attribute updates for COMBOX options
                                             if (subKey && attr.type === 'DATA_COMBOX') {
                                                 const currentGroup = attr.comboType?.typeGroups?.find((g: any) => g.key === attr.value);
                                                 if (currentGroup?.arrayCmobEle) {
@@ -359,14 +379,38 @@ export const useProjectStore = create<ProjectState>()(
                     isDirty: true
                 })),
 
-                resetProject: () => set({
-                    config: createInitialConfig(),
-                    activeComponentId: null,
-                    isDirty: false
-                }),
+                resetProject: () => {
+                    const initialConfig = createInitialConfig();
+                    const schemas = get().schemaRegistry;
+                    
+                    if (Object.keys(schemas).length > 0) {
+                        initialConfig.components = initialConfig.components.map(comp => {
+                            const schema = schemas[comp.category.toLowerCase()] || 
+                                          Object.values(schemas).find((s: any) => s.key === comp.type || s.aliases?.includes(comp.type));
+                            
+                            if (!schema) return comp;
+
+                            const newGroups: AttributeGroup[] = (schema.privateAttributes || []).map((group: any) => ({
+                                key: group.key,
+                                desc: group.label || group.desc,
+                                elements: (group.elements || []).map((attr: any) => ({
+                                    ...attr,
+                                    value: attr.value ?? (attr.type === 'DATA_BOOL' ? false : (attr.type === 'DATA_STRING' ? '' : 0))
+                                }))
+                            }));
+
+                            return { ...comp, privateAttrs: newGroups };
+                        });
+                    }
+
+                    set({
+                        config: initialConfig,
+                        activeComponentId: null,
+                        isDirty: false
+                    });
+                },
 
                 loadProject: (config) => {
-                    console.log('STORE: loading new config into state...', config);
                     set({
                         config,
                         activeComponentId: config.components.length > 0 ? config.components[0].id : null,
@@ -390,7 +434,6 @@ export const useProjectStore = create<ProjectState>()(
                                             attr: c.attr.map((a) => {
                                                 if (a.key !== commonAttrKey) return a;
                                                 
-                                                // 1. If it's an ARRAY type
                                                 if (a.type === 'ARRAY' && a.arrayParam) {
                                                     return {
                                                         ...a,
@@ -412,7 +455,6 @@ export const useProjectStore = create<ProjectState>()(
                                                     };
                                                 }
                                                 
-                                                // 2. If it's a COMBOX type (directly under CommonAttr)
                                                 if (a.type === 'COMBOX' && a.comboxParam) {
                                                     if (attrKey === commonAttrKey) {
                                                         return { ...a, comboxParam: { ...a.comboxParam, value } };
@@ -427,7 +469,66 @@ export const useProjectStore = create<ProjectState>()(
                         }
                     },
                     isDirty: true
-                }))
+                })),
+
+                schemaRegistry: {},
+                fetchSchemas: async () => {
+                    try {
+                        const schemas = await apiFetchSchemas();
+                        set({ schemaRegistry: schemas });
+
+                        // Schema Hydration
+                        set((state) => {
+                            const updatedComponents = state.config.components.map(comp => {
+                                const schema = schemas[comp.category.toLowerCase()] || 
+                                              Object.values(schemas).find((s: any) => s.key === comp.type || s.aliases?.includes(comp.type));
+                                
+                                if (!schema) return comp;
+
+                                const newGroups: AttributeGroup[] = (schema.privateAttributes || []).map((group: any) => {
+                                    const existingGroup = comp.privateAttrs.find(g => g.key === group.key);
+                                    return {
+                                        key: group.key,
+                                        desc: group.label || group.desc,
+                                        elements: (group.elements || []).map((attr: any) => {
+                                            const existingEle = existingGroup?.elements.find(e => e.key === attr.key);
+                                            return {
+                                                ...attr,
+                                                value: existingEle ? existingEle.value : (attr.value ?? (attr.type === 'DATA_BOOL' ? false : (attr.type === 'DATA_STRING' ? '' : 0)))
+                                            };
+                                        })
+                                    };
+                                });
+
+                                const newInterfaces = (schema.interfaces || []).map((inf: any) => {
+                                    const existing = comp.interfaces.find(i => i.key === inf.key);
+                                    return {
+                                        key: inf.key,
+                                        type: inf.type,
+                                        label: inf.label,
+                                        interfaceUuid: existing ? existing.interfaceUuid : uuidGen(),
+                                        linkedInterfaceUuid: existing ? existing.linkedInterfaceUuid : []
+                                    };
+                                });
+
+                                return {
+                                    ...comp,
+                                    privateAttrs: newGroups,
+                                    interfaces: newInterfaces
+                                };
+                            });
+
+                            return {
+                                config: {
+                                    ...state.config,
+                                    components: updatedComponents
+                                }
+                            };
+                        });
+                    } catch (error) {
+                        console.error('STORE: Failed to fetch schemas', error);
+                    }
+                }
             })
         ),
         {

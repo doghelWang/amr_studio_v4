@@ -7,7 +7,7 @@ import { PowerSystemStep } from './PowerSystemStep';
 const { Option } = Select;
 const { Title, Text } = Typography;
 
-export const ChassisStep: React.FC = () => {
+export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, setIdentity, updateAttribute } = useProjectStore();
     const { identity } = config;
     const [syncFullLoad, setSyncFullLoad] = useState(true);
@@ -35,36 +35,9 @@ export const ChassisStep: React.FC = () => {
     // Find motionCenterAttr group
     const motionCenterGroup = privateAttrs.find(g => g.key === 'motionCenterAttr');
 
-    // ━━━ CRITICAL FIX: Auto-initialize motionCenterAttr when missing ━━━
-    useEffect(() => {
-        if (!chassisComponent) return;
-        const hasGroup = chassisComponent.privateAttrs?.find(g => g.key === 'motionCenterAttr');
-        if (!hasGroup) {
-            // Initialize with identity defaults
-            const idleHead = identity.headOffset ?? identity.chassisLength / 2;
-            const idleTail = identity.tailOffset ?? identity.chassisLength / 2;
-            const idleLeft = identity.leftOffset ?? identity.chassisWidth / 2;
-            const idleRight = identity.rightOffset ?? identity.chassisWidth / 2;
-
-            const initAttrs = [
-                { key: 'headOffset(Idle)', desc: '前向距(空载)', type: 'DATA_DOUBLE' as const, value: idleHead, unit: 'mm', boolParse: true, boolMustfill: true },
-                { key: 'tailOffset(Idle)', desc: '后向距(空载)', type: 'DATA_DOUBLE' as const, value: idleTail, unit: 'mm', boolParse: true, boolMustfill: true },
-                { key: 'leftOffset(Idle)', desc: '左向距(空载)', type: 'DATA_DOUBLE' as const, value: idleLeft, unit: 'mm', boolParse: true, boolMustfill: true },
-                { key: 'rightOffset(Idle)', desc: '右向距(空载)', type: 'DATA_DOUBLE' as const, value: idleRight, unit: 'mm', boolParse: true, boolMustfill: true },
-                { key: 'headOffset (Full Load)', desc: '前向距(满载)', type: 'DATA_DOUBLE' as const, value: idleHead, unit: 'mm', boolParse: true },
-                { key: 'tailOffset (Full Load)', desc: '后向距(满载)', type: 'DATA_DOUBLE' as const, value: idleTail, unit: 'mm', boolParse: true },
-                { key: 'leftOffset (Full Load)', desc: '左向距(满载)', type: 'DATA_DOUBLE' as const, value: idleLeft, unit: 'mm', boolParse: true },
-                { key: 'rightOffset (Full Load)', desc: '右向距(满载)', type: 'DATA_DOUBLE' as const, value: idleRight, unit: 'mm', boolParse: true },
-            ];
-
-            useProjectStore.getState().updateComponent(chassisComponent.id, {
-                privateAttrs: [
-                    ...(chassisComponent.privateAttrs || []),
-                    { key: 'motionCenterAttr', desc: '运动中心偏移', elements: initAttrs }
-                ]
-            });
-        }
-    }, [chassisComponent?.id]);
+    // NOTE: Hardcoded initialization removed. 
+    // Schema hydration in useProjectStore.ts now handles populating privateAttrs 
+    // from XML definitions automatically upon app load or schema refresh.
 
     const motionCenterEles = motionCenterGroup ? motionCenterGroup.elements : [];
 

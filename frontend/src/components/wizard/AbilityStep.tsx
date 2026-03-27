@@ -127,7 +127,7 @@ const AbilityAttributeEditor: React.FC<{
     );
 };
 
-export const AbilityStep: React.FC = () => {
+export const AbilityStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, updateAbilityAttribute } = useProjectStore();
     const { functionAbility } = config.abilities;
     const components = config.components;

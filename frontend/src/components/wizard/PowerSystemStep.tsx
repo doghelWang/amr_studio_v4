@@ -68,7 +68,7 @@ const ROLE_COLOR: Record<string, string> = {
     '编码器': 'gold',
 };
 
-export const PowerSystemStep: React.FC = () => {
+export const PowerSystemStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, projectId } = useProjectStore();
     
     const [localSelectedId, setLocalSelectedId] = useState<string | null>(null);

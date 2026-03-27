@@ -36,7 +36,7 @@ import { PowerTopologyPanel } from './PowerTopologyPanel';
 
 const { Title, Text } = Typography;
 
-export const ComponentLibraryStep: React.FC = () => {
+export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
     const { 
         config, addComponentFromConfig, removeComponent, 
         activeComponentId, setActiveComponent, updateComponent
@@ -152,7 +152,7 @@ export const ComponentLibraryStep: React.FC = () => {
                                 mainModuleTypeKey: mapped.mainModuleTypeKey,
                                 subModuleTypeKey: mapped.subModuleTypeKey,
                                 category: mapped.category
-                            };
+                             };
                         } catch (e) {
                             console.error(`Decoration failed for ${entity.moduleGroupName}`, e);
                             return entity;
@@ -797,69 +797,29 @@ export const ComponentLibraryStep: React.FC = () => {
                     border: 1px solid #30363d !important; 
                     border-radius: 12px !important;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-                    padding: 4px !important;
                 }
-                .library-card:hover { 
-                    border-color: var(--accent) !important; 
+                .library-card:hover {
+                    border-color: var(--accent) !important;
                     transform: translateY(-4px);
-                    box-shadow: 0 12px 30px rgba(0,0,0,0.5) !important;
-                    background: #21262d !important;
+                    box-shadow: 0 8px 24px rgba(88,166,255,0.15) !important;
                 }
-                .library-card:hover .add-icon { opacity: 1 !important; transform: scale(1.1); transition: all 0.2s; }
-                
+                .library-card .add-icon {
+                    transition: all 0.3s ease;
+                }
+                .library-card:hover .add-icon {
+                    opacity: 1 !important;
+                    transform: scale(1.1);
+                }
+
                 .add-btn-refined {
                     border-radius: 6px !important;
-                    box-shadow: 0 4px 12px rgba(31,111,235,0.3) !important;
-                    font-weight: 600 !important;
+                    height: 28px !important;
+                    font-size: 11px !important;
+                    font-weight: 500 !important;
                 }
-                
-                .naming-modal .ant-modal-content {
-                    background: #1c2128 !important;
-                    border: 1px solid #30363d !important;
-                }
-                .naming-modal .ant-modal-header {
-                    background: transparent !important;
-                    border-bottom: 1px solid rgba(255,255,255,0.05) !important;
-                }
-                .naming-modal .ant-modal-title { color: #f0f6fc !important; }
-            `}</style>
 
-            {/* Manual Create Modal */}
-            <Modal
-                title="手动创建组件 - 选择分类"
-                open={isManualModalOpen}
-                onCancel={() => setIsManualModalOpen(false)}
-                onOk={handleManualAdd}
-                okText="确认"
-                cancelText="取消"
-                centered
-            >
-                <div style={{ marginBottom: 16, color: 'var(--text-muted)' }}>请选择要创建的组件所属分类：</div>
-                <Menu
-                    mode="vertical"
-                    selectedKeys={[manualCategory]}
-                    onClick={({ key }) => setManualCategory(key)}
-                    items={[
-                        { 
-                            key: 'current', 
-                            label: '当前步骤推荐类别', 
-                            type: 'group',
-                            children: subSteps[currentSubStep - 1].categories.map(cat => ({ key: cat, label: cat }))
-                        },
-                        {
-                            key: 'all',
-                            label: '其他所有类别',
-                            type: 'group',
-                            children: subSteps.flatMap(s => s.categories)
-                                .filter((v, i, a) => a.indexOf(v) === i && !subSteps[currentSubStep - 1].categories.includes(v))
-                                .map(cat => ({ key: cat, label: cat }))
-                        }
-                    ]}
-                    style={{ maxHeight: 400, overflowY: 'auto', border: 'none', background: 'transparent' }}
-                />
-            </Modal>
+                .custom-hardware-tree-v2 .ant-tree-indent-unit { width: 16px !important; }
+            `}</style>
         </div>
     );
 };
-
-export default ComponentLibraryStep;

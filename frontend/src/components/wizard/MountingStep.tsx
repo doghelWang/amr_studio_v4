@@ -6,7 +6,7 @@ import { CoordinateVisualizer } from '../visualizer/CoordinateVisualizer';
 
 const { Text } = Typography;
 
-export const MountingStep: React.FC = () => {
+export const MountingStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, updateComponent } = useProjectStore();
     const components = config.components;
     const [activeId, setActiveId] = useState<string | undefined>(components[0]?.id);

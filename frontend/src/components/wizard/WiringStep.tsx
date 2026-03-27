@@ -13,7 +13,7 @@ const { Text, Title } = Typography;
 
 const COMMUNICATION_TYPES = ['CAN', 'ETHERNET', 'RS485', 'RS232', 'LIN'];
 
-export const WiringStep: React.FC = () => {
+export const WiringStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, updateInterface } = useProjectStore();
     const components = config.components;
     const [linkingUuid, setLinkingUuid] = useState<string | null>(null);

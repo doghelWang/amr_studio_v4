@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
  * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
  * FULLY ALIGNED WITH CAMELCASE JSON (Default Protobuf Mapping).
  * IMPLEMENTS DUAL-KEY STRATEGY (Camel/Snake).
+ * SUPPORT DYNAMIC SCHEMA REGISTRY.
  */
 export class ImportService {
     private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
@@ -45,7 +46,7 @@ export class ImportService {
         'autobody':              'AUTOBODY',
     };
 
-    static parseCompDesc(json: any): Partial<RobotConfig> {
+    static parseCompDesc(json: any, schemaRegistry?: Record<string, any>): Partial<RobotConfig> {
         console.log('DEBUG [ImportService]: parseCompDesc keys:', Object.keys(json));
         const components: ComponentConfig[] = [];
         
@@ -54,7 +55,7 @@ export class ImportService {
 
         if (json[infoKey] && Array.isArray(json[infoKey])) {
             json[infoKey].forEach((group: any) => {
-                this.processModuleGroup(group, components, null);
+                this.processModuleGroup(group, components, null, schemaRegistry);
             });
         }
 
@@ -191,7 +192,7 @@ export class ImportService {
         return { ...comp, interfaces: merged };
     }
 
-    private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null) {
+    private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {
         const groupName = group.moduleGroupName || group.module_group_name || '';
         const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
         
@@ -199,33 +200,29 @@ export class ImportService {
 
         if (componentsArr && Array.isArray(componentsArr)) {
             componentsArr.forEach((comp: any) => {
-                const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid, componentsArr);
+                const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry, componentsArr);
                 list.push(config);
             });
         }
 
         const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
         if (group[infoKey]) {
-            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, parentUuid));
+            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, parentUuid, schemaRegistry));
         }
     }
 
     private static mapToComponent(
-        comp: any, groupName: string, groupUuid: string, parentUuid: string | null, allComponents?: any[]
+        comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>, allComponents?: any[]
     ): ComponentConfig {
         const gen = comp.generalAttr || comp.general_attr || {};
         const struct = comp.structParam || comp.struct_param || {};
 
         // ━━━ 0325: Metadata-Driven Type Resolution ━━━
-        // The user suggested using mainModuleType and subModuleType fields directly.
         let rawMainType = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'chassis';
         let subTypeKey = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
 
         // ━━━ 0325: Multi-Component Analysis ━━━
         if (allComponents && allComponents.length > 1) {
-            // ━━━ PRIORITY ORDER: Highest priority first ━━━
-            // driveWheel family MUST come before 'sensor' to prevent complex wheel-encoder
-            // modules (e.g. DIFF_STEER_WHEEL) from being misidentified as encoders.
             const priorities = [
                 'driveWheel', 'diffSteerWheel', 'steerWheel', 'weakSteerWheel',
                 'horizontalSteerWheel', 'verticalSteerWheel',
@@ -246,10 +243,19 @@ export class ImportService {
                     subTypeKey = cGen.subModuleType?.comboType?.typeKey || cGen.sub_module_type?.combo_type?.type_key || subTypeKey;
                 }
             });
-            // Use the metadata from the "best" component for category/type
         }
 
-        const category = (ImportService.CATEGORY_MAP[rawMainType] || rawMainType.toUpperCase()) as MainModuleType;
+        // ━━━ DYNAMIC SCHEMA LOOKUP ━━━
+        let category: MainModuleType = (ImportService.CATEGORY_MAP[rawMainType] || rawMainType.toUpperCase()) as MainModuleType;
+        if (schemaRegistry) {
+            const matchedSchema = Object.values(schemaRegistry).find(
+                (s: any) => s.key === rawMainType || s.aliases?.includes(rawMainType)
+            );
+            if (matchedSchema) {
+                category = matchedSchema.category as MainModuleType;
+            }
+        }
+
         const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
 
         const rawIface = comp.interfaceParams || comp.interface_params || comp.interface_param || {};
@@ -383,7 +389,7 @@ export class ImportService {
                attr.stringFix ?? attr.string_fix;
     }
 
-    static mapEntityToComponent(entityJson: any): ComponentConfig {
+    static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
         const componentsArr = entityJson.moduleComponets || entityJson.module_componets || [];
         const comp = componentsArr[0];
         if (!comp) throw new Error("Invalid entity JSON: no components found");
@@ -392,7 +398,7 @@ export class ImportService {
         const groupUuid = uuidv4();
         const newId = uuidv4();
         
-        const mapped = this.mapToComponent(comp, groupName, groupUuid, null, componentsArr);
+        const mapped = this.mapToComponent(comp, groupName, groupUuid, null, schemaRegistry, componentsArr);
         return { ...mapped, id: newId };
     }
 }

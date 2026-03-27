@@ -59,7 +59,7 @@ const DRIVE_WHEEL_MAP: Record<string, { label: string; color: string; wheelHint:
     },
 };
 
-export const IdentityStep: React.FC = () => {
+export const IdentityStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, setIdentity } = useProjectStore();
     const { identity } = config;
 

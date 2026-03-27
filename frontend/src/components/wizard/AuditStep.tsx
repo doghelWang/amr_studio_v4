@@ -1,8 +1,14 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { Row, Col, Tag, Button, Space } from 'antd';
-import { AuditOutlined, CheckCircleOutlined, WarningOutlined, CloseCircleOutlined, SafetyCertificateOutlined, DownloadOutlined, ExportOutlined } from '@ant-design/icons';
+import { Row, Col, Tag, Button, Space, Typography } from 'antd';
+import { 
+    AuditOutlined, CheckCircleOutlined, WarningOutlined, 
+    CloseCircleOutlined, SafetyCertificateOutlined, 
+    DownloadOutlined, ExportOutlined 
+} from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { RobotConfig, ComponentConfig, ValidationIssue } from '../../store/types';
+
+const { Text } = Typography;
 
 function runAudit(config: RobotConfig): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
@@ -87,51 +93,43 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         }
     };
 
-    config.abilities.functionAbility.forEach(func => {
-        func.childFunction.forEach(child => {
-            child.attr.forEach(common => checkAbilityAttr(common, `${func.desc} > ${child.desc}`));
+    if (config.abilities && config.abilities.functionAbility) {
+        config.abilities.functionAbility.forEach(func => {
+            func.childFunction.forEach(child => {
+                child.attr.forEach(common => checkAbilityAttr(common, `${func.desc} > ${child.desc}`));
+            });
         });
-    });
+    }
 
     return issues;
 }
 
-export const AuditStep: React.FC = () => {
+export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
     const { config } = useProjectStore();
-    const [results, setResults] = useState<ValidationIssue[]>([]); // Changed AuditResult[] to ValidationIssue[] for consistency
+    
+    // Derived state via useMemo
+    const issues = useMemo(() => runAudit(config), [config]);
 
     const handleExport = () => {
         const dataStr = JSON.stringify(config, null, 4);
         const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
         
-        const exportFileDefaultName = `${config.identity.robotName || 'amr'}_${new Date().toISOString().slice(0, 10)}.cmodel`;
+        const exportFileDefaultName = `${config.identity.robotName || 'amr'}_${new Date().toISOString().slice(0, 10)}.json`;
         
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
         linkElement.click();
+        linkElement.remove();
     };
-
-    const issues = useMemo(() => runAudit(config), [config]);
-
-    // The useEffect block from the instruction was incomplete and seemed to re-calculate issues.
-    // Keeping the useMemo for issues as it's more appropriate for derived state.
-    // If `results` state is intended to be used, it needs a clear purpose.
-    // For now, `issues` from useMemo is used for display.
-    useEffect(() => {
-        // This block was incomplete in the instruction.
-        // If `results` state is meant to store filtered issues, it would be set here.
-        // For example: setResults(issues.filter(i => i.severity === 'ERROR' || i.severity === 'WARNING'));
-    }, [issues]);
-
 
     const errors = issues.filter(i => i.severity === 'ERROR');
     const warnings = issues.filter(i => i.severity === 'WARNING');
     const isClean = errors.length === 0;
 
     return (
-        <>
-            <div className="section-header">
+        <div style={{ padding: '0 24px' }}>
+            <div className="section-header" style={{ marginBottom: 32 }}>
                 <div className="section-icon"><AuditOutlined /></div>
                 <div>
                     <h2 className="section-title">配置审计 & 校验</h2>
@@ -140,87 +138,111 @@ export const AuditStep: React.FC = () => {
             </div>
 
             {/* Stats Row */}
-            <Row gutter={16}>
+            <Row gutter={24} style={{ marginBottom: 32 }}>
                 <Col span={8}>
-                    <div className="glass-card stat-card">
-                        <div className={`stat-value ${isClean ? 'success' : 'danger'}`}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                        <div className={`stat-value ${isClean ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: isClean ? '#52c41a' : '#ff4d4f' }}>
                             {config.components.length}
                         </div>
-                        <div className="stat-label">组件总数</div>
+                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>组件总数</div>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <div className="glass-card stat-card">
-                        <div className={`stat-value ${errors.length === 0 ? 'success' : 'danger'}`}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                        <div className={`stat-value ${errors.length === 0 ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: errors.length === 0 ? '#52c41a' : '#ff4d4f' }}>
                             {errors.length}
                         </div>
-                        <div className="stat-label">错误</div>
+                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>错误</div>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <div className="glass-card stat-card">
-                        <div className={`stat-value ${warnings.length === 0 ? 'success' : 'warning'}`}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                        <div className={`stat-value ${warnings.length === 0 ? 'success' : 'warning'}`} style={{ fontSize: 32, fontWeight: 700, color: warnings.length === 0 ? '#52c41a' : '#faad14' }}>
                             {warnings.length}
                         </div>
-                        <div className="stat-label">警告</div>
+                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>警告</div>
                     </div>
                 </Col>
             </Row>
 
             {/* Issues */}
             {issues.length === 0 ? (
-                <div className="glass-card" style={{ textAlign: 'center', padding: 'var(--space-2xl)' }}>
-                    <CheckCircleOutlined style={{ fontSize: 48, color: 'var(--green)', marginBottom: 'var(--space-md)' }} />
-                    <div style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-primary)' }}>全部检查通过</div>
-                    <div style={{ color: 'var(--text-muted)', fontSize: 13, marginTop: 'var(--space-xs)' }}>配置无错误，可以导出</div>
-                    <Space style={{ marginTop: 'var(--space-lg)' }}>
+                <div className="glass-card" style={{ textAlign: 'center', padding: '60px 40px', background: 'rgba(255,255,255,0.02)', borderRadius: 16, border: '1px solid rgba(82,196,26,0.1)' }}>
+                    <CheckCircleOutlined style={{ fontSize: 64, color: '#52c41a', marginBottom: 24 }} />
+                    <div style={{ fontSize: 20, fontWeight: 600, color: '#f0f6fc' }}>全部检查通过</div>
+                    <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, marginTop: 12, marginBottom: 32 }}>本地状态验证闭环，准备好进行二进制构建。</div>
+                    <Space size="large">
                         <Button 
+                            size="large"
                             icon={<DownloadOutlined />} 
                             onClick={handleExport}
-                            style={{ background: 'rgba(88,166,255,0.1)', color: 'var(--accent)', border: '1px solid var(--accent)' }}
+                            style={{ background: 'rgba(88,166,255,0.1)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 48, borderRadius: 8 }}
                         >
-                            导出 .cmodel 配置
+                            仅导出本地 JSON
                         </Button>
-                        <Button type="primary">确认并完成配置</Button>
+                        <Button 
+                            type="primary" 
+                            size="large"
+                            icon={<ExportOutlined />}
+                            onClick={onExport}
+                            style={{ height: 48, padding: '0 32px', borderRadius: 8 }}
+                        >
+                            完成并云端编译
+                        </Button>
                     </Space>
                 </div>
             ) : (
-                <div className="glass-card" style={{ padding: 'var(--space-md)' }}>
-                    {issues.map((issue, i) => (
-                        <div
-                            key={i}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 'var(--space-md)',
-                                padding: 'var(--space-sm) var(--space-md)',
-                                borderRadius: 'var(--radius-sm)',
-                                marginBottom: 'var(--space-xs)',
-                                background: issue.severity === 'ERROR' ? 'var(--red-soft)' : 'var(--orange-soft)',
-                            }}
-                        >
-                            {issue.severity === 'ERROR'
-                                ? <CloseCircleOutlined style={{ color: 'var(--red)', fontSize: 14 }} />
-                                : <WarningOutlined style={{ color: 'var(--orange)', fontSize: 14 }} />
-                            }
-                            <span style={{ fontSize: 13, color: 'var(--text-primary)' }}>{issue.message}</span>
-                            <Tag className={issue.severity === 'ERROR' ? 'tag-red' : 'tag-orange'} style={{ marginLeft: 'auto' }}>
-                                {issue.severity}
-                            </Tag>
-                        </div>
-                    ))}
-                    <Space style={{ marginTop: 'var(--space-md)', justifyContent: 'flex-end', width: '100%' }}>
+                <div className="glass-card" style={{ padding: 24, background: 'rgba(255,255,255,0.02)', borderRadius: 16 }}>
+                    <div style={{ maxHeight: 400, overflowY: 'auto', marginBottom: 24 }}>
+                        {issues.map((issue, i) => (
+                            <div
+                                key={i}
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 12,
+                                    padding: '12px 16px',
+                                    borderRadius: 8,
+                                    marginBottom: 8,
+                                    background: issue.severity === 'ERROR' ? 'rgba(255,77,79,0.05)' : 'rgba(250,173,20,0.05)',
+                                    border: `1px solid ${issue.severity === 'ERROR' ? 'rgba(255,77,79,0.1)' : 'rgba(250,173,20,0.1)'}`
+                                }}
+                            >
+                                {issue.severity === 'ERROR'
+                                    ? <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: 16 }} />
+                                    : <WarningOutlined style={{ color: '#faad14', fontSize: 16 }} />
+                                }
+                                <span style={{ fontSize: 14, color: '#f0f6fc', flex: 1 }}>{issue.message}</span>
+                                <Tag color={issue.severity === 'ERROR' ? 'error' : 'warning'}>
+                                    {issue.severity}
+                                </Tag>
+                            </div>
+                        ))}
+                    </div>
+                    <Divider style={{ margin: '24px 0', borderColor: 'rgba(255,255,255,0.05)' }} />
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16 }}>
                         <Button 
                             icon={<DownloadOutlined />} 
                             onClick={handleExport}
-                            style={{ background: 'rgba(88,166,255,0.1)', color: 'var(--accent)', border: '1px solid var(--accent)' }}
+                            style={{ background: 'rgba(88,166,255,0.1)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 40, borderRadius: 6 }}
                         >
-                            导出 .cmodel 配置
+                            仅导出本地 JSON
                         </Button>
-                        <Button type="primary">确认并完成配置</Button>
-                    </Space>
+                        <Button 
+                            type="primary" 
+                            icon={<ExportOutlined />}
+                            onClick={onExport}
+                            style={{ height: 40, padding: '0 24px', borderRadius: 6 }}
+                        >
+                            完成并云端编译
+                        </Button>
+                    </div>
                 </div>
             )}
-        </>
+        </div>
     );
 };
+
+const Divider = ({ style, borderColor }: any) => (
+    <div style={{ ...style, borderBottom: `1px solid ${borderColor || 'rgba(255,255,255,0.1)'}` }} />
+);
