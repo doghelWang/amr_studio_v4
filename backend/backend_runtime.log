@@ -1,25 +1,18 @@
-INFO:     Started server process [38341]
+INFO:     Started server process [10147]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
-INFO:     127.0.0.1:51911 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51911 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51911 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51913 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51990 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:51990 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-DEBUG: upload_cmodel called for ModelSet39.cmodel
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpacswsjlh/decoded/CompDesc.json...
+DEBUG: upload_cmodel called for ModelSet312.cmodel
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpk42jcqdq/decoded/CompDesc.json...
 Split complete. Extracted 20 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpacswsjlh/split/blueprint_CompDesc.json
-INFO:     127.0.0.1:52212 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
-INFO:     127.0.0.1:52212 - "GET /api/v1/models/proj_61fb56f1/abilities HTTP/1.1" 200 OK
-DEBUG: Entering compile_cmodel_api for proj_61fb56f1
-ENCODER: Injecting modules with structural fidelity...
-INFO:     127.0.0.1:52683 - "POST /api/v1/models/proj_61fb56f1/compile HTTP/1.1" 200 OK
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpk42jcqdq/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:56163 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56163 - "GET /api/v1/models/proj_00d5961a/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56163 - "GET /api/v1/models/proj_00d5961a/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56163 - "GET /api/v1/models/proj_00d5961a/components/a6c2a0ccb9da489c8d58d7a583493893 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56167 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56163 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56169 - "GET /api/v1/models/proj_00d5961a/components/0b4705cc-7188-448b-a433-9cc368623a9f HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56365 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56423 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56425 - "GET /api/v1/resources/modules HTTP/1.1" 200 OK

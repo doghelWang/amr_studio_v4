@@ -192,7 +192,10 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
 
     useEffect(() => {
         setLoadingLibrary(true);
-        axios.get('http://localhost:8002/api/v1/resources/modules')
+        const backendBase = (window.location.port === '3000' || window.location.port === '5173') 
+            ? `http://${window.location.hostname}:8002` 
+            : window.location.origin;
+        axios.get(`${backendBase}/api/v1/resources/modules`)
             .then(res => {
                 // Decorate data with metadata keys using ImportService
                 // BUG FIX: Backend returns 'data_xml' / 'data_json', NOT 'full_data'

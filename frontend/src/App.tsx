@@ -56,7 +56,16 @@ const STEP_COMPONENTS = [
     MountingStep, WiringStep, AbilityStep, AuditStep,
 ];
 
-const BACKEND_URL = "http://localhost:8002";
+const getBackendUrl = () => {
+  if (typeof window !== 'undefined') {
+    if (window.location.port === '3000' || window.location.port === '5173') {
+      return `http://${window.location.hostname}:8002`;
+    }
+    return window.location.origin;
+  }
+  return "http://localhost:8002";
+};
+const BACKEND_URL = getBackendUrl();
 
 export default function App() {
     const { config, isDirty, loadProject, resetProject, projectId, setProjectId, fetchSchemas } = useProjectStore();

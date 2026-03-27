@@ -7,7 +7,21 @@
 import axios from 'axios';
 
 /** 后端服务基础路径 (当前硬编码为本地 8002 端口) */
-const API_BASE = 'http://localhost:8002/api/v1/models';
+// Resolve Backend URL dynamically based on current environment
+const getBackendBase = () => {
+    if (typeof window !== 'undefined') {
+        const { hostname, protocol } = window.location;
+        // If we are on port 3000/5173 (dev), assume backend is at 8002
+        if (window.location.port === '3000' || window.location.port === '5173') {
+            return `${protocol}//${hostname}:8002`;
+        }
+        // Otherwise, assume it's served by the same host/port
+        return window.location.origin;
+    }
+    return 'http://localhost:8002';
+};
+
+const API_BASE = `${getBackendBase()}/api/v1/models`;
 
 /** 获取单组件的二进制展开详情 (用于数据一致性校验) */
 export const apiFetchComponentDetails = async (projectId: string, uuid: string) => {
@@ -48,6 +62,6 @@ export const apiCompileAndDownload = async (projectId: string) => {
 /** 获取所有组件类型的 XML 定义注册表 (Schema Registry) */
 export const apiFetchSchemas = async () => {
     // 移除 /models 前缀，因为 schemas 是全局资源
-    const res = await axios.get('http://localhost:8002/api/v1/schemas');
+    const res = await axios.get(`${getBackendBase()}/api/v1/schemas`);
     return res.data;
 };
