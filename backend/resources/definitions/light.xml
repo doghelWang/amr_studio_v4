@@ -1,0 +1,15 @@
+<moduleType key="light" category="LIGHT" label="灯具设备">
+    <subTypes default="lamp">
+        <subType key="lamp" label="普通灯具" />
+        <subType key="warningLight" label="报警灯" />
+    </subTypes>
+    <privateAttributes>
+        <group key="specs" label="规格参数">
+            <attribute key="lightType" type="DATA_COMBOX" label="灯光类型" />
+            <attribute key="lightColor" type="DATA_COMBOX" label="颜色" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="do_ctrl" type="DO" label="数字输出控制" />
+    </interfaces>
+</moduleType>

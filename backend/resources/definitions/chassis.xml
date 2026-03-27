@@ -1,0 +1,48 @@
+<moduleType key="chassis" category="CHASSIS" label="底盘系统">
+    <subTypes default="diffChassis">
+        <subType key="diffChassis" label="差速驱动底盘" />
+        <subType key="dualSteerChassis" label="双舵轮驱动底盘" />
+        <subType key="omniChassis" label="全向移动底盘" />
+    </subTypes>
+    <aliases>
+        <alias key="chassis-root" />
+        <alias key="Robot Chassis" />
+    </aliases>
+    <privateAttributes>
+        <!-- 保持 key="motionCenterAttr" 以兼容 ChassisStep.tsx 的双向联动逻辑 -->
+        <group key="motionCenterAttr" label="运动中心偏移 - 空载 (Idle)">
+            <attribute key="headOffset(Idle)" type="DATA_DOUBLE" label="前向距" unit="mm" value="600" />
+            <attribute key="tailOffset(Idle)" type="DATA_DOUBLE" label="后向距" unit="mm" value="600" />
+            <attribute key="leftOffset(Idle)" type="DATA_DOUBLE" label="左向距" unit="mm" value="400" />
+            <attribute key="rightOffset(Idle)" type="DATA_DOUBLE" label="右向距" unit="mm" value="400" />
+        </group>
+        <group key="offsets_full" label="运动中心偏移 - 满载 (Full Load)">
+            <attribute key="headOffset (Full Load)" type="DATA_DOUBLE" label="前向距" unit="mm" value="600" />
+            <attribute key="tailOffset (Full Load)" type="DATA_DOUBLE" label="后向距" unit="mm" value="600" />
+            <attribute key="leftOffset (Full Load)" type="DATA_DOUBLE" label="左向距" unit="mm" value="400" />
+            <attribute key="rightOffset (Full Load)" type="DATA_DOUBLE" label="右向距" unit="mm" value="400" />
+        </group>
+        <group key="performance" label="运行性能 (Dynamics)">
+            <attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" label="最大线速度 (空载)" unit="mm/s" value="1500" />
+            <attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" label="最大线加速度 (空载)" unit="mm/s^2" value="1000" />
+            <attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" label="最大线减速度 (空载)" unit="mm/s^2" value="1000" />
+            <attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" label="最大线速度 (满载)" unit="mm/s" value="1500" />
+            <attribute key="maximumAcceleration (Full Load)" type="DATA_DOUBLE" label="最大线加速度 (满载)" unit="mm/s^2" value="800" />
+            <attribute key="maximumDeceleration (Full Load)" type="DATA_DOUBLE" label="最大线减速度 (满载)" unit="mm/s^2" value="800" />
+        </group>
+        <group key="rotation" label="旋转性能">
+            <attribute key="rotateMaxSpeed" type="DATA_DOUBLE" label="最大角速度" unit="°/s" value="90" />
+            <attribute key="rotateMaxAccel" type="DATA_DOUBLE" label="最大角加速度" unit="°/s^2" value="180" />
+        </group>
+        <group key="physical" label="物理规格 (Physical)">
+            <attribute key="rotateDiameter" type="DATA_DOUBLE" label="回转直径" unit="mm" />
+            <attribute key="groundClearance" type="DATA_DOUBLE" label="离地间隙" unit="mm" />
+            <attribute key="climbingAbility" type="DATA_DOUBLE" label="最大爬坡能力" unit="°" />
+        </group>
+        <group key="avoidance" label="避障与安全">
+            <attribute key="avoidDistence" type="DATA_DOUBLE" label="避障停止距离" unit="mm" />
+            <attribute key="slowDistence" type="DATA_DOUBLE" label="避障减速距离" unit="mm" />
+        </group>
+    </privateAttributes>
+    <interfaces />
+</moduleType>

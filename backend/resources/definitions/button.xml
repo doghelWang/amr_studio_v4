@@ -1,0 +1,19 @@
+<moduleType key="button" category="BUTTON" label="按钮/开关">
+    <subTypes default="scramButton">
+        <subType key="scramButton" label="急停按钮" />
+        <subType key="resetButton" label="复位按钮" />
+        <subType key="powerButton" label="电源开关" />
+        <subType key="subButton" label="通用按钮" />
+    </subTypes>
+    <privateAttributes>
+        <group key="button_props" label="按钮属性">
+            <attribute key="buttonType" type="DATA_COMBOX" label="按钮类型" />
+            <attribute key="switchMode" type="DATA_COMBOX" label="开关模式" />
+            <attribute key="selfLock" type="DATA_BOOL" label="是否自锁" />
+            <attribute key="buttonLamp" type="DATA_BOOL" label="是否带灯" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="di_input" type="DI" label="数字输入" />
+    </interfaces>
+</moduleType>

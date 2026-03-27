@@ -1,0 +1,28 @@
+<moduleType key="communication" category="COMMUNICATION" label="通讯设备">
+    <subTypes default="WIFI">
+        <subType key="WIFI" label="WIFI模块" />
+        <subType key="fifthGeneration" label="5G模块" />
+        <subType key="WAPI" label="WAPI模块" />
+        <subType key="bluetooth" label="蓝牙模块" />
+        <subType key="RFID" label="RFID读卡器" />
+        <subType key="PIO" label="PIO通讯" />
+    </subTypes>
+    <privateAttributes>
+        <group key="wireless" label="无线参数">
+            <attribute key="wirelessProto" type="DATA_STRING" label="无线协议" />
+            <attribute key="wirelessCertify" type="DATA_STRING" label="认证标准" />
+            <attribute key="workFreq" type="DATA_DOUBLE" label="工作频率" unit="GHz" />
+        </group>
+        <group key="trans" label="传输性能">
+            <attribute key="transType" type="DATA_COMBOX" label="传输方式" />
+            <attribute key="transDis" type="DATA_DOUBLE" label="传输距离" unit="m" />
+            <attribute key="transTime" type="DATA_DOUBLE" label="传输耗时" unit="ms" />
+            <attribute key="transCounts" type="DATA_INT32" label="传输次数" />
+            <attribute key="decodeType" type="DATA_COMBOX" label="解码方式" />
+            <attribute key="modulateType" type="DATA_COMBOX" label="调制方式" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="eth_link" type="ETHERNET" label="以太网接口" />
+    </interfaces>
+</moduleType>

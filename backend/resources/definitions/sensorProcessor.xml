@@ -1,0 +1,20 @@
+<moduleType key="sensorProcessor" category="SENSOR_PROCESSOR" label="传感器处理器">
+    <subTypes default="TOFProcessor">
+        <subType key="TOFProcessor" label="TOF处理器" />
+        <subType key="binocularCameraProcessor" label="双目处理器" />
+        <subType key="encoderProcessor" label="编码器处理器" />
+        <subType key="ultrasonicProcessor" label="超声处理器" />
+        <subType key="weighProcessor" label="称重处理器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="system" label="系统信息">
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+            <attribute key="offsetAddress" type="DATA_STRING" label="偏移地址拨码" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="eth_link" type="ETHERNET" label="以太网接口" />
+        <interface key="can_link" type="CAN" label="CAN总线" />
+    </interfaces>
+</moduleType>

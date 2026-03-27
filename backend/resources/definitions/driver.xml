@@ -1,0 +1,49 @@
+<moduleType key="driver" category="DRIVER" label="电机驱动器">
+    <subTypes default="PMSMMotor">
+        <subType key="PMSMMotor" label="永磁同步驱动器" />
+        <subType key="BLDCMotor" label="直流无刷驱动器" />
+        <subType key="BDCMotor" label="直流有刷驱动器" />
+        <subType key="subDriver" label="通用驱动器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="electrical" label="电气参数">
+            <attribute key="ratedVolt" type="DATA_DOUBLE" label="额定电压" unit="V" />
+            <attribute key="powerVolt" type="DATA_DOUBLE" label="电源电压" unit="V" />
+            <attribute key="inputVoltage" type="DATA_DOUBLE" label="输入电压" unit="V" />
+            <attribute key="ratedCurr" type="DATA_DOUBLE" label="额定电流" unit="A" />
+            <attribute key="inputCurrent" type="DATA_DOUBLE" label="输入电流" unit="A" />
+            <attribute key="overCurrCoef" type="DATA_DOUBLE" label="过流系数" />
+        </group>
+        <group key="motor_spec" label="电机特性">
+            <attribute key="ratedSpeed" type="DATA_DOUBLE" label="额定转速" unit="RPM" />
+            <attribute key="RPM" type="DATA_DOUBLE" label="最大转速" unit="RPM" />
+            <attribute key="torque" type="DATA_DOUBLE" label="额定扭矩" unit="N·m" />
+            <attribute key="gearRatio" type="DATA_DOUBLE" label="减速比" />
+            <attribute key="ENCType" type="DATA_COMBOX" label="编码器类型" />
+        </group>
+        <group key="dynamics" label="动力学参数">
+            <attribute key="maxAcc" type="DATA_DOUBLE" label="最大加速度" />
+            <attribute key="maxDec" type="DATA_DOUBLE" label="最大减速度" />
+            <attribute key="defaultAcc" type="DATA_DOUBLE" label="默认加速度" />
+            <attribute key="defaultDec" type="DATA_DOUBLE" label="默认减速度" />
+        </group>
+        <group key="protection" label="保护与状态">
+            <attribute key="overloadCapacity" type="DATA_DOUBLE" label="过载能力" />
+            <attribute key="overloadTime" type="DATA_DOUBLE" label="过载时间" unit="s" />
+            <attribute key="bHbrake" type="DATA_BOOL" label="是否有抱闸" />
+            <attribute key="bTemper" type="DATA_BOOL" label="是否带温度监测" />
+            <attribute key="bReverse" type="DATA_BOOL" label="是否支持反转" />
+        </group>
+        <group key="system" label="软件系统">
+            <attribute key="initMode" type="DATA_COMBOX" label="初始化模式" />
+            <attribute key="posKp" type="DATA_DOUBLE" label="位置环Kp" />
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="power_in" type="POWER" label="电源输入" />
+        <interface key="can_link" type="CAN" label="CAN总线控制" />
+        <interface key="motor_out" type="MOTOR_OUT" label="电机三相电输出" />
+    </interfaces>
+</moduleType>

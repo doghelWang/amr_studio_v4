@@ -1,0 +1,16 @@
+<moduleType key="audio" category="AUDIO" label="音频设备">
+    <subTypes default="speaker">
+        <subType key="speaker" label="扬声器" />
+        <subType key="buzzer" label="蜂鸣器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="specs" label="基本规格">
+            <attribute key="power" type="DATA_DOUBLE" label="额定功率" unit="W" />
+            <attribute key="impedance" type="DATA_DOUBLE" label="阻抗" unit="Ω" />
+            <attribute key="soundPressure" type="DATA_DOUBLE" label="最大声压" unit="dB" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="audio_out" type="AUDIO" label="音频输出" />
+    </interfaces>
+</moduleType>

@@ -1,0 +1,17 @@
+<moduleType key="integratedController" category="INTEGRATED" label="集成控制器">
+    <subTypes default="subIntergratedController">
+        <subType key="subIntergratedController" label="通用集成控制器" />
+        <subType key="safetyController" label="安全控制器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="system" label="系统信息">
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+            <attribute key="offsetAddress" type="DATA_STRING" label="偏移地址拨码" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="eth_link" type="ETHERNET" label="以太网接口" />
+        <interface key="can_link" type="CAN" label="CAN总线" />
+    </interfaces>
+</moduleType>

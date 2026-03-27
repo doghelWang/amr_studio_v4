@@ -1,0 +1,21 @@
+<moduleType key="screen" category="SCREEN" label="显示屏">
+    <subTypes default="lcdScreen">
+        <subType key="lcdScreen" label="液晶显示屏" />
+        <subType key="touchScreen" label="触摸屏" />
+    </subTypes>
+    <privateAttributes>
+        <group key="display" label="显示规格">
+            <attribute key="screenSize" type="DATA_DOUBLE" label="屏幕尺寸" unit="inch" />
+            <attribute key="resolution" type="DATA_STRING" label="分辨率" />
+            <attribute key="brightness" type="DATA_DOUBLE" label="亮度" unit="cd/m2" />
+        </group>
+        <group key="touch" label="交互属性">
+            <attribute key="touchType" type="DATA_COMBOX" label="触摸类型" />
+            <attribute key="multiTouch" type="DATA_BOOL" label="是否多点触控" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="hdmi_in" type="HDMI" label="HDMI输入" />
+        <interface key="usb_touch" type="USB" label="触摸通讯" />
+    </interfaces>
+</moduleType>

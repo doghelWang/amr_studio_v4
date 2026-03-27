@@ -1,0 +1,39 @@
+<moduleType key="actor" category="ACTOR" label="执行机构">
+    <subTypes default="lift">
+        <subType key="block" label="通用挡块执行机构" />
+        <subType key="clamp" label="通用夹具执行机构" />
+        <subType key="lift" label="通用举升机构" />
+        <subType key="linear" label="通用线性执行机构" />
+        <subType key="rotate" label="通用旋转执行机构" />
+        <subType key="translation" label="通用平移执行机构" />
+    </subTypes>
+    <privateAttributes>
+        <group key="common" label="基础参数">
+            <attribute key="structureForm" type="DATA_COMBOX" label="结构形式" />
+            <attribute key="drivingForm" type="DATA_COMBOX" label="驱动形式" />
+            <attribute key="transmissionRelationship" type="DATA_COMBOX" label="传动关系" />
+            <attribute key="totalSpeedRatio" type="DATA_DOUBLE" label="总速比" />
+        </group>
+        <group key="performance_idle" label="动态性能 (空载)">
+            <attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" label="最大速度" unit="mm/s" />
+            <attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" label="最大加速度" unit="mm/s^2" />
+            <attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" label="最大减速度" unit="mm/s^2" />
+        </group>
+        <group key="performance_full" label="动态性能 (满载)">
+            <attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" label="最大速度" unit="mm/s" />
+            <attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" label="最大加速度" unit="mm/s^2" />
+            <attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" label="最大减速度" unit="mm/s^2" />
+        </group>
+        <group key="mechanical" label="机械规格">
+            <attribute key="stroke" type="DATA_DOUBLE" label="行程" unit="mm" />
+            <attribute key="load" type="DATA_DOUBLE" label="负载" unit="kg" />
+            <attribute key="lead" type="DATA_DOUBLE" label="导程" unit="mm" />
+            <attribute key="sensorMode" type="DATA_COMBOX" label="传感模式" />
+            <attribute key="negativeLimit" type="DATA_DOUBLE" label="负限位" unit="°" />
+            <attribute key="positiveLimit" type="DATA_DOUBLE" label="正限位" unit="°" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="can_ctrl" type="CAN" label="CAN控制" />
+    </interfaces>
+</moduleType>

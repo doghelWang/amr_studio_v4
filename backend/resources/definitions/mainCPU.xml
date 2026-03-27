@@ -1,0 +1,23 @@
+<moduleType key="mainCPU" category="MAINCPU" label="主控核心">
+    <subTypes default="mainCPU">
+        <subType key="mainCPU" label="主控制器" />
+        <subType key="mainCpu" label="通用CPU" />
+    </subTypes>
+    <privateAttributes>
+        <group key="performance" label="性能规格">
+            <attribute key="cpuFreq" type="DATA_DOUBLE" label="CPU频率" unit="GHz" />
+            <attribute key="ramSize" type="DATA_DOUBLE" label="内存容量" unit="GB" />
+            <attribute key="storageSize" type="DATA_DOUBLE" label="存储空间" unit="GB" />
+        </group>
+        <group key="system" label="系统信息">
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+            <attribute key="osVersion" type="DATA_STRING" label="操作系统版本" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="eth_0" type="ETHERNET" label="以太网0" />
+        <interface key="can_0" type="CAN" label="CAN总线0" />
+        <interface key="rs485_0" type="RS485" label="RS485接口0" />
+    </interfaces>
+</moduleType>

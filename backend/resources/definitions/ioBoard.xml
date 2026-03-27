@@ -1,0 +1,25 @@
+<moduleType key="ioBoard" category="IO_BOARD" label="IO 扩展板">
+    <subTypes default="IOModule">
+        <subType key="IOModule" label="通用 IO 模块" />
+        <subType key="ethernetSwitch" label="以太网交换机" />
+        <subType key="safetyIOModule" label="安全 IO 模块" />
+    </subTypes>
+    <aliases>
+        <alias key="EXTENDEDLNTERFACE" />
+    </aliases>
+    <privateAttributes>
+        <group key="io_specs" label="IO 规格">
+            <attribute key="bipolar" type="DATA_BOOL" label="是否双极性" />
+        </group>
+        <group key="system" label="系统信息">
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+            <attribute key="offsetAddress" type="DATA_STRING" label="偏移地址拨码" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="di_1" type="DI" label="数字输入1" />
+        <interface key="do_1" type="DO" label="数字输出1" />
+        <interface key="can_link" type="CAN" label="CAN总线" />
+    </interfaces>
+</moduleType>

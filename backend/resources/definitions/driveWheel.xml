@@ -1,0 +1,35 @@
+<moduleType key="driveWheel" category="DRIVEWHEEL" label="驱动轮组">
+    <subTypes default="diffWheel">
+        <subType key="diffWheel" label="差速驱动轮" />
+        <subType key="horizontalSteerWheel" label="卧式舵轮" />
+        <subType key="verticalSteerWheel" label="立式舵轮" />
+        <subType key="weakSteerWheel" label="从动舵轮" />
+        <subType key="weakTurnWheel" label="万向轮" />
+    </subTypes>
+    <aliases>
+        <alias key="driveWheel" />
+        <alias key="steerWheel" />
+    </aliases>
+    <privateAttributes>
+        <group key="mechanical" label="机械参数">
+            <attribute key="wheelRadius" type="DATA_DOUBLE" label="轮半径" unit="mm" value="100" />
+            <attribute key="wheelSpace" type="DATA_DOUBLE" label="轮间距" unit="mm" />
+        </group>
+        <group key="steering" label="转向限制">
+            <attribute key="angleLmtNeg" type="DATA_DOUBLE" label="负向角度限制" unit="°" />
+            <attribute key="angleLmtPos" type="DATA_DOUBLE" label="正向角度限制" unit="°" />
+            <attribute key="rotOmgLmt" type="DATA_DOUBLE" label="旋转角速度限制" unit="°/s" />
+            <attribute key="angleSensorType" type="DATA_COMBOX" label="角度传感器类型" />
+        </group>
+        <group key="relations" label="驱动关联">
+            <attribute key="relateMotor" type="DATA_STRING" label="关联电机" />
+            <attribute key="relateRotMotor" type="DATA_STRING" label="关联旋转电机" />
+            <attribute key="relateWalkMotor" type="DATA_STRING" label="关联行走电机" />
+            <attribute key="relateLeftMotor" type="DATA_STRING" label="关联左电机" />
+            <attribute key="relateRightMotor" type="DATA_STRING" label="关联右电机" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="motor_link" type="MOTOR_LINK" label="电机机械连接" />
+    </interfaces>
+</moduleType>

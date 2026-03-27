@@ -1,0 +1,23 @@
+<moduleType key="battery" category="BATTERY" label="电池/电源">
+    <subTypes default="lithiumBattery">
+        <subType key="lithiumBattery" label="锂电池" />
+        <subType key="leadAcidBattery" label="铅酸电池" />
+    </subTypes>
+    <privateAttributes>
+        <group key="capacity" label="容量参数">
+            <attribute key="capacity" type="DATA_DOUBLE" label="额定容量" unit="Ah" />
+            <attribute key="nominalVoltage" type="DATA_DOUBLE" label="额定电压" unit="V" />
+            <attribute key="maxVoltage" type="DATA_DOUBLE" label="满充电压" unit="V" />
+            <attribute key="cutOffVoltage" type="DATA_DOUBLE" label="截止电压" unit="V" />
+        </group>
+        <group key="current" label="充放电性能">
+            <attribute key="chargeCurrent" type="DATA_DOUBLE" label="标准充电电流" unit="A" />
+            <attribute key="dischargeCurrent" type="DATA_DOUBLE" label="持续放电电流" unit="A" />
+            <attribute key="peakDischargeCurrent" type="DATA_DOUBLE" label="峰值放电电流" unit="A" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="power_out" type="POWER" label="电源输出" />
+        <interface key="can_comm" type="CAN" label="BMS通讯" />
+    </interfaces>
+</moduleType>

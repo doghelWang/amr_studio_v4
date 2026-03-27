@@ -1,0 +1,19 @@
+<moduleType key="control" category="CONTROL" label="控制单元">
+    <aliases>
+        <alias key="safetyController" />
+    </aliases>
+    <subTypes default="safetyController">
+        <subType key="safetyController" label="安全控制器" />
+        <subType key="plc" label="PLC 控制器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="safety_params" label="安全参数">
+            <attribute key="silLevel" type="DATA_STRING" label="SIL 等级" value="SIL3" />
+            <attribute key="cycleTime" type="DATA_INT32" label="扫描周期" unit="ms" value="10" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="safe_can" type="CAN" label="安全 CAN 通讯" />
+        <interface key="safe_di" type="DI" label="安全输入" />
+    </interfaces>
+</moduleType>

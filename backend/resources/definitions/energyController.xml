@@ -1,0 +1,17 @@
+<moduleType key="energyController" category="ENERGY_CONTROLLER" label="能量控制器">
+    <subTypes default="powerController">
+        <subType key="powerController" label="电源控制器" />
+        <subType key="prechargeController" label="预充控制器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="system" label="系统信息">
+            <attribute key="chipPlatform" type="DATA_STRING" label="芯片平台" />
+            <attribute key="softwareSpec" type="DATA_STRING" label="软件规格" />
+            <attribute key="offsetAddress" type="DATA_STRING" label="偏移地址拨码" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="power_in" type="POWER" label="电源输入" />
+        <interface key="can_link" type="CAN" label="CAN总线" />
+    </interfaces>
+</moduleType>

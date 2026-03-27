@@ -1,0 +1,13 @@
+<moduleType key="autobody" category="AUTOBODY" label="车体结构">
+    <subTypes default="shell">
+        <subType key="shell" label="外壳" />
+        <subType key="bracket" label="支架" />
+    </subTypes>
+    <privateAttributes>
+        <group key="material" label="材质属性">
+            <attribute key="material" type="DATA_STRING" label="材质" />
+            <attribute key="weight" type="DATA_DOUBLE" label="重量" unit="kg" />
+        </group>
+    </privateAttributes>
+    <interfaces />
+</moduleType>

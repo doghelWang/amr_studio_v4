@@ -1,0 +1,71 @@
+<moduleType key="sensor" category="SENSOR" label="传感器">
+    <subTypes default="laser">
+        <subType key="laser" label="导航激光" />
+        <subType key="3DLaser" label="3D激光雷达" />
+        <subType key="TOFCamera" label="3D TOF相机" />
+        <subType key="stereo" label="双目相机" />
+        <subType key="ultrasonicSensor" label="超声波传感器" />
+        <subType key="proximitySensor" label="接近传感器" />
+        <subType key="incrementalEncode" label="增量式编码器" />
+        <subType key="absoluteValueEncode" label="绝对式编码器" />
+        <subType key="pullWireEncode" label="拉线编码器" />
+        <subType key="gyro" label="陀螺仪/IMU" />
+        <subType key="tempSensor" label="温度传感器" />
+        <subType key="weighSensor" label="称重传感器" />
+        <subType key="codeReader" label="读码器" />
+        <subType key="infrared" label="红外传感器" />
+    </subTypes>
+    <privateAttributes>
+        <group key="optical" label="光学与探测">
+            <attribute key="waveLength" type="DATA_DOUBLE" label="波长" unit="nm" />
+            <attribute key="scanDistence" type="DATA_DOUBLE" label="有效扫描距离" unit="mm" />
+            <attribute key="detectDistance" type="DATA_DOUBLE" label="检测距离" unit="mm" />
+            <attribute key="blindZone" type="DATA_DOUBLE" label="盲区" unit="mm" />
+            <attribute key="accuracy" type="DATA_DOUBLE" label="测量精度" unit="mm" />
+            <attribute key="antiLight" type="DATA_DOUBLE" label="抗光干扰" unit="klux" />
+        </group>
+        <group key="fov" label="视场角规格">
+            <attribute key="scanRangeHorizonStart" type="DATA_DOUBLE" label="水平视场角起始" unit="°" />
+            <attribute key="scanRangeHorizonEnd" type="DATA_DOUBLE" label="水平视场角终止" unit="°" />
+            <attribute key="scanRangeVerticalStart" type="DATA_DOUBLE" label="垂直视场角起始" unit="°" />
+            <attribute key="scanRangeVerticalEnd" type="DATA_DOUBLE" label="垂直视场角终止" unit="°" />
+            <attribute key="pointAngleMin" type="DATA_DOUBLE" label="指向角最小值" unit="°" />
+            <attribute key="pointAngleMax" type="DATA_DOUBLE" label="指向角最大值" unit="°" />
+        </group>
+        <group key="imaging" label="成像与解析度">
+            <attribute key="resolutionW" type="DATA_DOUBLE" label="分辨率W" unit="PPI" />
+            <attribute key="resolutionH" type="DATA_DOUBLE" label="分辨率H" unit="PPI" />
+            <attribute key="focalLength" type="DATA_DOUBLE" label="焦距" unit="mm" />
+            <attribute key="exposure" type="DATA_DOUBLE" label="曝光时长" unit="s" />
+            <attribute key="frameRate" type="DATA_DOUBLE" label="帧率" unit="fps" />
+            <attribute key="angularResolution" type="DATA_DOUBLE" label="角度分辨率" unit="°" />
+        </group>
+        <group key="encoder" label="编码器参数">
+            <attribute key="absEncodeType" type="DATA_COMBOX" label="绝对值编码器类型" />
+            <attribute key="wheelCirc" type="DATA_DOUBLE" label="轮周长" unit="mm" />
+            <attribute key="isInvert" type="DATA_BOOL" label="是否反向" />
+        </group>
+        <group key="imu" label="惯性导航参数">
+            <attribute key="yawRangeMax" type="DATA_DOUBLE" label="偏航角最大值" unit="°" />
+            <attribute key="rollRangeMax" type="DATA_DOUBLE" label="翻滚角最大值" unit="°" />
+            <attribute key="pitchRangeMax" type="DATA_DOUBLE" label="俯仰角最大值" unit="°" />
+            <attribute key="accelerationResolution" type="DATA_DOUBLE" label="加速度分辨率" unit="°/s" />
+            <attribute key="accelerationAccuracy" type="DATA_DOUBLE" label="加速度精度" unit="°/s" />
+        </group>
+        <group key="environment" label="环境监测">
+            <attribute key="temperatureRangeMin" type="DATA_DOUBLE" label="温度最小值" unit="℃" />
+            <attribute key="temperatureRangeMax" type="DATA_DOUBLE" label="温度最大值" unit="℃" />
+            <attribute key="threshold" type="DATA_DOUBLE" label="检测阈值" unit="℃" />
+        </group>
+        <group key="status" label="状态判定">
+            <attribute key="normalVol" type="DATA_DOUBLE" label="正常电压" unit="V" />
+            <attribute key="thresholdVol" type="DATA_DOUBLE" label="浮动阈值" unit="V" />
+            <attribute key="triggerVol" type="DATA_DOUBLE" label="触发电压" unit="V" />
+            <attribute key="thresholdBaro" type="DATA_DOUBLE" label="气压阈值" unit="Pa" />
+        </group>
+    </privateAttributes>
+    <interfaces>
+        <interface key="eth_link" type="ETHERNET" label="以太网连接" />
+        <interface key="can_link" type="CAN" label="CAN总线连接" />
+    </interfaces>
+</moduleType>
