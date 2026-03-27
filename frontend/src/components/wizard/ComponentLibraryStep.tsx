@@ -195,20 +195,25 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
         axios.get('http://localhost:8002/api/v1/resources/modules')
             .then(res => {
                 // Decorate data with metadata keys using ImportService
+                // BUG FIX: Backend returns 'data_xml' / 'data_json', NOT 'full_data'
+                // We normalise here so the rest of the code can use entity.full_data
                 const decorated: any = {};
                 Object.keys(res.data).forEach(sys => {
                     decorated[sys] = res.data[sys].map((entity: any) => {
+                        // ── Normalise: pick the richer source and expose as full_data ──
+                        const richData = entity.data_xml || entity.data_json || null;
+                        const entityNorm = { ...entity, full_data: richData };
                         try {
-                            const mapped = ImportService.mapEntityToComponent(entity.full_data || entity);
+                            const mapped = ImportService.mapEntityToComponent(richData || entity);
                             return {
-                                ...entity,
+                                ...entityNorm,
                                 mainModuleTypeKey: mapped.mainModuleTypeKey,
                                 subModuleTypeKey: mapped.subModuleTypeKey,
                                 category: mapped.category
                              };
                         } catch (e) {
                             console.error(`Decoration failed for ${entity.moduleGroupName}`, e);
-                            return entity;
+                            return entityNorm;
                         }
                     });
                 });
@@ -707,9 +712,22 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                 const full = e.full_data || {};
                                 const comp = (full.moduleComponets || full.module_componets || full.moduleComponents || full.module_components || [])[0];
                                 
-                                const matchSearch = e.moduleGroupName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                                  e.file_name.toLowerCase().includes(searchTerm.toLowerCase());
-                                if (!matchSearch) return false;
+                                // ── Search filter: wide-field matching ──
+                                // Matches against moduleGroupName, file_name, typeKey, description fields
+                                if (searchTerm.trim()) {
+                                    const term = searchTerm.toLowerCase();
+                                    const full = e.full_data || {};
+                                    const compArr = full.moduleComponets || full.module_componets || full.moduleComponents || full.module_components || [];
+                                    const firstComp = compArr[0] || {};
+                                    const genAttr = firstComp.generalAttr || firstComp.general_attr || {};
+                                    const typeKey = (genAttr.mainModuleType?.comboType?.typeKey || genAttr.mainModuleType?.typeKey || '').toLowerCase();
+                                    const grpName = (full.moduleGroupName || e.moduleGroupName || '').toLowerCase();
+                                    const fileName = (e.file_name || '').toLowerCase();
+                                    const decorKey = (e.mainModuleTypeKey || '').toLowerCase();
+                                    const subKey2 = (e.subModuleTypeKey || '').toLowerCase();
+                                    const searchAll = `${grpName} ${fileName} ${typeKey} ${decorKey} ${subKey2}`;
+                                    if (!searchAll.includes(term)) return false;
+                                }
 
                                 const rawTypeKey = getModuleType(e);
                                 const rawLower = rawTypeKey.toLowerCase();
