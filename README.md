@@ -16,16 +16,18 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
 - **2.5D 可视化空间标定**：
   - 支持传感器 FOV、轮组运动方向的 CAD 级可视化反馈。
 
-## 🛠 快速部署
+### 融合部署 (Unified Deployment - 推荐)
+> 适用于 Linux/mac 环境，一键启动全栈服务。
+1. **执行启动脚本**:
+   ```bash
+   python3 start.py --host 0.0.0.0 --port 8002
+   ```
+   *脚本将自动执行 npm build 并由 FastAPI 托管静态资源。*
 
-### 后端环境 (Python 3.14+)
-1. `cd backend && source venv/bin/activate`
-2. `pip install -r requirements.txt`
-3. `python main.py` (监听端口: 8002)
-
-### 前端环境 (Node.js 18+)
-1. `cd frontend && npm install`
-2. `npm run dev -- --port 3001` (访问地址: http://localhost:3001)
+### 分离开发部署 (Decoupled Dev)
+> 适用于前端开发调试场景。
+- **后端**: `cd backend && python3 main.py` (Port: 8002)
+- **前端**: `cd frontend && npm run dev` (Port: 3000/3001)
 
 ## 📂 项目结构
 - `backend/resources/modules/`：工业组件资源池 (XML/JSON)。

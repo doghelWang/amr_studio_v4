@@ -41,5 +41,6 @@
   - 严格执行递归深度检查与项目路径隔离。
 - **文档与编码 (I18n)**：
   - **强制 UTF-8 编码**：所有 `.md` 及配置文件必须为 UTF-8 无 BOM 格式，确保 GitHub Actions 成功构建。
+  - **README 同步强制性 (README Mandatory Sync)**：任何涉及 **部署方式 (Deployment)**、**项目框架 (Framework)** 或 **核心逻辑变动** 的更新，必须立即同步修改根目录 `README.md`，严禁文档滞后。
 - **持续审计**：
   - 必须输出字节级导出审计日志及 `deep_diff` 记录。

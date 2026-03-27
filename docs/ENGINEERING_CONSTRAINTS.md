@@ -42,5 +42,7 @@
 
 ## 8. 文档维护与语言规范 (Documentation & I18n)
 - **UTF-8 编码强制约束 (Encoding Registry)**：**所有** `.md` 文档及配置文件必须以 **UTF-8 (无 BOM)** 格式保存。严禁使用 GBK, UTF-16 或 Latin-1 编码，以确保 GitHub Actions (Jekyll) 构建预览不发生 `invalid byte sequence` 错误。
-- **同步更新承诺 (README Sync)**：每次代码重大更新后，必须同步更新 `README.md`。
+- **同步更新硬性约束 (README Hard-Blocking Sync)**：
+  - 触发条件：任何涉及 **代码框架变更**、**部署流程优化** 或 **接口协议更迭** 的修改。
+  - 执行要求：必须在同一提交 (Commit) 或 任务闭环前，完成 `README.md` 的同步更新。严禁在部署方式变更后留下过时的操作指南。
 - **个人信息脱敏 (Privacy Protection)**：**严禁**在 `README.md` 或任何公开文档中展示用户姓名、敏感联系方式或私有路径。所有贡献者标识应使用职能名或团队匿名。
