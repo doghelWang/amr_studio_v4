@@ -36,6 +36,59 @@ import { PowerTopologyPanel } from './PowerTopologyPanel';
 
 const { Title, Text } = Typography;
 
+// Category-based attribute templates for manual component creation
+// Implements today_report.md remaining item #1: auto-inject attrs by category
+const CATEGORY_ATTRIBUTE_TEMPLATES: Record<string, Array<{ key: string; desc: string; type: string; value: any; unit?: string }>> = {
+    CHASSIS: [
+        { key: 'length', desc: '车体长度', type: 'DATA_DOUBLE', value: 800, unit: 'mm' },
+        { key: 'width', desc: '车体宽度', type: 'DATA_DOUBLE', value: 600, unit: 'mm' },
+        { key: 'height', desc: '车体高度', type: 'DATA_DOUBLE', value: 300, unit: 'mm' },
+        { key: 'headOffset', desc: '前向偏移', type: 'DATA_DOUBLE', value: 400, unit: 'mm' },
+        { key: 'tailOffset', desc: '后向偏移', type: 'DATA_DOUBLE', value: 400, unit: 'mm' },
+        { key: 'maxSpeed', desc: '最大线速度', type: 'DATA_DOUBLE', value: 1.5, unit: 'm/s' },
+    ],
+    SENSOR: [
+        { key: 'locCoordX', desc: '安装 X', type: 'DATA_DOUBLE', value: 0, unit: 'mm' },
+        { key: 'locCoordY', desc: '安装 Y', type: 'DATA_DOUBLE', value: 0, unit: 'mm' },
+        { key: 'locCoordZ', desc: '安装 Z', type: 'DATA_DOUBLE', value: 200, unit: 'mm' },
+        { key: 'roll', desc: 'Roll', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
+        { key: 'pitch', desc: 'Pitch', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
+        { key: 'yaw', desc: 'Yaw', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
+    ],
+    DRIVER: [
+        { key: 'nodeId', desc: 'CAN 节点 ID', type: 'DATA_INT32', value: 1 },
+        { key: 'baudRate', desc: '波特率', type: 'DATA_INT32', value: 500000 },
+        { key: 'reductionRatio', desc: '减速比', type: 'DATA_DOUBLE', value: 20, unit: ':1' },
+        { key: 'encoderLines', desc: '编码器线数', type: 'DATA_INT32', value: 1000 },
+    ],
+    DRIVEWHEEL: [
+        { key: 'wheelRadius', desc: '轮半径', type: 'DATA_DOUBLE', value: 100, unit: 'mm' },
+        { key: 'wheelWidth', desc: '轮宽', type: 'DATA_DOUBLE', value: 60, unit: 'mm' },
+        { key: 'installSide', desc: '安装位置', type: 'DATA_STRING', value: 'LEFT' },
+    ],
+    MOTOR: [
+        { key: 'nominalVoltage', desc: '额定电压', type: 'DATA_DOUBLE', value: 48, unit: 'V' },
+        { key: 'nominalPower', desc: '额定功率', type: 'DATA_DOUBLE', value: 200, unit: 'W' },
+        { key: 'nominalTorque', desc: '额定转矩', type: 'DATA_DOUBLE', value: 5, unit: 'N·m' },
+    ],
+    BATTERY: [
+        { key: 'nominalVoltage', desc: '标称电压', type: 'DATA_DOUBLE', value: 48, unit: 'V' },
+        { key: 'capacity', desc: '标称容量', type: 'DATA_DOUBLE', value: 50, unit: 'Ah' },
+        { key: 'protocol', desc: '通信协议', type: 'DATA_STRING', value: 'CAN' },
+    ],
+    MAINCPU: [
+        { key: 'ip', desc: 'IP 地址', type: 'DATA_STRING', value: '192.168.1.10' },
+        { key: 'port', desc: '通信端口', type: 'DATA_INT32', value: 8080 },
+        { key: 'model', desc: '控制器型号', type: 'DATA_STRING', value: 'RA-MC-R318' },
+    ],
+    LASER: [
+        { key: 'minRange', desc: '最小测距', type: 'DATA_DOUBLE', value: 0.05, unit: 'm' },
+        { key: 'maxRange', desc: '最大测距', type: 'DATA_DOUBLE', value: 30, unit: 'm' },
+        { key: 'fov', desc: '扫描角度', type: 'DATA_DOUBLE', value: 270, unit: 'deg' },
+        { key: 'scanFreq', desc: '扫描频率', type: 'DATA_INT32', value: 30, unit: 'Hz' },
+    ],
+};
+
 export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
     const { 
         config, addComponentFromConfig, removeComponent, 
@@ -272,10 +325,26 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
 
     const handleManualAdd = () => {
         if (!manualCategory) return;
-        
+
+        // Inject default attribute templates by category (today_report.md remaining item #1)
+        const categoryKey = manualCategory.toUpperCase();
+        const templateAttrs = CATEGORY_ATTRIBUTE_TEMPLATES[categoryKey] || [];
+        const injectedAttrs = templateAttrs.map(tpl => ({
+            key: tpl.key,
+            desc: tpl.desc,
+            type: tpl.type,
+            value: tpl.value,
+            unit: tpl.unit || '',
+            boolBasic: true,
+            boolParse: true,
+            boolHide: false,
+            boolNoeditable: false,
+        }));
+
+        const shortId = uuidv4().slice(0, 4);
         const dummyItem = {
             id: uuidv4(),
-            name: `custom_${manualCategory.toLowerCase()}_${uuidv4().slice(0, 4)}`,
+            name: `custom_${manualCategory.toLowerCase()}_${shortId}`,
             category: manualCategory,
             mainModuleTypeKey: manualCategory,
             subModuleTypeKey: 'GENERIC',
@@ -285,12 +354,11 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
             },
             generalAttr: { name: '自定义组件', alias: 'new_component' },
             structParam: {},
-            privateAttrs: [],
+            privateAttrs: injectedAttrs.length > 0 ? [{ groupKey: 'basic', groupName: '基本参数', attrs: injectedAttrs }] : [],
             interfaces: [],
-            // Default to root if it's the first non-chassis component
             parentNodeUuid: manualCategory !== 'CHASSIS' ? components.find(c => c.category === 'CHASSIS')?.id : undefined
         };
-        
+
         setPendingComponent(dummyItem);
         setTempAlias('new_component');
         setTempName(dummyItem.name);
