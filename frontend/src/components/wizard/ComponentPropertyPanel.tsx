@@ -112,8 +112,10 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                           if (!node.comboType) node.comboType = {};
                           node.combo_type.type_key = newValue;
                           node.comboType.typeKey = newValue;
+                          node.value = newValue; // Also set basic value for UI reflection
                       } else {
-                          node[typeKey] = newValue;
+                          // The element IS NOT a combo, or it's not a combo structure update.
+                          node.value = newValue;
                       }
                       return true;
                   }
@@ -141,12 +143,16 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
           syncPrivateAttrs(newData);
       }
 
-      // Always update the Zustand store for consistency
-      updateAttribute(selectedUuid, groupKey, eleKey, newValue);
+      // Always update the Zustand store for consistency. 
+      // If typeKey is neither 'comboType' nor 'combo_type', it's actually a subKey inside a Combo. 
+      const isSubKey = typeKey && typeKey !== 'combo_type' && typeKey !== 'comboType';
+      const parsedSubKey = isSubKey ? typeKey : undefined;
+      
+      updateAttribute(selectedUuid, groupKey, eleKey, newValue, parsedSubKey);
 
       // Notify parent for cross-component sync (e.g., wheel parameter sync)
       if (onAttributeChange) {
-          onAttributeChange(selectedUuid, groupKey, eleKey, newValue);
+          onAttributeChange(selectedUuid, groupKey, eleKey, newValue, parsedSubKey);
       }
   };
 

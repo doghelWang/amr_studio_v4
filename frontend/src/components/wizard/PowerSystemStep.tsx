@@ -115,15 +115,38 @@ export const PowerSystemStep: React.FC = () => {
         const source = config.components.find(c => c.id === sourceId);
         if (!source) return;
 
-        // 【ISS-004】提取基础工程角色名：例如 "左行走电机_2" -> "左行走电机"
-        const sourceRole = source.alias ? source.alias.split('_')[0] : '';
+        // 【ISS-004】安全守卫：如果仅凭借名称字符串可能遭遇旧工程数据漏洞（如全是 "PMSMMotor"）。
+        // 故在此用物理层级倒推模块核心角色（查阅 DRIVEWHEEL 的 UUID 关系网）。
+        const getFunctionalRole = (compId: string, category: string, alias: string): string => {
+            if (category !== 'MOTOR') return alias ? alias.split('_')[0] : '';
+            if (alias && (alias.includes('行走') || alias.includes('转向'))) return alias.split('_')[0];
+            
+            // 老工程数据兜底：查阅父亲 DRIVEWHEEL 的 relateWalkMotor 等字段
+            const comp = config.components.find(c => c.id === compId);
+            const parentWheel = config.components.find(c => c.category === 'DRIVEWHEEL' && 
+                (c.id === comp?.parentNodeUuid || config.components.find(d => d.id === comp?.parentNodeUuid)?.parentNodeUuid === c.id)
+            );
+            if (parentWheel && parentWheel.privateAttrs) {
+                for (const g of parentWheel.privateAttrs) {
+                    for (const e of g.elements || []) {
+                        if (e.key === 'relateWalkMotor' && e.value === compId) return '行走电机';
+                        if (e.key === 'relateLeftMotor' && e.value === compId) return '左行走电机';
+                        if (e.key === 'relateRightMotor' && e.value === compId) return '右行走电机';
+                        if (e.key === 'relateRotMotor' && e.value === compId) return '转向电机';
+                    }
+                }
+            }
+            return alias ? alias.split('_')[0] : '';
+        };
+
+        const sourceRole = getFunctionalRole(sourceId, source.category as string, source.alias);
 
         // 寻找同类节点，加入严格的角色守卫防止错跨同步
         const siblings = config.components.filter(c => {
             if (c.id === sourceId || c.category !== source.category || c.type !== source.type) return false;
             if (c.category === 'DRIVEWHEEL') return true; // 轮组之间只要型号一致就互相同步
-            const targetRole = c.alias ? c.alias.split('_')[0] : '';
-            return sourceRole === targetRole; // 强拦截: 行走电机只能传给行走电机，甚至左行走只能传左行走
+            const targetRole = getFunctionalRole(c.id, c.category as string, c.alias);
+            return sourceRole === targetRole; 
         });
 
         siblings.forEach(sib => {
@@ -137,21 +160,23 @@ export const PowerSystemStep: React.FC = () => {
                 if (srcTopology && tgtTopology) {
                     // Y坐标对消：左 / 右 互变
                     if (attrKey === 'locCoordNY') {
-                        const srcLeft = srcTopology.includes('left') || srcTopology.includes('fl_') || srcTopology.includes('rl_');
-                        const srcRight = srcTopology.includes('right') || srcTopology.includes('fr_') || srcTopology.includes('rr_');
-                        const tgtLeft = tgtTopology.includes('left') || tgtTopology.includes('fl_') || tgtTopology.includes('rl_');
-                        const tgtRight = tgtTopology.includes('right') || tgtTopology.includes('fr_') || tgtTopology.includes('rr_');
+                        const srcLeft = srcTopology.includes('left') || srcTopology.includes('fl') || srcTopology.includes('rl');
+                        const srcRight = srcTopology.includes('right') || srcTopology.includes('fr') || srcTopology.includes('rr');
+                        const tgtLeft = tgtTopology.includes('left') || tgtTopology.includes('fl') || tgtTopology.includes('rl');
+                        const tgtRight = tgtTopology.includes('right') || tgtTopology.includes('fr') || tgtTopology.includes('rr');
                         
+                        // 包含"左"传给"右"，或包含"右"传给"左"时进行正负倒转
                         if ((srcLeft && tgtRight) || (srcRight && tgtLeft)) finalValue = -value;
                     }
                     
                     // X坐标对消：前 / 后 互变
                     if (attrKey === 'locCoordNX') {
-                        const srcFront = srcTopology.includes('front') || srcTopology.includes('fl_') || srcTopology.includes('fr_');
-                        const srcRear = srcTopology.includes('rear') || srcTopology.includes('rl_') || srcTopology.includes('rr_');
-                        const tgtFront = tgtTopology.includes('front') || tgtTopology.includes('fl_') || tgtTopology.includes('fr_');
-                        const tgtRear = tgtTopology.includes('rear') || tgtTopology.includes('rl_') || tgtTopology.includes('rr_');
+                        const srcFront = srcTopology.includes('front') || srcTopology.includes('fl') || srcTopology.includes('fr');
+                        const srcRear = srcTopology.includes('rear') || srcTopology.includes('rl') || srcTopology.includes('rr');
+                        const tgtFront = tgtTopology.includes('front') || tgtTopology.includes('fl') || tgtTopology.includes('fr');
+                        const tgtRear = tgtTopology.includes('rear') || tgtTopology.includes('rl') || tgtTopology.includes('rr');
                         
+                        // 包含"前"传给"后"，或包含"后"传给"前"时进行正负倒转
                         if ((srcFront && tgtRear) || (srcRear && tgtFront)) finalValue = -value;
                     }
                 }
