@@ -130,6 +130,9 @@ export interface ComponentConfig {
     // Module shape (from generalAttr.module_shape)
     shape?: { type: 'SPHERE' | 'BOX' | 'CYLINDER'; length?: number; width?: number; height?: number; diameter?: number };
 
+    // ISS-005 Front-End Only topological marker for coordinate symmetry and sync boundary rules
+    frontendGroupKey?: string;
+
     // Raw generalAttr preserved for lossless round-trip
     generalAttr?: any;
     // Raw structParam segments (e.g. segmented_limits_params)

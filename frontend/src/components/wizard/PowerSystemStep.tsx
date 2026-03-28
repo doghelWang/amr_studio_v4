@@ -115,19 +115,53 @@ export const PowerSystemStep: React.FC = () => {
         const source = config.components.find(c => c.id === sourceId);
         if (!source) return;
 
-        // Find siblings: same category + type, excluding self
-        const siblings = config.components.filter(c => 
-            c.id !== sourceId && 
-            c.category === source.category && 
-            c.type === source.type
-        );
+        // 【ISS-004】提取基础工程角色名：例如 "左行走电机_2" -> "左行走电机"
+        const sourceRole = source.alias ? source.alias.split('_')[0] : '';
+
+        // 寻找同类节点，加入严格的角色守卫防止错跨同步
+        const siblings = config.components.filter(c => {
+            if (c.id === sourceId || c.category !== source.category || c.type !== source.type) return false;
+            if (c.category === 'DRIVEWHEEL') return true; // 轮组之间只要型号一致就互相同步
+            const targetRole = c.alias ? c.alias.split('_')[0] : '';
+            return sourceRole === targetRole; // 强拦截: 行走电机只能传给行走电机，甚至左行走只能传左行走
+        });
 
         siblings.forEach(sib => {
-            updateAttribute(sib.id, groupKey, attrKey, value, subKey);
+            let finalValue = value;
+
+            // 【ISS-005】拓扑对称坐标投影映射
+            if (source.category === 'DRIVEWHEEL' && typeof value === 'number') {
+                const srcTopology = source.frontendGroupKey as string | undefined;
+                const tgtTopology = sib.frontendGroupKey as string | undefined;
+                
+                if (srcTopology && tgtTopology) {
+                    // Y坐标对消：左 / 右 互变
+                    if (attrKey === 'locCoordNY') {
+                        const srcLeft = srcTopology.includes('left') || srcTopology.includes('fl_') || srcTopology.includes('rl_');
+                        const srcRight = srcTopology.includes('right') || srcTopology.includes('fr_') || srcTopology.includes('rr_');
+                        const tgtLeft = tgtTopology.includes('left') || tgtTopology.includes('fl_') || tgtTopology.includes('rl_');
+                        const tgtRight = tgtTopology.includes('right') || tgtTopology.includes('fr_') || tgtTopology.includes('rr_');
+                        
+                        if ((srcLeft && tgtRight) || (srcRight && tgtLeft)) finalValue = -value;
+                    }
+                    
+                    // X坐标对消：前 / 后 互变
+                    if (attrKey === 'locCoordNX') {
+                        const srcFront = srcTopology.includes('front') || srcTopology.includes('fl_') || srcTopology.includes('fr_');
+                        const srcRear = srcTopology.includes('rear') || srcTopology.includes('rl_') || srcTopology.includes('rr_');
+                        const tgtFront = tgtTopology.includes('front') || tgtTopology.includes('fl_') || tgtTopology.includes('fr_');
+                        const tgtRear = tgtTopology.includes('rear') || tgtTopology.includes('rl_') || tgtTopology.includes('rr_');
+                        
+                        if ((srcFront && tgtRear) || (srcRear && tgtFront)) finalValue = -value;
+                    }
+                }
+            }
+
+            updateAttribute(sib.id, groupKey, attrKey, finalValue, subKey);
         });
 
         if (siblings.length > 0) {
-            message.info({ content: `已同步至 ${siblings.length} 个同类组件`, duration: 1, key: 'wheel-sync' });
+            message.info({ content: `联动生效: 同步至 ${siblings.length} 个同类组件`, duration: 1.5, key: 'wheel-sync' });
         }
     }, [wheelSync, config.components, updateAttribute]);
 
@@ -169,7 +203,8 @@ export const PowerSystemStep: React.FC = () => {
                 mainModuleTypeKey: cat.toLowerCase(), subModuleTypeKey: typeKey,
                 mainModuleType: { typeKey: cat.toLowerCase() },
                 generalAttr: { name: alias, alias: name },
-                structParam: {},
+                // ISS-005: 注入用于位置联动计算的拓扑逻辑 Key。仅挂在根轮节点上即可判定方位。
+                frontendGroupKey: cat === 'DRIVEWHEEL' ? groupDef.key : undefined,
                 privateAttrs: privateAttrsOriginal,
                 interfaces: [],
                 parentNodeUuid: parentId,
