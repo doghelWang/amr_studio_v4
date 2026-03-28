@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip, Switch } from 'antd';
-import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip, Switch, Space, Tag, Input } from 'antd';
+import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined, SyncOutlined, IdcardOutlined } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
+import { DRIVE_TYPE_LABELS } from '../../store/types';
 import { PowerSystemStep } from './PowerSystemStep';
+import { ComponentPropertyPanel } from './ComponentPropertyPanel';
+import { ChassisVisualizer } from '../visualizer/ChassisVisualizer';
+
+import { Modal, message } from 'antd';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
+const { TabPane } = Tabs;
 
 export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
     const { config, setIdentity, updateAttribute } = useProjectStore();
@@ -13,10 +19,31 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
     const [syncFullLoad, setSyncFullLoad] = useState(true);
 
     const handleUpdate = (fields: any) => {
+        // Special case: Drive Type change requires confirmation because it wipes wheels/motors
+        if ('driveType' in fields && fields.driveType !== identity.driveType) {
+            const powerComps = config.components.filter(c => 
+                ['DRIVEWHEEL', 'DRIVER', 'MOTOR', 'ACTOR'].includes(c.category)
+            );
+
+            if (powerComps.length > 0) {
+                Modal.confirm({
+                    title: '更换底盘驱动类型',
+                    content: `检测到当前已配置 ${powerComps.length} 个动力组件。更换驱动类型将清除现有轮组、电机及驱动器映射，以确保拓扑一致性。确定要继续吗？`,
+                    okText: '确定更换',
+                    cancelText: '取消',
+                    maskClosable: true,
+                    onOk: () => {
+                        setIdentity(fields);
+                        message.info(`已切换至 ${DRIVE_TYPE_LABELS[fields.driveType]}，请重新配置轮组`);
+                    }
+                });
+                return;
+            }
+        }
+        
         setIdentity(fields);
     };
 
-    // B6 Fix: Bidirectional linkage for motion center offsets
     const handleOffsetChange = (field: string, v: number | null) => {
         if (v === null || v === undefined) return;
         const len = identity.chassisLength || 1200;
@@ -31,340 +58,240 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
 
     const chassisComponent = config.components.find(c => c.category === 'CHASSIS');
     const privateAttrs = chassisComponent ? chassisComponent.privateAttrs : [];
-    
-    // Find motionCenterAttr group
     const motionCenterGroup = privateAttrs.find(g => g.key === 'motionCenterAttr');
-
-    // NOTE: Hardcoded initialization removed. 
-    // Schema hydration in useProjectStore.ts now handles populating privateAttrs 
-    // from XML definitions automatically upon app load or schema refresh.
-
     const motionCenterEles = motionCenterGroup ? motionCenterGroup.elements : [];
 
     const getMotionCenterVal = (key: string) => {
-        const ele = motionCenterEles.find(e => e.key === key) as any;
+        const ele = motionCenterEles.find(e => (e.key || '').toLowerCase() === key.toLowerCase()) as any;
         return ele ? (ele.value ?? ele.doubleValue ?? ele.double_value ?? 0) : 0;
     };
 
-    const setMotionCenterVal = (key: string, v: number | null) => {
-        if (chassisComponent) {
-            updateAttribute(chassisComponent.id, 'motionCenterAttr', key, v ?? 0);
-        }
-    };
-
-    // Calculate normalized preview dimensions
-    const previewScale = 0.12; 
-    const rectWidth = identity.chassisWidth * previewScale;
-    const rectHeight = identity.chassisLength * previewScale;
-    
     const headIdle = getMotionCenterVal('headOffset(Idle)') || identity.headOffset;
     const leftIdle = getMotionCenterVal('leftOffset(Idle)') || identity.leftOffset;
-    
-    const centerX = leftIdle * previewScale;
-    const centerY = headIdle * previewScale;
 
+    const renderHeaderField = (label: string, field: string, value: string, isSelect = false, options?: any[]) => (
+        <Space size={4}>
+            <Text type="secondary" style={{ fontSize: 12 }}>{label}:</Text>
+            {isSelect ? (
+                <Select 
+                    size="small" 
+                    variant="borderless" 
+                    style={{ fontWeight: 600, minWidth: 120, borderBottom: '1px dashed rgba(255,255,255,0.2)' }}
+                    value={value}
+                    options={options}
+                    onChange={v => handleUpdate({ [field]: v })}
+                />
+            ) : (
+                <Input 
+                    size="small" 
+                    variant="borderless" 
+                    style={{ fontWeight: 600, width: 140, borderBottom: '1px dashed rgba(255,255,255,0.2)' }}
+                    value={value}
+                    onChange={e => handleUpdate({ [field]: e.target.value })}
+                />
+            )}
+        </Space>
+    );
 
     return (
         <div className="content-grid" style={{ padding: 0 }}>
-            <Tabs defaultActiveKey="chassis" tabPosition="top" style={{ padding: '0 24px' }}>
-                <Tabs.TabPane tab={<span><BuildOutlined /> 底盘参数</span>} key="chassis">
+            {/* ━━━ Global Identity Header Summary ━━━ */}
+            <div className="chassis-identity-header" style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                padding: '12px 24px',
+                borderBottom: '1px solid var(--border-default)',
+                marginBottom: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+            }}>
+                <Space size={32}>
+                    {renderHeaderField('机器人名称', 'robotName', identity.robotName)}
+                    {renderHeaderField('技术标识', 'materialCode', identity.materialCode)}
+                    {renderHeaderField('底盘模型', 'driveType', identity.driveType, true, Object.entries(DRIVE_TYPE_LABELS).map(([k, v]) => ({ label: v, value: k })))}
+                </Space>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <Tag icon={<IdcardOutlined />} color="processing" style={{ margin: 0 }}>Step 2: 底盘与动力系统配置</Tag>
+                </div>
+            </div>
+
+            <Tabs defaultActiveKey="chassis" tabPosition="top" style={{ padding: '0 24px' }} className="step2-main-tabs">
+                <TabPane tab={<span><BuildOutlined /> 2-1. 尺寸与中心</span>} key="chassis">
                     <div className="section-title" style={{ marginTop: 16 }}>
-                        <BuildOutlined /> 2. 底盘规格与动力学包络
+                        <BuildOutlined /> 物理环境参数与运动中心
                     </div>
+                    <Row gutter={24} style={{ alignItems: 'flex-start' }}>
+                        <Col span={8} style={{ position: 'sticky', top: 0 }}>
+                            <Card className="smart-card" variant="borderless">
+                                <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <HolderOutlined /> 实时运动中心预览
+                                </Title>
+                                <ChassisVisualizer 
+                                    width={identity.chassisWidth}
+                                    length={identity.chassisLength}
+                                    shape={identity.chassisShape as any}
+                                    headOffset={identity.headOffset}
+                                    leftOffset={identity.leftOffset}
+                                    components={config.components}
+                                    svgSize={200}
+                                />
+                                <div style={{ marginTop: 20 }}>
+                                    <Text type="secondary" style={{ fontSize: 11, display: 'block' }}>• 红色十字为运动中心 (Motion Center)</Text>
+                                    <Text type="secondary" style={{ fontSize: 11, display: 'block' }}>• 绿色箭头为车头 (Head)</Text>
+                                </div>
+                            </Card>
+                        </Col>
 
-            <Row gutter={24}>
-                {/* ━━━ Physical Dimensions ━━━ */}
-                <Col span={12}>
-                    <Card className="smart-card" variant="borderless">
-                        <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <ColumnWidthOutlined /> 物理包络 (Bounding Box)
-                        </Title>
-                        
-                        <Form layout="vertical">
-                            <Row gutter={16}>
-                                <Col span={8}>
-                                    <Form.Item label="车长 (L)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.chassisLength} 
-                                            suffix="mm"
-                                            onChange={v => handleUpdate({ chassisLength: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8}>
-                                    <Form.Item label="车宽 (W)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.chassisWidth} 
-                                            suffix="mm"
-                                            onChange={v => handleUpdate({ chassisWidth: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={8}>
-                                    <Form.Item label="车高 (H)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.chassisHeight} 
-                                            suffix="mm"
-                                            onChange={v => handleUpdate({ chassisHeight: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                            <Form.Item label="外形轮廓 (chassisShape)">
-                                <Select value={identity.chassisShape} onChange={v => handleUpdate({ chassisShape: v })}>
-                                    <Option value="BOX">● 矩形 (BOX)</Option>
-                                    <Option value="CYLINDER">● 圆形 (CYLINDER)</Option>
-                                </Select>
-                            </Form.Item>
-
-                            <Divider orientation="left" plain>
-                                <small>运动中心偏移 - 空载 (Idle)
-                                    <Tooltip title="以底盘运动中心为原点，到四周边界的距离。空载与满载可独立设置，默认值相同。">
-                                        <InfoCircleOutlined style={{ marginLeft: 6, color: 'var(--text-muted)' }} />
-                                    </Tooltip>
-                                </small>
-                            </Divider>
-                            
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="前向距 (Head Offset)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.headOffset} 
-                                            suffix="mm" 
-                                            onChange={v => handleOffsetChange('headOffset', v as number)} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="后向距 (Tail Offset)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.tailOffset} 
-                                            suffix="mm" 
-                                            onChange={v => handleOffsetChange('tailOffset', v as number)} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="左向距 (Left Offset)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.leftOffset} 
-                                            suffix="mm" 
-                                            onChange={v => handleOffsetChange('leftOffset', v as number)} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="右向距 (Right Offset)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={identity.rightOffset} 
-                                            suffix="mm" 
-                                            onChange={v => handleOffsetChange('rightOffset', v as number)} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                            {/* P3: Full-load motion center offsets */}
-                            <Divider orientation="left" plain>
-                                <small style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                    <span>运动中心偏移 - 满载 (Full Load)</span>
-                                    <Switch
-                                        size="small"
-                                        checkedChildren={<><SyncOutlined /> 同空载</>}
-                                        unCheckedChildren="独立设置"
-                                        checked={syncFullLoad}
-                                        onChange={setSyncFullLoad}
-                                    />
-                                </small>
-                            </Divider>
-
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="前向距 (Full Load Head)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={syncFullLoad ? identity.headOffset : (identity.headOffsetFull ?? identity.headOffset)} 
-                                            suffix="mm"
-                                            disabled={syncFullLoad}
-                                            onChange={v => !syncFullLoad && setIdentity({ headOffsetFull: v as number })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="后向距 (Full Load Tail)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={syncFullLoad ? identity.tailOffset : (identity.tailOffsetFull ?? identity.tailOffset)} 
-                                            suffix="mm"
-                                            disabled={syncFullLoad}
-                                            onChange={v => !syncFullLoad && setIdentity({ tailOffsetFull: v as number })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="左向距 (Full Load Left)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={syncFullLoad ? identity.leftOffset : (identity.leftOffsetFull ?? identity.leftOffset)} 
-                                            suffix="mm"
-                                            disabled={syncFullLoad}
-                                            onChange={v => !syncFullLoad && setIdentity({ leftOffsetFull: v as number })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="右向距 (Full Load Right)">
-                                        <InputNumber 
-                                            style={{ width: '100%' }}
-                                            value={syncFullLoad ? identity.rightOffset : (identity.rightOffsetFull ?? identity.rightOffset)} 
-                                            suffix="mm"
-                                            disabled={syncFullLoad}
-                                            onChange={v => !syncFullLoad && setIdentity({ rightOffsetFull: v as number })}
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-
-                            <Divider orientation="left" plain>
-                                <small><ThunderboltOutlined style={{ marginRight: 6 }} />运行性能 (Performance)</small>
-                            </Divider>
-                            
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="最大线速度">
-                                        <InputNumber 
-                                            style={{ width: '100%' }} 
-                                            value={identity.maxSpeed || 1500} 
-                                            suffix="mm/s" 
-                                            onChange={v => handleUpdate({ maxSpeed: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="最大线加速度">
-                                        <InputNumber 
-                                            style={{ width: '100%' }} 
-                                            value={identity.maxAccel || 1000} 
-                                            suffix="mm/s²" 
-                                            onChange={v => handleUpdate({ maxAccel: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                            
-                            <Row gutter={16}>
-                                <Col span={12}>
-                                    <Form.Item label="最大角速度">
-                                        <InputNumber 
-                                            style={{ width: '100%' }} 
-                                            value={identity.rotateMaxAngSpeed || 90} 
-                                            suffix="°/s" 
-                                            onChange={v => handleUpdate({ rotateMaxAngSpeed: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                                <Col span={12}>
-                                    <Form.Item label="最大角加速度">
-                                        <InputNumber 
-                                            style={{ width: '100%' }} 
-                                            value={identity.rotateMaxAngAcceleration || 180} 
-                                            suffix="°/s²" 
-                                            onChange={v => handleUpdate({ rotateMaxAngAcceleration: v })} 
-                                        />
-                                    </Form.Item>
-                                </Col>
-                            </Row>
-                        </Form>
-                    </Card>
-                </Col>
-
-                {/* ━━━ Dynamic Center Preview ━━━ */}
-                <Col span={12}>
-                    <Card className="smart-card" variant="borderless" style={{ height: '100%' }}>
-                        <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
-                            <HolderOutlined /> 实时运动中心预览
-                        </Title>
-                        
-                        <div style={{ 
-                            flex: 1, height: '320px', background: '#0d1117', 
-                            borderRadius: 8, border: '1px solid var(--border-default)', 
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            position: 'relative'
-                        }}>
-                            <svg width="240" height="240" viewBox="0 0 240 240">
-                                {/* Grid Lines */}
-                                <defs>
-                                    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#21262d" strokeWidth="0.5"/>
-                                    </pattern>
-                                </defs>
-                                <rect width="100%" height="100%" fill="url(#grid)" />
+                        <Col span={16}>
+                            <Card className="smart-card" variant="borderless">
+                                <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <ColumnWidthOutlined /> 物理包络 & 运动中心 (Dimensions)
+                                </Title>
                                 
-                                {/* Chassis Shape */}
-                                <g transform={`translate(${120 - rectWidth/2}, ${120 - rectHeight/2})`}>
-                                    {identity.chassisShape === 'BOX' ? (
-                                        <rect 
-                                            width={rectWidth} height={rectHeight} 
-                                            fill="rgba(56, 139, 253, 0.1)" 
-                                            stroke="var(--accent-color)" 
-                                            strokeWidth="2"
-                                            rx="4"
-                                        />
-                                    ) : (
-                                        <ellipse 
-                                            cx={rectWidth/2} cy={rectHeight/2} 
-                                            rx={rectWidth/2} ry={rectHeight/2}
-                                            fill="rgba(56, 139, 253, 0.1)" 
-                                            stroke="var(--accent-color)" 
-                                            strokeWidth="2"
-                                        />
+                                <Form layout="vertical">
+                                    <Row gutter={16}>
+                                        <Col span={8}><Form.Item label="车长 (L)"><InputNumber style={{ width: '100%' }} value={identity.chassisLength} suffix="mm" onChange={v => handleUpdate({ chassisLength: v })} /></Form.Item></Col>
+                                        <Col span={8}><Form.Item label="车宽 (W)"><InputNumber style={{ width: '100%' }} value={identity.chassisWidth} suffix="mm" onChange={v => handleUpdate({ chassisWidth: v })} /></Form.Item></Col>
+                                        <Col span={8}><Form.Item label="车高 (H)"><InputNumber style={{ width: '100%' }} value={identity.chassisHeight} suffix="mm" onChange={v => handleUpdate({ chassisHeight: v })} /></Form.Item></Col>
+                                    </Row>
+
+                                    <Form.Item label="外形轮廓 (chassisShape)">
+                                        <Select value={identity.chassisShape} onChange={v => handleUpdate({ chassisShape: v })}>
+                                            <Option value="BOX">● 矩形 (BOX)</Option>
+                                            <Option value="CYLINDER">● 圆形 (CYLINDER)</Option>
+                                        </Select>
+                                    </Form.Item>
+
+                                    <Divider orientation="left" plain><small>运动中心偏移 - 空载 (Idle)</small></Divider>
+                                    
+                                    <Row gutter={16}>
+                                        <Col span={12}><Form.Item label="前向距 (Head Offset)"><InputNumber style={{ width: '100%' }} value={identity.headOffset} suffix="mm" onChange={v => handleOffsetChange('headOffset', v as number)} /></Form.Item></Col>
+                                        <Col span={12}><Form.Item label="后向距 (Tail Offset)"><InputNumber style={{ width: '100%' }} value={identity.tailOffset} suffix="mm" onChange={v => handleOffsetChange('tailOffset', v as number)} /></Form.Item></Col>
+                                    </Row>
+
+                                    <Row gutter={16}>
+                                        <Col span={12}><Form.Item label="左向距 (Left Offset)"><InputNumber style={{ width: '100%' }} value={identity.leftOffset} suffix="mm" onChange={v => handleOffsetChange('leftOffset', v as number)} /></Form.Item></Col>
+                                        <Col span={12}><Form.Item label="右向距 (Right Offset)"><InputNumber style={{ width: '100%' }} value={identity.rightOffset} suffix="mm" onChange={v => handleOffsetChange('rightOffset', v as number)} /></Form.Item></Col>
+                                    </Row>
+
+                                    <Divider orientation="left" plain>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <small>运动中心偏移 - 满载 (Full Load)</small>
+                                            <Switch size="small" checkedChildren="同空载" unCheckedChildren="独立" checked={syncFullLoad} onChange={setSyncFullLoad} />
+                                        </div>
+                                    </Divider>
+
+                                    <Row gutter={16}>
+                                        <Col span={12}><Form.Item label="前向距 (Full Load)"><InputNumber style={{ width: '100%' }} value={syncFullLoad ? identity.headOffset : (identity.headOffsetFull ?? identity.headOffset)} suffix="mm" disabled={syncFullLoad} onChange={v => !syncFullLoad && setIdentity({ headOffsetFull: v as number })} /></Form.Item></Col>
+                                        <Col span={12}><Form.Item label="后向距 (Full Load)"><InputNumber style={{ width: '100%' }} value={syncFullLoad ? identity.tailOffset : (identity.tailOffsetFull ?? identity.tailOffset)} suffix="mm" disabled={syncFullLoad} onChange={v => !syncFullLoad && setIdentity({ tailOffsetFull: v as number })} /></Form.Item></Col>
+                                    </Row>
+                                    <Row gutter={16}>
+                                        <Col span={12}><Form.Item label="左向距 (Full Load)"><InputNumber style={{ width: '100%' }} value={syncFullLoad ? identity.leftOffset : (identity.leftOffsetFull ?? identity.leftOffset)} suffix="mm" disabled={syncFullLoad} onChange={v => !syncFullLoad && setIdentity({ leftOffsetFull: v as number })} /></Form.Item></Col>
+                                        <Col span={12}><Form.Item label="右向距 (Full Load)"><InputNumber style={{ width: '100%' }} value={syncFullLoad ? identity.rightOffset : (identity.rightOffsetFull ?? identity.rightOffset)} suffix="mm" disabled={syncFullLoad} onChange={v => !syncFullLoad && setIdentity({ rightOffsetFull: v as number })} /></Form.Item></Col>
+                                    </Row>
+                                </Form>
+                            </Card>
+                        </Col>
+                    </Row>
+                </TabPane>
+
+                <TabPane tab={<span><HolderOutlined /> 2-2. 运动性能配置</span>} key="attributes">
+                    <div className="section-title" style={{ marginTop: 16 }}>
+                        <HolderOutlined /> 底盘运动学与性能参数
+                    </div>
+                    <Row gutter={24} style={{ alignItems: 'flex-start' }}>
+                        <Col span={8} style={{ position: 'sticky', top: 0 }}>
+                            <Card className="smart-card" variant="borderless">
+                                <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <HolderOutlined /> 布局预览
+                                </Title>
+                                <ChassisVisualizer 
+                                    width={identity.chassisWidth}
+                                    length={identity.chassisLength}
+                                    shape={identity.chassisShape as any}
+                                    headOffset={identity.headOffset}
+                                    leftOffset={identity.leftOffset}
+                                    components={config.components}
+                                    svgSize={200}
+                                />
+                            </Card>
+                        </Col>
+
+                        <Col span={16}>
+                            <Card className="smart-card" variant="borderless">
+                                <Form layout="vertical">
+                                    <Title level={5} style={{ color: 'var(--accent)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        <ThunderboltOutlined /> 基础运动参数 (Idle / 空载)
+                                    </Title>
+                                    <Row gutter={12}>
+                                        <Col span={6}><Form.Item label="最大线速度"><InputNumber style={{ width: '100%' }} value={identity.maxSpeed} suffix="mm/s" onChange={v => handleUpdate({ maxSpeed: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线加速度"><InputNumber style={{ width: '100%' }} value={identity.maxAccel} suffix="mm/s²" onChange={v => handleUpdate({ maxAccel: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线减速度"><InputNumber style={{ width: '100%' }} value={identity.maxDecel} suffix="mm/s²" onChange={v => handleUpdate({ maxDecel: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="避障最大减速度"><InputNumber style={{ width: '100%' }} value={identity.avoidMaxDec} suffix="mm/s²" onChange={v => handleUpdate({ avoidMaxDec: v as number })} /></Form.Item></Col>
+                                    </Row>
+
+
+                                    <Divider orientation="left" plain>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                            <Title level={5} style={{ color: 'var(--accent)', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <SyncOutlined spin={syncFullLoad} /> 负载性能参数 (Full Load / 满载)
+                                            </Title>
+                                            <Switch size="small" checkedChildren="同步" unCheckedChildren="独立" checked={syncFullLoad} onChange={setSyncFullLoad} />
+                                        </div>
+                                    </Divider>
+                                    
+                                    <Row gutter={12}>
+                                        <Col span={6}><Form.Item label="最大线速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxSpeed * 0.8) : identity.maxSpeedFull} suffix="mm/s" onChange={v => !syncFullLoad && handleUpdate({ maxSpeedFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线加速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxAccel * 0.4) : identity.maxAccelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxAccelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线减速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxDecel * 0.5) : identity.maxDecelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxDecelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="避障最大减速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? identity.avoidMaxDec : identity.avoidMaxDecFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ avoidMaxDecFull: v as number })} /></Form.Item></Col>
+                                    </Row>
+
+                                    <Divider orientation="left" plain><small>旋转性能 (Rotation)</small></Divider>
+                                    <Row gutter={12}>
+                                        <Col span={12}><Form.Item label="最大角速度"><InputNumber style={{ width: '100%' }} value={identity.rotateMaxAngSpeed} suffix="°/s" onChange={v => handleUpdate({ rotateMaxAngSpeed: v as number })} /></Form.Item></Col>
+                                        <Col span={12}><Form.Item label="最大角加速度"><InputNumber style={{ width: '100%' }} value={identity.rotateMaxAngAcceleration} suffix="°/s²" onChange={v => handleUpdate({ rotateMaxAngAcceleration: v as number })} /></Form.Item></Col>
+                                    </Row>
+                                    
+                                    {chassisComponent && (
+                                        <div style={{ marginTop: 24 }}>
+                                            <Divider orientation="left" plain><small>底盘全局参数列表 (Official CModel Registry)</small></Divider>
+                                            <ComponentPropertyPanel 
+                                                projectId={null}
+                                                selectedUuid={chassisComponent.id} 
+                                                hideTabs={true}
+                                                excludeGroupKeys={['motionCenterAttr']}
+                                                excludeElementKeys={[
+                                                    'length', 'width', 'height', 
+                                                    'maxSpeed', 'maxAccel', 'maxDecel', 'maxRotSpeed', 'maxRotAccel',
+                                                    'moduleName', 'materialCode', 'manufacturer', 'moduleAlias', 'modelKey', 'category', 'robotName', 'driveType',
+                                                    'wheelsNum'
+                                                ]}
+                                            />
+                                        </div>
                                     )}
 
-                                    {/* Motion Center Crosshair */}
-                                    <g transform={`translate(${centerX}, ${centerY})`}>
-                                        <line x1="-15" y1="0" x2="15" y2="0" stroke="#f85149" strokeWidth="2" />
-                                        <line x1="0" y1="-15" x2="0" y2="15" stroke="#f85149" strokeWidth="2" />
-                                        <circle r="4" fill="#f85149" />
-                                        <text x="8" y="-8" fill="#f85149" fontSize="10">Motion Center</text>
-                                    </g>
-                                </g>
-                                
-                                {/* Front Indicator */}
-                                <text x="120" y="15" fill="var(--text-secondary)" fontSize="10" textAnchor="middle">FRONT (Head)</text>
-                                <path d="M 115 25 L 120 20 L 125 25" fill="none" stroke="var(--text-secondary)" strokeWidth="1" />
-                            </svg>
-                        </div>
-                        
-                        <div style={{ marginTop: 20 }}>
-                            <Text type="secondary" style={{ fontSize: 12 }}>
-                                提示：运动中心（Motion Center）通常位于驱动轴中心。修改偏移量将自动同步其相对位置。
-                            </Text>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
-                </Tabs.TabPane>
+
+                                </Form>
+                            </Card>
+                        </Col>
+                    </Row>
+                </TabPane>
                 
-                <Tabs.TabPane tab={<span><ThunderboltOutlined /> 动力配置聚合</span>} key="power">
-                    <div style={{ marginTop: 16, height: 'calc(100vh - 200px)' }}>
+                <TabPane tab={<span><ThunderboltOutlined /> 2-3. 动力拓扑管理</span>} key="power">
+                    <div className="section-title" style={{ marginTop: 16 }}>
+                        <ThunderboltOutlined /> 动力关联组件 (轮-驱-电)
+                    </div>
+                    <div style={{ height: 'calc(100vh - 250px)' }}>
                         <PowerSystemStep />
                     </div>
-                </Tabs.TabPane>
+                </TabPane>
             </Tabs>
+            <style>{`
+                .step2-main-tabs .ant-tabs-nav::before { border-bottom: 1px solid var(--border-default); }
+                .step2-main-tabs .ant-tabs-tab-active { background: rgba(56, 139, 253, 0.05); }
+                .ant-input-number-suffix { color: var(--text-muted); font-size: 11px; }
+            `}</style>
         </div>
     );
 };

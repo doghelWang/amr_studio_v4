@@ -1,0 +1,145 @@
+{
+	"privateAttrs": [
+		{
+			"key": "chargerAttr",
+			"desc": "充电属性",
+			"arrayBaseEle": [
+				{
+					"key": "dir",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "AGV_CHARGE_RELAY_DIR_BACK",
+						"typeDesc": "尾充",
+						"typeGroups": [
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_BACK",
+								"desc": "尾充"
+							},
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_LEFT",
+								"desc": "左侧"
+							},
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_RIGHT",
+								"desc": "右侧"
+							},
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_DOWN",
+								"desc": "底部"
+							},
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_FRONT",
+								"desc": "前部"
+							},
+							{
+								"key": "AGV_CHARGE_RELAY_DIR_UP",
+								"desc": "顶部"
+							}
+							
+						]
+					},
+					"desc": "充电方向"
+				},
+				{
+					"key": "type",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "IOCharger",
+						"typeDesc": "IO继电器",
+						"typeGroups": [
+							{
+								"key": "valveVoltCharger",
+								"desc": "阀继电器",
+								"arrayCmobEle": [
+									{
+										"key": "ratedVolt",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 0,
+										"unit": "V",
+										"desc": "额定电压"
+									},
+									{
+										"key": "ratedCur",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 0,
+										"unit": "A",
+										"desc": "额定电流"
+									},
+									{
+										"key": "powerVolt",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 9999,
+										"doubleMinvalue": 0,
+										"unit": "V",
+										"desc": "供电电压"
+									}
+                                ]
+							},
+							{
+								"key": "IOCharger",
+								"desc": "IO继电器"
+							}
+						]
+					},
+					"desc": "类型"
+				},
+				{
+					"key": "voltage",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "V",
+					"desc": "工作电压",
+					"boolBasic": true,
+					"boolHide": true
+				},
+				{
+					"key": "contactResistance",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mΩ",
+					"desc": "接触电阻",
+					"boolHide": true
+				},
+				{
+					"key": "insulationResistance",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mΩ",
+					"desc": "绝缘电阻",
+					"boolHide": true
+				},
+				{
+					"key": "maxCurrent",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "最大工作电流",
+					"boolHide": true
+				},
+				{
+					"key": "maxTemperature",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 999,
+					"doubleMinvalue": 0,
+					"unit": "℃",
+					"desc": "最高工作温度",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,61 @@
+{
+    "interfaceParamsArray": [
+		{
+            "key": "deviceId",
+            "type": "DATA_STRING",
+            "stringValue": "",
+            "desc": "设备id",
+            "boolParse": true,
+			"boolHide": true
+        },
+		{
+            "key": "ip",
+            "type": "DATA_STRING",
+            "stringValue": "",
+            "desc": "ip参数",
+            "boolParse": true
+        },
+        {
+            "key": "gate",
+            "type": "DATA_STRING",
+            "stringValue": "",
+            "desc": "网关",
+            "boolParse": true,
+			"boolHide": true
+        },
+        {
+            "key": "port",
+            "type": "DATA_INT32",
+            "int32Value": 1,
+            "int32Maxvalue": 65536,
+            "int32Minvalue": 1,
+            "desc": "端口",
+            "boolParse": true
+        },
+        {
+            "key": "speed",
+            "type": "DATA_COMBOX",
+            "comboType": {
+                "typeKey": "100M",
+                "typeDesc": "100M",
+                "typeGroups": [
+                    {
+                        "key": "1000M",
+                        "desc": "1000M"
+                    },
+                    {
+                        "key": "100M",
+                        "desc": "100M"
+                    },
+                    {
+                        "key": "10M",
+                        "desc": "10M"
+                    }
+                ]
+            },
+            "desc": "速度",
+            "boolParse": true,
+			"boolHide": true
+        }
+    ]
+}

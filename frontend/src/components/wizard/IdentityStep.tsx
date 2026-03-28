@@ -51,11 +51,11 @@ const DRIVE_WHEEL_MAP: Record<string, { label: string; color: string; wheelHint:
         wheelHint: '推荐轮组：DIFF_STEER_WHEELS_DOUBL（双差速舵轮），含2个主动舵轮。',
         wheelTemplate: 'DIFF_STEER_WHEELS_DOUBL(双差速舵轮)',
     },
-    OMNI_WHEEL: {
-        label: '全向轮',
-        color: 'magenta',
-        wheelHint: '推荐轮组：全向底盘轮组（3~4轮麦克纳姆轮或万向轮）。',
-        wheelTemplate: 'VER_STEER_WHEELS_DOUBL(双立式舵轮)',
+    QUAD_STEER: {
+        label: '四舵轮',
+        color: 'purple',
+        wheelHint: '推荐轮组：4个独立舵轮，每个含行走+转向电机。',
+        wheelTemplate: 'STEER_WHEELS_QUAD(四舵轮)',
     },
 };
 
@@ -169,7 +169,7 @@ export const IdentityStep: React.FC<{ onExport?: () => void }> = () => {
                                     <Option value="STANDARD_DIFF">标准差速 (Standard Diff)</Option>
                                     <Option value="SINGLE_STEER">单舵轮 (Single Steer)</Option>
                                     <Option value="DUAL_STEER">双舵轮 (Dual Steer)</Option>
-                                    <Option value="OMNI_WHEEL">全向轮 (Omni Wheel)</Option>
+                                    <Option value="QUAD_STEER">四舵轮 (Quad Steer)</Option>
                                 </Select>
                             </Form.Item>
 

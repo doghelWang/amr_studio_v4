@@ -1,0 +1,86 @@
+[
+  {
+    "key": "chipPlatform",
+    "desc": "芯片平台",
+    "unit": "",
+    "group": "控制板属性",
+    "boolMustfill": true,
+    "boolBasic": true,
+    "boolHide": true,
+    "boolNoeditable": false,
+    "type": "DATA_STRING",
+    "defaultValue": "R131"
+  },
+  {
+    "key": "softwareSpec",
+    "desc": "软件规格",
+    "unit": "",
+    "group": "控制板属性",
+    "boolMustfill": true,
+    "boolBasic": true,
+    "boolHide": false,
+    "boolNoeditable": false,
+    "type": "DATA_STRING",
+    "defaultValue": "NONE"
+  },
+  {
+    "key": "inputVoltage",
+    "desc": "输入电压",
+    "unit": "V",
+    "group": "控制板属性",
+    "boolMustfill": false,
+    "boolBasic": false,
+    "boolHide": true,
+    "boolNoeditable": false,
+    "type": "DATA_DOUBLE",
+    "defaultValue": 0.0
+  },
+  {
+    "key": "inputCurrent",
+    "desc": "输入电流",
+    "unit": "A",
+    "group": "控制板属性",
+    "boolMustfill": false,
+    "boolBasic": false,
+    "boolHide": true,
+    "boolNoeditable": false,
+    "type": "DATA_DOUBLE",
+    "defaultValue": 0.0
+  },
+  {
+    "key": "overloadCapacity",
+    "desc": "过载能力",
+    "unit": "倍",
+    "group": "控制板属性",
+    "boolMustfill": true,
+    "boolBasic": false,
+    "boolHide": true,
+    "boolNoeditable": false,
+    "type": "DATA_DOUBLE",
+    "defaultValue": 2.0
+  },
+  {
+    "key": "overloadTime",
+    "desc": "过载时长",
+    "unit": "S",
+    "group": "控制板属性",
+    "boolMustfill": true,
+    "boolBasic": false,
+    "boolHide": true,
+    "boolNoeditable": false,
+    "type": "DATA_DOUBLE",
+    "defaultValue": 3.0
+  },
+  {
+    "key": "type",
+    "desc": "驱动类型",
+    "unit": "",
+    "group": "控制板属性",
+    "boolMustfill": false,
+    "boolBasic": false,
+    "boolHide": false,
+    "boolNoeditable": false,
+    "type": "DATA_COMBOX",
+    "defaultValue": null
+  }
+]

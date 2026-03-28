@@ -64,7 +64,7 @@ export class ImportService {
             version: json.version || '1.0.0',
             materialCode: json.materialCode || json.material_code || '',
             alias: json.alias || '',
-            venderName: json.venderName || json.vender_name || 'SEER',
+            venderName: json.venderName || json.vender_name || '',
             navigationMethod: (json.navigationMethod || json.navigation_method || 'LASER_SLAM') as any,
             driveType: (json.driveType || json.drive_type || 'STANDARD_DIFF') as any,
             chassisShape: (json.chassisShape || json.chassis_shape || 'BOX') as any,
@@ -207,7 +207,10 @@ export class ImportService {
 
         const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
         if (group[infoKey]) {
-            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, parentUuid, schemaRegistry));
+            // ━━━ 0327-1: Recursive Hierarchy Fix ━━━
+            // Pass the ID of the LAST added component in the current group as the parent for the sub-groups
+            const lastCompId = list.length > 0 ? list[list.length - 1].id : parentUuid;
+            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, lastCompId, schemaRegistry));
         }
     }
 

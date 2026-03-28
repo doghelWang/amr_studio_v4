@@ -43,8 +43,8 @@ import { Header } from './components/layout/Header';
 /** 配置向导定义：定义每一步的 Key、标签、图标与描述 */
 const STEPS = [
     { key: 'identity',   label: '身份信息',  icon: <RobotOutlined />,        desc: '机器人元数据' },
-    { key: 'chassis',    label: '底盘参数',  icon: <BuildOutlined />,        desc: '物理尺寸' },
-    { key: 'components', label: '组件库',    icon: <AppstoreOutlined />,     desc: '添加 & 配置' },
+    { key: 'chassis',    label: '底盘与动力', icon: <BuildOutlined />,        desc: '尺寸 & 动力' },
+    { key: 'components', label: '电气装配',  icon: <AppstoreOutlined />,     desc: '核心 & 感知' },
     { key: 'mounting',   label: '安装坐标',  icon: <AimOutlined />,          desc: '6-DOF 位姿' },
     { key: 'wiring',     label: '接口连线',  icon: <ApiOutlined />,          desc: '通信连接' },
     { key: 'abilities',  label: '功能映射',  icon: <ThunderboltOutlined />,  desc: '能力配置' },

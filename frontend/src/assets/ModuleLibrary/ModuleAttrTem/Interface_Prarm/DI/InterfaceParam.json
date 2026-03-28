@@ -1,0 +1,45 @@
+{
+    "interfaceParamsArray": [
+        {
+            "key": "isReversed",
+            "type": "DATA_COMBOX",
+            "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                    {
+                        "key": "0",
+                        "desc": "0"
+                    },
+                    {
+                        "key": "1",
+                        "desc": "1"
+                    }
+                ]
+            },
+            "desc": "是否反向",
+            "boolParse": true,
+			"boolHide": true
+        },
+		{
+            "key": "activeLevel",
+            "type": "DATA_COMBOX",
+            "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                    {
+                        "key": "1",
+                        "desc": "高电平生效"
+                    },
+                    {
+                        "key": "0",
+                        "desc": "低电平生效"
+                    }
+                ]
+            },
+            "desc": "有效电平",
+            "boolParse": true
+        }
+    ]
+}

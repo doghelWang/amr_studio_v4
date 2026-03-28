@@ -2,13 +2,89 @@ import { create } from 'zustand';
 import { temporal } from 'zundo';
 import { persist } from 'zustand/middleware';
 import { v4 as uuidGen } from 'uuid';
-import type {
+import {
     RobotConfig, RobotIdentity, ComponentConfig,
     SmartAttribute, AttributeGroup, MainModuleType, InterfaceConfig
 } from './types';
+import { buildAttributesFromSchema } from './SchemaEngine';
 import masterRegistry from './master_registry.json';
 import abilityRegistry from './ability_registry.json';
 import { apiFetchSchemas } from '../services/api_v2';
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Helper: Synchronize Identity fields to the root Chassis component
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
+    const { identity, components: allComponents } = config;
+    
+    // AUDIT-0328-2-4: Calculate Read-Only fields from topology and basic geometry
+    const wheelsCount = allComponents.filter(c => c.category === 'DRIVEWHEEL').length;
+    const calculatedRotateDiameter = Math.round(Math.sqrt(Math.pow(identity.chassisLength, 2) + Math.pow(identity.chassisWidth, 2)));
+
+    const components = allComponents.map(c => {
+        if (c.category === 'CHASSIS') {
+            const updatedPrivateAttrs = c.privateAttrs.map(group => {
+                return {
+                    ...group,
+                    elements: group.elements.map(ele => {
+                        // 1. Motion Center (Idle/Full)
+                        if (ele.key === 'headOffset(Idle)') return { ...ele, value: identity.headOffset };
+                        if (ele.key === 'tailOffset(Idle)') return { ...ele, value: identity.tailOffset };
+                        if (ele.key === 'leftOffset(Idle)') return { ...ele, value: identity.leftOffset };
+                        if (ele.key === 'rightOffset(Idle)') return { ...ele, value: identity.rightOffset };
+                        
+                        if (ele.key === 'headOffset (Full Load)') return { ...ele, value: identity.headOffsetFull ?? identity.headOffset };
+                        if (ele.key === 'tailOffset (Full Load)') return { ...ele, value: identity.tailOffsetFull ?? identity.tailOffset };
+                        if (ele.key === 'leftOffset (Full Load)') return { ...ele, value: identity.leftOffsetFull ?? identity.leftOffset };
+                        if (ele.key === 'rightOffset (Full Load)') return { ...ele, value: identity.rightOffsetFull ?? identity.rightOffset };
+
+                        // 2. Physical Dimensions
+                        if (ele.key === 'length') return { ...ele, value: identity.chassisLength };
+                        if (ele.key === 'width') return { ...ele, value: identity.chassisWidth };
+                        if (ele.key === 'height') return { ...ele, value: identity.chassisHeight };
+                        
+                        // 3. Performance (P3 Alignment: Angular Speed/Accel Sets)
+                        if (ele.key === 'maxSpeed(Idle)') return { ...ele, value: identity.maxSpeed };
+                        if (ele.key === 'maxAcceleration(Idle)') return { ...ele, value: identity.maxAccel };
+                        if (ele.key === 'maxDeceleration(Idle)') return { ...ele, value: identity.maxDecel };
+                        
+                        if (ele.key === 'maxSpeed (Full Load)') return { ...ele, value: identity.maxSpeedFull ?? (identity.maxSpeed ? identity.maxSpeed * 0.8 : 600) };
+                        if (ele.key === 'maxAcceleration (Full Load)') return { ...ele, value: identity.maxAccelFull ?? (identity.maxAccel ? identity.maxAccel * 0.4 : 200) };
+                        if (ele.key === 'maxDeceleration (Full Load)') return { ...ele, value: identity.maxDecelFull ?? (identity.maxDecel ? identity.maxDecel * 0.5 : 200) };
+
+                        if (ele.key === 'avoidMaxDec (Idle)') return { ...ele, value: identity.avoidMaxDec };
+                        if (ele.key === 'avoidMaxDec (Full Load)') return { ...ele, value: identity.avoidMaxDecFull ?? identity.avoidMaxDec };
+
+                        if (ele.key === 'rotateMaxAngSpeed (Idle)') return { ...ele, value: identity.rotateMaxAngSpeed };
+                        if (ele.key === 'rotateMaxAngAcceleration (Idle)') return { ...ele, value: identity.rotateMaxAngAcceleration };
+                        
+                        // 4. System Calculated (Read Only)
+                        if (ele.key === 'wheelsNum') return { ...ele, value: wheelsCount > 0 ? wheelsCount : 1 };
+                        if (ele.key === 'rotateDiameter') return { ...ele, value: calculatedRotateDiameter };
+
+                        // 5. Metadata
+                        if (ele.key === 'venderName') return { ...ele, value: identity.venderName };
+                        if (ele.key === 'materialCode') return { ...ele, value: identity.materialCode };
+                        
+                        return ele;
+                    })
+                };
+            });
+
+
+            return {
+                ...c,
+                name: identity.robotName || 'chassis',
+                alias: `底盘 (${identity.robotName || 'Robot Chassis'})`,
+                type: identity.driveType?.includes('STEER') ? 'steerChassis' : 'diffChassis',
+                privateAttrs: updatedPrivateAttrs
+            };
+        }
+        return c;
+    });
+
+    return { ...config, components };
+};
 
 interface ProjectState {
     projectId: string | null;
@@ -23,6 +99,7 @@ interface ProjectState {
     // --- Components ---
     addComponent: (category: MainModuleType, type: string) => string;
     addComponentFromConfig: (config: ComponentConfig) => void;
+    addComponents: (components: ComponentConfig[]) => void;
     updateComponent: (id: string, data: Partial<ComponentConfig>) => void;
     removeComponent: (id: string) => void;
     setActiveComponent: (id: string | null) => void;
@@ -57,11 +134,11 @@ interface ProjectState {
 }
 
 const DEFAULT_IDENTITY: RobotIdentity = {
-    robotName: 'amr_your_define',
+    robotName: '',
     version: '1.0.0',
     materialCode: '',
     alias: '',
-    venderName: 'hikrobot',
+    venderName: '',
     navigationMethod: 'LASER_SLAM',
     driveType: 'STANDARD_DIFF',
     chassisShape: 'BOX',
@@ -82,6 +159,10 @@ const DEFAULT_IDENTITY: RobotIdentity = {
 const createInitialConfig = (): RobotConfig => {
     const identity = { ...DEFAULT_IDENTITY };
     const chassisId = 'chassis-root';
+
+    // Initialize Chassis with full registry groups
+    const groups: AttributeGroup[] = buildAttributesFromSchema('diffChassis');
+
     return {
         identity,
         components: [{
@@ -93,12 +174,13 @@ const createInitialConfig = (): RobotConfig => {
             parentNodeUuid: null,
             mountX: 0, mountY: 0, mountZ: 0,
             mountRoll: 0, mountPitch: 0, mountYaw: 0,
-            privateAttrs: [],
+            privateAttrs: groups,
             interfaces: []
         }],
         abilities: abilityRegistry as any
     };
 };
+
 
 export const useProjectStore = create<ProjectState>()(
     persist(
@@ -111,15 +193,26 @@ export const useProjectStore = create<ProjectState>()(
                 isDirty: false,
 
                 setIdentity: (data) => set((state) => {
+                    const oldDriveType = state.config.identity.driveType;
                     const newIdentity = { ...state.config.identity, ...data };
-                    const oldIdentity = state.config.identity;
+
+                    let components = state.config.components;
+                    
+                    // AUDIT-0328-2-3-1: Clear power components if drive type changes to avoid topology mismatch
+                    if (data.driveType && data.driveType !== oldDriveType) {
+                        components = components.filter(c => 
+                            c.category === 'CHASSIS' || 
+                            !['DRIVEWHEEL', 'DRIVER', 'MOTOR', 'ACTOR'].includes(c.category as any)
+                        );
+                    }
 
                     // Linkage: Head + Tail = Length
                     if ('chassisLength' in data) {
-                        const ratio = oldIdentity.chassisLength > 0 ? (newIdentity.chassisLength / oldIdentity.chassisLength) : 1;
-                        newIdentity.headOffset = Math.round(oldIdentity.headOffset * ratio);
+                        newIdentity.headOffset = Math.round(newIdentity.chassisLength / 2);
                         newIdentity.tailOffset = newIdentity.chassisLength - newIdentity.headOffset;
-                    } else if ('headOffset' in data) {
+                    } 
+                    
+                    if ('headOffset' in data) {
                         newIdentity.tailOffset = Math.max(0, newIdentity.chassisLength - Number(data.headOffset));
                     } else if ('tailOffset' in data) {
                         newIdentity.headOffset = Math.max(0, newIdentity.chassisLength - Number(data.tailOffset));
@@ -127,50 +220,25 @@ export const useProjectStore = create<ProjectState>()(
 
                     // Linkage: Left + Right = Width
                     if ('chassisWidth' in data) {
-                        const ratio = oldIdentity.chassisWidth > 0 ? (newIdentity.chassisWidth / oldIdentity.chassisWidth) : 1;
-                        newIdentity.leftOffset = Math.round(oldIdentity.leftOffset * ratio);
+                        newIdentity.leftOffset = Math.round(newIdentity.chassisWidth / 2);
                         newIdentity.rightOffset = newIdentity.chassisWidth - newIdentity.leftOffset;
-                    } else if ('leftOffset' in data) {
+                    } 
+                    
+                    if ('leftOffset' in data) {
                         newIdentity.rightOffset = Math.max(0, newIdentity.chassisWidth - Number(data.leftOffset));
                     } else if ('rightOffset' in data) {
                         newIdentity.leftOffset = Math.max(0, newIdentity.chassisWidth - Number(data.rightOffset));
                     }
 
                     // Sync Identity to Chassis attributes
-                    const components = state.config.components.map(c => {
-                        if (c.category === 'CHASSIS') {
-                            const updatedPrivateAttrs = c.privateAttrs.map(group => {
-                                if (group.key === 'motionCenterAttr') {
-                                    return {
-                                        ...group,
-                                        elements: group.elements.map(ele => {
-                                            if (ele.key === 'headOffset(Idle)' || ele.key === 'headOffset (Full Load)') return { ...ele, value: newIdentity.headOffset };
-                                            if (ele.key === 'tailOffset(Idle)' || ele.key === 'tailOffset (Full Load)') return { ...ele, value: newIdentity.tailOffset };
-                                            if (ele.key === 'leftOffset(Idle)' || ele.key === 'leftOffset (Full Load)') return { ...ele, value: newIdentity.leftOffset };
-                                            if (ele.key === 'rightOffset(Idle)' || ele.key === 'rightOffset (Full Load)') return { ...ele, value: newIdentity.rightOffset };
-                                            return ele;
-                                        })
-                                    };
-                                }
-                                return group;
-                            });
-                            
-                            return {
-                                ...c,
-                                alias: `底盘 (${newIdentity.robotName})`,
-                                type: newIdentity.driveType === 'OMNI_WHEEL' ? 'omniChassis' : 'diffChassis',
-                                privateAttrs: updatedPrivateAttrs
-                            };
-                        }
-                        return c;
+                    const updatedConfig = syncChassisAttributes({
+                        ...state.config,
+                        identity: newIdentity,
+                        components
                     });
 
                     return {
-                        config: {
-                            ...state.config,
-                            identity: newIdentity,
-                            components
-                        },
+                        config: updatedConfig,
                         isDirty: true
                     };
                 }),
@@ -188,7 +256,7 @@ export const useProjectStore = create<ProjectState>()(
 
                     const registryInfo = schemaInfo || (masterRegistry as any)[category]?.[type];
 
-                    const privateAttrs: AttributeGroup[] = (registryInfo?.privateAttributes || registryInfo?.privateAttrs || []).map((group: any) => ({
+                    let privateAttrs: AttributeGroup[] = (registryInfo?.privateAttributes || registryInfo?.privateAttrs || []).map((group: any) => ({
                         key: group.key || 'private_group',
                         desc: group.label || group.desc || '私有属性',
                         elements: (group.elements || []).map((attr: any) => ({
@@ -198,16 +266,13 @@ export const useProjectStore = create<ProjectState>()(
                         }))
                     }));
 
-                    if (privateAttrs.length === 0 && registryInfo?.privateAttrs) {
-                        privateAttrs.push({
-                            key: 'private_group',
-                            desc: '私有属性',
-                            elements: registryInfo.privateAttrs.map((attr: any) => ({
-                                ...attr,
-                                value: attr.value !== undefined ? attr.value : (attr.type === 'DATA_BOOL' ? false : (attr.type === 'DATA_STRING' ? '' : 0)),
-                                boolBasic: true 
-                            }))
-                        });
+                    // Map based on categories natively mapped from SchemaEngine
+                    if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(category as string)) {
+                        let subType = type; // Use the provided type directly (e.g., 'subDriver', 'PMSMMotor')
+                        if ((category as string) === 'CHASSIS') subType = type || 'diffChassis';
+                        
+                        // We set standard grouped schemas entirely without loop restructuring
+                        privateAttrs = buildAttributesFromSchema(subType);
                     }
 
                     const newComponent: ComponentConfig = {
@@ -258,6 +323,15 @@ export const useProjectStore = create<ProjectState>()(
                     isDirty: true
                 })),
 
+                addComponents: (newComponents) => set((state) => ({
+                    config: {
+                        ...state.config,
+                        components: [...state.config.components, ...newComponents]
+                    },
+                    activeComponentId: newComponents.length > 0 ? newComponents[newComponents.length - 1].id : state.activeComponentId,
+                    isDirty: true
+                })),
+
                 removeComponent: (id) => set((state) => {
                     const compToRemove = state.config.components.find(c => c.id === id);
                     if (compToRemove?.category === 'CHASSIS') {
@@ -298,6 +372,16 @@ export const useProjectStore = create<ProjectState>()(
 
                 setActiveComponent: (id) => set({ activeComponentId: id }),
 
+                /**
+                 * 核心方法：更新指定组件的私有属性值 (privateAttrs)
+                 * 这个方法直接操作 Zustand 的 Immutable State 树，确保 UI 层能监听到变化并触发 React 重新渲染。
+                 * 
+                 * @param componentId 组件的 UUID
+                 * @param groupKey JSON 配置中的属性组 key
+                 * @param attrKey 同组内的具体属性 key
+                 * @param value 用户输入、选择或联动同步的新值
+                 * @param subKey (可选) 用于更新 COMBO_TYPE (下拉框) 内嵌的子属性值
+                 */
                 updateAttribute: (componentId, groupKey, attrKey, value, subKey) => set((state) => ({
                     config: {
                         ...state.config,
@@ -411,9 +495,27 @@ export const useProjectStore = create<ProjectState>()(
                 },
 
                 loadProject: (config) => {
+                    // Ensure linkage is calculated after import
+                    const identity = { ...config.identity };
+                    
+                    // If offsets are missing or default, force re-calc from L/W
+                    if (identity.chassisLength > 0 && (identity.headOffset + identity.tailOffset !== identity.chassisLength)) {
+                        identity.headOffset = Math.round(identity.chassisLength / 2);
+                        identity.tailOffset = identity.chassisLength - identity.headOffset;
+                    }
+                    if (identity.chassisWidth > 0 && (identity.leftOffset + identity.rightOffset !== identity.chassisWidth)) {
+                        identity.leftOffset = Math.round(identity.chassisWidth / 2);
+                        identity.rightOffset = identity.chassisWidth - identity.leftOffset;
+                    }
+
+                    const hydratedConfig = syncChassisAttributes({
+                        ...config,
+                        identity
+                    });
+
                     set({
-                        config,
-                        activeComponentId: config.components.length > 0 ? config.components[0].id : null,
+                        config: hydratedConfig,
+                        activeComponentId: hydratedConfig.components.length > 0 ? hydratedConfig.components[0].id : null,
                         isDirty: false
                     });
                 },

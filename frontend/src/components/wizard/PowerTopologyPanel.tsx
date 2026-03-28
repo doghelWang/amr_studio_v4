@@ -16,7 +16,6 @@ const DRIVE_WHEEL_COUNTS: Record<string, number> = {
     SINGLE_STEER: 1,
     DUAL_STEER: 2,
     QUAD_STEER: 4,
-    OMNI_WHEEL: 4,
 };
 
 // ━━━ Category key helpers ━━━
@@ -130,7 +129,6 @@ const POSITION_LABELS: Record<string, string[]> = {
     SINGLE_STEER: ['舵轮'],
     DUAL_STEER: ['前舵轮', '后舵轮'],
     QUAD_STEER: ['左前舵轮', '右前舵轮', '左后舵轮', '右后舵轮'],
-    OMNI_WHEEL: ['左前轮', '右前轮', '左后轮', '右后轮'],
 };
 
 // ━━━ Main PowerTopologyPanel ━━━

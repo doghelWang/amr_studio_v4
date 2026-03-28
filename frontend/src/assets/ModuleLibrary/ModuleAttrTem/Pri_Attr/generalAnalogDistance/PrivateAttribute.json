@@ -1,0 +1,109 @@
+{
+	"privateAttrs": [
+		{
+			"key": "analogDistanceAttr",
+			"desc": "模拟量测距属性",
+			"arrayBaseEle": [
+				{
+					"key": "minDist",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "最小检测范围"
+				},
+				{
+					"key": "maxDist",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 99999,
+					"doubleMinvalue": 0,
+					"unit": "mm",
+					"desc": "最大检测范围"
+				},
+				{
+					"key": "compType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ANALOG_DISTANCE_LASER",
+						"typeDesc": "测距激光",
+						"typeGroups": [
+							{
+								"key": "ANALOG_DISTANCE_LASER",
+								"desc": "测距激光"
+							},
+							{
+								"key": "ANALOG_ULTRASONIC",
+								"desc": "超声"
+							},
+							{
+								"key": "ANALOG_TOF",
+								"desc": "TOF"
+							},
+							{
+								"key": "ANALOG_PULLWIRE",
+								"desc": "拉线传感器"
+							}
+						]
+					},
+					"desc": "器件类型",
+					"boolHide": true
+				},
+				{
+					"key": "accessType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "VOLTAGE_ANALOG_SENSOR",
+						"typeDesc": "电压型模拟量测距传感器",
+						"typeGroups": [
+							{
+								"key": "VOLTAGE_ANALOG_SENSOR",
+								"desc": "电压型模拟量测距传感器",
+								"arrayCmobEle": [
+                                	{
+										"key": "voltR",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": 0,
+										"unit": "mV",
+										"desc": "最大行程处对应的输出电压值"
+									},
+									{
+										"key": "bReverse",
+										"type": "DATA_BOOL",
+										"boolValue": false,
+										"desc": "是否反向"
+									}
+                                ]
+							},
+							{
+								"key": "RESISTANCE_ANALOG_SENSOR",
+								"desc": "电阻型模拟量测距传感器",
+								"arrayCmobEle": [
+									{
+										"key": "resisR",
+										"type": "DATA_DOUBLE",
+										"doubleValue": 0,
+										"doubleMaxvalue": 99999,
+										"doubleMinvalue": 0,
+										"unit": "Ω",
+										"desc": "传感器在最大行程处对应的电阻值"
+									},
+									{
+										"key": "bReverse",
+										"type": "DATA_BOOL",
+										"boolValue": false,
+										"desc": "是否反向"
+									}
+                                ]
+							}
+						]
+					},
+					"desc": "接入类型"
+				}
+			]
+		}
+	]
+}

@@ -141,13 +141,12 @@ export interface ComponentConfig {
 }
 
 // ━━━ Drive & Navigation ━━━
-export type DriveType = 'STANDARD_DIFF' | 'DUAL_STEER' | 'QUAD_STEER' | 'OMNI_WHEEL' | 'SINGLE_STEER';
+export type DriveType = 'STANDARD_DIFF' | 'DUAL_STEER' | 'QUAD_STEER' | 'SINGLE_STEER';
 export const DRIVE_TYPE_LABELS: Record<DriveType, string> = {
     STANDARD_DIFF: '标准差速 Differential',
     SINGLE_STEER: '单舵轮 Single Steer',
     DUAL_STEER: '双舵轮 Dual Steer',
     QUAD_STEER: '四舵轮 Quad Steer',
-    OMNI_WHEEL: '全向轮 Omni',
 };
 
 export type NavigationMethod = 'LASER_SLAM' | 'REFLECTOR' | 'QR_CODE' | 'VISUAL_SLAM' | 'HYBRID';
@@ -277,81 +276,4 @@ export interface ValidationIssue {
     nodeId?: string;
 }
 
-// ━━━ Attribute Templates for Initialization ━━━
-export const CATEGORY_ATTRIBUTE_TEMPLATES: Record<string, SmartAttribute[]> = {
-    CHASSIS: [
-        // 运动中心参数 (Motion Center)
-        { key: 'headOffset(Idle)', desc: '距离车头距离（空载）', type: 'DATA_DOUBLE', value: 738, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'tailOffset(Idle)', desc: '距离车尾距离（空载）', type: 'DATA_DOUBLE', value: 738, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'leftOffset(Idle)', desc: '距离左侧距离（空载）', type: 'DATA_DOUBLE', value: 531.5, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'rightOffset(Idle)', desc: '距离右侧距离（空载）', type: 'DATA_DOUBLE', value: 531.5, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'headOffset (Full Load)', desc: '距离车头距离（满载）', type: 'DATA_DOUBLE', value: 738, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'tailOffset (Full Load)', desc: '距离车尾距离（满载）', type: 'DATA_DOUBLE', value: 738, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'leftOffset (Full Load)', desc: '距离左侧距离（满载）', type: 'DATA_DOUBLE', value: 531.5, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-        { key: 'rightOffset (Full Load)', desc: '距离右侧距离（满载）', type: 'DATA_DOUBLE', value: 531.5, unit: 'mm', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '运动中心参数' },
-
-        // 底盘参数 (Standard)
-        { key: 'wheelsNum', desc: '轮组个数', type: 'DATA_INT32', value: 1, unit: '个', boolMustfill: true, boolBasic: true, boolNoeditable: true, group: '底盘参数' },
-        { key: 'maxSpeed(Idle)', desc: '最大速度（空载）', type: 'DATA_DOUBLE', value: 800, unit: 'mm/s', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'maxAcceleration(Idle)', desc: '最大线加速度（空载）', type: 'DATA_DOUBLE', value: 500, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'maxDeceleration(Idle)', desc: '最大线减速度（空载）', type: 'DATA_DOUBLE', value: 400, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'maxSpeed (Full Load)', desc: '最大速度（满载）', type: 'DATA_DOUBLE', value: 600, unit: 'mm/s', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'maxAcceleration (Full Load)', desc: '最大线加速度（满载）', type: 'DATA_DOUBLE', value: 200, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'maxDeceleration (Full Load)', desc: '最大线减速度（满载）', type: 'DATA_DOUBLE', value: 200, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'avoidMaxDec (Idle)', desc: '避障最大减速度（空载）', type: 'DATA_DOUBLE', value: 200, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'avoidMaxDec (Full Load)', desc: '避障最大减速度（满载）', type: 'DATA_DOUBLE', value: 200, unit: 'mm/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        
-        { key: 'rotateMaxAngSpeed (Idle)', desc: '最大角速度（空载）', type: 'DATA_DOUBLE', value: 100, unit: '°/s', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'rotateMaxAngAcceleration (Idle)', desc: '最大角加速度（空载）', type: 'DATA_DOUBLE', value: 200, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'rotateMaxAngDeceleration (Idle)', desc: '最大角减速度（空载）', type: 'DATA_DOUBLE', value: 100, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'rotateMaxAngSpeed (Full Load)', desc: '最大角速度（满载）', type: 'DATA_DOUBLE', value: 200, unit: '°/s', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'rotateMaxAngAcceleration (Full Load)', desc: '最大角加速度（满载）', type: 'DATA_DOUBLE', value: 100, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'rotateMaxAngDeceleration (Full Load)', desc: '最大角减速度（满载）', type: 'DATA_DOUBLE', value: 100, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'avoidRotMaxAngDec (Idle)', desc: '避障最大旋转减速度（空载）', type: 'DATA_DOUBLE', value: 200, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-        { key: 'avoidRotMaxAngDec (Full Load)', desc: '避障最大旋转减速度（满载）', type: 'DATA_DOUBLE', value: 200, unit: '°/s2', boolMustfill: true, boolBasic: false, group: '底盘参数' },
-
-        { key: 'rotateDiameter', desc: '旋转直径', type: 'DATA_DOUBLE', value: 1063, unit: 'mm', boolMustfill: true, boolBasic: false, boolNoeditable: true, group: '底盘参数' },
-        { key: 'totalLoadWeight', desc: '额定负载', type: 'DATA_DOUBLE', value: 0, unit: 'kg', boolMustfill: true, boolBasic: false, boolHide: true, group: '底盘参数' },
-        { key: 'selfWeight', desc: '自重', type: 'DATA_DOUBLE', value: 0, unit: 'kg', boolMustfill: false, boolBasic: false, boolHide: true, group: '底盘参数' },
-
-        // 轮组属性 (Wheel Topology)
-        { key: 'wheelSpace', desc: '轮间距', type: 'DATA_DOUBLE', value: 900, unit: 'mm', boolMustfill: true, boolBasic: false, group: '轮组属性' },
-        { key: 'locCoordNX', desc: '轴中心X坐标', type: 'DATA_DOUBLE', value: 0, unit: 'mm', boolHide: true, group: '轮组属性' },
-        { key: 'locCoordNY', desc: '轴中心Y坐标', type: 'DATA_DOUBLE', value: 0, unit: 'mm', boolHide: true, group: '轮组属性' },
-        { key: 'locCoordNZ', desc: '轴中心Z坐标', type: 'DATA_DOUBLE', value: 0, unit: 'mm', boolHide: true, group: '轮组属性' },
-    ],
-    DRIVEWHEEL: [
-        { key: 'wheelRadius', desc: '轮有效半径', type: 'DATA_DOUBLE', value: 130, unit: 'mm', boolMustfill: true, boolBasic: true, group: '基本属性' },
-        { key: 'wheelType', desc: '轮组类型', type: 'DATA_INT32', value: 1, boolMustfill: true, boolBasic: true, group: '基本属性' },
-        { key: 'relateMotor', desc: '行走电机', type: 'DATA_FIXED_E', value: null, boolMustfill: false, boolBasic: false, group: '关联电机' },
-    ],
-    DRIVER: [
-        { key: 'chipPlatform', desc: '芯片平台', type: 'DATA_STRING', value: 'R131', boolMustfill: true, boolBasic: true, boolHide: true, group: '控制板属性' },
-        { key: 'softwareSpec', desc: '软件规格', type: 'DATA_STRING', value: 'NONE', boolMustfill: true, boolBasic: true, group: '控制板属性' },
-        { key: 'busType', desc: '总线类型', type: 'DATA_COMBOX', value: 'CAN_BUS', boolMustfill: true, boolBasic: false, group: '控制板属性' },
-        { key: 'overloadCapacity', desc: '过载能力', type: 'DATA_DOUBLE', value: 2.0, unit: '倍', boolMustfill: true, boolBasic: false, boolHide: true, group: '控制板属性' },
-        { key: 'overloadTime', desc: '过载时长', type: 'DATA_DOUBLE', value: 3.0, unit: 'S', boolMustfill: true, boolBasic: false, boolHide: true, group: '控制板属性' },
-        { key: 'ENCType', desc: '编码器类型', type: 'DATA_COMBOX', value: null, boolMustfill: true, boolBasic: true, group: '编码器属性' },
-        { key: 'initMode', desc: '电机初始状态', type: 'DATA_COMBOX', value: null, boolMustfill: false, boolBasic: false, boolHide: true, group: '电机属性' },
-    ],
-    MOTOR: [
-        { key: 'RPM', desc: '电机额定转速', type: 'DATA_INT32', value: 3000, unit: 'RPM', boolMustfill: true, boolBasic: true, group: '电机属性' },
-        { key: 'gearRatio', desc: '减速比', type: 'DATA_DOUBLE', value: 25, boolMustfill: true, boolBasic: true, group: '电机属性' },
-        { key: 'ratedCurr', desc: '额定电流', type: 'DATA_DOUBLE', value: 10, unit: 'A', boolBasic: false, group: '电机属性' },
-        { key: 'bReverse', desc: '是否反向', type: 'DATA_BOOL', value: false, boolBasic: false, group: '电机属性' },
-        { key: 'torque', desc: '额定扭矩', type: 'DATA_DOUBLE', value: 5, unit: 'N*m', boolBasic: false, group: '电机属性' },
-        { key: 'bTemper', desc: '是否支持温度获取', type: 'DATA_BOOL', value: true, boolBasic: false, group: '电机属性' },
-        { key: 'bHbrake', desc: '是否带抱闸', type: 'DATA_BOOL', value: true, boolBasic: false, group: '电机属性' },
-    ],
-    SENSOR: [
-        { key: 'minRange', desc: '最小测距', type: 'DATA_DOUBLE', value: 0.05, unit: 'm', boolBasic: true },
-        { key: 'maxRange', desc: '最大测距', type: 'DATA_DOUBLE', value: 30, unit: 'm', boolBasic: true },
-        { key: 'fov', desc: '扫描角度', type: 'DATA_DOUBLE', value: 270, unit: 'deg', boolBasic: true },
-        { key: 'needCalib', desc: '是否需要标定', type: 'DATA_BOOL', value: true, boolMustfill: true, boolHide: true },
-    ],
-    LASER: [
-        { key: 'minRange', desc: '最小测距', type: 'DATA_DOUBLE', value: 0.05, unit: 'm' },
-        { key: 'maxRange', desc: '最大测距', type: 'DATA_DOUBLE', value: 30, unit: 'm' },
-        { key: 'fov', desc: '扫描角度', type: 'DATA_DOUBLE', value: 270, unit: 'deg' },
-    ],
-};
+// Removed legacy hardcoded CATEGORY_ATTRIBUTE_TEMPLATES to enforce strict CModel Schema inheritance.

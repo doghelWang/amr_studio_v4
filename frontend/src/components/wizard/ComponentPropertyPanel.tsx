@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Spin, Empty, InputNumber, Switch, Select, message, 
-    Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert, Row, Col
+    Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert, Row, Col, Tooltip, AutoComplete
 } from 'antd';
 import { 
     EnvironmentOutlined, 
@@ -11,10 +11,13 @@ import {
     InfoCircleOutlined,
     EyeOutlined,
     EyeInvisibleOutlined,
+    QuestionCircleOutlined,
+    LinkOutlined,
 } from '@ant-design/icons';
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
-import { CATEGORY_ATTRIBUTE_TEMPLATES, SmartAttribute, AttributeGroup } from '../../store/types';
+import { SmartAttribute, AttributeGroup } from '../../store/types';
+import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource } from '../../store/SchemaEngine';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -27,6 +30,8 @@ interface Props {
   excludeElementKeys?: string[];
   onlyElementKeys?: string[];
   hideTabs?: boolean;
+  /** Callback invoked after an attribute is updated, for cross-component sync */
+  onAttributeChange?: (sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
 }
 
 export const ComponentPropertyPanel: React.FC<Props> = ({ 
@@ -36,7 +41,8 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
     onlyGroupKeys,
     excludeElementKeys,
     onlyElementKeys,
-    hideTabs = false
+    hideTabs = false,
+    onAttributeChange
 }) => {
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -83,6 +89,16 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
       }
   };
 
+  /**
+   * 属性值更新处理核心函数
+   * 当用户改变输入框/下拉菜单/开关的值时触发。
+   * 
+   * 处理逻辑：
+   * 1. 递归查找当前组件内部 JSON 结构 (privateAttrBranch) 中的匹配项，并更新 local state (compData) 以立即刷新 UI。
+   * 2. 调用 Zustand 核心 `updateAttribute`，同步到底层全局模型数据 config.components 中。
+   * 3. (核心) 若存在 `onAttributeChange` 回调（如通过 PowerSystemStep 传入的 syncAttributeToSiblings），
+   *    抛出事件以触发多设备的底层参数联动同步。
+   */
   const handleValueUpdate = (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
       if (compData) {
           // ── Backend-loaded mode ──
@@ -127,28 +143,49 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
 
       // Always update the Zustand store for consistency
       updateAttribute(selectedUuid, groupKey, eleKey, newValue);
+
+      // Notify parent for cross-component sync (e.g., wheel parameter sync)
+      if (onAttributeChange) {
+          onAttributeChange(selectedUuid, groupKey, eleKey, newValue);
+      }
+  };
+
+  // Helper to check visibility before rendering structures
+  const isElementVisible = (ele: any) => {
+      const rawKey = (ele.key || ele.id || '').toString();
+      const matchKey = rawKey.toLowerCase();
+      if (excludeElementKeys?.some(k => k.toLowerCase() === matchKey)) return false;
+      if (onlyElementKeys && !onlyElementKeys.some(k => k.toLowerCase() === matchKey)) return false;
+
+      const isAdvanced = ele.boolBasic === false;
+      const isAdvancedHidden = isAdvanced && !showAdvanced;
+      const isExplicitlyHidden = ele.boolHide === true;
+      if ((isAdvancedHidden || isExplicitlyHidden) && !showAdvanced) return false;
+      return true;
   };
 
   // ━━━ Attribute Rendering (Recursive) ━━━
-  const renderAttribute = (ele: any, groupKey: string, depth = 0) => {
-    // ━━━ Filter Element Keys (Case-Insensitive) ━━━
-    const rawKey = (ele.key || ele.id || '').toString();
-    const matchKey = rawKey.toLowerCase();
-    
-    // Check exclusion/inclusion filters
-    if (excludeElementKeys?.some(k => k.toLowerCase() === matchKey)) return null;
-    if (onlyElementKeys && !onlyElementKeys.some(k => k.toLowerCase() === matchKey)) return null;
+  const renderAttribute = (ele: any, groupKey: string, depth = 0, siblingContext?: any[]) => {
+    // ── Conditional visibility check (e.g., softwareSpec depends on type) ──
+    const subType = selectedStoreComponent?.type || selectedStoreComponent?.subModuleTypeKey;
+    const constraints = subType ? getEngineeringConstraints(subType) : null;
+    if (constraints?.conditionalVisibility?.[ele.key]) {
+        const rule = constraints.conditionalVisibility[ele.key];
+        // Find the dependent attribute's current value in siblings
+        const allSiblings = siblingContext || [];
+        const dependentAttr = allSiblings.find((s: any) => s.key === rule.dependsOn);
+        const depValue = dependentAttr?.value ?? dependentAttr?.comboType?.typeKey ?? dependentAttr?.combo_type?.type_key;
+        const showConditions = Array.isArray(rule.showWhen) ? rule.showWhen : [rule.showWhen];
+        if (!showConditions.includes(depValue)) {
+            return null; // Hidden by conditional rule
+        }
+    }
 
-    // ━━━ Visibility Logic ━━━
-    // 1. Hide if it's an advanced attribute and "Show Advanced" is off
+    if (!isElementVisible(ele)) return null;
+
     const isAdvanced = ele.boolBasic === false;
-    const isAdvancedHidden = isAdvanced && !showAdvanced;
-    
-    // 2. Hide if it's explicitly marked as hidden by system
     const isExplicitlyHidden = ele.boolHide === true;
-    
-    if ((isAdvancedHidden || isExplicitlyHidden) && !showAdvanced) return null;
-    const isVisibleDimmed = isExplicitlyHidden || isAdvancedHidden;
+    const isVisibleDimmed = isExplicitlyHidden || (isAdvanced && !showAdvanced);
 
     // ━━━ State Extraction ━━━
     const isReadOnly = isFixedHardware || ele.boolNoeditable;
@@ -158,20 +195,80 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
     const typeKey = combo?.typeKey || combo?.type_key;
     const groups = combo?.typeGroups || combo?.type_groups || [];
 
-    // Prioritize unified 'value' field from Store, fall back to legacy proto-specific fields
     const currentVal = ele.value !== undefined ? ele.value : (
         ele.doubleValue ?? ele.double_value ?? ele.intValue ?? ele.int32Value ?? ele.int32_value ?? 
         ele.boolValue ?? ele.bool_value ?? ele.stringValue ?? ele.string_value
     );
 
+    // Physical meaning tooltip
+    const tooltip = getTooltip(ele.key);
+    // Preset options (e.g., encoderLine: [2500, 3000, 4000])
+    const presets = getPresetOptions(ele.key);
+
     let inputNode = null;
 
     // ━━━ Render Control based on Type ━━━
-    if (ele.type === 'DATA_BOOL' || typeof currentVal === 'boolean') {
+    if (ele.type === 'DATA_FIXED_E') {
+        // Component reference selector
+        const fixedSources: string[] = ele.fixedSource || [];
+        const allComponents = config.components;
+        
+        // Filter components matching any fixedSource path
+        const matchingComponents = allComponents.filter((c: any) => {
+            if (c.id === selectedUuid) return false; // Exclude self
+            return fixedSources.some((src: string) => {
+                const filter = parseFixedSource(src);
+                const catMatch = c.category === filter.category || 
+                                 c.category?.toLowerCase() === filter.category?.toLowerCase();
+                const subMatch = !filter.subType || c.type === filter.subType || c.subModuleTypeKey === filter.subType;
+                return catMatch && subMatch;
+            });
+        });
+        
+        inputNode = (
+            <Select
+                disabled={isReadOnly}
+                value={currentVal || undefined}
+                placeholder={<span style={{ fontSize: 11 }}><LinkOutlined /> 选择关联组件</span>}
+                style={{ width: '100%' }}
+                allowClear
+                options={matchingComponents.map((c: any) => ({
+                    label: <span>{c.alias} <Tag style={{ fontSize: 9, marginLeft: 4 }} bordered={false} color="blue">{c.type}</Tag></span>,
+                    value: c.id
+                }))}
+                onChange={(v) => handleValueUpdate(groupKey, ele.key, v || null, 'value')}
+                notFoundContent={<span style={{ fontSize: 11, color: '#666' }}>暂无可选组件（请先添加对应类型的模块）</span>}
+            />
+        );
+    } else if (ele.type === 'DATA_BOOL' || typeof currentVal === 'boolean') {
         inputNode = <Switch disabled={isReadOnly} checked={!!currentVal} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, ele.value !== undefined ? 'value' : 'boolValue')} />;
+    } else if (presets && (ele.type === 'DATA_INT32' || ele.type === 'DATA_DOUBLE')) {
+        // Preset quick-select + manual input combo
+        inputNode = (
+            <Space.Compact style={{ width: '100%' }}>
+                <Select
+                    disabled={isReadOnly}
+                    value={presets.includes(currentVal) ? currentVal : undefined}
+                    style={{ width: '55%' }}
+                    placeholder="快选"
+                    allowClear
+                    options={presets.map(p => ({ label: String(p), value: p }))}
+                    onChange={(v) => { if (v !== undefined) handleValueUpdate(groupKey, ele.key, v, ele.value !== undefined ? 'value' : (ele.type === 'DATA_DOUBLE' ? 'doubleValue' : 'int32Value')); }}
+                />
+                <InputNumber
+                    disabled={isReadOnly}
+                    style={{ width: '45%' }}
+                    value={currentVal}
+                    min={ele.minValue}
+                    max={ele.maxValue}
+                    placeholder="手动"
+                    onChange={(v) => handleValueUpdate(groupKey, ele.key, v, ele.value !== undefined ? 'value' : (ele.type === 'DATA_DOUBLE' ? 'doubleValue' : 'int32Value'))}
+                />
+            </Space.Compact>
+        );
     } else if (ele.type === 'DATA_DOUBLE' || ele.type === 'DATA_INT32' || typeof currentVal === 'number') {
         const valType = ele.value !== undefined ? 'value' : (ele.type === 'DATA_DOUBLE' ? 'doubleValue' : 'int32Value');
-        inputNode = <InputNumber disabled={isReadOnly} style={{ width: '100%' }} value={currentVal} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, valType)} />;
+        inputNode = <InputNumber disabled={isReadOnly} style={{ width: '100%' }} value={currentVal} min={ele.minValue} max={ele.maxValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, valType)} />;
     } else if (combo || ele.type === 'DATA_COMBOX') {
         inputNode = (
             <Select 
@@ -195,6 +292,12 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                     {isRequired && <span style={{ marginLeft: 4, color: '#ff4d4f' }}>*</span>}
                     {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'rgba(255,255,255,0.05)' }}>锁定</Tag>}
                     {isExplicitlyHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>隐藏属性</Tag>}
+                    {ele.type === 'DATA_FIXED_E' && <LinkOutlined style={{ marginLeft: 6, fontSize: 10, color: '#58a6ff' }} />}
+                    {tooltip && (
+                        <Tooltip title={tooltip} placement="topLeft">
+                            <QuestionCircleOutlined style={{ marginLeft: 6, fontSize: 10, color: '#8b949e', cursor: 'help' }} />
+                        </Tooltip>
+                    )}
                 </span>
                 {ele.unit && <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>{ele.unit}</span>}
             </div>
@@ -204,6 +307,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                     {groups
                         .filter((g: any) => g.key === typeKey)
                         .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || g.arrayAttr || [])
+                        .filter(isElementVisible)
                         .map((sub: any) => renderAttribute(sub, groupKey, depth + 1))
                     }
                 </div>
@@ -216,7 +320,8 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
   // ━━━ Render a group of attributes (from either backend or store format) ━━━
   const renderGroup = (group: any) => {
       // group might be from backend (arrayBaseEle) or from store (elements)
-      const elems = group.arrayBaseEle || group.array_base_ele || group.elements || [];
+      const rawElems = group.arrayBaseEle || group.array_base_ele || group.elements || [];
+      const elems = rawElems.filter(isElementVisible);
       if (elems.length === 0) return null;
       
       // Secondary Grouping: Group elements by their 'group' metadata property
@@ -253,7 +358,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                               {subElems.map((ele: any) => (
                                   <Col span={12} key={ele.key}>
                                       <div style={{ padding: '4px 0' }}>
-                                          {renderAttribute(ele, group.key)}
+                                          {renderAttribute(ele, group.key, 0, rawElems)}
                                       </div>
                                   </Col>
                               ))}
@@ -288,13 +393,14 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
 
   // Fallback to Category Template if both are empty (Audit-0327-2-1)
   if (activeGroups.length === 0 && !excludeGroupKeys && !onlyGroupKeys) {
-      const template = CATEGORY_ATTRIBUTE_TEMPLATES[selectedStoreComponent.category];
-      if (template) {
-          activeGroups = [{
-              key: 'private_group',
-              desc: '模块参数',
-              elements: template.map(t => ({ ...t as SmartAttribute, boolBasic: true }))
-          }];
+      if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(selectedStoreComponent.category)) {
+          let subType = 'GENERIC';
+          if (selectedStoreComponent.category === 'CHASSIS') subType = 'diffChassis';
+          else if (selectedStoreComponent.category === 'DRIVEWHEEL') subType = 'horizontalSteerWheel';
+          else if (selectedStoreComponent.category === 'DRIVER') subType = 'subDriver';
+          else if (selectedStoreComponent.category === 'MOTOR') subType = 'PMSMMotor';
+          
+          activeGroups = buildAttributesFromSchema(subType);
       }
   }
 

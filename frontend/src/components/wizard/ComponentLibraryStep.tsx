@@ -31,7 +31,8 @@ import {
     SteerWheelDiagram, 
     OmniWheelDiagram 
 } from './WheelTypeDiagrams';
-import { DRIVE_TYPE_LABELS, ComponentConfig, CATEGORY_ATTRIBUTE_TEMPLATES } from '../../store/types';
+import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
+import { buildAttributesFromSchema } from '../../store/SchemaEngine';
 import { PowerTopologyPanel } from './PowerTopologyPanel';
 
 const { Title, Text } = Typography;
@@ -285,20 +286,13 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
     const handleManualAdd = () => {
         if (!manualCategory) return;
 
-        // Inject default attribute templates by category (today_report.md remaining item #1)
-        const categoryKey = manualCategory.toUpperCase();
-        const templateAttrs = CATEGORY_ATTRIBUTE_TEMPLATES[categoryKey] || [];
-        const injectedAttrs = templateAttrs.map(tpl => ({
-            key: tpl.key,
-            desc: tpl.desc,
-            type: tpl.type,
-            value: tpl.value,
-            unit: tpl.unit || '',
-            boolBasic: true,
-            boolParse: true,
-            boolHide: false,
-            boolNoeditable: false,
-        }));
+        let targetSubType = 'GENERIC';
+        if (manualCategory.toUpperCase() === 'MOTOR') targetSubType = 'PMSMMotor';
+        else if (manualCategory.toUpperCase() === 'DRIVER') targetSubType = 'subDriver';
+        else if (manualCategory.toUpperCase() === 'DRIVEWHEEL') targetSubType = 'horizontalSteerWheel';
+        else if (manualCategory.toUpperCase() === 'CHASSIS') targetSubType = 'diffChassis';
+
+        const injectedAttrs = buildAttributesFromSchema(targetSubType);
 
         const shortId = uuidv4().slice(0, 4);
         const dummyItem = {
@@ -306,14 +300,14 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
             name: `custom_${manualCategory.toLowerCase()}_${shortId}`,
             category: manualCategory,
             mainModuleTypeKey: manualCategory,
-            subModuleTypeKey: 'GENERIC',
+            subModuleTypeKey: targetSubType,
             mainModuleType: {
                 typeKey: manualCategory,
                 comboType: { typeKey: manualCategory }
             },
             generalAttr: { name: '自定义组件', alias: 'new_component' },
             structParam: {},
-            privateAttrs: injectedAttrs.length > 0 ? [{ groupKey: 'basic', groupName: '基本参数', attrs: injectedAttrs }] : [],
+            privateAttrs: injectedAttrs,
             interfaces: [],
             parentNodeUuid: manualCategory !== 'CHASSIS' ? components.find(c => c.category === 'CHASSIS')?.id : undefined
         };
@@ -703,12 +697,9 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                     if (driveTarget === 'STANDARD_DIFF') {
                                         // diffSteerWheel, diffWheel, or name contains diff
                                         if (!lowerSub.includes('diff') && !groupName.includes('diff') && !fileName.includes('diff') && !fileName.includes('差速')) return false;
-                                    } else if (driveTarget === 'SINGLE_STEER' || driveTarget === 'DUAL_STEER') {
+                                    } else if (driveTarget === 'SINGLE_STEER' || driveTarget === 'DUAL_STEER' || driveTarget === 'QUAD_STEER') {
                                         // steerWheel, horizontalSteer, verticalSteer
                                         if (!lowerSub.includes('steer') && !groupName.includes('steer') && !fileName.includes('舵轮')) return false;
-                                    } else if (driveTarget === 'OMNI_WHEEL') {
-                                        // mecanum, omni
-                                        if (!lowerSub.includes('mecanum') && !lowerSub.includes('omni') && !fileName.includes('麦克')) return false;
                                     }
                                 }
 

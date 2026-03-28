@@ -1,0 +1,14 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "port",
+			"type": "DATA_INT32",
+			"int32Value": 1,
+			"int32Maxvalue": 99999,
+			"int32Minvalue": 1,
+			"desc": "端口",
+			"boolParse": true,
+			"boolHide": true
+		}
+	]
+}

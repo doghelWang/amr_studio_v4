@@ -1,0 +1,22 @@
+{
+  "diffChassis": {
+    "attributes": [],
+    "structParams": [],
+    "interfaces": []
+  },
+  "diffWheel": {
+    "attributes": [],
+    "structParams": [],
+    "interfaces": []
+  },
+  "subDriver": {
+    "attributes": [],
+    "structParams": [],
+    "interfaces": []
+  },
+  "PMSMMotor": {
+    "attributes": [],
+    "structParams": [],
+    "interfaces": []
+  }
+}
