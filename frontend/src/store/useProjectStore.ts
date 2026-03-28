@@ -23,7 +23,15 @@ const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
 
     const components = allComponents.map(c => {
         if (c.category === 'CHASSIS') {
-            const updatedPrivateAttrs = c.privateAttrs.map(group => {
+            const expectedType = identity.driveType?.includes('STEER') ? 'steerChassis' : 'diffChassis';
+            let targetAttrs = c.privateAttrs;
+            
+            // If chassis type changed from diff to steer (or vice versa), rebuild the privateAttrs schema
+            if (c.type !== expectedType) {
+                targetAttrs = buildAttributesFromSchema(expectedType);
+            }
+
+            const updatedPrivateAttrs = targetAttrs.map(group => {
                 return {
                     ...group,
                     elements: group.elements.map(ele => {
@@ -71,12 +79,11 @@ const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
                 };
             });
 
-
             return {
                 ...c,
                 name: identity.robotName || 'chassis',
                 alias: `底盘 (${identity.robotName || 'Robot Chassis'})`,
-                type: identity.driveType?.includes('STEER') ? 'steerChassis' : 'diffChassis',
+                type: expectedType,
                 privateAttrs: updatedPrivateAttrs
             };
         }
