@@ -49,3 +49,19 @@
   - 触发条件：任何涉及 **代码框架变更**、**部署流程优化** 或 **接口协议更迭** 的修改。
   - 执行要求：必须在同一提交 (Commit) 或 任务闭环前，完成 `README.md` 的同步更新。严禁在部署方式变更后留下过时的操作指南。
 - **个人信息脱敏 (Privacy Protection)**：**严禁**在 `README.md` 或任何公开文档中展示用户姓名、敏感联系方式或私有路径。所有贡献者标识应使用职能名或团队匿名。
+
+## 9. 领域工程模型约束 (Domain Constraints)
+从模块硬件设计属性推导出的强制性前端拦截规则。这些约束跨越了基础 JSON 描述，属于行业经验级固化逻辑，通过 `ENGINEERING_CONSTRAINTS` 进行注入：
+- **电机组件 (PMSMMotor)**：伺服电机（PMSM）严禁无编码器作业，系统**必须屏蔽** `ENCODER_NULL` 枚举项，并强制默认选中增量式或绝对式。
+- **差速舵轮组 (diffSteerWheel)**：对于差速舵轮的转向反馈（AngleSensor），工程上只采用“绝对值外置”结构，系统**必须屏蔽** `GROUP_CALI_INC_EXTERNAL` 选项以防配错。
+- **驱动器 (subDriver)**：`softwareSpec`（软件版本）输入框**仅限**在驱动类型 `type` 被选中为自研驱动器 (`MOTOR_SERVO_TYPE_HIK`) 时可见，其它型号一律隐藏且置为默认值。
+- **编码器节点独立性原则**：
+  - 电机自身的 `ENCType`（如增量编码器的线数）属于自身内部描述。
+  - 只有由于外部测量结构所需的（如轮组外置绝对值传感器），才应用 `DATA_FIXED_E` 作为 `relateEncode` 引用独立的 `SENSOR` 硬件节点，严禁将内部描述错认为是外部对象引用。
+
+## 10. 拓扑级联推导规则 (Topology Auto-Derivation)
+为了保障生成树具备完整的机械与电气一致性，用户新建任意级根节点组件时，必须依据以下法则触发**雪崩式的子组件衍生与引用绑定**：
+- `diffWheel` (差速轮)：自动下挂生成 1 个 `PMSMMotor` 节点并绑定至 `relateMotor`。
+- `horizontalSteerWheel` / `verticalSteerWheel` (常规舵轮)：自动下挂生成 2 个 `PMSMMotor` 节点，分别绑定至 `relateWalkMotor` 与 `relateRotMotor`。
+- `diffSteerWheel` (差速舵轮)：自动下挂生成 2 个 `PMSMMotor` 节点（左/右独立驱动），并外置生成 1 个 `absoluteValueEncode` (编码器) 挂载至转向反馈 `relateEncode` 链路中。
+- **UI 引用呈现规则**：凡 JSON Schema 类型为 `DATA_FIXED_E` 的字段，**强制渲染为关联节点 UUID 选择器**（基于 `fixedSource` 元数据反解 Category 过滤可关联集合）。
