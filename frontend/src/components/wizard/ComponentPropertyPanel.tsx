@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
     Spin, Empty, InputNumber, Switch, Select, message, 
-    Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert
+    Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert, Row, Col
 } from 'antd';
 import { 
     EnvironmentOutlined, 
@@ -14,6 +14,7 @@ import {
 } from '@ant-design/icons';
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
+import { CATEGORY_ATTRIBUTE_TEMPLATES, SmartAttribute, AttributeGroup } from '../../store/types';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -21,9 +22,22 @@ const { Panel } = Collapse;
 interface Props {
   projectId: string | null;
   selectedUuid: string;
+  excludeGroupKeys?: string[];
+  onlyGroupKeys?: string[];
+  excludeElementKeys?: string[];
+  onlyElementKeys?: string[];
+  hideTabs?: boolean;
 }
 
-export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUuid }) => {
+export const ComponentPropertyPanel: React.FC<Props> = ({ 
+    projectId, 
+    selectedUuid,
+    excludeGroupKeys,
+    onlyGroupKeys,
+    excludeElementKeys,
+    onlyElementKeys,
+    hideTabs = false
+}) => {
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -115,75 +129,78 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
       updateAttribute(selectedUuid, groupKey, eleKey, newValue);
   };
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // renderAttribute: renders an individual attribute element
-  // Supports boolHide via showAdvanced toggle
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // ━━━ Attribute Rendering (Recursive) ━━━
   const renderAttribute = (ele: any, groupKey: string, depth = 0) => {
-    // Hide motionCenterAttr for CHASSIS (extracted to ChassisStep)
-    if (selectedStoreComponent?.category === 'CHASSIS' && groupKey === 'motionCenterAttr') {
-        return null;
-    }
+    // ━━━ Filter Element Keys (Case-Insensitive) ━━━
+    const rawKey = (ele.key || ele.id || '').toString();
+    const matchKey = rawKey.toLowerCase();
+    
+    // Check exclusion/inclusion filters
+    if (excludeElementKeys?.some(k => k.toLowerCase() === matchKey)) return null;
+    if (onlyElementKeys && !onlyElementKeys.some(k => k.toLowerCase() === matchKey)) return null;
 
-    // Respect boolHide unless user toggled advanced view
-    const isHidden = ele.boolHide === true;
-    if (isHidden && !showAdvanced) return null;
+    // ━━━ Visibility Logic ━━━
+    // 1. Hide if it's an advanced attribute and "Show Advanced" is off
+    const isAdvanced = ele.boolBasic === false;
+    const isAdvancedHidden = isAdvanced && !showAdvanced;
+    
+    // 2. Hide if it's explicitly marked as hidden by system
+    const isExplicitlyHidden = ele.boolHide === true;
+    
+    if ((isAdvancedHidden || isExplicitlyHidden) && !showAdvanced) return null;
+    const isVisibleDimmed = isExplicitlyHidden || isAdvancedHidden;
 
+    // ━━━ State Extraction ━━━
+    const isReadOnly = isFixedHardware || ele.boolNoeditable;
+    const isRequired = ele.boolMustfill === true;
+    
     const combo = ele.comboType || ele.combo_type;
     const typeKey = combo?.typeKey || combo?.type_key;
     const groups = combo?.typeGroups || combo?.type_groups || [];
 
-    const numericValue = ele.doubleValue ?? ele.double_value ?? ele.floatValue ?? ele.float_value;
-    const numType = (ele.doubleValue !== undefined || ele.double_value !== undefined) ? 'doubleValue' : 'floatValue';
-    const intValue = ele.int32Value ?? ele.int32_value ?? ele.uint32Value ?? ele.uint32_value ?? ele.int64Value ?? ele.int64_value;
-    const intType = (ele.int32Value !== undefined || ele.int32_value !== undefined) ? 'int32Value' : 'int64Value';
-    
-    // Handle SmartAttribute from store (value field)
-    const storeValue = ele.value;
+    // Prioritize unified 'value' field from Store, fall back to legacy proto-specific fields
+    const currentVal = ele.value !== undefined ? ele.value : (
+        ele.doubleValue ?? ele.double_value ?? ele.intValue ?? ele.int32Value ?? ele.int32_value ?? 
+        ele.boolValue ?? ele.bool_value ?? ele.stringValue ?? ele.string_value
+    );
 
     let inputNode = null;
-    if (numericValue !== undefined) {
-        inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={numericValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, numType)} />;
-    } else if (intValue !== undefined) {
-        inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={intValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, intType)} />;
-    } else if (ele.boolValue !== undefined || ele.bool_value !== undefined) {
-        inputNode = <Switch disabled={isFixedHardware || ele.boolNoeditable} checked={ele.boolValue ?? ele.bool_value} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
-    } else if (ele.stringValue !== undefined || ele.string_value !== undefined) {
-        inputNode = <Input disabled={isFixedHardware || ele.boolNoeditable} value={ele.stringValue ?? ele.string_value} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
-    } else if (combo) {
+
+    // ━━━ Render Control based on Type ━━━
+    if (ele.type === 'DATA_BOOL' || typeof currentVal === 'boolean') {
+        inputNode = <Switch disabled={isReadOnly} checked={!!currentVal} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, ele.value !== undefined ? 'value' : 'boolValue')} />;
+    } else if (ele.type === 'DATA_DOUBLE' || ele.type === 'DATA_INT32' || typeof currentVal === 'number') {
+        const valType = ele.value !== undefined ? 'value' : (ele.type === 'DATA_DOUBLE' ? 'doubleValue' : 'int32Value');
+        inputNode = <InputNumber disabled={isReadOnly} style={{ width: '100%' }} value={currentVal} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, valType)} />;
+    } else if (combo || ele.type === 'DATA_COMBOX') {
         inputNode = (
             <Select 
-                disabled={isFixedHardware || ele.boolNoeditable}
+                disabled={isReadOnly}
                 value={typeKey} 
                 style={{ width: '100%' }}
                 options={groups.map((g: any) => ({ label: g.desc || g.key, value: g.key }))}
                 onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'comboType')}
             />
         );
-    } else if (storeValue !== undefined && storeValue !== null) {
-        // Fallback: store SmartAttribute with .value field
-        if (typeof storeValue === 'number') {
-            inputNode = <InputNumber disabled={isFixedHardware || ele.boolNoeditable} style={{ width: '100%' }} value={storeValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'doubleValue')} />;
-        } else if (typeof storeValue === 'boolean') {
-            inputNode = <Switch disabled={isFixedHardware || ele.boolNoeditable} checked={storeValue} onChange={(v) => handleValueUpdate(groupKey, ele.key, v, 'boolValue')} />;
-        } else {
-            inputNode = <Input disabled={isFixedHardware || ele.boolNoeditable} value={String(storeValue)} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, 'stringValue')} />;
-        }
+    } else {
+        const valType = ele.value !== undefined ? 'value' : 'stringValue';
+        inputNode = <Input disabled={isReadOnly} value={currentVal ?? ''} placeholder={isReadOnly ? '由系统自动计算' : '请输入值'} onChange={(e) => handleValueUpdate(groupKey, ele.key, e.target.value, valType)} />;
     }
 
     return (
-        <div key={ele.key} style={{ marginBottom: 12, marginLeft: depth * 16, opacity: isHidden ? 0.65 : 1 }}>
+        <div key={ele.key} style={{ marginBottom: 16, marginLeft: depth * 16, opacity: isVisibleDimmed ? 0.6 : 1 }}>
             <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontWeight: depth > 0 ? 400 : 600 }}>
+                <span style={{ fontWeight: 500, color: isRequired ? '#ff7875' : 'inherit' }}>
                     {ele.desc || ele.key}
-                    {ele.boolMustfill && <Tag color="error" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px' }}>必填</Tag>}
-                    {isHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>高级</Tag>}
+                    {isRequired && <span style={{ marginLeft: 4, color: '#ff4d4f' }}>*</span>}
+                    {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'rgba(255,255,255,0.05)' }}>锁定</Tag>}
+                    {isExplicitlyHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>隐藏属性</Tag>}
                 </span>
                 {ele.unit && <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>{ele.unit}</span>}
             </div>
-            {inputNode || <Text type="secondary" style={{ fontSize: 11 }}>-</Text>}
-            {combo && groups && (
-                <div style={{ marginTop: 8, borderLeft: '2px solid var(--accent-soft)', paddingLeft: 12, marginBottom: 16 }}>
+            {inputNode}
+            {combo && typeKey && (
+                <div style={{ marginTop: 8, borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: 12, marginBottom: 16 }}>
                     {groups
                         .filter((g: any) => g.key === typeKey)
                         .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || g.arrayAttr || [])
@@ -195,16 +212,55 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
     );
   };
 
+
   // ━━━ Render a group of attributes (from either backend or store format) ━━━
   const renderGroup = (group: any) => {
       // group might be from backend (arrayBaseEle) or from store (elements)
       const elems = group.arrayBaseEle || group.array_base_ele || group.elements || [];
-      const rendered = elems.map((ele: any) => renderAttribute(ele, group.key)).filter(Boolean);
-      if (rendered.length === 0) return null;
+      if (elems.length === 0) return null;
+      
+      // Secondary Grouping: Group elements by their 'group' metadata property
+      const subGroups: Record<string, any[]> = {};
+      elems.forEach((ele: any) => {
+          const g = ele.group || '基本参数';
+          if (!subGroups[g]) subGroups[g] = [];
+          subGroups[g].push(ele);
+      });
+      
       return (
-          <Card key={group.key} title={group.desc || group.key} size="small" 
-                style={{ marginBottom: 12, borderRadius: 8, background: 'rgba(255,255,255,0.01)' }}>
-              {rendered}
+          <Card 
+            key={group.key} 
+            title={<span style={{ fontSize: 13, fontWeight: 600, color: '#f0f6fc' }}>{group.desc || group.key}</span>} 
+            size="small" 
+            style={{ 
+                marginBottom: 20, 
+                borderRadius: 8, 
+                background: 'rgba(255,255,255,0.01)', 
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            }}
+            headStyle={{ borderBottom: '1px solid rgba(255,255,255,0.05)', minHeight: 40 }}
+          >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  {Object.entries(subGroups).map(([subGroupTitle, subElems]) => (
+                      <div key={subGroupTitle}>
+                          {Object.keys(subGroups).length > 1 && (
+                              <div style={{ marginBottom: 12, paddingBottom: 4, borderBottom: '1px dashed rgba(255,255,255,0.1)' }}>
+                                  <Text style={{ fontSize: 12, fontWeight: 500, color: 'var(--accent)' }}>{subGroupTitle}</Text>
+                              </div>
+                          )}
+                          <Row gutter={[24, 0]}>
+                              {subElems.map((ele: any) => (
+                                  <Col span={12} key={ele.key}>
+                                      <div style={{ padding: '4px 0' }}>
+                                          {renderAttribute(ele, group.key)}
+                                      </div>
+                                  </Col>
+                              ))}
+                          </Row>
+                      </div>
+                  ))}
+              </div>
           </Card>
       );
   };
@@ -221,7 +277,27 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
   // Use store as primary when no backend data (no projectId / fresh component)
   const storeGroups = selectedStoreComponent.privateAttrs || [];
   
-  const activeGroups = backendGroups.length > 0 ? backendGroups : storeGroups;
+  let activeGroups = backendGroups.length > 0 ? backendGroups : storeGroups;
+  
+  // ━━━ Filter Groups (NEW) ━━━
+  activeGroups = activeGroups.filter(g => {
+    if (excludeGroupKeys?.includes(g.key)) return false;
+    if (onlyGroupKeys && !onlyGroupKeys.includes(g.key)) return false;
+    return true;
+  });
+
+  // Fallback to Category Template if both are empty (Audit-0327-2-1)
+  if (activeGroups.length === 0 && !excludeGroupKeys && !onlyGroupKeys) {
+      const template = CATEGORY_ATTRIBUTE_TEMPLATES[selectedStoreComponent.category];
+      if (template) {
+          activeGroups = [{
+              key: 'private_group',
+              desc: '模块参数',
+              elements: template.map(t => ({ ...t as SmartAttribute, boolBasic: true }))
+          }];
+      }
+  }
+
   const hasAttributes = activeGroups.length > 0;
 
   const gen = compData?.generalAttr || compData?.general_attr || selectedStoreComponent.generalAttr || {};
@@ -270,8 +346,8 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
                       <Text code style={{ fontSize: 11, color: '#58a6ff' }}>{selectedStoreComponent.id}</Text>
                   </List.Item>
                   <List.Item style={{ flexDirection: 'column', alignItems: 'flex-start', border: 'none' }}>
-                      <Text type="secondary" style={{ fontSize: 11 }}>模型名称 (Model Key)</Text>
-                      <Tag color="blue">{selectedStoreComponent.name}</Tag>
+                      <Text type="secondary" style={{ fontSize: 11 }}>模型/实例名称 (Name)</Text>
+                      <Input value={selectedStoreComponent.name} onChange={e => useProjectStore.getState().updateComponent(selectedUuid, { name: e.target.value })} />
                   </List.Item>
                   <List.Item style={{ flexDirection: 'column', alignItems: 'flex-start', border: 'none' }}>
                       <Text type="secondary" style={{ fontSize: 11 }}>分类 (Category)</Text>
@@ -379,23 +455,32 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
 
   let visibleTabs = tabItems;
   if (selectedStoreComponent.category === 'CHASSIS') {
-      // Chassis has no mounting coords (it IS the origin) and no external electrical interfaces
       visibleTabs = tabItems.filter(t => t.key !== 'mounting' && t.key !== 'interfaces');
+  } else if (selectedStoreComponent.parentNodeUuid) {
+      // Sub-components (Motors/Drivers) implicitly follow parent coords and handle interfaces differently
+      visibleTabs = tabItems.filter(t => t.key !== 'mounting' && t.key !== 'interfaces');
+  }
+
+  if (hideTabs) {
+    return (
+      <div className="property-panel-container no-tabs" style={{ padding: '0 8px' }}>
+        {contextHolder}
+        {!hasAttributes ? (
+            <Alert 
+                message="该模块暂无私有属性数据"
+                type="info"
+                showIcon
+            />
+        ) : (
+            activeGroups.map((group: any) => renderGroup(group)).filter(Boolean)
+        )}
+      </div>
+    );
   }
 
   return (
     <div className="property-panel-container" style={{ padding: '0 8px' }}>
       {contextHolder}
-      {!projectId && hasAttributes && (
-          <Alert 
-              message="实时模式 (本地)" 
-              description="当前未加载项目文件，属性数据来自组件库定义，修改将实时保存在内存中。"
-              type="info" 
-              showIcon 
-              closable 
-              style={{ marginBottom: 12, fontSize: 11 }}
-          />
-      )}
       <Tabs 
         defaultActiveKey={selectedStoreComponent.category === 'CHASSIS' ? 'identity' : 'private'}
         items={visibleTabs} 
@@ -406,6 +491,9 @@ export const ComponentPropertyPanel: React.FC<Props> = ({ projectId, selectedUui
           .custom-property-tabs .ant-tabs-nav { margin-bottom: 20px !important; }
           .custom-property-tabs .ant-tabs-tab { padding: 8px 4px !important; }
           .custom-property-tabs .ant-tabs-ink-bar { height: 2px !important; }
+          .property-panel-container.no-tabs .ant-card { border: none !important; background: transparent !important; padding: 0 !important; }
+          .property-panel-container.no-tabs .ant-card-head { border: none !important; padding: 0 !important; min-height: 0 !important; margin-bottom: 16px !important; }
+          .property-panel-container.no-tabs .ant-card-body { padding: 0 !important; }
       `}</style>
     </div>
   );

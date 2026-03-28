@@ -31,63 +31,15 @@ import {
     SteerWheelDiagram, 
     OmniWheelDiagram 
 } from './WheelTypeDiagrams';
-import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
+import { DRIVE_TYPE_LABELS, ComponentConfig, CATEGORY_ATTRIBUTE_TEMPLATES } from '../../store/types';
 import { PowerTopologyPanel } from './PowerTopologyPanel';
 
 const { Title, Text } = Typography;
 
 // Category-based attribute templates for manual component creation
 // Implements today_report.md remaining item #1: auto-inject attrs by category
-const CATEGORY_ATTRIBUTE_TEMPLATES: Record<string, Array<{ key: string; desc: string; type: string; value: any; unit?: string }>> = {
-    CHASSIS: [
-        { key: 'length', desc: '车体长度', type: 'DATA_DOUBLE', value: 800, unit: 'mm' },
-        { key: 'width', desc: '车体宽度', type: 'DATA_DOUBLE', value: 600, unit: 'mm' },
-        { key: 'height', desc: '车体高度', type: 'DATA_DOUBLE', value: 300, unit: 'mm' },
-        { key: 'headOffset', desc: '前向偏移', type: 'DATA_DOUBLE', value: 400, unit: 'mm' },
-        { key: 'tailOffset', desc: '后向偏移', type: 'DATA_DOUBLE', value: 400, unit: 'mm' },
-        { key: 'maxSpeed', desc: '最大线速度', type: 'DATA_DOUBLE', value: 1.5, unit: 'm/s' },
-    ],
-    SENSOR: [
-        { key: 'locCoordX', desc: '安装 X', type: 'DATA_DOUBLE', value: 0, unit: 'mm' },
-        { key: 'locCoordY', desc: '安装 Y', type: 'DATA_DOUBLE', value: 0, unit: 'mm' },
-        { key: 'locCoordZ', desc: '安装 Z', type: 'DATA_DOUBLE', value: 200, unit: 'mm' },
-        { key: 'roll', desc: 'Roll', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
-        { key: 'pitch', desc: 'Pitch', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
-        { key: 'yaw', desc: 'Yaw', type: 'DATA_DOUBLE', value: 0, unit: 'deg' },
-    ],
-    DRIVER: [
-        { key: 'nodeId', desc: 'CAN 节点 ID', type: 'DATA_INT32', value: 1 },
-        { key: 'baudRate', desc: '波特率', type: 'DATA_INT32', value: 500000 },
-        { key: 'reductionRatio', desc: '减速比', type: 'DATA_DOUBLE', value: 20, unit: ':1' },
-        { key: 'encoderLines', desc: '编码器线数', type: 'DATA_INT32', value: 1000 },
-    ],
-    DRIVEWHEEL: [
-        { key: 'wheelRadius', desc: '轮半径', type: 'DATA_DOUBLE', value: 100, unit: 'mm' },
-        { key: 'wheelWidth', desc: '轮宽', type: 'DATA_DOUBLE', value: 60, unit: 'mm' },
-        { key: 'installSide', desc: '安装位置', type: 'DATA_STRING', value: 'LEFT' },
-    ],
-    MOTOR: [
-        { key: 'nominalVoltage', desc: '额定电压', type: 'DATA_DOUBLE', value: 48, unit: 'V' },
-        { key: 'nominalPower', desc: '额定功率', type: 'DATA_DOUBLE', value: 200, unit: 'W' },
-        { key: 'nominalTorque', desc: '额定转矩', type: 'DATA_DOUBLE', value: 5, unit: 'N·m' },
-    ],
-    BATTERY: [
-        { key: 'nominalVoltage', desc: '标称电压', type: 'DATA_DOUBLE', value: 48, unit: 'V' },
-        { key: 'capacity', desc: '标称容量', type: 'DATA_DOUBLE', value: 50, unit: 'Ah' },
-        { key: 'protocol', desc: '通信协议', type: 'DATA_STRING', value: 'CAN' },
-    ],
-    MAINCPU: [
-        { key: 'ip', desc: 'IP 地址', type: 'DATA_STRING', value: '192.168.1.10' },
-        { key: 'port', desc: '通信端口', type: 'DATA_INT32', value: 8080 },
-        { key: 'model', desc: '控制器型号', type: 'DATA_STRING', value: 'RA-MC-R318' },
-    ],
-    LASER: [
-        { key: 'minRange', desc: '最小测距', type: 'DATA_DOUBLE', value: 0.05, unit: 'm' },
-        { key: 'maxRange', desc: '最大测距', type: 'DATA_DOUBLE', value: 30, unit: 'm' },
-        { key: 'fov', desc: '扫描角度', type: 'DATA_DOUBLE', value: 270, unit: 'deg' },
-        { key: 'scanFreq', desc: '扫描频率', type: 'DATA_INT32', value: 30, unit: 'Hz' },
-    ],
-};
+
+
 
 export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
     const { 
@@ -123,23 +75,22 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
 
 
     const subSteps = [
-        { title: '底盘配置', description: '完善底盘属性', categories: ['CHASSIS'], systems: ['ChassisSys'], icon: <RobotOutlined /> },
         { title: '核心控制板', description: '主控制器 / 扩展控制板', categories: ['MAINCPU', 'CONTROL', 'IO_BOARD', 'INTERGRATEDCONTROLLER'], systems: ['ControlSys'], icon: <DeploymentUnitOutlined /> },
-        { title: '动力系统', description: '轮组、电机、驱动器、编码器', categories: ['ACTOR', 'DRIVER', 'MOTOR', 'DRIVEWHEEL'], systems: ['DriverSys', 'ActorSys', 'SensorSys'],
-            // Encoder-type sensors also belong here
-            encoderKeywords: ['encoder', 'encode', '编码器', '拉线', '角度编码'],
-            icon: <ThunderboltOutlined /> },
-        { title: '感知避障', description: '激光雷达、相机、超声波、IMU', categories: ['LASER', 'CAMERA', 'TOF', 'SENSOR'],
+        { 
+            title: '感知避障', 
+            description: '激光雷达、相机、超声波、IMU', 
+            categories: ['LASER', 'CAMERA', 'TOF', 'SENSOR'],
             // Exclude encoder-type sensors (they belong to power system)
             excludeKeywords: ['encoder', 'encode', '编码器', '拉线', '角度编码'],
             systems: ['SensorSys'],
             navigationAlert: true,
-            icon: <RadarChartOutlined /> },
+            icon: <RadarChartOutlined /> 
+        },
         { title: '电源管理', description: '电池及充电模块', categories: ['BATTERY', 'ENERGYCONTROLLER'], systems: ['EnergySys'], icon: <ThunderboltOutlined /> },
-        { title: '触点交互', description: '按鈕及紧急停止', categories: ['BUTTON'], systems: ['InteractiveSys'], icon: <SafetyCertificateOutlined /> },
-        { title: '信息显示', description: '显示屏、指示灯', categories: ['DISPLAY', 'SCREEN'], systems: ['InteractiveSys'], icon: <DesktopOutlined />, optional: true },
+        { title: '触点交互', description: '按钮及紧急停止', categories: ['BUTTON'], systems: ['InteractiveSys'], icon: <SafetyCertificateOutlined /> },
+        { title: '信息显示', description: '显示屏、指示灯', categories: ['DISPLAY', 'SCREEN', 'AUDIO'], systems: ['InteractiveSys'], icon: <DesktopOutlined />, optional: true },
         { title: '灯带氛围', description: 'LED 状态灯条', categories: ['LED', 'LIGHT'], systems: ['InteractiveSys'], icon: <BulbOutlined />, optional: true },
-        { title: '其他扩展', description: 'IO模块、其他传感器', categories: ['IO', 'OTHER', 'COMMUNICATION', 'AUTOBODY'], systems: ['CommunicateSys', 'AutobodySys'], icon: <ControlOutlined /> },
+        { title: '其他扩展', description: '辅助结构、其他传感器', categories: ['IO', 'OTHER', 'COMMUNICATION', 'AUTOBODY'], systems: ['CommunicateSys', 'AutobodySys'], icon: <ControlOutlined /> },
     ];
 
     const getSubCategories = (step: any) => {
@@ -443,27 +394,17 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                 <div style={{ fontSize: 15, fontWeight: 700, color: '#f0f6fc' }}>{currentStepInfo.title}</div>
                                 <Text type="secondary" style={{ fontSize: 11 }}>{currentStepInfo.description}</Text>
                             </div>
-                             {currentSubStep > 1 && (
-                                <Space>
-                                    <Button 
-                                        type="primary" 
-                                        icon={<PlusOutlined />} 
-                                        onClick={() => setIsAddModal(true)}
-                                        size="small"
-                                        className="add-btn-refined"
-                                    >
-                                        资源库导入
-                                    </Button>
-                                    <Button 
-                                        icon={<PlusCircleOutlined />} 
-                                        onClick={() => setIsManualModalOpen(true)}
-                                        size="small"
-                                        className="add-btn-refined"
-                                    >
-                                        手动创建
-                                    </Button>
-                                </Space>
-                             )}
+                            <Space>
+                                <Button 
+                                    type="primary" 
+                                    icon={<PlusOutlined />} 
+                                    onClick={() => setIsAddModal(true)}
+                                    size="small"
+                                    className="add-btn-refined"
+                                >
+                                    添加组件
+                                </Button>
+                            </Space>
                         </div>
                     </div>
 
@@ -476,27 +417,16 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                             {filteredComponents.length === 0 ? (
                                 <div style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center' }}>
                                     <Text type="secondary" style={{ fontSize: 11, marginBottom: 16, display: 'block' }}>
-                                        {currentSubStep === 1 ? "底盘已固化，请点击查看属性" : "暂无组件，请点击下方按钮添加"}
+                                        暂无组件，请点击上方按钮添加
                                     </Text>
-                                    <Space size="large">
-                                        <Button 
-                                            type="primary" 
-                                            size="large" 
-                                            icon={<PlusOutlined />} 
-                                            onClick={() => setIsAddModal(true)}
-                                            style={{ height: 50, padding: '0 40px', fontSize: 16, borderRadius: 25 }}
-                                        >
-                                            资源库新增
-                                        </Button>
-                                        <Button 
-                                            size="large" 
-                                            icon={<PlusCircleOutlined />} 
-                                            onClick={() => setIsManualModalOpen(true)}
-                                            style={{ height: 50, padding: '0 40px', fontSize: 16, borderRadius: 25 }}
-                                        >
-                                            手动创建组件
-                                        </Button>
-                                    </Space>
+                                    <Button 
+                                        type="primary" 
+                                        icon={<PlusOutlined />} 
+                                        onClick={() => setIsAddModal(true)}
+                                        style={{ borderRadius: 20 }}
+                                    >
+                                        添加新组件
+                                    </Button>
                                 </div>
                             ) : (
                                 <List
