@@ -3,16 +3,21 @@
 AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置与建模平台。它实现了从语义化描述文件到底层工业协议（Protobuf）的双向无损转换。
 
 ## 🚀 核心特性 (Latest Updates)
-- **双态资源引擎 (Hybrid Engine)**：
-  - 支持 **XML (语义化描述)** 与 **JSON (协议原生)** 双格式资源载入。
+- **单一真理数据引擎 (Schema-Driven Engine)**:
+  - 弃用大量前端属性硬编码，全面对接 `ModuleLibrary/PrivateAttribute.json`，实现 **JSON to UI** 的全自动渲染。
+  - 引入了 `Engineering Constraints (工程约束)` 层，实现物理互斥显示、自动组合枚举值及深度属性联动同步。
+- **先进底盘动力模型拓扑搭建 (Advanced Power Topology)**:
+  - 完美支持 **差速底盘 (diffChassis)** 与 **舵轮底盘 (steerChassis)** 两种核心模型。
+  - 完整适配 **轮组模式推导**:
+    - `diffWheel` (单电机直连)
+    - `horizontalSteerWheel` / `verticalSteerWheel` (行走+转向双电机)
+    - `diffSteerWheel` (差速双驱+外置绝对值转向反馈编码器)
 - **动力系统聚合向导 (Unified Power Wizard)**：
   - 将“动力配置”由独立步骤外迁并融入 **Step 2 (底盘配置)**，实现“底盘-轮组-电气”的一站式定义。
   - 新增 **2D 布局实时预览 (SVG Visualizer)**，直观反馈轮组安装位姿与运动中心偏移。
-- **高鲁棒性装配逻辑**：
-  - 支持 **Motion Center Offset** 自动联动计算 (基于 L/W 物理尺寸)。
-  - 优化了组件库 (Step 3) 的 UI 交互，剔除冗余入口并推行“单点添加”模式。
-- **工业级无损导入/导出**：
-  - 完善了 `.cmodel` (CompDesc JSON) 身份信息的全文同步（Name, Vender）。
+- **智能互联体验 (Parametric Syncing)**：
+  - 开启 "修改参数自动同步" 功能，调整单个轮组（或其电机/编码器）参数能顺滑下发至系统配置森林中其他同类装备。
+  - 数据模型联动 `onAttributeChange` 与 UUID 引用 (`bindWheelReference`) 全量对接，保障最终构建可无缝导入协议。
 
 ### 融合部署 (Unified Deployment - 推荐)
 > 适用于 Linux/mac 环境，一键启动全栈服务。

@@ -39,6 +39,9 @@
 ## 7. 前端交互设计原则 (UI/UX Principles)
 - **数据格式冻结 (Data Format Freeze)**：前端界面的任何优化、重构或交互增强，**严禁改变**前后端既有的数据交换格式（JSON Schema）。
 - **解析无损性 (Parsing Integrity)**：UI 组件的逻辑调整不得影响 `ImportService` 和 `ExportService` 的运行，确保 100% 的数据解析兼容性。
+- **Schema 驱动渲染 (Schema-Driven Rendering)**：严禁在 React 组件中“硬编码”物理组件的私有属性表（Private Attributes）。所有的具体配置项（包含参数边界、默认值、单位等）**必须**由 `SchemaEngine.ts` 从统一的 `ModuleLibrary` JSON 按需加载，以保证 Single Source of Truth，防范升级时的字段遗漏。
+- **工程约束外接 (Constraint Injection)**：遇到特定型号产品不遵循基础 Schema 的互斥规则（如下拉菜单枚举值条件隐藏、特定关联字段禁止修改），仅充许以拦截器形式在 `SchemaEngine.ts` -> `ENGINEERING_CONSTRAINTS` 中挂载，严禁污染 `ComponentPropertyPanel` 的通用遍历逻辑。
+- **参数闭环防呆 (Parameter Synchronization)**：同种组件内部的多路复用（如左侧伺服电机和右侧伺服电机型号一样），必须强制触发跨实体联动同步 (`syncAttributeToSiblings`) 避免出现双侧动力参数人为配置不一的安全隐患。
 
 ## 8. 文档维护与语言规范 (Documentation & I18n)
 - **UTF-8 编码强制约束 (Encoding Registry)**：**所有** `.md` 文档及配置文件必须以 **UTF-8 (无 BOM)** 格式保存。严禁使用 GBK, UTF-16 或 Latin-1 编码，以确保 GitHub Actions (Jekyll) 构建预览不发生 `invalid byte sequence` 错误。
