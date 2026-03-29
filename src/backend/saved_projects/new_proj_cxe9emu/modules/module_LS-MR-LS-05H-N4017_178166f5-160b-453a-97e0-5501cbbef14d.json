@@ -1,0 +1,701 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "type": "DATA_STRING",
+      "stringValue": "LS-MR-LS-05H-N4017",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "激光雷达,MR-LS-05H-N4017,16m@10%,270°",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "type": "DATA_STRING",
+      "stringValue": "178166f5-160b-453a-97e0-5501cbbef14d",
+      "boolParse": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-07-28 14:34:12.046",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "boolParse": true
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys"
+      },
+      "desc": "子系统",
+      "boolParse": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "\n"
+      },
+      "desc": "主类型",
+      "boolParse": true
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "laser"
+      },
+      "desc": "子类型",
+      "boolParse": true
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "WHST"
+      },
+      "desc": "供应商",
+      "boolParse": true
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "MR-LS-05H-N4017"
+      },
+      "desc": "设备型号",
+      "boolParse": true
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 60,
+        "sizeWidth": 60,
+        "sizeHeight": 70
+      }
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "LS-MR-LS-05H-N4017",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "boolHide": true
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "desc": "模块别名",
+        "boolParse": true,
+        "boolHide": true
+      }
+    ]
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "sensorAttr",
+        "desc": "传感属性",
+        "arrayBaseEle": [
+          {
+            "key": "waveLength",
+            "type": "DATA_DOUBLE",
+            "desc": "波长",
+            "unit": "nm",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 905.0,
+            "doubleMaxvalue": 99999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "antiLight",
+            "type": "DATA_DOUBLE",
+            "desc": "抗光干扰",
+            "unit": "klux",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 99999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "needCalib",
+            "type": "DATA_BOOL",
+            "desc": "是否需要标定",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "boolValue": false
+          }
+        ]
+      },
+      {
+        "key": "scanAttr",
+        "desc": "扫描属性",
+        "arrayBaseEle": [
+          {
+            "key": "scanDirect",
+            "type": "DATA_COMBOX",
+            "desc": "扫描方向",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": true,
+            "comboType": {
+              "typeKey": "SCAN_COUNTERCLOCKWISE",
+              "typeDesc": "逆时针",
+              "typeGroups": [
+                {
+                  "key": "SCAN_CLOCKWISE",
+                  "desc": "顺时针",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "SCAN_COUNTERCLOCKWISE",
+                  "desc": "逆时针",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          },
+          {
+            "key": "usageMode",
+            "type": "DATA_COMBOX",
+            "desc": "应用方式",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "PClOUD_LASER",
+              "typeDesc": "轮廓激光",
+              "typeGroups": [
+                {
+                  "key": "PClOUD_LASER",
+                  "desc": "轮廓激光",
+                  "arrayCmobEle": [
+                    {
+                      "key": "resolution",
+                      "type": "DATA_DOUBLE",
+                      "desc": "角分辨率",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 0.0625,
+                      "doubleMaxvalue": 180,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "pointsRate",
+                      "type": "DATA_INT32",
+                      "desc": "采样点",
+                      "unit": "/s",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 0,
+                      "doubleMaxvalue": 999999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "frameRate",
+                      "type": "DATA_DOUBLE",
+                      "desc": "帧率",
+                      "unit": "HZ",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 15.0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanRangeHorizonStart",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角起始",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": -135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "scanRangeHorizonEnd",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角终止",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": 135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "actualScanRangeHorizonStart",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角应用起始角度",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": -135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "actualScanRangeHorizonEnd",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角应用终止角度",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": 135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "reflectThreshold",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效强度阈值",
+                      "unit": "cd",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 0.0,
+                      "doubleMaxvalue": 9999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanDistence@10%",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效扫描距离@10%",
+                      "unit": "m",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 16.0,
+                      "doubleMaxvalue": 99,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanDistence@90%",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效扫描距离@90%",
+                      "unit": "m",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 20.0,
+                      "doubleMaxvalue": 99,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "accuracy",
+                      "type": "DATA_DOUBLE",
+                      "desc": "测量精度",
+                      "unit": "mm",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 20.0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    }
+                  ]
+                },
+                {
+                  "key": "AREA_LASER",
+                  "desc": "区域激光",
+                  "arrayCmobEle": [
+                    {
+                      "key": "areaCnt",
+                      "type": "DATA_INT32",
+                      "desc": "区域方案数量",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    }
+                  ]
+                },
+                {
+                  "key": "PCLOUD_AND_AREA_LASER",
+                  "desc": "轮廓加区域激光",
+                  "arrayCmobEle": [
+                    {
+                      "key": "resolution",
+                      "type": "DATA_DOUBLE",
+                      "desc": "角分辨率",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 0.0625,
+                      "doubleMaxvalue": 180,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "pointsRate",
+                      "type": "DATA_INT32",
+                      "desc": "采样点",
+                      "unit": "/s",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 0,
+                      "doubleMaxvalue": 999999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "frameRate",
+                      "type": "DATA_DOUBLE",
+                      "desc": "帧率",
+                      "unit": "HZ",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 15.0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanRangeHorizonStart",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角起始",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": -135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "scanRangeHorizonEnd",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角终止",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": 135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "actualScanRangeHorizonStart",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角应用起始角度",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": -135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "actualScanRangeHorizonEnd",
+                      "type": "DATA_DOUBLE",
+                      "desc": "水平视场角应用终止角度",
+                      "unit": "°",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": true,
+                      "boolNoeditable": false,
+                      "doubleValue": 135.0,
+                      "doubleMaxvalue": 360,
+                      "doubleMinvalue": -360
+                    },
+                    {
+                      "key": "reflectThreshold",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效强度阈值",
+                      "unit": "cd",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 0.0,
+                      "doubleMaxvalue": 9999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanDistence@10%",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效扫描距离@10%",
+                      "unit": "m",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 16.0,
+                      "doubleMaxvalue": 99,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "scanDistence@90%",
+                      "type": "DATA_DOUBLE",
+                      "desc": "有效扫描距离@90%",
+                      "unit": "m",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 20.0,
+                      "doubleMaxvalue": 99,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "accuracy",
+                      "type": "DATA_DOUBLE",
+                      "desc": "测量精度",
+                      "unit": "mm",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "doubleValue": 20.0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    },
+                    {
+                      "key": "areaCnt",
+                      "type": "DATA_INT32",
+                      "desc": "区域方案数量",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 0,
+                      "doubleMaxvalue": 999,
+                      "doubleMinvalue": 0
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "PI",
+        "busInterfaceNums": 1
+      },
+      {
+        "busInterfaceType": "ETH",
+        "busInterfaceNums": 1
+      }
+    ]
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "PI_1",
+        "type": "PI",
+        "desc": "PI_1",
+        "interfaceUuid": "1e589e67-eef1-493f-b22c-947e7c6d47f8",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {}
+      },
+      {
+        "key": "ETH_1",
+        "type": "ETH",
+        "desc": "ETH_1",
+        "interfaceUuid": "f136a47a-21fa-4014-8031-b8ccfb97ea85",
+        "linkedInterfaceUuid": [
+          "e723436e-4f18-4378-b4d0-7c1b8423edb6"
+        ],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "ip",
+              "type": "DATA_STRING",
+              "stringValue": "",
+              "desc": "ip参数",
+              "boolParse": true
+            },
+            {
+              "key": "gate",
+              "type": "DATA_STRING",
+              "stringValue": "",
+              "desc": "网关",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "port",
+              "type": "DATA_INT32",
+              "int32Value": 10941,
+              "int32Maxvalue": 65536,
+              "int32Minvalue": 1,
+              "desc": "端口",
+              "boolParse": true,
+              "boolNoeditable": true
+            },
+            {
+              "key": "speed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "100M",
+                "typeDesc": "100M",
+                "typeGroups": [
+                  {
+                    "key": "1000M",
+                    "desc": "1000M"
+                  },
+                  {
+                    "key": "100M",
+                    "desc": "100M"
+                  },
+                  {
+                    "key": "10M",
+                    "desc": "10M"
+                  }
+                ]
+              },
+              "desc": "速度",
+              "boolParse": true,
+              "boolHide": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 600
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": null
+      }
+    ]
+  }
+}

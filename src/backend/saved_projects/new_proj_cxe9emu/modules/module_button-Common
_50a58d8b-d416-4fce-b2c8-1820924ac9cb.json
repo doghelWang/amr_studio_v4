@@ -1,0 +1,331 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "type": "DATA_STRING",
+      "stringValue": "button-Common\n",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "通用按钮",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "type": "DATA_STRING",
+      "stringValue": "50a58d8b-d416-4fce-b2c8-1820924ac9cb",
+      "boolParse": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-09-18 19:50:46.891",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "boolParse": true
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "InteractiveSys"
+      },
+      "desc": "子系统",
+      "boolParse": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "button",
+        "typeDesc": "\u000e"
+      },
+      "desc": "主类型",
+      "boolParse": true
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "subButton"
+      },
+      "desc": "子类型",
+      "boolParse": true
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT"
+      },
+      "desc": "供应商",
+      "boolParse": true
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT"
+      },
+      "desc": "设备型号",
+      "boolParse": true
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/0/sphere.png",
+      "desc": "模块图片",
+      "boolParse": true
+    },
+    "moduleShape": {
+      "sphere": {
+        "diameter": 30
+      }
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "button-Common\n",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "boolHide": true
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "desc": "模块别名",
+        "boolParse": true,
+        "boolHide": true
+      }
+    ]
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "buttonAttr",
+        "desc": "按钮属性",
+        "arrayBaseEle": [
+          {
+            "key": "buttonType",
+            "type": "DATA_COMBOX",
+            "desc": "按钮类型",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "BUTTON_COMP_NOT_EMCY",
+              "typeDesc": "非急停按钮",
+              "typeGroups": [
+                {
+                  "key": "BUTTON_COMP_NOT_EMCY",
+                  "desc": "非急停按钮",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "BUTTON_COMP_EMCY",
+                  "desc": "急停按钮",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          },
+          {
+            "key": "switchMode",
+            "type": "DATA_COMBOX",
+            "desc": "开关方式",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "knob",
+              "typeDesc": "旋钮式",
+              "typeGroups": [
+                {
+                  "key": "knob",
+                  "desc": "旋钮式",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "push",
+                  "desc": "按钮式",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          },
+          {
+            "key": "buttonLamp",
+            "type": "DATA_COMBOX",
+            "desc": "按钮灯控制",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "BUTTON_LAMP_NULL",
+              "typeDesc": "无按钮灯",
+              "typeGroups": [
+                {
+                  "key": "BUTTON_LAMP_NULL",
+                  "desc": "无按钮灯",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "SOFT_BUTTON_LAMP",
+                  "desc": "软件控制按钮灯",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "HARD_BUTTON_LAMP",
+                  "desc": "硬件控制按钮灯",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          },
+          {
+            "key": "selfLock",
+            "type": "DATA_BOOL",
+            "desc": "是否自锁",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "boolValue": false
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "DO",
+        "busInterfaceNums": 1
+      }
+    ]
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "desc": "DO_1",
+        "interfaceUuid": "356cae06-603b-4655-a4b4-31f8adfc3d9b",
+        "linkedInterfaceUuid": [
+          "e664b7aa-dd2c-47c3-8e4e-7d974ebde64d"
+        ],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": null
+      }
+    ]
+  }
+}

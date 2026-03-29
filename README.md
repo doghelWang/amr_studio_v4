@@ -36,15 +36,21 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
 - **后端**: `cd backend && python3 main.py` (Port: 8002)
 - **前端**: `cd frontend && npm run dev` (Port: 3000/3001)
 
-## 📂 项目结构
-- `backend/resources/modules/`：工业组件资源池 (XML/JSON)。
-- `backend/core/resource_adapter.py`：双态转换核心适配器。
-- `.gemini/`：AI 首席工程师的灵魂（Soul）与技能（Skills）定义。
+## 📂 项目结构 (Standard 11-Dimension Structure)
+- **`soul/`**：项目人员角色设定与首席工程师心智模型。
+- **`skills/`**：基础角色技能设定与自动化工具配置。
+- **`requirements/`**：精细化 PRD、需求理解与业务愿景。
+- **`specifications/`**：全链路协议开发约束规范与工程红线。
+- **`design/`**：总体架构设计、详细 API 规范及逻辑流转图。
+- **`src/`**：项目具体实现 (包含 `backend/` 引擎与 `frontend/` 可视化控制台)。
+- **`tests/`**：包含 `unit/` (单元)、`integration/` (集成)、`system/` (系统级) 测试用例与报告。
+- **`audits/`**：按日期存档的阶段性审计报告与二进制比对结论。
+- **`issue_tracker/`**：迭代式更新的问题清单与需求/缺陷跟踪控制台。
 
 ## 📜 维护约束 (Mandatory Rules)
-- **隐私保护**：严禁在 README 或公开文档中包含个人敏感信息（如姓名）。
-- **无损性**：任何 UI 优化不得改变底层数据格式。
-- **同步要求**：每次代码重大更新后必须同步更新本 README 文件的部署指南。
+- **物理架构一致性**：任何新文档必须归入上述 11 维体系，禁止在根目录随意堆放文件。
+- **审计先行**：每次重大逻辑变更后，必须执行 `AMR-CModel-Deep-Auditor` 技能并更新 `audits/`。
+- **无损同步**：任何 UI 优化不得改变底层数据格式。
 
 ---
 **AMR 设计工程师团队 & Gemini AI 联合出品**

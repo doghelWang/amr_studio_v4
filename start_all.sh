@@ -1,30 +1,33 @@
 #!/bin/bash
-# AMR Studio V4 - Unified Startup Script
+# AMR Studio V4 - Standardized Startup Script
 
 BASE_DIR=$(pwd)
-BACKEND_DIR="$BASE_DIR/backend"
-FRONTEND_DIR="$BASE_DIR/frontend"
-AUDIT_DIR="$BASE_DIR/gemini_audits"
+BACKEND_DIR="$BASE_DIR/src/backend"
+FRONTEND_DIR="$BASE_DIR/src/frontend"
 
-echo "🚀 Starting AMR Studio V4 Stack..."
+echo "🚀 Starting AMR Studio V4 (Standard Architecture)..."
 
-# 1. Start Backend (FastAPI)
-if [ ! -d "$BACKEND_DIR/venv" ]; then
-    echo "[*] Creating Python Virtual Environment..."
-    cd "$BACKEND_DIR" && python3 -m venv venv
-    venv/bin/pip install -r requirements.txt
+# 1. Start Backend
+echo "Launching Backend on Port 8002..."
+cd "$BACKEND_DIR"
+if [ ! -d "venv" ]; then
+    echo "Initializing virtual environment..."
+    python3 -m venv venv
+    ./venv/bin/pip install -r requirements.txt
 fi
-echo "[*] Launching Backend on Port 8002..."
 kill -9 $(lsof -t -i :8002) 2>/dev/null
-cd "$BACKEND_DIR" && nohup venv/bin/python3 main.py > backend_runtime.log 2>&1 &
+nohup ./venv/bin/python3 main.py --host 127.0.0.1 --port 8002 > backend_runtime.log 2>&1 &
 
-# 2. Start Frontend (Vite)
-if [ ! -d "$FRONTEND_DIR/node_modules" ]; then
-    echo "[*] Installing Frontend Dependencies..."
-    cd "$FRONTEND_DIR" && npm install
+# 2. Start Frontend
+echo "Launching Frontend on Port 3001..."
+cd "$FRONTEND_DIR"
+if [ ! -d "node_modules" ]; then
+    echo "Installing frontend dependencies..."
+    npm install
 fi
-echo "[*] Launching Frontend on Port 3001..."
 kill -9 $(lsof -t -i :3001) 2>/dev/null
-cd "$FRONTEND_DIR" && nohup npm run dev -- --port 3001 > frontend_runtime.log 2>&1 &
+nohup npm run dev -- --port 3001 --host 127.0.0.1 > frontend_runtime.log 2>&1 &
 
-echo "✅ All services initiated. Use './check_health.sh' to verify status."
+echo "✅ All services initiated in 'src/' layer."
+echo "🔗 Backend: http://127.0.0.1:8002"
+echo "🔗 Frontend: http://127.0.0.1:3001"

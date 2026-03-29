@@ -1,0 +1,102 @@
+{
+  "generalAttr": {
+    "name": "左驱动轮组",
+    "alias": "driveWheel_1",
+    "moduleName": {
+      "type": "DATA_STRING",
+      "stringValue": "driveWheel_1",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "type": "DATA_STRING",
+      "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "wheelAttr",
+        "desc": "基本属性",
+        "arrayBaseEle": [
+          {
+            "key": "wheelRadius",
+            "type": "DATA_DOUBLE",
+            "desc": "轮半径",
+            "unit": "mm",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "doubleValue": 65.0,
+            "doubleMaxvalue": 999,
+            "doubleMinvalue": 1
+          }
+        ]
+      },
+      {
+        "key": "linkMotorAttr",
+        "desc": "关联电机",
+        "arrayBaseEle": [
+          {
+            "key": "relateMotor",
+            "type": "DATA_FIXED_E",
+            "desc": "行走电机",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": []
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 400
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "generalAttr": {
+    "name": "行走电机_1",
+    "alias": "walkMotor_1",
+    "moduleName": {
+      "type": "DATA_STRING",
+      "stringValue": "walkMotor_1",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "type": "DATA_STRING",
+      "stringValue": "98e86a2d-93c8-439d-aeaf-b60ef1d235d3",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "motorAttr",
+        "desc": "电机属性",
+        "arrayBaseEle": [
+          {
+            "key": "ENCType",
+            "type": "DATA_COMBOX",
+            "desc": "编码器类型",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "ENCODER_INC",
+              "typeDesc": "无",
+              "typeGroups": [
+                {
+                  "key": "ENCODER_INC",
+                  "desc": "增量式编码器",
+                  "arrayCmobEle": [
+                    {
+                      "key": "encoderLine",
+                      "type": "DATA_INT32",
+                      "desc": "编码器线数",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 100,
+                      "doubleMaxvalue": 10000,
+                      "doubleMinvalue": 1
+                    }
+                  ]
+                },
+                {
+                  "key": "ENCODER_MULTI_TURN_ABS",
+                  "desc": "多圈绝对式编码器",
+                  "arrayCmobEle": [
+                    {
+                      "key": "sglTurnBit",
+                      "type": "DATA_INT32",
+                      "desc": "编码器单圈位数",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 8,
+                      "doubleMaxvalue": 20,
+                      "doubleMinvalue": 1
+                    },
+                    {
+                      "key": "multiTurnBit",
+                      "type": "DATA_INT32",
+                      "desc": "编码器多圈位数",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 8,
+                      "doubleMaxvalue": 24,
+                      "doubleMinvalue": 1
+                    }
+                  ]
+                },
+                {
+                  "key": "ENCODER_SGL_TURN_ABS",
+                  "desc": "单圈绝对式编码器",
+                  "arrayCmobEle": [
+                    {
+                      "key": "sglTurnBit",
+                      "type": "DATA_INT32",
+                      "desc": "编码器单圈位数",
+                      "unit": "",
+                      "boolParse": true,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "int32Value": 8,
+                      "doubleMaxvalue": 20,
+                      "doubleMinvalue": 1
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "key": "initMode",
+            "type": "DATA_COMBOX",
+            "desc": "电机初始状态",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "comboType": {
+              "typeKey": "MODE_FREERUN",
+              "typeDesc": "FREERUN模式",
+              "typeGroups": [
+                {
+                  "key": "MODE_FREERUN",
+                  "desc": "FREERUN模式"
+                },
+                {
+                  "key": "MODE_VELOCITY_ZERO",
+                  "desc": "速度0模式"
+                }
+              ]
+            }
+          },
+          {
+            "key": "RPM",
+            "type": "DATA_INT32",
+            "desc": "电机额定转速",
+            "unit": "RPM",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "int32Value": 3000,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "bTemper",
+            "type": "DATA_BOOL",
+            "desc": "是否支持电机温度获取",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "boolValue": false
+          },
+          {
+            "key": "bHbrake",
+            "type": "DATA_BOOL",
+            "desc": "是否带抱闸",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "boolValue": false
+          },
+          {
+            "key": "bReverse",
+            "type": "DATA_BOOL",
+            "desc": "是否反向",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "boolValue": false
+          },
+          {
+            "key": "torque",
+            "type": "DATA_DOUBLE",
+            "desc": "额定扭矩",
+            "unit": "N*m",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "gearRatio",
+            "type": "DATA_DOUBLE",
+            "desc": "减速比",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 20.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 1
+          },
+          {
+            "key": "ratedCurr",
+            "type": "DATA_DOUBLE",
+            "desc": "额定电流",
+            "unit": "A",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "overCurrCoef",
+            "type": "DATA_DOUBLE",
+            "desc": "过流系数",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "defaultAcc",
+            "type": "DATA_DOUBLE",
+            "desc": "默认加速度",
+            "unit": "r/s^2",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "defaultDec",
+            "type": "DATA_DOUBLE",
+            "desc": "默认减速度",
+            "unit": "r/s^2",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "maxAcc",
+            "type": "DATA_DOUBLE",
+            "desc": "电机支持的最大加速度",
+            "unit": "r/s^2",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          },
+          {
+            "key": "maxDec",
+            "type": "DATA_DOUBLE",
+            "desc": "电机支持的最大减速度",
+            "unit": "r/s^2",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999,
+            "doubleMinvalue": 0
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": []
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": "bfcb1b7d-92e4-4eb8-9984-e8fca87850e3"
+      }
+    ]
+  }
+}
