@@ -1,25 +1,25 @@
-<?xml version="1.0" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <ModuleGroup name="mainCPU-Common">
   <Component subsys="ControlSys" category="mainCPU" type="subMainCPU" vender="HIKROBOT" icon="/ModuleLibrary/PictureRes/1/cube.png">
-    <Identity name="mainCPU-Common" desc="通用主控制器"/>
+    <Identity name="mainCPU-Common" desc="通用主控制器" />
     <Attributes>
       <Group key="boardAttr" desc="控制板属性">
-        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value=""/>
-        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE"/>
+        <Param key="chipPlatform" type="DATA_STRING" desc="芯片平台" value="" />
+        <Param key="softwareSpec" type="DATA_STRING" desc="软件规格" value="NONE" />
         <Param key="isWithGyro" type="DATA_COMBOX" desc="是否有板载陀螺仪" selected="no">
-          <Option key="no" desc="否"/>
-          <Option key="yes" desc="是"/>
+          <Option key="no" desc="否" />
+          <Option key="yes" desc="是" />
         </Param>
         <Param key="isWithUpCamera" type="DATA_COMBOX" desc="是否有板载上读码头" selected="no">
-          <Option key="no" desc="否"/>
-          <Option key="yes" desc="是"/>
+          <Option key="no" desc="否" />
+          <Option key="yes" desc="是" />
         </Param>
         <Param key="isWithDownCamera" type="DATA_COMBOX" desc="是否有板载下读码头" selected="no">
-          <Option key="no" desc="否"/>
-          <Option key="yes" desc="是"/>
+          <Option key="no" desc="否" />
+          <Option key="yes" desc="是" />
         </Param>
       </Group>
     </Attributes>
-    <Interfaces/>
+    <Interfaces><Ability type="ETH" nums="4" /><Instance key="ETH_1" type="ETH" /><Instance key="ETH_2" type="ETH" /><Instance key="ETH_3" type="ETH" /><Instance key="ETH_4" type="ETH" /></Interfaces>
   </Component>
 </ModuleGroup>

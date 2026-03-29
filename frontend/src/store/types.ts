@@ -62,6 +62,7 @@ export interface InterfaceConfig {
     type: string;              // e.g. "CAN", "ETHERNET", "RS485", "NETWORK"
     path?: string;             // 指向接口的模块路径
     desc?: string;
+    label?: string;            // [FIX] Added for UI display / ETH Injection
     interfaceUuid: string;     // Unique ID for this interface instance
     linkedInterfaceUuid?: string[]; // Connected peer UUIDs
     linkAttrs?: Array<{ key: string; desc: string }>;  // maps to link_attrs
@@ -132,6 +133,10 @@ export interface ComponentConfig {
 
     // ISS-005 Front-End Only topological marker for coordinate symmetry and sync boundary rules
     frontendGroupKey?: string;
+
+    // ISS-004 Functional role tag injected at creation time for sync role discrimination
+    // Values: 'walk' | 'steer' | 'walk_left' | 'walk_right' | undefined
+    functionalRole?: string;
 
     // Raw generalAttr preserved for lossless round-trip
     generalAttr?: any;

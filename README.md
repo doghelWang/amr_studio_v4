@@ -12,6 +12,10 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
     - `diffWheel` (单电机直连)
     - `horizontalSteerWheel` / `verticalSteerWheel` (行走+转向双电机)
     - `diffSteerWheel` (差速双驱+外置绝对值转向反馈编码器)
+- **工业级 CModel 封包引擎 (Industrial CModel Packing)**:
+  - **FAT32 兼容性锁死**：强制剥离 MacOS/Unix 系统属性，保障 ZIP 成果物能在任何标准工业终端上无缝解压。
+  - **比特级序列化 (Bit-Perfect Naked Stream)**：跳过冗余顶层包装，实现以 Tag 5 (`more_module_info`) 起始的底层数据流对齐。
+  - **全链路清单防篡改**：在封包写入磁盘瞬间实时生成 `ModelFileDesc.json` 并计算 MD5，包含完整的 CompDesc, AbiSet, FuncDesc。
 - **动力系统聚合向导 (Unified Power Wizard)**：
   - 将“动力配置”由独立步骤外迁并融入 **Step 2 (底盘配置)**，实现“底盘-轮组-电气”的一站式定义。
   - 新增 **2D 布局实时预览 (SVG Visualizer)**，直观反馈轮组安装位姿与运动中心偏移。

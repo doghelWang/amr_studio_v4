@@ -1,118 +1,112 @@
-import json
 import os
-import argparse
-import sys
+import json
 import zipfile
-
-# Add schemas_pb to Python path
-sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "schemas_pb"))
-try:
-    import comp_desc_runtime as controller_model_comp_desc_pb2
-    import abi_set_runtime as controller_model_abi_set_pb2
-    import abi_desc_runtime as controller_model_abi_desc_pb2
-except ImportError as e:
-    print(f"ImportError in encoder.py: {e}", file=sys.stderr)
-    raise
-
+import re
+import hashlib
+from pathlib import Path
 from google.protobuf.json_format import ParseDict
+from skills_v2.schemas_pb import controller_model_comp_desc_pb2
+from skills_v2.schemas_pb import controller_model_abi_set_pb2
 
-def proto_final_sync(node):
-    """
-    Ensures JSON keys match the strict CamelCase expected by ParseDict.
-    """
-    if isinstance(node, dict):
-        new_node = {}
-        for k, v in node.items():
-            new_k = k
-            # Root & Components
-            if k == "more_module_info": new_k = "moreModuleInfo"
-            elif k == "module_componets": new_k = "moduleComponets"
-            elif k == "module_group_name": new_k = "moduleGroupName"
-            elif k == "module_group_uuid": new_k = "moduleGroupUuid"
-            elif k == "general_attr": new_k = "generalAttr"
-            elif k == "private_attr": new_k = "privateAttr"
-            elif k == "interface_params": new_k = "interfaceParams"
-            elif k == "struct_param": new_k = "structParam"
-            # Elements
-            elif k == "string_value": new_k = "stringValue"
-            elif k == "double_value": new_k = "doubleValue"
-            elif k == "float_value": new_k = "floatValue"
-            elif k == "int32_value": new_k = "int32Value"
-            elif k == "uint32_value": new_k = "uint32Value"
-            elif k == "bool_value": new_k = "boolValue"
-            elif k == "combo_type": new_k = "comboType"
-            elif k == "type_key": new_k = "typeKey"
-            elif k == "type_groups": new_k = "typeGroups"
-            elif k == "array_cmob_ele": new_k = "arrayCmobEle"
-            elif k == "array_base_ele": new_k = "arrayBaseEle"
-            elif k == "private_attrs": new_k = "privateAttrs"
-            
-            new_node[new_k] = proto_final_sync(v)
-        return new_node
-    elif isinstance(node, list):
-        return [proto_final_sync(item) for item in node]
-    else:
-        return node
+# --- UTILS ---
+def to_snake(name):
+    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
+    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()
 
-def resolve_with_fidelity(node, base_dir):
+def proto_final_sync(data):
     """
-    Recursively loads modules into the blueprint, ensuring NO flattening occurs.
+    Recursively aligns data keys with Protobuf naming conventions.
     """
-    if isinstance(node, dict):
-        if "$ref" in node:
-            ref_path = os.path.abspath(os.path.join(base_dir, node["$ref"]))
-            if os.path.exists(ref_path):
-                with open(ref_path, "r", encoding="utf-8") as f:
-                    # After loading the patched module, we don't recurse because 
-                    # module files are the leaves of the blueprint.
-                    return json.load(f)
-            return node
-        return {k: resolve_with_fidelity(v, base_dir) for k, v in node.items()}
-    elif isinstance(node, list):
-        return [resolve_with_fidelity(item, base_dir) for item in node]
-    return node
+    if isinstance(data, dict):
+        new_dict = {}
+        for k, v in data.items():
+            # Standard Proto spelling is "module_componets" (no 'n')
+            if k == "moduleComponets":
+                new_key = "module_componets"
+            elif not k.isdigit() and not k.startswith('$'):
+                new_key = to_snake(k)
+            else:
+                new_key = k
+            new_dict[new_key] = proto_final_sync(v)
+        return new_dict
+    elif isinstance(data, list):
+        return [proto_final_sync(item) for item in data]
+    return data
 
+def resolve_with_fidelity(blueprint, project_dir):
+    if isinstance(blueprint, dict):
+        if "$ref" in blueprint:
+            m_path = os.path.join(project_dir, blueprint["$ref"])
+            if os.path.exists(m_path):
+                with open(m_path, "r", encoding="utf-8") as f: return resolve_with_fidelity(json.load(f), project_dir)
+        return {k: resolve_with_fidelity(v, project_dir) for k, v in blueprint.items()}
+    elif isinstance(blueprint, list):
+        return [resolve_with_fidelity(item, project_dir) for item in blueprint]
+    return blueprint
+
+# --- MAIN ENCODER ---
 def encode_cmodel(blueprint_path, output_cmodel_path):
     audit = []
-    base_dir = os.path.dirname(os.path.abspath(blueprint_path))
-    audit.append(f"FIDELITY_BUILD_START: {os.path.basename(output_cmodel_path)}")
-    
-    # 1. Load Blueprint (The ORIGINAL structure from import)
-    with open(blueprint_path, "r", encoding="utf-8") as f:
-        blueprint = json.load(f)
-    
-    # 2. Inject Patched Modules into Original Structure
-    print("ENCODER: Injecting modules with structural fidelity...", flush=True)
-    full_json = resolve_with_fidelity(blueprint, base_dir)
-    
-    # 3. Final Key Alignment
+    project_dir = os.path.dirname(blueprint_path)
+    with open(blueprint_path, "r", encoding="utf-8") as f: blueprint = json.load(f)
+    full_json = resolve_with_fidelity(blueprint, project_dir)
     final_json = proto_final_sync(full_json)
 
-    # 4. Serialization
-    comp_obj = controller_model_comp_desc_pb2.Message_Module_Info()
-    ParseDict(final_json, comp_obj, ignore_unknown_fields=True)
-    comp_model_data = comp_obj.SerializeToString()
-    audit.append(f"STEP2_SERIALIZED: CompDesc.model ({len(comp_model_data)} bytes)")
+    # 1. CompDesc Serialization (Naked Stream)
+    comp_model_data = b""
+    groups = final_json.get("more_module_info", [])
+    for root_group in groups:
+        if not root_group.get("module_componets") and not root_group.get("more_module_info"):
+            continue
+        temp_obj = controller_model_comp_desc_pb2.Message_Module_Info()
+        dummy_wrapper = {"more_module_info": [root_group]}
+        ParseDict(dummy_wrapper, temp_obj, ignore_unknown_fields=True)
+        comp_model_data += temp_obj.SerializeToString()
     
-    # AbilitySet
-    abi_model_data = None; abi_json_path = os.path.join(base_dir, "AbiSet.json")
-    if os.path.exists(abi_json_path):
-        with open(abi_json_path, "r", encoding="utf-8") as f: abi_json = json.load(f)
-        final_abi_json = proto_final_sync(abi_json)
+    audit.append(f"STEP2_SERIALIZED: CompDesc.model ({len(comp_model_data)} bytes)")
+
+    # 2. AbiSet Serialization (Fixed: Using correct Controller_Ability message)
+    abi_model_data = b""
+    abi_json_path = os.path.join(project_dir, "AbiSet.json")
+    try:
         abi_obj = controller_model_abi_set_pb2.Controller_Ability()
-        ParseDict(final_abi_json, abi_obj, ignore_unknown_fields=True)
+        if os.path.exists(abi_json_path):
+            with open(abi_json_path, "r", encoding="utf-8") as f:
+                abi_data = proto_final_sync(json.load(f))
+                ParseDict(abi_data, abi_obj, ignore_unknown_fields=True)
+        else:
+            abi_obj.version = "1.0"
+        
         abi_model_data = abi_obj.SerializeToString()
-        audit.append(f"STEP2_SERIALIZED: AbiSet.model ({len(abi_model_data)} bytes)")
+        audit.append(f"STEP3_SERIALIZED: AbiSet.model ({len(abi_model_data)} bytes)")
+    except Exception as e:
+        audit.append(f"STEP3_ERROR: AbiSet failed: {str(e)}")
 
-    # 5. Pack
+    # 3. FuncDesc (Baseline)
+    func_model_data = b""
+    baseline_func_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "resources", "FuncDesc_base.model")
+    if os.path.exists(baseline_func_path):
+        with open(baseline_func_path, "rb") as f: func_model_data = f.read()
+
+    # 4. Final Pack (FORCE Windows FAT32 Compatibility)
+    def get_md5(data): return hashlib.md5(data).hexdigest()
+    
+    files_to_pack = [
+        ("AbiSet.model", abi_model_data, "CAPABILITY"),
+        ("CompDesc.model", comp_model_data, "MODEL_COMP"),
+        ("FuncDesc.model", func_model_data, "MODEL_FUNC")
+    ]
+
     with zipfile.ZipFile(output_cmodel_path, 'w', zipfile.ZIP_DEFLATED) as zipf:
-        zipf.writestr("CompDesc.model", comp_model_data)
-        if abi_model_data: zipf.writestr("AbiSet.model", abi_model_data)
-        elif os.path.exists(os.path.join(base_dir, "AbiSet.model")):
-            zipf.write(os.path.join(base_dir, "AbiSet.model"), "AbiSet.model")
-        for other in ["FuncDesc.model", "ModelFileDesc.json"]:
-            path = os.path.join(base_dir, other)
-            if os.path.exists(path): zipf.write(path, other)
+        manifest_entries = []
+        for fname, fdata, ftype in files_to_pack:
+            if not fdata: continue
+            zinfo = zipfile.ZipInfo(fname); zinfo.create_system = 0; zinfo.external_attr = 0; zinfo.compress_type = zipfile.ZIP_DEFLATED
+            with zipf.open(zinfo, 'w') as dest: dest.write(fdata)
+            manifest_entries.append({"md5": get_md5(fdata), "name": fname, "type": ftype, "version": ""})
+        
+        manifest_content = json.dumps({"ModelFileDesc": manifest_entries}, indent=4).encode('utf-8')
+        zinfo_json = zipfile.ZipInfo("ModelFileDesc.json"); zinfo_json.create_system = 0; zinfo_json.external_attr = 0; zinfo_json.compress_type = zipfile.ZIP_DEFLATED
+        with zipf.open(zinfo_json, 'w') as dest: dest.write(manifest_content)
 
-    audit.append(f"EXPORT_FINISH: {os.path.getsize(output_cmodel_path)} bytes")
     return audit

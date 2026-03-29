@@ -1,0 +1,510 @@
+<?xml version="1.0" ?>
+<BoardDescriptions>
+  <Board typeKey="RA-MC-R318CT">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="CAN" name="CAN_3"/>
+    <Interface protocol="UART" name="uart0"/>
+    <Interface protocol="UART" name="uart1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="RS485" name="RS485_2"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-MC-R318AT">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="CAN" name="CAN_3"/>
+    <Interface protocol="UART" name="uart0"/>
+    <Interface protocol="UART" name="uart1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="RS485" name="RS485_2"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-MC-R318AD">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="CAN" name="CAN_3"/>
+    <Interface protocol="UART" name="uart0"/>
+    <Interface protocol="UART" name="uart1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="RS485" name="RS485_2"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-MC-R318BN">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="CAN" name="CAN_3"/>
+    <Interface protocol="UART" name="uart0"/>
+    <Interface protocol="UART" name="uart1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="RS485" name="RS485_2"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-IC_I-F-1R6BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DI" name="DI_9"/>
+    <Interface protocol="DI" name="DI_10"/>
+    <Interface protocol="DI" name="DI_11"/>
+    <Interface protocol="DI" name="DI_12"/>
+    <Interface protocol="DI" name="DI_13"/>
+    <Interface protocol="DI" name="DI_14"/>
+    <Interface protocol="DI" name="DI_15"/>
+    <Interface protocol="DI" name="DI_16"/>
+    <Interface protocol="DI" name="DI_17"/>
+    <Interface protocol="DI" name="DI_18"/>
+    <Interface protocol="DI" name="DI_19"/>
+    <Interface protocol="DI" name="DI_20"/>
+    <Interface protocol="DI" name="DI_21"/>
+    <Interface protocol="DI" name="DI_22"/>
+    <Interface protocol="DI" name="DI_23"/>
+    <Interface protocol="DI" name="DI_24"/>
+    <Interface protocol="DI" name="DI_25"/>
+    <Interface protocol="DI" name="DI_26"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+    <Interface protocol="AI" name="AI_4"/>
+    <Interface protocol="AI" name="AI_5"/>
+    <Interface protocol="AI" name="AI_6"/>
+    <Interface protocol="AI" name="AI_7"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_14SA-311AH1">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6E-2S0AH2">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_14SB-311BH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6E-2H0AH1">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-IC_I-A-1C0AH1">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="UART" name="UART_1"/>
+    <Interface protocol="UART" name="UART_2"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DI" name="DI_9"/>
+    <Interface protocol="DI" name="DI_10"/>
+    <Interface protocol="DI" name="DI_11"/>
+    <Interface protocol="DI" name="DI_12"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+    <Interface protocol="DO" name="DO_8"/>
+    <Interface protocol="DO" name="DO_9"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-DR_B-24_5SA-311AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+  </Board>
+  <Board typeKey="RA-EI_F-C-1H2AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_25DB-311BH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-IC_I-A-1A3BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DI" name="DI_9"/>
+    <Interface protocol="DI" name="DI_10"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-IC_I-D-120BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="UART" name="UART_1"/>
+    <Interface protocol="UART" name="UART_2"/>
+    <Interface protocol="UART" name="UART_3"/>
+    <Interface protocol="UART" name="UART_4"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+  </Board>
+  <Board typeKey="RA-SP_A-A-2CBH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-IC_I-C-140AH1">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="UART" name="UART_1"/>
+    <Interface protocol="UART" name="UART_2"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+  </Board>
+  <Board typeKey="RA-EI_I-A-14400AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+  </Board>
+  <Board typeKey="RA-EI_I-A-18A00BH5">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+    <Interface protocol="DO" name="DO_8"/>
+    <Interface protocol="DO" name="DO_9"/>
+    <Interface protocol="DO" name="DO_10"/>
+  </Board>
+  <Board typeKey="R-DD600-S-HK75PL">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-DR_H-48_90SB-331BH6">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+  </Board>
+  <Board typeKey="R-DD400-S-HK60PL">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-EI_F-C-1S1AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_35SB-311BH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-IC_I-C-140BH6">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="UART" name="UART_1"/>
+    <Interface protocol="UART" name="UART_2"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+  </Board>
+  <Board typeKey="RA-IC_I-A-1E3BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="CAN" name="CAN_2"/>
+    <Interface protocol="UART" name="UART_1"/>
+    <Interface protocol="UART" name="UART_2"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DI" name="DI_9"/>
+    <Interface protocol="DI" name="DI_10"/>
+    <Interface protocol="DI" name="DI_11"/>
+    <Interface protocol="DI" name="DI_12"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+    <Interface protocol="DO" name="DO_8"/>
+    <Interface protocol="DO" name="DO_9"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_80S2B-411BH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="R-Q3C060-DElectric-lift">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-IC_I-A-1C0BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="DI" name="DI_7"/>
+    <Interface protocol="DI" name="DI_8"/>
+    <Interface protocol="DI" name="DI_9"/>
+    <Interface protocol="DI" name="DI_10"/>
+    <Interface protocol="DI" name="DI_11"/>
+    <Interface protocol="DI" name="DI_12"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+    <Interface protocol="DO" name="DO_8"/>
+    <Interface protocol="DO" name="DO_9"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6C-2H2BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-SP_A-A-2FBH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-DR_H-48_90SB-331BH4">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+  </Board>
+  <Board typeKey="RA-EI_I-B-500A5AH1">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+    <Interface protocol="AI" name="AI_4"/>
+    <Interface protocol="AI" name="AI_5"/>
+    <Interface protocol="AI" name="AI_6"/>
+    <Interface protocol="AI" name="AI_7"/>
+    <Interface protocol="AI" name="AI_8"/>
+    <Interface protocol="AI" name="AI_9"/>
+    <Interface protocol="AI" name="AI_10"/>
+    <Interface protocol="AO" name="AO_1"/>
+    <Interface protocol="AO" name="AO_2"/>
+    <Interface protocol="AO" name="AO_3"/>
+    <Interface protocol="AO" name="AO_4"/>
+    <Interface protocol="AO" name="AO_5"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6A-2H2AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-DR_D-48_14SA-311AH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6C-2H2BH7">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+  </Board>
+  <Board typeKey="RA-PC_V-A-1L4AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-POW_DD-24_6E-2H0AH3">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="RS485" name="RS485_1"/>
+    <Interface protocol="ETHERNET" name="ETH_1"/>
+    <Interface protocol="ETHERNET" name="ETH_2"/>
+    <Interface protocol="ETHERNET" name="ETH_3"/>
+    <Interface protocol="ETHERNET" name="ETH_4"/>
+  </Board>
+  <Board typeKey="RA-IC_I-C-140BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DO" name="DO_1"/>
+    <Interface protocol="DO" name="DO_2"/>
+    <Interface protocol="DO" name="DO_3"/>
+    <Interface protocol="DO" name="DO_4"/>
+    <Interface protocol="DO" name="DO_5"/>
+    <Interface protocol="DO" name="DO_6"/>
+    <Interface protocol="DO" name="DO_7"/>
+  </Board>
+  <Board typeKey="RA-DR_H-48_14SA-331AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+    <Interface protocol="DI" name="DI_1"/>
+    <Interface protocol="DI" name="DI_2"/>
+    <Interface protocol="DI" name="DI_3"/>
+    <Interface protocol="DI" name="DI_4"/>
+    <Interface protocol="DI" name="DI_5"/>
+    <Interface protocol="DI" name="DI_6"/>
+    <Interface protocol="AI" name="AI_1"/>
+    <Interface protocol="AI" name="AI_2"/>
+    <Interface protocol="AI" name="AI_3"/>
+  </Board>
+  <Board typeKey="RS-GY-01H-G2BH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+  <Board typeKey="RA-SP_E-A-11AH0">
+    <Interface protocol="CAN" name="CAN_1"/>
+  </Board>
+</BoardDescriptions>

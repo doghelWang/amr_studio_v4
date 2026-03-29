@@ -112,72 +112,96 @@ export const PowerSystemStep: React.FC = () => {
      */
     const syncAttributeToSiblings = useCallback((sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => {
         if (!wheelSync) return;
+
+        // 【ISS-012】电机/编码器 反向参数 (bReverse/isInvert) 是设备个体物理属性，严禁同步。
+        if (attrKey === 'bReverse' || attrKey === 'isInvert') {
+            console.log(`[SYNC-GUARD] Skipping per-device attribute: ${attrKey}`);
+            return;
+        }
+
         const source = config.components.find(c => c.id === sourceId);
         if (!source) return;
 
-        // 【ISS-004】安全守卫：如果仅凭借名称字符串可能遭遇旧工程数据漏洞（如全是 "PMSMMotor"）。
-        // 故在此用物理层级倒推模块核心角色（查阅 DRIVEWHEEL 的 UUID 关系网）。
-        const getFunctionalRole = (compId: string, category: string, alias: string): string => {
-            if (category !== 'MOTOR') return alias ? alias.split('_')[0] : '';
-            if (alias && (alias.includes('行走') || alias.includes('转向'))) return alias.split('_')[0];
+        // 【ISS-004】安全守卫... (rest of getFunctionalRole remains same)
+        const getFunctionalRole = (comp: ComponentConfig): string => {
+            if (comp.functionalRole) return comp.functionalRole;
             
-            // 老工程数据兜底：查阅父亲 DRIVEWHEEL 的 relateWalkMotor 等字段
-            const comp = config.components.find(c => c.id === compId);
+            // 兜底逻辑：处理旧数据或手动添加的组件
+            const { category, alias, id } = comp;
+            if (category !== 'MOTOR' && category !== 'DRIVER') return alias ? alias.split('_')[0] : '';
+            if (alias && (alias.includes('行走') || alias.includes('转向'))) {
+                return alias.includes('行走') ? 'walk' : 'steer';
+            }
+            
+            // 物理层级倒推：通过其父节点或引用它的 DRIVEWHEEL 来判定
             const parentWheel = config.components.find(c => c.category === 'DRIVEWHEEL' && 
-                (c.id === comp?.parentNodeUuid || config.components.find(d => d.id === comp?.parentNodeUuid)?.parentNodeUuid === c.id)
+                (c.id === comp.parentNodeUuid || config.components.find(d => d.id === comp.parentNodeUuid)?.parentNodeUuid === c.id)
             );
             if (parentWheel && parentWheel.privateAttrs) {
                 for (const g of parentWheel.privateAttrs) {
-                    for (const e of g.elements || []) {
-                        if (e.key === 'relateWalkMotor' && e.value === compId) return '行走电机';
-                        if (e.key === 'relateLeftMotor' && e.value === compId) return '左行走电机';
-                        if (e.key === 'relateRightMotor' && e.value === compId) return '右行走电机';
-                        if (e.key === 'relateRotMotor' && e.value === compId) return '转向电机';
+                    for (const e of (g as any).elements || []) {
+                        if ((e.key === 'relateWalkMotor' || e.key === 'relateMotor') && e.value === id) return 'walk';
+                        if ((e.key === 'relateLeftMotor') && e.value === id) return 'walk_left';
+                        if ((e.key === 'relateRightMotor') && e.value === id) return 'walk_right';
+                        if (e.key === 'relateRotMotor' && e.value === id) return 'steer';
                     }
                 }
             }
-            return alias ? alias.split('_')[0] : '';
+            return '';
         };
 
-        const sourceRole = getFunctionalRole(sourceId, source.category as string, source.alias);
+        const sourceRole = getFunctionalRole(source);
 
         // 寻找同类节点，加入严格的角色守卫防止错跨同步
         const siblings = config.components.filter(c => {
             if (c.id === sourceId || c.category !== source.category || c.type !== source.type) return false;
-            if (c.category === 'DRIVEWHEEL') return true; // 轮组之间只要型号一致就互相同步
-            const targetRole = getFunctionalRole(c.id, c.category as string, c.alias);
+            
+            // 轮组之间可以同步（如果都是 DRIVEWHEEL 且 type 相同）
+            if (c.category === 'DRIVEWHEEL') return true; 
+
+            // 电机和驱动器必须 Role 完全对齐 (walk vs steer)
+            const targetRole = getFunctionalRole(c);
+            
+            // [ISS-004 FIX] 特殊规则：walk_left 和 walk_right 属于 walk 大类，可以互相同步行走参数
+            const isWalk = (role: string) => role === 'walk' || role === 'walk_left' || role === 'walk_right';
+            if (isWalk(sourceRole) && isWalk(targetRole)) return true;
+            
             return sourceRole === targetRole; 
         });
 
         siblings.forEach(sib => {
             let finalValue = value;
 
-            // 【ISS-005】拓扑对称坐标投影映射
+            // 【ISS-005 / ISS-013】拓扑对称坐标投影映射
             if (source.category === 'DRIVEWHEEL' && typeof value === 'number') {
-                const srcTopology = source.frontendGroupKey as string | undefined;
-                const tgtTopology = sib.frontendGroupKey as string | undefined;
+                const srcTopology = source.frontendGroupKey?.toLowerCase() || '';
+                const tgtTopology = sib.frontendGroupKey?.toLowerCase() || '';
                 
                 if (srcTopology && tgtTopology) {
                     // Y坐标对消：左 / 右 互变
                     if (attrKey === 'locCoordNY') {
-                        const srcLeft = srcTopology.includes('left') || srcTopology.includes('fl') || srcTopology.includes('rl');
-                        const srcRight = srcTopology.includes('right') || srcTopology.includes('fr') || srcTopology.includes('rr');
-                        const tgtLeft = tgtTopology.includes('left') || tgtTopology.includes('fl') || tgtTopology.includes('rl');
-                        const tgtRight = tgtTopology.includes('right') || tgtTopology.includes('fr') || tgtTopology.includes('rr');
+                        const isSrcLeft = srcTopology.includes('left') || srcTopology.includes('fl') || srcTopology.includes('rl');
+                        const isSrcRight = srcTopology.includes('right') || srcTopology.includes('fr') || srcTopology.includes('rr');
+                        const isTgtLeft = tgtTopology.includes('left') || tgtTopology.includes('fl') || tgtTopology.includes('rl');
+                        const isTgtRight = tgtTopology.includes('right') || tgtTopology.includes('fr') || tgtTopology.includes('rr');
                         
-                        // 包含"左"传给"右"，或包含"右"传给"左"时进行正负倒转
-                        if ((srcLeft && tgtRight) || (srcRight && tgtLeft)) finalValue = -value;
+                        // 对消规则：如果源和目标分别处于左右两侧，则 Y 取反
+                        if ((isSrcLeft && isTgtRight) || (isSrcRight && isTgtLeft)) {
+                            finalValue = -value;
+                        }
                     }
                     
                     // X坐标对消：前 / 后 互变
                     if (attrKey === 'locCoordNX') {
-                        const srcFront = srcTopology.includes('front') || srcTopology.includes('fl') || srcTopology.includes('fr');
-                        const srcRear = srcTopology.includes('rear') || srcTopology.includes('rl') || srcTopology.includes('rr');
-                        const tgtFront = tgtTopology.includes('front') || tgtTopology.includes('fl') || tgtTopology.includes('fr');
-                        const tgtRear = tgtTopology.includes('rear') || tgtTopology.includes('rl') || tgtTopology.includes('rr');
+                        const isSrcFront = srcTopology.includes('front') || srcTopology.includes('fl') || srcTopology.includes('fr');
+                        const isSrcRear = srcTopology.includes('rear') || srcTopology.includes('rl') || srcTopology.includes('rr');
+                        const isTgtFront = tgtTopology.includes('front') || tgtTopology.includes('fl') || tgtTopology.includes('fr');
+                        const isTgtRear = tgtTopology.includes('rear') || tgtTopology.includes('rl') || tgtTopology.includes('rr');
                         
-                        // 包含"前"传给"后"，或包含"后"传给"前"时进行正负倒转
-                        if ((srcFront && tgtRear) || (srcRear && tgtFront)) finalValue = -value;
+                        // 对消规则：如果源和目标分别处于前后两侧，则 X 取反
+                        if ((isSrcFront && isTgtRear) || (isSrcRear && isTgtFront)) {
+                            finalValue = -value;
+                        }
                     }
                 }
             }
@@ -221,7 +245,7 @@ export const PowerSystemStep: React.FC = () => {
         /**
          * 基础工厂函数：生成一个通用组件模型节点对象
          */
-        const createNode = (cat: string, typeKey: string, alias: string, name: string, parentId: string | null) => {
+        const createNode = (cat: string, typeKey: string, alias: string, name: string, parentId: string | null, functionalRole?: string) => {
             const privateAttrsOriginal = buildAttributesFromSchema(typeKey);
             return {
                 id: uuidv4(), name, alias, category: cat as any, type: typeKey,
@@ -230,6 +254,8 @@ export const PowerSystemStep: React.FC = () => {
                 generalAttr: { name: alias, alias: name },
                 // ISS-005: 注入用于位置联动计算的拓扑逻辑 Key。仅挂在根轮节点上即可判定方位。
                 frontendGroupKey: cat === 'DRIVEWHEEL' ? groupDef.key : undefined,
+                // ISS-004: 注入功能角色，用于精确联动同步
+                functionalRole,
                 privateAttrs: privateAttrsOriginal,
                 interfaces: [],
                 parentNodeUuid: parentId,
@@ -286,18 +312,18 @@ export const PowerSystemStep: React.FC = () => {
 
         if (wheelSubType === 'diffWheel') {
             // Standard diff: 1 driver → 1 motor
-            const driver = createNode('DRIVER', 'subDriver', `驱动器_${currentWheelsCount}`, `driver_${currentWheelsCount}`, wheel.id);
-            const motor = createNode('MOTOR', 'PMSMMotor', `行走电机_${currentWheelsCount}`, `walkMotor_${currentWheelsCount}`, driver.id);
+            const driver = createNode('DRIVER', 'subDriver', `驱动器_${currentWheelsCount}`, `driver_${currentWheelsCount}`, wheel.id, 'walk');
+            const motor = createNode('MOTOR', 'PMSMMotor', `行走电机_${currentWheelsCount}`, `walkMotor_${currentWheelsCount}`, driver.id, 'walk');
             newComps.push(driver, motor);
             bindWheelReference('relateMotor', motor.id);
         } else if (wheelSubType === 'diffSteerWheel') {
             // Differential steer: 2 walk motors (left + right) + 1 external steering encoder
-            const leftDriver = createNode('DRIVER', 'subDriver', `左驱动器_${currentWheelsCount}`, `leftDriver_${currentWheelsCount}`, wheel.id);
-            const leftMotor = createNode('MOTOR', 'PMSMMotor', `左行走电机_${currentWheelsCount}`, `leftWalkMotor_${currentWheelsCount}`, leftDriver.id);
-            const rightDriver = createNode('DRIVER', 'subDriver', `右驱动器_${currentWheelsCount}`, `rightDriver_${currentWheelsCount}`, wheel.id);
-            const rightMotor = createNode('MOTOR', 'PMSMMotor', `右行走电机_${currentWheelsCount}`, `rightWalkMotor_${currentWheelsCount}`, rightDriver.id);
+            const leftDriver = createNode('DRIVER', 'subDriver', `左驱动器_${currentWheelsCount}`, `leftDriver_${currentWheelsCount}`, wheel.id, 'walk_left');
+            const leftMotor = createNode('MOTOR', 'PMSMMotor', `左行走电机_${currentWheelsCount}`, `leftWalkMotor_${currentWheelsCount}`, leftDriver.id, 'walk_left');
+            const rightDriver = createNode('DRIVER', 'subDriver', `右驱动器_${currentWheelsCount}`, `rightDriver_${currentWheelsCount}`, wheel.id, 'walk_right');
+            const rightMotor = createNode('MOTOR', 'PMSMMotor', `右行走电机_${currentWheelsCount}`, `rightWalkMotor_${currentWheelsCount}`, rightDriver.id, 'walk_right');
             // Create steering feedback encoder (default: absoluteValueEncode per engineering constraint)
-            const steerEncoder = createNode('SENSOR', 'absoluteValueEncode', `转向编码器_${currentWheelsCount}`, `steerEncoder_${currentWheelsCount}`, wheel.id);
+            const steerEncoder = createNode('SENSOR', 'absoluteValueEncode', `转向编码器_${currentWheelsCount}`, `steerEncoder_${currentWheelsCount}`, wheel.id, 'steer');
             newComps.push(leftDriver, leftMotor, rightDriver, rightMotor, steerEncoder);
             bindWheelReference('relateLeftMotor', leftMotor.id);
             bindWheelReference('relateRightMotor', rightMotor.id);
@@ -305,10 +331,10 @@ export const PowerSystemStep: React.FC = () => {
             bindWheelNestedReference('angleSensor', 'relatedEncode', steerEncoder.id);
         } else {
             // horizontalSteerWheel / verticalSteerWheel: 1 steer motor + 1 walk motor
-            const steerDriver = createNode('DRIVER', 'subDriver', `转向驱动器_${currentWheelsCount}`, `steerDriver_${currentWheelsCount}`, wheel.id);
-            const steerMotor = createNode('MOTOR', 'PMSMMotor', `转向电机_${currentWheelsCount}`, `steerMotor_${currentWheelsCount}`, steerDriver.id);
-            const walkDriver = createNode('DRIVER', 'subDriver', `行走驱动器_${currentWheelsCount}`, `walkDriver_${currentWheelsCount}`, wheel.id);
-            const walkMotor = createNode('MOTOR', 'PMSMMotor', `行走电机_${currentWheelsCount}`, `walkMotor_${currentWheelsCount}`, walkDriver.id);
+            const steerDriver = createNode('DRIVER', 'subDriver', `转向驱动器_${currentWheelsCount}`, `steerDriver_${currentWheelsCount}`, wheel.id, 'steer');
+            const steerMotor = createNode('MOTOR', 'PMSMMotor', `转向电机_${currentWheelsCount}`, `steerMotor_${currentWheelsCount}`, steerDriver.id, 'steer');
+            const walkDriver = createNode('DRIVER', 'subDriver', `行走驱动器_${currentWheelsCount}`, `walkDriver_${currentWheelsCount}`, wheel.id, 'walk');
+            const walkMotor = createNode('MOTOR', 'PMSMMotor', `行走电机_${currentWheelsCount}`, `walkMotor_${currentWheelsCount}`, walkDriver.id, 'walk');
             newComps.push(steerDriver, steerMotor, walkDriver, walkMotor);
             bindWheelReference('relateRotMotor', steerMotor.id);
             bindWheelReference('relateWalkMotor', walkMotor.id);

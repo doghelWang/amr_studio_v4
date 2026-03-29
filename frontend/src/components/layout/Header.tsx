@@ -1,6 +1,6 @@
-import React from 'react';
-import { Tooltip } from 'antd';
-import { UndoOutlined, RedoOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { Tooltip, Button, message } from 'antd';
+import { UndoOutlined, RedoOutlined, SaveOutlined } from '@ant-design/icons';
 
 interface HeaderProps {
     currentStep: number;
@@ -12,6 +12,7 @@ interface HeaderProps {
     redo: () => void;
     canUndo: boolean;
     canRedo: boolean;
+    onSave: () => Promise<void>;
 }
 
 /**
@@ -30,8 +31,20 @@ export const Header: React.FC<HeaderProps> = ({
     undo,
     redo,
     canUndo,
-    canRedo
+    canRedo,
+    onSave
 }) => {
+    const [saving, setSaving] = useState(false);
+
+    const handleSave = async () => {
+        setSaving(true);
+        try {
+            await onSave();
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return (
         <header className="app-topbar">
             <div className="topbar-breadcrumb">
@@ -62,6 +75,28 @@ export const Header: React.FC<HeaderProps> = ({
                 </Tooltip>
 
                 <div className="topbar-divider" />
+
+                <Tooltip title="保存项目到后端">
+                    <Button 
+                        type="text"
+                        size="small"
+                        loading={saving}
+                        icon={<SaveOutlined />}
+                        className="topbar-btn-save"
+                        onClick={handleSave}
+                        style={{ 
+                            color: isDirty ? '#177ddc' : 'var(--text-muted)',
+                            fontWeight: isDirty ? 700 : 400,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 4
+                        }}
+                    >
+                        保存
+                    </Button>
+                </Tooltip>
+
+                <div className="topbar-divider" />
                 
                 <span style={{ 
                     color: 'var(--text-muted)', 
@@ -70,10 +105,10 @@ export const Header: React.FC<HeaderProps> = ({
                     display: 'flex',
                     alignItems: 'center'
                 }}>
-                    {robotName} 
+                    {robotName || '未命名机器人'} 
                     {isDirty && (
-                        <Tooltip title="存在未导出的更改">
-                            <span style={{ color: 'var(--orange)', marginLeft: 6 }}>●</span>
+                        <Tooltip title="存在未保存的更改">
+                            <span style={{ color: '#faad14', marginLeft: 6 }}>●</span>
                         </Tooltip>
                     )}
                 </span>

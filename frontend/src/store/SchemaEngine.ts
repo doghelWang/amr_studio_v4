@@ -248,6 +248,11 @@ function transformElement(rawEle: any, constraints?: EngineeringConstraint | nul
             break;
         case 'DATA_STRING':
             base.value = rawEle.stringValue !== undefined ? rawEle.stringValue : '';
+            // [ISS-Audit-Defaults] Inject mandatory code-layer defaults for system fields
+            if (base.value === '') {
+                if (base.key === 'chipPlatform') base.value = 'R131'; // Default platform
+                if (base.key === 'softwareSpec') base.value = 'NONE';
+            }
             break;
         case 'DATA_BOOL':
             base.value = rawEle.boolValue !== undefined ? rawEle.boolValue : false;

@@ -65,3 +65,10 @@
 - `horizontalSteerWheel` / `verticalSteerWheel` (常规舵轮)：自动下挂生成 2 个 `PMSMMotor` 节点，分别绑定至 `relateWalkMotor` 与 `relateRotMotor`。
 - `diffSteerWheel` (差速舵轮)：自动下挂生成 2 个 `PMSMMotor` 节点（左/右独立驱动），并外置生成 1 个 `absoluteValueEncode` (编码器) 挂载至转向反馈 `relateEncode` 链路中。
 - **UI 引用呈现规则**：凡 JSON Schema 类型为 `DATA_FIXED_E` 的字段，**强制渲染为关联节点 UUID 选择器**（基于 `fixedSource` 元数据反解 Category 过滤可关联集合）。
+
+## 11. 电气接线与 IO 信号逻辑约束 (Electrical Wiring & IO Logic)
+- **总线主从体系 (Bus Master-Slave)**：所有通信总线（CAN/ETH/RS485）必须以 `MAINCPU` 或其扩展 Host 为根节点。从站设备仅允许单向挂载至 Host 端口。
+- **IO 信号反转匹配原则 (Inverted Signal Logic)**：为了符合物理接线常识，IO 端口的连接必须遵循“输出连输入”原则：
+    - **主板 DI (Digital Input)**：仅允许连接至交互设备的 **DO (Digital Output)** 类型端口（如按钮的信号输出端）。
+    - **主板 DO (Digital Output)**：仅允许连接至交互设备的 **DI (Digital Input)** 类型端口（如指示灯的使能输入端）。
+- **级联拓扑感知**：在总线拓扑视图中，若从站设备（如 IO 扩展板）下挂了次级设备（如按钮），必须通过级联方式在总线节点下方展示其子连接状态，确保全链路透明。

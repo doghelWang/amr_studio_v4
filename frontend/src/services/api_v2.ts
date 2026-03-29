@@ -11,11 +11,11 @@ import axios from 'axios';
 const getBackendBase = () => {
     if (typeof window !== 'undefined') {
         const { hostname, protocol } = window.location;
-        // If we are on port 3000/5173 (dev), assume backend is at 8002
-        if (window.location.port === '3000' || window.location.port === '5173') {
+        const port = window.location.port;
+        // [FIX] Add 3001 to supported dev ports
+        if (['3000', '3001', '5173'].includes(port)) {
             return `${protocol}//${hostname}:8002`;
         }
-        // Otherwise, assume it's served by the same host/port
         return window.location.origin;
     }
     return 'http://localhost:8002';
@@ -47,6 +47,12 @@ export const apiUpdateAbilities = async (projectId: string, payload: any) => {
     return res.data;
 };
 
+/** 初始化后端沙箱 (针对从头创建的项目) */
+export const apiInitSandbox = async (projectId: string, config: any) => {
+    const res = await axios.post(`${getBackendBase()}/api/v1/models/init-sandbox`, { projectId, config });
+    return res.data;
+};
+
 /** 触发 CModel 编译并处理下载流 */
 export const apiCompileAndDownload = async (projectId: string) => {
     const res = await axios.post(`${API_BASE}/${projectId}/compile`, {}, { responseType: 'blob' });
@@ -63,5 +69,29 @@ export const apiCompileAndDownload = async (projectId: string) => {
 export const apiFetchSchemas = async () => {
     // 移除 /models 前缀，因为 schemas 是全局资源
     const res = await axios.get(`${getBackendBase()}/api/v1/schemas`);
+    return res.data;
+};
+
+/** 动态获取预先生成好的板卡资源映射字典 XML */
+export const apiFetchBoardXml = async () => {
+    // Vite Dev Server / Nginx 静态目录访问
+    const res = await axios.get(`/models/v4/BoardDescriptions.xml`, { responseType: 'text' });
+    return res.data;
+};
+/** 获取已保存的用户项目列表 */
+export const apiListSavedProjects = async () => {
+    const res = await axios.get(`${getBackendBase()}/api/v1/projects/saved-list`);
+    return res.data;
+};
+
+/** 保存当前项目配置到后端持久化存储 */
+export const apiSaveProject = async (name: string, config: any) => {
+    const res = await axios.post(`${getBackendBase()}/api/v1/projects/save`, { name, config });
+    return res.data;
+};
+
+/** 从后端加载特定名称的已保存项目 */
+export const apiLoadProject = async (name: string) => {
+    const res = await axios.get(`${getBackendBase()}/api/v1/projects/load/${name}`);
     return res.data;
 };

@@ -475,6 +475,34 @@
                         "desc": "RS485_2",
                         "interfaceUuid": "1e0a000b-73e0-4ee6-b186-cdd3a911553c",
                         "interfaceParams": {}
+                    },
+                    {
+                        "key": "ETH_1",
+                        "type": "ETH",
+                        "desc": "以太网口 1",
+                        "interfaceUuid": "df03be0c-55e5-4f82-8587-1930064eda45",
+                        "interfaceParams": {}
+                    },
+                    {
+                        "key": "ETH_2",
+                        "type": "ETH",
+                        "desc": "以太网口 2",
+                        "interfaceUuid": "032a58b8-ea16-4f8c-9b49-f13db4796207",
+                        "interfaceParams": {}
+                    },
+                    {
+                        "key": "ETH_3",
+                        "type": "ETH",
+                        "desc": "以太网口 3",
+                        "interfaceUuid": "811de59e-f1af-4af2-bab0-98030f18900b",
+                        "interfaceParams": {}
+                    },
+                    {
+                        "key": "ETH_4",
+                        "type": "ETH",
+                        "desc": "以太网口 4",
+                        "interfaceUuid": "e0458b01-2466-4db1-bb35-83a0f9ecbc97",
+                        "interfaceParams": {}
                     }
                 ]
             }

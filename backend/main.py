@@ -42,6 +42,48 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"error": "InternalServerError", "detail": str(exc), "request_path": request.url.path}
     )
 
+@app.post("/api/v1/models/init-sandbox")
+def init_sandbox_api(payload: dict = Body(...)):
+    """Initializes a project sandbox from a full frontend configuration (Start from scratch)"""
+    project_id = payload.get("projectId")
+    config = payload.get("config")
+    if not project_id or not config:
+        raise HTTPException(status_code=400, detail="Missing projectId or config")
+    
+    # 1. Map Frontend Config to standard CompDesc.json
+    from core.resource_adapter import frontend_to_comp_desc
+    full_json = frontend_to_comp_desc(config)
+    
+    # 2. Use existing split logic to create module files
+    import tempfile
+    
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        tmp_path = Path(tmp_dir)
+        full_json_path = tmp_path / "CompDesc.json"
+        with open(full_json_path, "w", encoding="utf-8") as f:
+            json.dump(full_json, f, ensure_ascii=False, indent=2)
+        
+        split_out = tmp_path / "split"
+        split_out.mkdir()
+        split_comp_desc(str(full_json_path), str(split_out))
+        
+        # 3. Initialize the sandbox
+        blueprint_path = split_out / "blueprint_CompDesc.json"
+        with open(blueprint_path, "r", encoding="utf-8") as f:
+            blueprint = json.load(f)
+            
+        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), tmp_path)
+        
+        # 4. Handle AbilitySet (initialize with default if provided)
+        abi_path = data_manager.get_project_dir(project_id) / "AbiSet.json"
+        if config.get("abilities"):
+            from core.resource_adapter import export_abilities
+            abi_data = export_abilities(config["abilities"])
+            with open(abi_path, "w", encoding="utf-8") as f:
+                json.dump(abi_data, f, ensure_ascii=False, indent=2)
+
+    return {"status": "success", "project_id": project_id}
+
 @app.post("/api/v1/models/upload")
 def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...)):
     print(f"DEBUG: upload_cmodel called for {file.filename}", flush=True)
@@ -95,23 +137,47 @@ def sync_resource_api(project_id: str, file_name: str = Body(embed=True)):
     return {"status": "success" if success else "error"}
 
 @app.patch("/api/v1/models/{project_id}/components/{module_uuid}")
-def update_component_api(project_id: str, module_uuid: str, payload: dict = Body(...), file_name: str = Body(None)):
-    # If file_name is provided, ensure it's in sandbox first
-    if file_name:
-        global_source = BASE_DIR / "resources" / "modules" / file_name
-        data_manager.ensure_module_in_project(project_id, file_name, global_source)
-    
-    success = data_manager.update_component(project_id, module_uuid, payload)
-    return {"status": "success" if success else "error"}
+async def update_component_api(project_id: str, module_uuid: str, request: Request):
+    # [ISS-FIX] Read raw JSON to avoid "missing payload" field error when multiple Body params exist
+    try:
+        body = await request.json()
+        # The frontend sends the actual component data directly as the body
+        # If there's a 'file_name' in the body, handle it, otherwise use the whole body as payload
+        file_name = body.get("file_name")
+        if file_name:
+            global_source = BASE_DIR / "resources" / "modules" / file_name
+            data_manager.ensure_module_in_project(project_id, file_name, global_source)
+        
+        # In this mode, we treat the body (minus metadata) as the payload
+        success = data_manager.update_component(project_id, module_uuid, body)
+        return {"status": "success" if success else "error"}
+    except Exception as e:
+        print(f"DEBUG: Error in update_component_api: {str(e)}", flush=True)
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/api/v1/models/{project_id}/abilities")
 def get_abilities_api(project_id: str):
     return data_manager.get_ability(project_id) or {}
 
+from fastapi import Request
+
 @app.patch("/api/v1/models/{project_id}/abilities")
-def update_abilities_api(project_id: str, payload: dict = Body(...)):
-    success = data_manager.update_ability(project_id, payload)
-    return {"status": "success" if success else "error"}
+async def update_abilities_api(project_id: str, request: Request):
+    # [ISS-FINAL-BYPASS] Read raw JSON to completely avoid 422 validation errors
+    try:
+        payload = await request.json()
+        print(f"DEBUG: Received abilities payload type: {type(payload)}", flush=True)
+        
+        final_payload = payload
+        if isinstance(payload, list):
+            print("DEBUG: Wrapping list payload into Dict structure", flush=True)
+            final_payload = {"functionAbility": payload, "version": "1.0"}
+        
+        success = data_manager.update_ability(project_id, final_payload)
+        return {"status": "success" if success else "error"}
+    except Exception as e:
+        print(f"DEBUG: Error in update_abilities_api: {str(e)}", flush=True)
+        raise HTTPException(status_code=400, detail=f"Invalid JSON: {str(e)}")
 
 # ━━━ CRITICAL FIX: Changed to sync 'def' to prevent event loop hang ━━━
 @app.post("/api/v1/models/{project_id}/compile")
@@ -120,6 +186,18 @@ def compile_cmodel_api(project_id: str):
     try:
         p_dir = data_manager.get_project_dir(project_id)
         blueprint_path = str(p_dir / "blueprint_CompDesc.json")
+        
+        # [ISS-FINAL-FIX] MANIFEST MUST BE DYNAMIC. 
+        # Completely remove any pre-generation of ModelFileDesc.json here.
+        # It will be generated by encode_cmodel based on real bytes.
+        
+        # [ISS-NEW] Ensure FuncDesc.json exists (Basic version)
+        func_desc_path = p_dir / "FuncDesc.json"
+        if not func_desc_path.exists():
+            func_desc = {"version": "1.0", "function": []}
+            with open(func_desc_path, "w", encoding="utf-8") as f:
+                json.dump(func_desc, f, indent=2)
+
         fname = f"{project_id}_packed.cmodel"
         output_cmodel = str(p_dir / fname)
         
@@ -157,7 +235,50 @@ def list_boards_api():
 
 from core import data_manager, resource_adapter
 
-# ... rest of code ...
+USER_SAVES_DIR = BASE_DIR / "user_saves"
+USER_SAVES_DIR.mkdir(exist_ok=True)
+
+@app.get("/api/v1/projects/saved-list")
+def list_saved_projects():
+    projects = []
+    if USER_SAVES_DIR.exists():
+        for f in USER_SAVES_DIR.glob("*.json"):
+            projects.append({
+                "name": f.stem,
+                "mtime": f.stat().st_mtime
+            })
+    # Sort by recent
+    projects.sort(key=lambda x: x["mtime"], reverse=True)
+    return projects
+
+@app.post("/api/v1/projects/save")
+def save_user_project(payload: dict = Body(...)):
+    name = payload.get("name")
+    config = payload.get("config")
+    if not name or not config:
+        raise HTTPException(status_code=400, detail="Missing name or config")
+    
+    # 16 projects limit
+    existing = list(USER_SAVES_DIR.glob("*.json"))
+    if len(existing) >= 16 and not (USER_SAVES_DIR / f"{name}.json").exists():
+        raise HTTPException(status_code=400, detail="Maximum 16 projects reached. Please delete an old one.")
+        
+    with open(USER_SAVES_DIR / f"{name}.json", "w", encoding="utf-8") as f:
+        json.dump(config, f, ensure_ascii=False, indent=2)
+    return {"status": "success"}
+
+@app.get("/api/v1/projects/load/{name}")
+def load_user_project(name: str):
+    fpath = USER_SAVES_DIR / f"{name}.json"
+    if not fpath.exists():
+        raise HTTPException(status_code=404, detail="Project not found")
+    with open(fpath, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+@app.get("/api/v1/schemas")
+def get_schemas_api():
+    """Returns the full component registry (System -> Modules)"""
+    return list_modules_api()
 
 @app.get("/api/v1/resources/modules")
 def list_modules_api():
@@ -209,8 +330,6 @@ def list_modules_api():
         except Exception as e:
             print(f"DEBUG: Skipping invalid module {stem}: {e}", flush=True)
 
-    return entities
-    
     return entities
 
 # ━━━ Unified Deployment: Serve Frontend Static Files ━━━

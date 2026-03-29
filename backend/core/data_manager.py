@@ -38,6 +38,7 @@ def init_project(project_id: str, blueprint_data: dict, modules_dir_path: str, a
         for item in src_modules.iterdir():
             if item.is_file() and item.name.endswith(".json"):
                 shutil.copy2(item, m_dir / item.name)
+    
     if artifacts_dir.exists():
         for item in artifacts_dir.iterdir():
             if item.is_file() and (item.suffix in [".json", ".model"]):

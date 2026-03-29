@@ -47,7 +47,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const { config, updateAttribute, updateStructuralParam, linkInterface } = useProjectStore();
+  const { config, updateAttribute, updateStructuralParam, linkInterface, updateInterfaceParams } = useProjectStore();
   const [messageApi, contextHolder] = message.useMessage();
 
   const selectedStoreComponent = config.components.find(c => c.id === selectedUuid);
@@ -555,6 +555,47 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                                             value: t.interface.interfaceUuid
                                         }))}
                                     />
+                                </div>
+
+                                {/* [ISS-009] Interface Parameters (Baud rate / IP / CAN ID) */}
+                                <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                                    {(item.type === 'CAN' || item.type === 'RS485' || item.type === 'RS232') && (
+                                        <div style={{ flex: 1, minWidth: 120 }}>
+                                            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4 }}>波特率 (Baud Rate)</div>
+                                            <Select 
+                                                size="small" 
+                                                style={{ width: '100%' }}
+                                                value={(item.interfaceParams as any)?.baudRate || 500000}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { baudRate: v })}
+                                                options={[
+                                                    { label: '115200', value: 115200 },
+                                                    { label: '500k', value: 500000 },
+                                                    { label: '1M', value: 1000000 },
+                                                ]}
+                                            />
+                                        </div>
+                                    )}
+                                    {(item.type === 'CAN') && (
+                                        <div style={{ flex: 1, minWidth: 80 }}>
+                                            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4 }}>节点 ID</div>
+                                            <InputNumber 
+                                                size="small" 
+                                                style={{ width: '100%' }}
+                                                value={(item.interfaceParams as any)?.canId || 0}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { canId: v })}
+                                            />
+                                        </div>
+                                    )}
+                                    {(item.type === 'ETHERNET' || item.type === 'ETH' || item.type === 'NETWORK') && (
+                                        <div style={{ flex: 1, minWidth: 140 }}>
+                                            <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4 }}>IP 地址</div>
+                                            <Input 
+                                                size="small" 
+                                                value={(item.interfaceParams as any)?.ipAddress || '192.168.1.10'}
+                                                onChange={e => updateInterfaceParams(selectedUuid, item.interfaceUuid, { ipAddress: e.target.value })}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </List.Item>
                           );

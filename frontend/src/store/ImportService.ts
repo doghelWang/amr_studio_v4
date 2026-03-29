@@ -146,7 +146,7 @@ export class ImportService {
         const board = boardDescJson[boardKey];
 
         // ━━━ Public interface types to INCLUDE (from spec) ━━━
-        const INCLUDE_TYPES = ['can', 'rs485', 'rs232', 'di', 'do', 'ai', 'ao'];
+        const INCLUDE_TYPES = ['can', 'rs485', 'rs232', 'di', 'do', 'ai', 'ao', 'ethernet', 'eth'];
 
         // Helper: extract name array from an interface section
         const extractSection = (section: Record<string, any[]>, type: string): InterfaceConfig[] => {

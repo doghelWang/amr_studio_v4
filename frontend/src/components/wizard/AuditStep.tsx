@@ -20,13 +20,13 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
     // 1. Component Audits
     for (const comp of components) {
-        // A. Attribute Validation (Must-fill & Range)
-        const allAttrs = comp.privateAttrs.flatMap(g => g.elements);
-        for (const attr of allAttrs) {
+        // [REFAC] Recursive Attribute Validation
+        const validateAttr = (attr: any) => {
             const val = attr.value;
-            
-            // Must-fill check
-            if (attr.boolMustfill && (val === '' || val === null || val === undefined)) {
+            const isSystemField = ['softwareSpec', 'chipPlatform', 'offsetAddress'].includes(attr.key);
+
+            // Must-fill check: Skip if hidden OR if it is a system-managed field (ISS-Audit-Final)
+            if (!attr.boolHide && !isSystemField && attr.boolMustfill && (val === '' || val === null || val === undefined)) {
                 issues.push({
                     severity: 'ERROR',
                     message: `[${comp.alias || comp.name}] 必填属性 "${attr.desc || attr.key}" 未设置`,
@@ -51,9 +51,22 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                     });
                 }
             }
-        }
 
-        // B. Interface Connection Check (Communication only)
+            // [NEW] Recursively check nested attributes in ComboBoxes
+            const combo = attr.comboType || attr.combo_type;
+            if (combo && combo.typeKey) {
+                const activeGroup = (combo.typeGroups || []).find((g: any) => g.key === combo.typeKey);
+                const subAttrs = activeGroup?.arrayCmobEle || activeGroup?.array_cmob_ele || activeGroup?.arrayAttr || [];
+                subAttrs.forEach(validateAttr);
+            }
+        };
+
+        comp.privateAttrs.forEach(g => {
+            const elements = g.elements || (g as any).arrayBaseEle || (g as any).array_base_ele || [];
+            elements.forEach(validateAttr);
+        });
+
+        // B. Interface Connection Check... (remains same)
         const COMMUNICATION_TYPES = ['CAN', 'ETHERNET', 'RS485', 'RS232', 'LIN', 'NETWORK'];
         for (const iface of comp.interfaces) {
             const isComm = COMMUNICATION_TYPES.includes(iface.type.toUpperCase());

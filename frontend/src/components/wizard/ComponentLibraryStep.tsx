@@ -185,28 +185,18 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
         const step = subSteps[currentSubStep - 1];
         const allowedCategories = step.categories;
         const excludeKws: string[] = (step as any).excludeKeywords || [];
-        const encoderKws: string[] = (step as any).encoderKeywords || [];
 
         return components.filter(c => {
             const catMatch = allowedCategories.includes(c.category);
-            const mainKey = (c.mainModuleTypeKey || '').toLowerCase();
             const subKey = (c.subModuleTypeKey || '').toLowerCase();
             const searchStr = `${c.name} ${c.alias} ${c.type}`.toLowerCase();
 
-            // ━━━ Include encoder-type sensors in power system step ━━━
-            const subCats = getSubCategories(step);
-            const hasEncoderTab = subCats.some(sc => sc.key === 'ENCODER');
-            if (hasEncoderTab && (mainKey.includes('sensor') || subKey.includes('encode'))) {
-                return true;
-            }
-
             if (!catMatch) return false;
 
-            // ━━━ P4c: Metadata-driven encoder exclusion for perception step ━━━
+            // ━━━ Fully exclude any dynamically related components / encoders from Step 3 ━━━
+            if (c.category === 'SENSOR' && subKey.includes('encode')) return false;
+            
             if (excludeKws.length > 0) {
-                // Exclude encoder-category sensors by metadata first
-                if (c.category === 'SENSOR' && subKey.includes('encode')) return false;
-                // Fallback: keyword-based exclusion
                 if (excludeKws.some(kw => searchStr.includes(kw))) return false;
             }
             return true;
@@ -516,6 +506,18 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                 </div>
                             </div>
                             <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px' }}>
+                                {/* Dynamic Interface Parsing Tip */}
+                                {['MAINCPU', 'CONTROL', 'IO_BOARD', 'INTERGRATEDCONTROLLER'].includes(
+                                    components.find(c => c.id === activeComponentId)?.category || ''
+                                ) && (
+                                    <Alert 
+                                        message="物理通信资源已锁定释放" 
+                                        description="系统已基于上述选中型号自动挂载配套的总线(CAN/RS485)网络(ETH)及IO插口资源，可在“第5步-电气网络与通信配置”面板中拖拽配置。"
+                                        type="success" 
+                                        showIcon 
+                                        style={{ marginBottom: 16, backgroundColor: 'rgba(35, 134, 54, 0.1)', border: '1px solid rgba(35, 134, 54, 0.3)' }}
+                                    />
+                                )}
                                 <ComponentPropertyPanel projectId={useProjectStore.getState().projectId} selectedUuid={activeComponentId} />
                             </div>
                         </div>
