@@ -1,140 +1,67 @@
-INFO:     Started server process [36238]
+INFO:     Started server process [41576]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
-INFO:     127.0.0.1:59506 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59508 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59507 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59508 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59508 - "GET /api/v1/projects/load/1234 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59565 - "GET /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59567 - "GET /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59568 - "GET /api/v1/resources/modules HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59570 - "GET /api/v1/resources/modules HTTP/1.1" 404 Not Found
-INFO:     127.0.0.1:59567 - "OPTIONS /api/v1/models/init-sandbox HTTP/1.1" 200 OK
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpfj3whcs0/CompDesc.json...
+INFO:     127.0.0.1:51996 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51997 - "GET /index.html HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "GET /assets/index-B1Sa1fgH.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "GET /assets/index-CxXm1VbR.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52157 - "GET /favicon.ico HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "GET /models/v4/BoardDescriptions.xml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "GET /api/v1/projects/load/1234 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "POST /api/v1/projects/save HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpucje_diy/CompDesc.json...
 Split complete. Extracted 12 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpfj3whcs0/split/blueprint_CompDesc.json
-INFO:     127.0.0.1:59567 - "POST /api/v1/models/init-sandbox HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59567 - "OPTIONS /api/v1/models/proj_1234/abilities HTTP/1.1" 200 OK
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpucje_diy/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:52158 - "POST /api/v1/models/init-sandbox HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating AbilitySet <<<
 DISK_AUDIT: [VALUE_CHANGE] root.version: [None] -> [1.0]
-INFO:     127.0.0.1:59567 - "PATCH /api/v1/models/proj_1234/abilities HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59567 - "OPTIONS /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "PATCH /api/v1/models/proj_1234/abilities HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component chassis-root <<<
 DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_name.string_value: [None] -> [1234]
 DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.shape_type: [None] -> [ENUM_BOX]
 DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_len: [None] -> [1200]
 DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_width: [None] -> [800]
 DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_height: [None] -> [400]
-INFO:     127.0.0.1:59567 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component chassis-root <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59567 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59565 - "OPTIONS /api/v1/models/proj_1234/components/a7b88ea2-c5e7-437b-967f-49a9cc424c89 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59577 - "OPTIONS /api/v1/models/proj_1234/components/bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59578 - "OPTIONS /api/v1/models/proj_1234/components/98e86a2d-93c8-439d-aeaf-b60ef1d235d3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59579 - "OPTIONS /api/v1/models/proj_1234/components/be86f9dc-47f1-4920-8b4c-3dafd2b1f69f HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59565 - "OPTIONS /api/v1/models/proj_1234/components/4996e7f9-af38-4846-ae24-0a1788a2bcac HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59567 - "OPTIONS /api/v1/models/proj_1234/components/9d8cd54a-8c74-4889-9e1d-8102955f1fb2 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59577 - "OPTIONS /api/v1/models/proj_1234/components/cf00e69a-bd9d-481d-9088-2694ddea1a74 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59578 - "OPTIONS /api/v1/models/proj_1234/components/0373f2e2-4360-49ea-aca2-e81bc8b09cc7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component a7b88ea2-c5e7-437b-967f-49a9cc424c89 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 400}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59579 - "PATCH /api/v1/models/proj_1234/components/a7b88ea2-c5e7-437b-967f-49a9cc424c89 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59580 - "OPTIONS /api/v1/models/proj_1234/components/6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59565 - "OPTIONS /api/v1/models/proj_1234/components/65e4df45-bc63-41fe-a1bc-e4b810034afb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52235 - "PATCH /api/v1/models/proj_1234/components/a7b88ea2-c5e7-437b-967f-49a9cc424c89 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59567 - "PATCH /api/v1/models/proj_1234/components/bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59577 - "OPTIONS /api/v1/models/proj_1234/components/99d7d228-4018-4bab-955e-e453631de646 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52237 - "PATCH /api/v1/models/proj_1234/components/bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 98e86a2d-93c8-439d-aeaf-b60ef1d235d3 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59578 - "PATCH /api/v1/models/proj_1234/components/98e86a2d-93c8-439d-aeaf-b60ef1d235d3 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52239 - "PATCH /api/v1/models/proj_1234/components/98e86a2d-93c8-439d-aeaf-b60ef1d235d3 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component be86f9dc-47f1-4920-8b4c-3dafd2b1f69f <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': -400}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59579 - "PATCH /api/v1/models/proj_1234/components/be86f9dc-47f1-4920-8b4c-3dafd2b1f69f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "PATCH /api/v1/models/proj_1234/components/be86f9dc-47f1-4920-8b4c-3dafd2b1f69f HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 4996e7f9-af38-4846-ae24-0a1788a2bcac <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59580 - "PATCH /api/v1/models/proj_1234/components/4996e7f9-af38-4846-ae24-0a1788a2bcac HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52241 - "PATCH /api/v1/models/proj_1234/components/4996e7f9-af38-4846-ae24-0a1788a2bcac HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 9d8cd54a-8c74-4889-9e1d-8102955f1fb2 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59565 - "PATCH /api/v1/models/proj_1234/components/9d8cd54a-8c74-4889-9e1d-8102955f1fb2 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component cf00e69a-bd9d-481d-9088-2694ddea1a74 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59567 - "PATCH /api/v1/models/proj_1234/components/cf00e69a-bd9d-481d-9088-2694ddea1a74 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52235 - "PATCH /api/v1/models/proj_1234/components/9d8cd54a-8c74-4889-9e1d-8102955f1fb2 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 0373f2e2-4360-49ea-aca2-e81bc8b09cc7 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59577 - "PATCH /api/v1/models/proj_1234/components/0373f2e2-4360-49ea-aca2-e81bc8b09cc7 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59578 - "PATCH /api/v1/models/proj_1234/components/6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 65e4df45-bc63-41fe-a1bc-e4b810034afb <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59579 - "PATCH /api/v1/models/proj_1234/components/65e4df45-bc63-41fe-a1bc-e4b810034afb HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 99d7d228-4018-4bab-955e-e453631de646 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59580 - "PATCH /api/v1/models/proj_1234/components/99d7d228-4018-4bab-955e-e453631de646 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:59582 - "POST /api/v1/models/proj_1234/compile HTTP/1.1" 200 OK
-Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmptxsiuo0y/CompDesc.json...
-Split complete. Extracted 12 modules.
-Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmptxsiuo0y/split/blueprint_CompDesc.json
-INFO:     127.0.0.1:59656 - "POST /api/v1/models/init-sandbox HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating AbilitySet <<<
-DISK_AUDIT: [VALUE_CHANGE] root.version: [None] -> [1.0]
-INFO:     127.0.0.1:59656 - "PATCH /api/v1/models/proj_1234/abilities HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component chassis-root <<<
-DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_name.string_value: [None] -> [1234]
-DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.shape_type: [None] -> [ENUM_BOX]
-DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_len: [None] -> [1200]
-DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_width: [None] -> [800]
-DISK_AUDIT: [VALUE_CHANGE] root.general_attr.module_shape.box.size_height: [None] -> [400]
-INFO:     127.0.0.1:59656 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component chassis-root <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59656 - "PATCH /api/v1/models/proj_1234/components/chassis-root HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component a7b88ea2-c5e7-437b-967f-49a9cc424c89 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 400}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59657 - "PATCH /api/v1/models/proj_1234/components/a7b88ea2-c5e7-437b-967f-49a9cc424c89 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59658 - "PATCH /api/v1/models/proj_1234/components/bfcb1b7d-92e4-4eb8-9984-e8fca87850e3 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 98e86a2d-93c8-439d-aeaf-b60ef1d235d3 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59659 - "PATCH /api/v1/models/proj_1234/components/98e86a2d-93c8-439d-aeaf-b60ef1d235d3 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component be86f9dc-47f1-4920-8b4c-3dafd2b1f69f <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': -400}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59660 - "PATCH /api/v1/models/proj_1234/components/be86f9dc-47f1-4920-8b4c-3dafd2b1f69f HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 4996e7f9-af38-4846-ae24-0a1788a2bcac <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59656 - "PATCH /api/v1/models/proj_1234/components/4996e7f9-af38-4846-ae24-0a1788a2bcac HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52237 - "PATCH /api/v1/models/proj_1234/components/0373f2e2-4360-49ea-aca2-e81bc8b09cc7 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component cf00e69a-bd9d-481d-9088-2694ddea1a74 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59657 - "PATCH /api/v1/models/proj_1234/components/cf00e69a-bd9d-481d-9088-2694ddea1a74 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 0373f2e2-4360-49ea-aca2-e81bc8b09cc7 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59658 - "PATCH /api/v1/models/proj_1234/components/0373f2e2-4360-49ea-aca2-e81bc8b09cc7 HTTP/1.1" 200 OK
-DISK_AUDIT: >>> Updating component 9d8cd54a-8c74-4889-9e1d-8102955f1fb2 <<<
-DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59661 - "PATCH /api/v1/models/proj_1234/components/9d8cd54a-8c74-4889-9e1d-8102955f1fb2 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52243 - "PATCH /api/v1/models/proj_1234/components/cf00e69a-bd9d-481d-9088-2694ddea1a74 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59659 - "PATCH /api/v1/models/proj_1234/components/6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52239 - "PATCH /api/v1/models/proj_1234/components/6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1 HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 65e4df45-bc63-41fe-a1bc-e4b810034afb <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59660 - "PATCH /api/v1/models/proj_1234/components/65e4df45-bc63-41fe-a1bc-e4b810034afb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52158 - "PATCH /api/v1/models/proj_1234/components/65e4df45-bc63-41fe-a1bc-e4b810034afb HTTP/1.1" 200 OK
 DISK_AUDIT: >>> Updating component 99d7d228-4018-4bab-955e-e453631de646 <<<
 DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 'locCoordX', 'double_value': 0}, {'key': 'locCoordY', 'double_value': 0}, {'key': 'locCoordZ', 'double_value': 0}, {'key': 'locCoordROLL', 'double_value': 0}, {'key': 'locCoordPITCH', 'double_value': 0}, {'key': 'locCoordYAW', 'double_value': 0}]]
-INFO:     127.0.0.1:59656 - "PATCH /api/v1/models/proj_1234/components/99d7d228-4018-4bab-955e-e453631de646 HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60467 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60528 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60530 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60529 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60530 - "GET /api/v1/schemas HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60665 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60668 - "GET /api/v1/resources/boards HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60669 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60670 - "POST /api/v1/models/proj_selftest_reborn/compile HTTP/1.1" 200 OK
-INFO:     127.0.0.1:60966 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61062 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
-INFO:     127.0.0.1:61215 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52241 - "PATCH /api/v1/models/proj_1234/components/99d7d228-4018-4bab-955e-e453631de646 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52241 - "POST /api/v1/models/proj_1234/compile HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52241 - "GET /downloads/proj_1234/proj_1234_packed.cmodel HTTP/1.1" 200 OK
