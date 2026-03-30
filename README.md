@@ -30,22 +30,23 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
    python3 start.py --host 0.0.0.0 --port 8002
    ```
    *脚本将自动执行 npm build 并由 FastAPI 托管静态资源。*
+## 🚀 快速开始 (Deployment)
 
-### 分离开发部署 (Decoupled Dev)
-> 适用于前端开发调试场景。
-- **后端**: `cd backend && python3 main.py` (Port: 8002)
-- **前端**: `cd frontend && npm run dev` (Port: 3000/3001)
+### 一键启动 (Standard Entrance)
+在仓库根目录下执行，脚本将自动处理 11 维架构下的 PYTHONPATH 注入与前端环境隔离：
+```bash
+./start_all.sh
+```
+
+### 访问入口 (Endpoints)
+- **生产级稳固入口 (推荐)**: [http://localhost:8002](http://localhost:8002) (由 Python 后端托管生成的静态产物，永不宕机)
+- **前端开发入口**: [http://localhost:3001](http://localhost:3001) (支持 HMR 热更新)
 
 ## 📂 项目结构 (Standard 11-Dimension Structure)
-- **`soul/`**：项目人员角色设定与首席工程师心智模型。
-- **`skills/`**：基础角色技能设定与自动化工具配置。
-- **`requirements/`**：精细化 PRD、需求理解与业务愿景。
-- **`specifications/`**：全链路协议开发约束规范与工程红线。
-- **`design/`**：总体架构设计、详细 API 规范及逻辑流转图。
-- **`src/`**：项目具体实现 (包含 `backend/` 引擎与 `frontend/` 可视化控制台)。
-- **`tests/`**：包含 `unit/` (单元)、`integration/` (集成)、`system/` (系统级) 测试用例与报告。
-- **`audits/`**：按日期存档的阶段性审计报告与二进制比对结论。
-- **`issue_tracker/`**：迭代式更新的问题清单与需求/缺陷跟踪控制台。
+- **`src/backend/`**：核心建模引擎、Protobuf 序列化逻辑及 REST API。
+- **`src/frontend/`**：基于 React 的工业级可视化配置台。
+- **`specifications/protocols/`**：项目宪法，包含组件描述与能力集定义的原始 `.proto` 文件。
+- **`specifications/ModuleLibrary/`**：权威板卡资产库。
 
 ## 📜 维护约束 (Mandatory Rules)
 - **删除禁令 (Deletion Safety)**：严禁在未得到人工确认前执行任何物理删除 (`rm`) 动作。所有的调整必须在成果物验证通过后，由用户明确发出确认指令方可执行清理。
