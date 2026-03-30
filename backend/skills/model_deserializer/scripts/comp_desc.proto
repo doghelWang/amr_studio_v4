@@ -1,0 +1,152 @@
+syntax = "proto3";
+
+// Root container for all module information
+message ModelRoot {
+    repeated ModuleGroup groups = 5;
+}
+
+message ModuleGroup {
+    string moduleGroupName = 1;
+    string moduleGroupUuid = 2;
+    string moduleSys = 3;
+    repeated Component moduleComponets = 4;
+}
+
+message Component {
+    GeneralAttr generalAttr = 1;
+    PrivateAttr privateAttr = 2;
+    InterfaceAbility interfaceAbility = 3;
+    InterfaceParams interfaceParams = 4;
+    StructParam structParam = 5;
+}
+
+message GeneralAttr {
+    ParamField moduleName = 1;
+    ParamField moduleDesc = 3;
+    ParamField moduleUuid = 4;
+    ParamField versionInfo = 5;
+    ParamField module3dIcon = 6;
+    ParamField subSysType = 7;
+    ParamField mainModuleType = 8;
+    ParamField subModuleType = 9;
+    ParamField venderName = 10;
+    ParamField moduleDscType = 11;
+    ParamField moduleIcon = 12;
+    ModuleShape moduleShape = 13;
+    repeated ParamField extendParams = 20;
+}
+
+message ModuleShape {
+    int32 shapeType = 1; // 1: ENUM_BOX, 2: ENUM_CYLINDER
+    Box box = 11;
+    Cylinder cylinder = 12;
+}
+
+message Box {
+    double sizeLen = 1;
+    double sizeWidth = 2;
+    double sizeHeight = 3;
+}
+
+message Cylinder {
+    double diameter = 1;
+    double height = 2;
+}
+
+message PrivateAttr {
+    repeated PrivateAttrItem privateAttrs = 1;
+}
+
+message PrivateAttrItem {
+    string key = 1;
+    string desc = 2;
+    repeated ParamField arrayBaseEle = 3;
+    repeated ParamField extendParams = 4;
+}
+
+message InterfaceAbility {
+    repeated BusInterface busInterfaceAbility = 1;
+}
+
+message BusInterface {
+    string busInterfaceType = 1;
+    int32 busInterfaceNums = 2;
+}
+
+message InterfaceParams {
+    repeated InterfaceGroup interfaceGroup = 1;
+}
+
+message InterfaceGroup {
+    string key = 1;
+    string type = 2;
+    string desc = 3;
+    string interfaceUuid = 5;
+    repeated string linkedInterfaceUuid = 6;
+    InterfaceAttrList interfaceAttrs = 7;
+    InterfaceParamsNested interfaceParams = 8;
+}
+
+message InterfaceAttrList {
+    repeated ParamField interfaceParamsArray = 1;
+}
+
+message InterfaceParamsNested {
+    repeated ParamField interfaceParamsArray = 1;
+}
+
+message StructParam {
+    repeated ParamField extendParams = 1;
+}
+
+// Universal Parameter field structure
+message ParamField {
+    string key = 1;
+    int32 type = 2; // ENUM_T (DATA_STRING=1, DATA_INT32=5, DATA_DOUBLE=10, ...)
+    
+    // Value related tags
+    string stringValue = 10;
+    bool boolValue = 11;
+    
+    // Tag 12/17 are polymorphic based on type
+    // If DATA_FIXED_E, Tag 12 is stringValue (stringFix)
+    // If DATA_INT32, Tag 12/17 are int32 values
+    // If DATA_DOUBLE, Tag 12/17 are double values
+    bytes rawValue12 = 12; 
+    bytes rawValue17 = 17;
+    
+    // Max/Min tags (often double but can be int32)
+    bytes rawMax30 = 30;
+    bytes rawMax35 = 35;
+    bytes rawMin40 = 40;
+    bytes rawMin45 = 45;
+
+    string unit = 50;
+    
+    // Description tags (polymorphic Tag 51, 3, 4)
+    string desc = 51; 
+    
+    ComboType comboType = 21;
+    string stringFix = 20;
+    repeated string fixedSource = 57;
+    string interfaceUuid = 5;
+    repeated string linkedInterfaceUuid = 6;
+
+    // Boolean flags
+    bool boolParse = 52;
+    bool boolHide = 53;
+    bool boolNoeditable = 54;
+    bool boolMustfill = 55;
+    bool boolBasic = 56;
+}
+
+message ComboType {
+    string typeKey = 1;
+    string typeDesc = 2;
+    repeated TypeGroup typeGroups = 3;
+}
+
+message TypeGroup {
+    string key = 1;
+    string desc = 2;
+}
