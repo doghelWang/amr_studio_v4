@@ -1,8 +1,11 @@
 
 > amr-studio-frontend@1.0.0 dev
-> vite --port 3001 --host 127.0.0.1
+> vite --port 3001 --host 0.0.0.0
 
 
-  VITE v5.4.21  ready in 117 ms
+  VITE v5.4.21  ready in 140 ms
 
-  ➜  Local:   http://127.0.0.1:3001/
+  ➜  Local:   http://localhost:3001/
+  ➜  Network: http://192.168.100.147:3001/
+  ➜  Network: http://192.168.100.217:3001/
+  ➜  Network: http://198.18.0.1:3001/

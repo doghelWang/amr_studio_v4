@@ -1,0 +1,1214 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "IO-lnterface board",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "0373f2e2-4360-49ea-aca2-e81bc8b09cc7",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "boardAttr",
+        "desc": "控制板属性",
+        "arrayBaseEle": [
+          {
+            "key": "chipPlatform",
+            "type": "DATA_STRING",
+            "desc": "芯片平台",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "R106"
+          },
+          {
+            "key": "softwareSpec",
+            "type": "DATA_STRING",
+            "desc": "软件规格",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "RA-EI/I-A-18A00BH5"
+          },
+          {
+            "key": "offsetAddress",
+            "type": "DATA_STRING",
+            "desc": "偏移地址拨码",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "0"
+          },
+          {
+            "key": "bipolar",
+            "type": "DATA_COMBOX",
+            "desc": "双极晶体管类型",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "comboType": {
+              "typeKey": "PNP",
+              "typeDesc": "PNP",
+              "typeGroups": [
+                {
+                  "key": "PNP",
+                  "desc": "PNP",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "NPN",
+                  "desc": "NPN",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "PI",
+        "busInterfaceNums": 1
+      },
+      {
+        "busInterfaceType": "CAN",
+        "busInterfaceNums": 1
+      },
+      {
+        "busInterfaceType": "DI",
+        "busInterfaceNums": 8
+      },
+      {
+        "busInterfaceType": "DO",
+        "busInterfaceNums": 10
+      }
+    ]
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "PI_1",
+        "type": "PI",
+        "desc": "PI_1",
+        "interfaceUuid": "5d1f66c3-761d-4eb9-9aea-410f01552321",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {}
+      },
+      {
+        "key": "CAN_1",
+        "type": "CAN",
+        "desc": "CAN_1",
+        "interfaceUuid": "e0c1193e-51c3-4949-a166-9c59d6a926a1",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "resistor",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "RESISTOR_HAVE",
+                "typeDesc": "是",
+                "typeGroups": [
+                  {
+                    "key": "RESISTOR_HAVE",
+                    "desc": "是"
+                  },
+                  {
+                    "key": "RESISTOR_NO",
+                    "desc": "否"
+                  }
+                ]
+              },
+              "desc": "带终端电阻",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "baudrate",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1M",
+                "typeDesc": "1M",
+                "typeGroups": [
+                  {
+                    "key": "1M",
+                    "desc": "1M"
+                  },
+                  {
+                    "key": "500K",
+                    "desc": "500K"
+                  },
+                  {
+                    "key": "250K",
+                    "desc": "250K"
+                  },
+                  {
+                    "key": "125K",
+                    "desc": "125K"
+                  },
+                  {
+                    "key": "100K",
+                    "desc": "100K"
+                  }
+                ]
+              },
+              "desc": "波特率",
+              "boolParse": true,
+              "boolNoeditable": true
+            },
+            {
+              "key": "protocol",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "PROTOCOL_UCAN",
+                "typeDesc": "PROTOCOL_UCAN",
+                "typeGroups": [
+                  {
+                    "key": "PROTOCOL_EXT_CAN",
+                    "desc": "PROTOCOL_EXT_CAN"
+                  },
+                  {
+                    "key": "PROTOCOL_CANOPEN",
+                    "desc": "PROTOCOL_CANOPEN"
+                  },
+                  {
+                    "key": "PROTOCOL_UCAN",
+                    "desc": "PROTOCOL_UCAN"
+                  },
+                  {
+                    "key": "PROTOCOL_STD_CAN",
+                    "desc": "PROTOCOL_STD_CAN"
+                  }
+                ]
+              },
+              "desc": "协议",
+              "boolParse": true,
+              "boolNoeditable": true
+            },
+            {
+              "key": "dialValue",
+              "type": "DATA_STRING",
+              "stringValue": "000",
+              "desc": "拨码值",
+              "boolParse": true
+            },
+            {
+              "key": "nodeId",
+              "type": "DATA_INT32",
+              "int32Value": 110,
+              "int32Maxvalue": 127,
+              "int32Minvalue": 1,
+              "desc": "节点Id",
+              "boolParse": true,
+              "boolNoeditable": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_1",
+        "type": "DI",
+        "desc": "DI_1",
+        "interfaceUuid": "b218a3c1-2ad8-41ef-9d6f-46a37ca2dfd5",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_2",
+        "type": "DI",
+        "desc": "DI_2",
+        "interfaceUuid": "e33600c1-daa6-4fae-9efc-aa30c86baac4",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_3",
+        "type": "DI",
+        "desc": "DI_3",
+        "interfaceUuid": "7a781a4a-6c78-4e28-9468-c0a001e359df",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_4",
+        "type": "DI",
+        "desc": "DI_4",
+        "interfaceUuid": "0fd5ba1f-b3f1-4998-83c8-d60a86dc8a9b",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_5",
+        "type": "DI",
+        "desc": "DI_5",
+        "interfaceUuid": "517b4d25-5f33-49fc-86e4-f3129251e48c",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_6",
+        "type": "DI",
+        "desc": "DI_6",
+        "interfaceUuid": "1a6a9495-1ab4-4488-bc3f-107a1f8a4df1",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_7",
+        "type": "DI",
+        "desc": "DI_7",
+        "interfaceUuid": "be7dd124-285a-45b7-8660-a9775c297ad1",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DI_8",
+        "type": "DI",
+        "desc": "DI_8",
+        "interfaceUuid": "38685958-2aa6-4140-a976-82f6c3581104",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "1",
+                "typeDesc": "高电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效"
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效"
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "desc": "DO_1",
+        "interfaceUuid": "5ac94df0-d919-4da0-af12-c4acc2808511",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_2",
+        "type": "DO",
+        "desc": "DO_2",
+        "interfaceUuid": "e59ce419-259d-4985-9575-f6c3f1c01acf",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_3",
+        "type": "DO",
+        "desc": "DO_3",
+        "interfaceUuid": "85b010fa-d343-4d52-a3a0-89e052ebd5b5",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_4",
+        "type": "DO",
+        "desc": "DO_4",
+        "interfaceUuid": "8d352f73-ed0e-4590-a229-e66e3af1580b",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_5",
+        "type": "DO",
+        "desc": "DO_5",
+        "interfaceUuid": "a4df919d-35ec-4e21-9ef5-52df3e7fc9de",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_6",
+        "type": "DO",
+        "desc": "DO_6",
+        "interfaceUuid": "35f3453d-b05e-4c99-a541-7283b2ab989e",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_7",
+        "type": "DO",
+        "desc": "DO_7",
+        "interfaceUuid": "cf5402c0-387a-46a3-919d-bded1c6bfd20",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_8",
+        "type": "DO",
+        "desc": "DO_8",
+        "interfaceUuid": "33a989f1-fe9f-401d-bcf3-1dd75330d0bf",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_9",
+        "type": "DO",
+        "desc": "DO_9",
+        "interfaceUuid": "39c3827d-56e1-4d39-b894-ba0ba9550501",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      },
+      {
+        "key": "DO_10",
+        "type": "DO",
+        "desc": "DO_10",
+        "interfaceUuid": "0a68ba65-4edc-4a0f-a723-27fb5c9a2d67",
+        "linkedInterfaceUuid": [],
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0"
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1"
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true
+            },
+            {
+              "key": "mode",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "NO",
+                "typeDesc": "常开",
+                "typeGroups": [
+                  {
+                    "key": "NO",
+                    "desc": "常开"
+                  },
+                  {
+                    "key": "NC",
+                    "desc": "常闭"
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": null
+      }
+    ]
+  }
+}
