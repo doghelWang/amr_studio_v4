@@ -18,15 +18,12 @@ from skills_v2.cmodel_encoder.encoder import encode_cmodel
 BASE_DIR = Path(__file__).resolve().parent  # src/backend
 PROJECT_ROOT = BASE_DIR.parent.parent       # Repo Root
 
-# 1. Project Persistence (Local Artifacts)
 SAVED_PROJECTS_DIR = PROJECT_ROOT / "src" / "backend" / "saved_projects"
 SAVED_PROJECTS_DIR.mkdir(parents=True, exist_ok=True)
 
-# 2. User Data (Frontend Saves)
 USER_SAVES_DIR = PROJECT_ROOT / "src" / "backend" / "user_saves"
 USER_SAVES_DIR.mkdir(parents=True, exist_ok=True)
 
-# 3. Industrial Metadata (Standard Library)
 MODULE_LIBRARY_ROOT = PROJECT_ROOT / "specifications" / "ModuleLibrary"
 if not MODULE_LIBRARY_ROOT.exists():
     MODULE_LIBRARY_ROOT = BASE_DIR / "resources"
@@ -49,10 +46,27 @@ from fastapi import Request
 async def global_exception_handler(request: Request, exc: Exception):
     import traceback
     traceback.print_exc()
-    return JSONResponse(
-        status_code=500,
-        content={"error": "InternalServerError", "detail": str(exc), "request_path": request.url.path}
-    )
+    return JSONResponse(status_code=500, content={"error": "InternalServerError", "detail": str(exc)})
+
+# --- HELPERS ---
+def strip_ui_wrappers(node):
+    """
+    Decisively strips 'LibraryGroup' and promote children during serialization or init.
+    """
+    if isinstance(node, dict):
+        if "moreModuleInfo" in node:
+            new_subs = []
+            for sub in node["moreModuleInfo"]:
+                if sub.get("moduleGroupName") == "LibraryGroup":
+                    # Promote sub-items directly to current level
+                    new_subs.extend(strip_ui_wrappers(sub).get("moreModuleInfo", []))
+                else:
+                    new_subs.append(strip_ui_wrappers(sub))
+            node["moreModuleInfo"] = new_subs
+        return {k: strip_ui_wrappers(v) for k, v in node.items()}
+    elif isinstance(node, list):
+        return [strip_ui_wrappers(i) for i in node]
+    return node
 
 @app.post("/api/v1/models/init-sandbox")
 def init_sandbox_api(payload: dict = Body(...)):
@@ -60,15 +74,17 @@ def init_sandbox_api(payload: dict = Body(...)):
     config = payload.get("config")
     if not project_id or not config:
         raise HTTPException(status_code=400, detail="Missing projectId or config")
-    
+
     from core.resource_adapter import frontend_to_comp_desc
     full_json = frontend_to_comp_desc(config)
-    
+    # [FIX F-001] Strip UI Shells before saving to blueprint
+    sanitized_json = strip_ui_wrappers(full_json)
+
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
         full_json_path = tmp_path / "CompDesc.json"
         with open(full_json_path, "w", encoding="utf-8") as f:
-            json.dump(full_json, f, ensure_ascii=False, indent=2)
+            json.dump(sanitized_json, f, ensure_ascii=False, indent=2)
         
         split_out = tmp_path / "split"
         split_out.mkdir()
@@ -95,29 +111,18 @@ def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...
     temp_dir = Path(tempfile.mkdtemp())
     try:
         cmodel_path = temp_dir / file.filename
-        with open(cmodel_path, "wb") as f:
-            shutil.copyfileobj(file.file, f)
-            
+        with open(cmodel_path, "wb") as f: shutil.copyfileobj(file.file, f)
         decode_out = temp_dir / "decoded"
         audit_log = decode_cmodel(str(cmodel_path), str(decode_out))
-        
         split_out = temp_dir / "split"
         split_out.mkdir(parents=True, exist_ok=True)
         comp_desc_json = decode_out / "CompDesc.json"
-        
         split_comp_desc(str(comp_desc_json), str(split_out))
-        
-        with open(split_out / "blueprint_CompDesc.json", "r", encoding="utf-8") as f:
-            blueprint = json.load(f)
-        with open(comp_desc_json, "r", encoding="utf-8") as f:
-            full_json = json.load(f)
-            
+        with open(split_out / "blueprint_CompDesc.json", "r", encoding="utf-8") as f: blueprint = json.load(f)
+        with open(comp_desc_json, "r", encoding="utf-8") as f: full_json = json.load(f)
         data_manager.init_project(project_id, blueprint, str(split_out / "modules"), decode_out)
         background_tasks.add_task(shutil.rmtree, str(temp_dir), ignore_errors=True)
-        
-        return {
-            "status": "success", "project_id": project_id, "blueprint": blueprint, "full_json": full_json, "audit": audit_log
-        }
+        return {"status": "success", "project_id": project_id, "blueprint": blueprint, "full_json": full_json, "audit": audit_log}
     except Exception as e:
         shutil.rmtree(temp_dir, ignore_errors=True)
         raise HTTPException(status_code=500, detail=str(e))
@@ -136,7 +141,6 @@ async def update_component_api(project_id: str, module_uuid: str, request: Reque
         if file_name:
             global_source = BASE_DIR / "resources" / "modules" / file_name
             data_manager.ensure_module_in_project(project_id, file_name, global_source)
-        
         success = data_manager.update_component(project_id, module_uuid, body)
         return {"status": "success" if success else "error"}
     except Exception as e:
@@ -151,8 +155,7 @@ async def update_abilities_api(project_id: str, request: Request):
     try:
         payload = await request.json()
         final_payload = payload
-        if isinstance(payload, list):
-            final_payload = {"functionAbility": payload, "version": "1.0"}
+        if isinstance(payload, list): final_payload = {"functionAbility": payload, "version": "1.0"}
         success = data_manager.update_ability(project_id, final_payload)
         return {"status": "success" if success else "error"}
     except Exception as e:
@@ -166,21 +169,13 @@ def compile_cmodel_api(project_id: str):
         fname = f"{project_id}_packed.cmodel"
         output_cmodel = str(p_dir / fname)
         audit_log = encode_cmodel(blueprint_path, output_cmodel)
-        return {
-            "status": "success",
-            "download_url": f"/downloads/{project_id}/{fname}",
-            "audit": audit_log
-        }
+        return {"status": "success", "download_url": f"/downloads/{project_id}/{fname}", "audit": audit_log}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/v1/resources/boards")
 def list_boards_api():
     boards = []
-    # [ISS-FIX] 11-dimension robust discovery:
-    # Scan both the frontend assets AND the backend definitions as fallback
-    
-    # Priority A: Frontend JSON assets (High-fidelity)
     host_dir = MODULE_LIBRARY_ROOT / "board_desc" / "host"
     if host_dir.exists():
         for f in host_dir.glob("*.json"):
@@ -189,41 +184,14 @@ def list_boards_api():
                     data = json.load(file)
                     board_id = list(data.keys())[0]
                     info = data[board_id].get("基本信息", {})
-                    boards.append({
-                        "id": board_id, "name": info.get("name", board_id), "desc": info.get("desc", ""), "board_type": info.get("board_type", [])
-                    })
+                    boards.append({"id": board_id, "name": info.get("name", board_id), "desc": info.get("desc", ""), "board_type": info.get("board_type", [])})
             except: pass
-
-    # Priority B: Backend XML definitions (Structural fallback)
-    if not boards:
-        def_dir = BASE_DIR / "resources" / "definitions"
-        print(f"DEBUG_BOARDS: Fallback triggered. Looking in {def_dir}", flush=True)
-        from core import resource_adapter
-        for def_file in ["mainCPU.xml", "integratedController.xml"]:
-            fpath = def_dir / def_file
-            print(f"DEBUG_BOARDS: Checking {fpath} | Exists: {fpath.exists()}", flush=True)
-            if fpath.exists():
-                try:
-                    data = resource_adapter.xml_to_component_json(str(fpath))
-                    found_count = len(data.get("moduleComponets", []))
-                    print(f"DEBUG_BOARDS: Loaded {def_file} | Components found: {found_count}", flush=True)
-                    for comp in data.get("moduleComponets", []):
-                        gen = comp.get("generalAttr", {})
-                        boards.append({
-                            "id": gen.get("moduleName", {}).get("stringValue", "Unknown"),
-                            "name": gen.get("moduleName", {}).get("stringValue", "Unknown"),
-                            "desc": "Auto-extracted",
-                            "board_type": ["BOARD_TYPE_MCPU"]
-                        })
-                except Exception as e:
-                    print(f"DEBUG_BOARDS: Error loading {def_file}: {e}", flush=True)
     return boards
 
 @app.get("/api/v1/projects/saved-list")
 def list_saved_projects():
     projects = []
-    for f in USER_SAVES_DIR.glob("*.json"):
-        projects.append({"name": f.stem, "mtime": os.path.getmtime(f)})
+    for f in USER_SAVES_DIR.glob("*.json"): projects.append({"name": f.stem, "mtime": os.path.getmtime(f)})
     projects.sort(key=lambda x: x["mtime"], reverse=True)
     return projects
 
@@ -232,8 +200,7 @@ def save_user_project(payload: dict = Body(...)):
     name = payload.get("name")
     config = payload.get("config")
     if not name or not config: raise HTTPException(status_code=400)
-    with open(USER_SAVES_DIR / f"{name}.json", "w", encoding="utf-8") as f:
-        json.dump(config, f, ensure_ascii=False, indent=2)
+    with open(USER_SAVES_DIR / f"{name}.json", "w", encoding="utf-8") as f: json.dump(config, f, ensure_ascii=False, indent=2)
     return {"status": "success"}
 
 @app.get("/api/v1/projects/load/{name}")
@@ -253,7 +220,6 @@ def get_schemas_api():
         stem = f.stem
         if stem not in base_map: base_map[stem] = {"json": None, "xml": None}
         base_map[stem][f.suffix[1:]] = f
-
     from core import resource_adapter
     for stem, formats in base_map.items():
         try:

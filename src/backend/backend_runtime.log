@@ -1,6 +1,9 @@
-INFO:     Started server process [29776]
+INFO:     Started server process [32572]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
-INFO:     127.0.0.1:63184 - "GET /api/v1/resources/boards HTTP/1.1" 200 OK
-INFO:     127.0.0.1:63185 - "GET /api/v1/resources/boards HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp9vxf5ump/CompDesc.json...
+Split complete. Extracted 1 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp9vxf5ump/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:49719 - "POST /api/v1/models/init-sandbox HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49720 - "POST /api/v1/models/proj_selftest_reborn/compile HTTP/1.1" 200 OK

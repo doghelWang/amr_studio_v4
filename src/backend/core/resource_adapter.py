@@ -2,59 +2,21 @@ import xml.etree.ElementTree as ET
 import json
 import os
 
-def xml_to_component_json(xml_path):
-    """
-    Restored XML Transmuter for board discovery.
-    """
-    if not os.path.exists(xml_path): return {}
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
-    
-    components = []
-    # Search for all components regardless of nesting
-    for comp in root.findall(".//Component"):
-        identity = comp.find("Identity")
-        name = identity.get("name") if identity is not None else "Unknown"
-        components.append({
-            "generalAttr": {
-                "moduleName": {"stringValue": name},
-                "subSysType": {"comboType": {"typeKey": comp.get("category")}}
-            }
-        })
-    return {
-        "moduleGroupName": root.get("name", "Unknown"),
-        "moduleComponets": components
-    }
-
 # --- 工业级标准元数据模板 ---
-# 用于补全前端缺失的、下位机解析必需的底层 Tag
 CHASSIS_GENERAL_ATTR_TEMPLATE = {
     "moduleName": {"key": "module_name", "type": "DATA_STRING", "desc": "模块名称", "boolParse": True},
-    "moduleDesc": {"key": "module_desc", "type": "DATA_STRING", "stringValue": "通用差速底盘", "desc": "模块描述", "boolParse": True},
+    "moduleDesc": {"key": "module_desc", "type": "DATA_STRING", "stringValue": "通用底盘", "desc": "模块描述", "boolParse": True},
     "moduleUuid": {"key": "module_uuid", "type": "DATA_STRING", "desc": "模块Uuid", "boolParse": True, "boolHide": True},
-    "versionInfo": {"key": "version_info", "type": "DATA_STRING", "stringValue": "V1.0/2025-08-21", "desc": "版本信息", "boolParse": True, "boolNoeditable": True},
-    "module3dIcon": {"key": "module_3d_icon", "type": "DATA_STRING", "stringValue": "/ModuleLibrary/3dModelRes", "desc": "3D模型", "boolParse": True},
     "subSysType": {
         "key": "sub_sys_type", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "ChassisSys", "typeDesc": "", "typeGroups": []},
+        "comboType": {"typeKey": "ChassisSys", "typeDesc": ""},
         "desc": "子系统", "boolParse": True
     },
     "mainModuleType": {
         "key": "main_module_type", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "chassis", "typeDesc": "", "typeGroups": []},
+        "comboType": {"typeKey": "chassis", "typeDesc": ""},
         "desc": "主类型", "boolParse": True
-    },
-    "subModuleType": {
-        "key": "sub_module_type", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "diffChassis", "typeDesc": "", "typeGroups": []},
-        "desc": "子类型", "boolParse": True
-    },
-    "venderName": {
-        "key": "vender_name", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "HIKROBOT", "typeDesc": "", "typeGroups": []},
-        "desc": "供应商", "boolParse": True
-    },
-    "moduleIcon": {"key": "module_icon", "type": "DATA_STRING", "stringValue": "/ModuleLibrary/PictureRes/1/cube.png", "desc": "模块图片", "boolParse": True}
+    }
 }
 
 def map_attribute_to_cmodel(a, is_ability=False):
@@ -70,10 +32,8 @@ def map_attribute_to_cmodel(a, is_ability=False):
         "boolNoeditable": a.get("boolNoeditable", False),
         "fixedSource": a.get("fixedSource", [])
     }
-    
     val = a.get("value")
     a_type = a.get("type")
-    
     if val is not None:
         if a_type == "DATA_DOUBLE": base["doubleValue"] = float(val)
         elif a_type == "DATA_INT32": base["int32Value"] = int(val)
@@ -87,84 +47,78 @@ def map_attribute_to_cmodel(a, is_ability=False):
                     "typeDesc": combo.get("typeDesc") or combo.get("type_desc", ""),
                     "typeGroups": []
                 }
-                groups = combo.get("typeGroups") or combo.get("type_groups", [])
-                for g in groups:
+                for g in (combo.get("typeGroups") or combo.get("type_groups") or []):
                     group = {"key": g.get("key"), "desc": g.get("desc", "")}
-                    sub_key = "arrayAttr" if is_ability else "arrayCmobEle"
-                    source_sub_key = "arrayAttr" if is_ability else ("arrayCmobEle" if "arrayCmobEle" in g else "array_cmob_ele")
-                    if source_sub_key in g:
-                        group[sub_key] = [map_attribute_to_cmodel(sub, is_ability) for sub in g[source_sub_key]]
+                    sk = "arrayAttr" if is_ability else "arrayCmobEle"
+                    ssk = "arrayAttr" if is_ability else ("arrayCmobEle" if "arrayCmobEle" in g else "array_cmob_ele")
+                    if ssk in g: group[sk] = [map_attribute_to_cmodel(sub, is_ability) for sub in g[ssk]]
                     base["comboType"]["typeGroups"].append(group)
-    
-    if "maxValue" in a: base["doubleMaxvalue"] = float(a["maxValue"])
-    if "minValue" in a: base["doubleMinvalue"] = float(a["minValue"])
     return base
 
 def map_component_to_cmodel(c):
     category = c.get("category", "")
     is_chassis = category == "CHASSIS" or c.get("id") == "chassis-root"
     
-    # 1. Start with Template if it is chassis
-    gen_attr = {}
+    gen_attr = json.loads(json.dumps(CHASSIS_GENERAL_ATTR_TEMPLATE)) if is_chassis else {
+        "moduleName": {"key": "module_name", "type": "DATA_STRING", "stringValue": c.get("name", ""), "desc": "模块名称", "boolParse": True},
+        "moduleUuid": {"key": "module_uuid", "type": "DATA_STRING", "stringValue": c.get("id", ""), "desc": "模块Uuid", "boolParse": True, "boolHide": True}
+    }
     if is_chassis:
-        # Deep copy template
-        gen_attr = json.loads(json.dumps(CHASSIS_GENERAL_ATTR_TEMPLATE))
         gen_attr["moduleName"]["stringValue"] = c.get("name", "chassis")
         gen_attr["moduleUuid"]["stringValue"] = c.get("id", "chassis-root")
-    else:
-        # Generic component mapping
-        gen_attr = {
-            "moduleName": {"key": "module_name", "type": "DATA_STRING", "stringValue": c.get("name", ""), "desc": "模块名称", "boolParse": True},
-            "moduleUuid": {"key": "module_uuid", "type": "DATA_STRING", "stringValue": c.get("id", ""), "desc": "模块Uuid", "boolParse": True, "boolHide": True}
-        }
 
-    # 2. Add structural parameters (XYZ/Roll/Pitch/Yaw)
-    struct_param = {
-        "extendParams": [
-            {"key": "locCoordX", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountX", 0))},
-            {"key": "locCoordY", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountY", 0))},
-            {"key": "locCoordZ", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountZ", 0))},
-            {"key": "locCoordROLL", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountRoll", 0))},
-            {"key": "locCoordPITCH", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountPitch", 0))},
-            {"key": "locCoordYAW", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountYaw", 0))},
-            {"key": "parentNodeUuid", "type": "DATA_STRING", "stringValue": c.get("parentNodeUuid", "")}
+    # [FIX F-008] Chassis Kinematics redirection to Tag 5 (structParam)
+    # Standard tools expect headOffset etc. inside structParam.extendParams
+    extend_params = [
+        {"key": "locCoordX", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountX", 0))},
+        {"key": "locCoordY", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountY", 0))},
+        {"key": "locCoordZ", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountZ", 0))},
+        {"key": "locCoordROLL", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountRoll", 0))},
+        {"key": "locCoordPITCH", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountPitch", 0))},
+        {"key": "locCoordYAW", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountYaw", 0))},
+        {"key": "parentNodeUuid", "type": "DATA_STRING", "stringValue": c.get("parentNodeUuid", "")}
+    ]
+
+    priv_attrs_for_pb = []
+    if is_chassis:
+        # Move all private attributes to extend_params for bit-perfect alignment
+        for g in c.get("privateAttrs", []):
+            for e in g.get("elements", []):
+                extend_params.append(map_attribute_to_cmodel(e))
+    else:
+        # Normal components keep their private attributes in Tag 2
+        priv_attrs_for_pb = [
+            {
+                "key": g.get("key"), "desc": g.get("desc", ""),
+                "arrayBaseEle": [map_attribute_to_cmodel(e, False) for e in g.get("elements", [])]
+            } for g in c.get("privateAttrs", [])
         ]
-    }
 
     return {
         "generalAttr": gen_attr,
-        "privateAttr": {
-            "privateAttrs": [
-                {
-                    "key": g.get("key"),
-                    "desc": g.get("desc", ""),
-                    "arrayBaseEle": [map_attribute_to_cmodel(e, False) for e in g.get("elements", [])]
-                } for g in c.get("privateAttrs", [])
-            ]
-        },
+        "privateAttr": {"privateAttrs": priv_attrs_for_pb},
         "interfaceAbility": c.get("interfaceAbility") or {"busInterfaceAbility": []},
-        "interfaceParams": {
-            "interfaceGroup": [
-                {
-                    "key": i.get("key"),
-                    "type": i.get("type"),
-                    "desc": i.get("desc", ""),
-                    "interfaceUuid": i.get("interfaceUuid"),
-                    "linkedInterfaceUuid": i.get("linkedInterfaceUuid", []),
-                    "interfaceParams": i.get("interfaceParams", {})
-                } for i in c.get("interfaces", [])
-            ]
-        },
-        "structParam": struct_param
+        "interfaceParams": {"interfaceGroup": [
+            {
+                "key": i.get("key"), "type": i.get("type"), "desc": i.get("desc", ""),
+                "interfaceUuid": i.get("interfaceUuid"), "linkedInterfaceUuid": i.get("linkedInterfaceUuid", []),
+                "interfaceParams": i.get("interfaceParams", {})
+            } for i in c.get("interfaces", [])
+        ]},
+        "structParam": {"extendParams": extend_params}
     }
 
 def map_module_group(comp, all_components):
+    # Standard: get real children
     children = [c for c in all_components if c.get("parentNodeUuid") == comp.get("id")]
-    # [CRITICAL] Standard tool expects the group name to match the chassis type for the root
+    
+    # [FIX F-001] Explicit naming for chassis root
     group_name = comp.get("name", "chassis_diff")
     if comp.get("id") == "chassis-root":
-        group_name = "chassis_diff" # Align with standard sample
-        
+        group_name = "chassis_diff"
+    else:
+        group_name = comp.get("name", "ModuleGroup").replace("module_", "")
+
     return {
         "moduleGroupName": group_name,
         "moduleGroupUuid": comp.get("id", ""),
@@ -175,9 +129,43 @@ def map_module_group(comp, all_components):
 def frontend_to_comp_desc(config):
     identity = config.get("identity", {})
     components = config.get("components", [])
+    # 找到绝对根节点（底盘）
     root_comps = [c for c in components if not c.get("parentNodeUuid")]
+    
     return {
         "moduleGroupName": identity.get("robotName", "Robot"),
-        "modelVersion": identity.get("version", "1.0.0"),
+        "modelVersion": "1.0",
         "moreModuleInfo": [map_module_group(c, components) for c in root_comps]
     }
+
+def export_abilities(abilities):
+    if not abilities or "functionAbility" not in abilities: return {"functionAbility": []}
+    return {
+        "functionAbility": [
+            {
+                "type": f.get("type"), "desc": f.get("desc", ""),
+                "childFunction": [
+                    {
+                        "key": cf.get("key"), "desc": cf.get("desc", ""),
+                        "attr": [map_attribute_to_cmodel(a, True) for a in cf.get("attr", [])]
+                    } for cf in f.get("childFunction", [])
+                ]
+            } for f in abilities.get("functionAbility", [])
+        ]
+    }
+
+def xml_to_component_json(xml_path):
+    if not os.path.exists(xml_path): return {}
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    components = []
+    for comp in root.findall(".//Component"):
+        identity = comp.find("Identity")
+        name = identity.get("name") if identity is not None else "Unknown"
+        components.append({
+            "generalAttr": {
+                "moduleName": {"stringValue": name},
+                "subSysType": {"comboType": {"typeKey": comp.get("category")}}
+            }
+        })
+    return {"moduleGroupName": root.get("name", "Unknown"), "moduleComponets": components}
