@@ -1,0 +1,200 @@
+{
+	"privateAttrs": [
+		{
+			"key": "motorAttr",
+			"desc": "电机属性",
+			"arrayBaseEle": [
+				{
+					"key": "ENCType",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "ENCODER_NULL",
+						"typeDesc": "无",
+						"typeGroups": [
+							{
+								"key": "ENCODER_NULL",
+								"desc": "无"
+							},
+							{
+								"key": "ENCODER_INC",
+								"desc": "增量式编码器",
+								"arrayCmobEle": [
+                                	{
+										"key": "encoderLine",
+										"type": "DATA_INT32",
+										"int32Value": 100,
+										"int32Maxvalue": 10000,
+										"int32Minvalue": 1,
+										"desc": "编码器线数"
+									}
+                                ]
+							},
+							{
+								"key": "ENCODER_MULTI_TURN_ABS",
+								"desc": "多圈绝对式编码器",
+								"arrayCmobEle": [
+							        {
+							        	"key": "sglTurnBit",
+							        	"type": "DATA_INT32",
+							        	"int32Value": 8,
+							        	"int32Maxvalue": 20,
+							        	"int32Minvalue": 1,
+							        	"desc": "编码器单圈位数"
+							        },
+							        {
+							        	"key": "multiTurnBit",
+							        	"type": "DATA_INT32",
+							        	"int32Value": 8,
+							        	"int32Maxvalue": 24,
+							        	"int32Minvalue": 1,
+							        	"desc": "编码器多圈位数"
+							        }
+							   ]
+							},
+							{
+								"key": "ENCODER_SGL_TURN_ABS",
+								"desc": "单圈绝对式编码器",
+								"arrayCmobEle": [
+                                	{
+										"key": "sglTurnBit",
+										"type": "DATA_INT32",
+										"int32Value": 8,
+										"int32Maxvalue": 20,
+										"int32Minvalue": 1,
+										"desc": "编码器单圈位数"
+									}
+								]
+							}
+						]
+					},
+					"desc": "编码器类型",
+					"boolMustfill": true
+				},
+				{
+					"key": "initMode",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "MODE_FREERUN",
+						"typeDesc": "FREERUN模式",
+						"typeGroups": [
+							{
+								"key": "MODE_FREERUN",
+								"desc": "FREERUN模式"
+							},
+							{
+								"key": "MODE_VELOCITY_ZERO",
+								"desc": "速度0模式"
+							}
+						]
+					},
+					"desc": "电机初始状态",
+					"boolHide": true
+				},
+				{
+					"key": "RPM",
+					"type": "DATA_INT32",
+					"int32Value": 0,
+					"int32Maxvalue": 9999,
+					"int32Minvalue": 0,
+					"unit": "RPM",
+					"desc": "电机额定转速",
+					"boolMustfill": true
+				},
+				{
+					"key": "bTemper",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否支持电机温度获取",
+					"boolHide": true
+				},
+				{
+					"key": "bHbrake",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否带抱闸"
+				},
+				{
+					"key": "bReverse",
+					"type": "DATA_BOOL",
+					"boolValue": false,
+					"desc": "是否反向",
+					"boolHide": true
+				},
+				{
+					"key": "torque",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "N*m",
+					"desc": "额定扭矩"
+				},
+				{
+					"key": "gearRatio",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 1,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 1,
+					"desc": "减速比"
+				},
+				{
+					"key": "ratedCurr",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "A",
+					"desc": "额定电流"
+				},
+				{
+					"key": "overCurrCoef",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"desc": "过流系数"
+				},
+				{
+					"key": "defaultAcc",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "r/s^2",
+					"desc": "默认加速度",
+					"boolHide": true
+				},
+				{
+					"key": "defaultDec",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "r/s^2",
+					"desc": "默认减速度",
+					"boolHide": true
+				},
+				{
+					"key": "maxAcc",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "r/s^2",
+					"desc": "电机支持的最大加速度",
+					"boolHide": true
+				},
+				{
+					"key": "maxDec",
+					"type": "DATA_DOUBLE",
+					"doubleValue": 0,
+					"doubleMaxvalue": 9999,
+					"doubleMinvalue": 0,
+					"unit": "r/s^2",
+					"desc": "电机支持的最大减速度",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

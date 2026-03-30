@@ -1,0 +1,141 @@
+{
+	"RA-EI_I-B-500A5AH1": {
+		"基本信息": {
+			"name": "模拟IO模块",
+			"desc": "IO模块 模拟输入/输出",
+			"type": "MV-83130",
+			"ver": "V1.0.0",
+			"id_dip": "ID_DIP_3_BIT",
+			"ce_mode_set": 0,
+			"di_hd_mode_set": 0,
+			"board_type": [
+				"BOARD_AI_AO"
+			],
+			"mcu": [
+				{
+					"chip": "R111"
+				}
+			]
+		},
+		"通信接口": {
+			"can": [
+				{
+					"name": "CAN_1",
+					"protocol": "PROTOCOL_UCAN",
+					"ucan_id": [
+						{
+							"mcu": 0,
+							"peripheral": "hcan1",
+							"id_map": [
+								21,
+								22,
+								23,
+								24,
+								25,
+								26,
+								27,
+								28
+							]
+						}
+					]
+				}
+			]
+		},
+		"io接口": {
+			"ai": [
+				{
+					"name": "AI_1",
+					"desc": "",
+					"mcu": 0,
+					"chan": 0
+				},
+				{
+					"name": "AI_2",
+					"desc": "",
+					"mcu": 0,
+					"chan": 1
+				},
+				{
+					"name": "AI_3",
+					"desc": "",
+					"mcu": 0,
+					"chan": 2
+				},
+				{
+					"name": "AI_4",
+					"desc": "",
+					"mcu": 0,
+					"chan": 3
+				},
+				{
+					"name": "AI_5",
+					"desc": "",
+					"mcu": 0,
+					"chan": 4
+				},
+				{
+					"name": "AI_6",
+					"desc": "",
+					"mcu": 0,
+					"chan": 5
+				},
+				{
+					"name": "AI_7",
+					"desc": "",
+					"mcu": 0,
+					"chan": 6
+				},
+				{
+					"name": "AI_8",
+					"desc": "",
+					"mcu": 0,
+					"chan": 7
+				},
+				{
+					"name": "AI_9",
+					"desc": "",
+					"mcu": 0,
+					"chan": 8
+				},
+				{
+					"name": "AI_10",
+					"desc": "",
+					"mcu": 0,
+					"chan": 9
+				}
+			],
+			"ao": [
+				{
+					"name": "AO_1",
+					"desc": "",
+					"mcu": 0,
+					"chan": 0
+				},
+				{
+					"name": "AO_2",
+					"desc": "",
+					"mcu": 0,
+					"chan": 1
+				},
+				{
+					"name": "AO_3",
+					"desc": "",
+					"mcu": 0,
+					"chan": 2
+				},
+				{
+					"name": "AO_4",
+					"desc": "",
+					"mcu": 0,
+					"chan": 3
+				},
+				{
+					"name": "AO_5",
+					"desc": "",
+					"mcu": 0,
+					"chan": 4
+				}
+			]
+		}
+	}
+}

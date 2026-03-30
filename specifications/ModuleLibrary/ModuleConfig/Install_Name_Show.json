@@ -1,0 +1,320 @@
+{
+    "ModuleList": [
+        {
+			"ModuleTypeKey": "carrier",
+            "ModuleNameInstall":"carrier"
+        },
+		{
+			"ModuleTypeKey": "covers",
+            "ModuleNameInstall":"cover"
+        },
+        {
+			"ModuleTypeKey": "diffChassis",
+            "ModuleNameInstall":"chassis_diff"
+        },
+		{
+			"ModuleTypeKey": "steerChassis",
+            "ModuleNameInstall":"chassis_steer"
+        },
+		{
+			"ModuleTypeKey": "diffWheel",
+            "ModuleNameInstall":"diffWheel"
+        },
+		{
+			"ModuleTypeKey": "diffSteerWheel",
+            "ModuleNameInstall":"Steerwheel"
+        },
+		{
+			"ModuleTypeKey": "weakSteerWheel",
+            "ModuleNameInstall":"Steerwheel"
+        },
+        {
+			"ModuleTypeKey": "verticalSteerWheel",
+            "ModuleNameInstall":"Steerwheel"
+        },
+		{
+			"ModuleTypeKey": "horizontalSteerWheel",
+            "ModuleNameInstall":"Steerwheel"
+        },
+		{
+			"ModuleTypeKey": "weakTurnWheel",
+            "ModuleNameInstall":"Steerwheel"
+        },
+		{
+			"ModuleTypeKey": "lift",
+            "ModuleNameInstall":"lifter"
+        },
+		{
+			"ModuleTypeKey": "rotate",
+            "ModuleNameInstall":"rotator"
+        },
+        {
+			"ModuleTypeKey": "translation",
+            "ModuleNameInstall":"transporter"
+        },
+		{
+			"ModuleTypeKey": "linear",
+            "ModuleNameInstall":"linear"
+        },
+		{
+			"ModuleTypeKey": "clamp",
+            "ModuleNameInstall":"clamper"
+        },
+		{
+			"ModuleTypeKey": "block",
+            "ModuleNameInstall":"block"
+        },
+		{
+			"ModuleTypeKey": "motor",
+            "ModuleNameInstall":"motor"
+        },
+        {
+			"ModuleTypeKey": "PMSMMotor",
+            "ModuleNameInstall":"motor"
+        },
+		{
+			"ModuleTypeKey": "BLDCMotor",
+            "ModuleNameInstall":"motor"
+        },
+		{
+			"ModuleTypeKey": "BDCMotor",
+            "ModuleNameInstall":"motor"
+        },
+		{
+			"ModuleTypeKey": "subDriver",
+            "ModuleNameInstall":"driver"
+        },
+		{
+			"ModuleTypeKey": "servo",
+            "ModuleNameInstall":"servo_driver"
+        },
+		{
+			"ModuleTypeKey": "HYD",
+            "ModuleNameInstall":"HYD_driver"
+        },
+        {
+			"ModuleTypeKey": "subMainCPU",
+            "ModuleNameInstall":"MainController"
+        },
+		{
+			"ModuleTypeKey": "subIntergratedController",
+            "ModuleNameInstall":"slaveController"
+        },
+		{
+			"ModuleTypeKey": "safetyController",
+            "ModuleNameInstall":"safety_slaveController"
+        },
+		{
+			"ModuleTypeKey": "powerController",
+            "ModuleNameInstall":"powerController"
+        },
+		{
+			"ModuleTypeKey": "prechargeController",
+            "ModuleNameInstall":"preChargeController"
+        },
+		{
+			"ModuleTypeKey": "binocularCameraProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+        {
+			"ModuleTypeKey": "ultrasonicProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+		{
+			"ModuleTypeKey": "TOFProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+		{
+			"ModuleTypeKey": "airPressureProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+		{
+			"ModuleTypeKey": "weighProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+        {
+			"ModuleTypeKey": "encoderProcessor",
+            "ModuleNameInstall":"sensor_cpu"
+        },
+		{
+			"ModuleTypeKey": "IOModule",
+            "ModuleNameInstall":"IO module"
+        },
+		{
+			"ModuleTypeKey": "safetyIOModule",
+            "ModuleNameInstall":"safety_io_module"
+        },
+		{
+			"ModuleTypeKey": "ethernetSwitch",
+            "ModuleNameInstall":"ethernetSwitch"
+        },
+        {
+			"ModuleTypeKey": "interfaceModule",
+            "ModuleNameInstall":"interface"
+        },
+		{
+			"ModuleTypeKey": "laser",
+            "ModuleNameInstall":"laser"
+        },
+		{
+			"ModuleTypeKey": "3DLaser",
+            "ModuleNameInstall":"laser"
+        },
+		{
+			"ModuleTypeKey": "codeReader",
+            "ModuleNameInstall":"smart camera"
+        },
+		{
+			"ModuleTypeKey": "stereo",
+            "ModuleNameInstall":"stereo camera"
+        },
+		{
+			"ModuleTypeKey": "camera",
+            "ModuleNameInstall":"camera"
+        },
+		{
+			"ModuleTypeKey": "infrared",
+            "ModuleNameInstall":"infrared"
+        },
+		{
+			"ModuleTypeKey": "TOFCamera",
+            "ModuleNameInstall":"3DTOF"
+        },
+		{
+			"ModuleTypeKey": "TOF",
+            "ModuleNameInstall":"TOF"
+        },
+		{
+			"ModuleTypeKey": "pullWireEncode",
+            "ModuleNameInstall":"wireEncoder"
+        },
+		{
+			"ModuleTypeKey": "ABZEncode",
+            "ModuleNameInstall":"ABZEncode"
+        },
+		{
+			"ModuleTypeKey": "absoluteValueEncode",
+            "ModuleNameInstall":"absEncoder"
+        },
+		{
+			"ModuleTypeKey": "incrementalEncode",
+            "ModuleNameInstall":"incEncoder"
+        },
+		{
+			"ModuleTypeKey": "ABZEncode",
+            "ModuleNameInstall":"ABZEncode"
+        },
+		{
+			"ModuleTypeKey": "gyro",
+            "ModuleNameInstall":"gyro"
+        },
+		{
+			"ModuleTypeKey": "collisionPize",
+            "ModuleNameInstall":"collision"
+        },
+		{
+			"ModuleTypeKey": "collisionBaro",
+            "ModuleNameInstall":"collision"
+        },
+		{
+			"ModuleTypeKey": "tempSensor",
+            "ModuleNameInstall":"tempsensor"
+        },
+		{
+			"ModuleTypeKey": "ultrasonicSensor",
+            "ModuleNameInstall":"ultrasensor"
+        },
+		{
+			"ModuleTypeKey": "weighSensor",
+            "ModuleNameInstall":"weighsensor"
+        },
+		{
+			"ModuleTypeKey": "proximitySensor",
+            "ModuleNameInstall":"proximitySensor"
+        },
+		{
+			"ModuleTypeKey": "PT",
+            "ModuleNameInstall":"PT"
+        },
+		{
+			"ModuleTypeKey": "comDo",
+            "ModuleNameInstall":"comDo"
+        },
+		{
+			"ModuleTypeKey": "WIFI",
+            "ModuleNameInstall":"wifi module"
+        },
+		{
+			"ModuleTypeKey": "bluetooth",
+            "ModuleNameInstall":"bluetooth"
+        },
+		{
+			"ModuleTypeKey": "RFID",
+            "ModuleNameInstall":"RFID"
+        },
+		{
+			"ModuleTypeKey": "PIO",
+            "ModuleNameInstall":"PIO"
+        },
+		{
+			"ModuleTypeKey": "fifthGeneration",
+            "ModuleNameInstall":"5G module"
+        },
+		{
+			"ModuleTypeKey": "WAPI",
+            "ModuleNameInstall":"wapi module"
+        },
+		{
+			"ModuleTypeKey": "subBattery",
+            "ModuleNameInstall":"battery"
+        },
+		{
+			"ModuleTypeKey": "power",
+            "ModuleNameInstall":"power"
+        },
+		{
+			"ModuleTypeKey": "charge",
+            "ModuleNameInstall":"charger"
+        },
+		{
+			"ModuleTypeKey": "lamp",
+            "ModuleNameInstall":"lamp"
+        },
+		{
+			"ModuleTypeKey": "warningLight",
+            "ModuleNameInstall":"warninglight"
+        },
+		{
+			"ModuleTypeKey": "subButton",
+            "ModuleNameInstall":"button"
+        },
+		{
+			"ModuleTypeKey": "audioIn",
+            "ModuleNameInstall":"audio inputer"
+        },
+		{
+			"ModuleTypeKey": "audioOut",
+            "ModuleNameInstall":"speaker"
+        },
+		{
+			"ModuleTypeKey": "subScreen",
+            "ModuleNameInstall":"screen"
+        },
+		{
+			"ModuleTypeKey": "segDisplays",
+            "ModuleNameInstall":"display"
+        },
+        {
+			"ModuleTypeKey": "subHandOperator",
+            "ModuleNameInstall":"handOperator"
+        },
+		{
+			"ModuleTypeKey": "valveCtrl",
+            "ModuleNameInstall":"valveCtrl"
+        },
+		{
+			"ModuleTypeKey": "generalAnalogDistance",
+            "ModuleNameInstall":"generalAnalogDistance"
+        }
+    ]
+}

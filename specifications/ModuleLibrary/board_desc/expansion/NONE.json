@@ -1,0 +1,13 @@
+{
+    "NONE": {
+      "基本信息": {
+        "name": "NONE",
+        "desc": "NONE",
+        "type": "NONE",
+        "chip": "NONE",
+        "board_type": ["NONE"],
+        "ver": "V1.0.0"
+      }
+    }
+  }
+  

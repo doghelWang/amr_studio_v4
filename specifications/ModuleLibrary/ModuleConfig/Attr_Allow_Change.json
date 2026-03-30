@@ -1,0 +1,10 @@
+{
+    "Attr_Param_Change": [
+        "relatedMotorFunc",
+		"relatedServoFunc",
+		"actualScanRangeHorizonStart",
+		"actualScanRangeHorizonEnd",
+		"actualScanRangeVerticalStart",
+		"actualScanRangeVerticalEnd"
+    ]
+}

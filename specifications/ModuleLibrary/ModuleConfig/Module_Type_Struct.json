@@ -1,0 +1,26 @@
+{
+    "Module_Type_Struct": [
+		"carrier",
+		"covers",
+		"diffChassis",
+		"steerChassis",
+		"diffWheel",
+		"diffSteerWheel",
+		"verticalSteerWheel",
+		"unPowerDiffWheel",
+		"weakSteerWheel",
+		"horizontalSteerWheel",
+		"lift",
+		"rotate",
+		"translate",
+		"stretch",
+		"clamp",
+		"block",
+		"motor",
+		"PMSMMotor",
+		"BLDCMotor",
+		"BDCMotor",
+		"translation",
+		"linear"
+    ]
+}

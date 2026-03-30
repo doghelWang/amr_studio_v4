@@ -1,0 +1,124 @@
+{
+    "RA-DR_D-48_14SB-311BH3": {
+      "基本信息": {
+        "name": "550W-伺服驱动器",
+        "desc": "",
+        "type": "MV84011",
+        "ver": "V3.1.0",
+        "id_dip":"ID_DIP_NULL",
+        "ce_mode_set":0,
+        "di_hd_mode_set":0,
+        "board_type": ["BOARD_HIK_SERVO_ST"],
+        "mcu":[
+          {
+            "chip":"R131"
+          }
+        ]
+      },
+      "通信接口": {
+        "can": [
+          {
+          "name": "CAN_1",
+          "protocol": "PROTOCOL_UCAN_CANOPEN"
+          }
+        ]
+      },
+      "io接口": {
+        "di": [
+          {
+            "name": "DI_1",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 0,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          },
+          {
+            "name": "DI_2",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 1,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          },
+          {
+            "name": "DI_3",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 2,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          },
+          {
+            "name": "DI_4",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 3,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          },
+          {
+            "name": "DI_5",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 4,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          },
+          {
+            "name": "DI_6",
+            "desc": "",
+            "mcu":0,
+            "group": "GPA",
+            "pin": 5,
+            "io_mode": 0,
+            "freq": 0,
+            "pull_mode": 0,
+            "open_circle_level":1,
+            "hd_if_mode": "NPN"
+          }
+        ]
+      },
+      "功能接口": {
+        "encr": [
+          {
+            "name": "ENCR_1",
+            "desc": "",
+            "mcu": 0,
+            "if_type":"ABZ/HALL",
+            "chan": 0
+          }
+        ],
+        "line": [
+          {
+            "name": "LINE_1",
+            "desc": "",
+            "mcu": 0,
+            "if_type":"BDC/PMSM/BLDC",
+            "chan": 0
+          }
+        ]
+        }
+    }
+  }
+  

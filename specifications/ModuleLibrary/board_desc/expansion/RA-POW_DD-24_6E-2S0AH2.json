@@ -1,0 +1,42 @@
+{
+  "RA-POW_DD-24_6E-2S0AH2": {
+    "基本信息": {
+      "name": "电源模块（含接口模块，潜伏四代专用）",
+      "desc": "电源板",
+      "type": "MV-83137",
+	  "ver": "V1.0.0",
+	  "id_dip":"ID_DIP_NULL",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+      "board_type": ["BOARD_SAFE_CTRL_MASTER", "BOARD_SAFE_CTRL_SLAVE"],
+      "power_type": 4,
+	  "mcu":[
+		{"chip":"R130"},
+        {"chip":"R130"}
+	  ]
+    },
+    "通信接口": {
+        "can": [
+            {
+                "name": "CAN_1",
+                "protocol": "PROTOCOL_UCAN",
+                "ucan_id":[
+                  { 
+                    "mcu":0,
+                    "peripheral": "hcan1",
+                    "id_map":[71]
+                  }
+                ]
+            }
+          ],
+      "rs485": [
+        {
+          "name": "RS485_1",
+          "func_mode": "PT_MODE",
+          "mcu": "0",
+          "func_idx":0
+        }
+      ]
+    }
+  }
+}

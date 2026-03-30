@@ -9,14 +9,14 @@ echo "🚀 Starting AMR Studio V4 (Standard Architecture)..."
 
 # 1. Start Backend
 echo "Launching Backend on Port 8002..."
-cd "$BACKEND_DIR"
+export PYTHONPATH="$BASE_DIR/src/backend"
 if [ ! -d "venv" ]; then
     echo "Initializing virtual environment..."
     python3 -m venv venv
-    ./venv/bin/pip install -r requirements.txt
+    ./venv/bin/pip install -r src/backend/requirements.txt
 fi
 kill -9 $(lsof -t -i :8002) 2>/dev/null
-nohup ./venv/bin/python3 main.py --host 127.0.0.1 --port 8002 > backend_runtime.log 2>&1 &
+nohup ./venv/bin/python3 src/backend/main.py --host 127.0.0.1 --port 8002 > src/backend/backend_runtime.log 2>&1 &
 
 # 2. Start Frontend
 echo "Launching Frontend on Port 3001..."

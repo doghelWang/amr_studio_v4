@@ -1,0 +1,31 @@
+{
+		"key": "safetyIOUniqueKey",
+		"comboxParam": {
+			"combName": "safeIOType",
+			"key": "SAFETY_IO_COLLISION",
+			"desc": "碰撞条",
+			"arrayAttr": [
+				{
+					"attrParams": [
+						{
+							"key": "relatedBumperIO",
+							"type": "FIXED_E",
+							"stringFix": "",
+							"fixedSource": [
+								"sensor/collisionPize",
+								"sensor/collisionBaro"
+							]
+						}
+					]
+				}
+			],
+			"comboxAttr": [
+				{
+					"combName": "bumperMode",
+					"key": "stopAGV",
+					"desc": "停车"
+				}
+			]
+		},
+		"cloneEnable": true
+}

@@ -1,0 +1,52 @@
+{
+	"privateAttrs": [
+		{
+			"key": "WIFIAttr",
+			"desc": "WIFI属性",
+			"arrayBaseEle": [
+				{
+					"key": "decodeType",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "密码方式",
+					"boolHide": true
+				},
+				{
+					"key": "wirelessProto",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "无线标准",
+					"boolHide": true
+				},
+				{
+					"key": "wirelessCertify",
+					"type": "DATA_STRING",
+					"stringValue": "",
+					"desc": "无线认证",
+					"boolHide": true
+				},
+				{
+					"key": "workFreq",
+					"type": "DATA_COMBOX",
+					"comboType": {
+						"typeKey": "2.4G",
+						"typeDesc": "2.4G",
+						"typeGroups": [
+							{
+								"key": "2.4G",
+								"desc": "2.4G"
+							},
+							{
+								"key": "5G",
+								"desc": "5G"
+							}
+						]
+					},
+					"unit": "HZ",
+					"desc": "工作频率",
+					"boolHide": true
+				}
+			]
+		}
+	]
+}

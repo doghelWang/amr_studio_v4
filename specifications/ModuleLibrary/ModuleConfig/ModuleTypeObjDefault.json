@@ -1,0 +1,29 @@
+{
+    "Module_ObjDefalut": [
+        {
+            "MoudelSubType": "diffWheel",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/drivewheel.obj"
+        },
+        {
+            "MoudelSubType": "diffSteerWheel",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/DifferentialWheels.obj"
+        },
+        {
+            "MoudelSubType": "verticalSteerWheel",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/VerticalSteeringWheel.obj"
+        },
+        {
+            "MoudelSubType": "horizontalSteerWheel",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/HorizontalSteeringWheel.obj"
+        },
+        {
+            "MoudelSubType": "carrier",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/Platform.obj"
+        },
+        {
+            "MoudelSubType": "covers",
+            "ObjDefalutPath": "./ModuleLibrary/3dModelRes/Cover.obj"
+        }
+    ]
+}
+

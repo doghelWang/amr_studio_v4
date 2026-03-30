@@ -1,0 +1,48 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "MODE",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "NPN",
+				"typeDesc": "NPN",
+				"typeGroups": [
+					{
+						"key": "NPN",
+						"desc": "NPN"
+					},
+					{
+						"key": "PNP",
+						"desc": "PNP"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true
+		},
+		{
+			"key": "DIS",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 8,
+			"doubleMaxvalue": 999,
+			"doubleMinvalue": 0,
+			"unit": "mm",
+			"desc": "检测距离",
+			"boolParse": true
+		},
+		{
+			"key": "OPEVOL",
+			"type": "DATA_DOUBLE",
+			"doubleValue": 0.713,
+			"doubleMaxvalue": 999,
+			"doubleMinvalue": 0,
+			"unit": "V",
+			"desc": "动作电压",
+			"boolParse": true
+		}
+	]
+}

@@ -1,0 +1,135 @@
+{
+	"RA-EI_F-C-1H2AH0": {
+		"基本信息": {
+			"name": "接口模块",
+			"desc": "接口模块-上层接口-组性线性预充-CANIO扩展通讯",
+			"type": "MV-83167",
+			"ver": "V1.1.0",
+			"id_dip": "ID_DIP_NULL",
+			"ce_mode_set": 0,
+			"di_hd_mode_set": 0,
+			"board_type": [
+				"BOARD_UPPER_IF"
+			],
+			"mcu": [
+				{
+					"chip": "R130"
+				}
+			]
+		},
+		"通信接口": {
+			"can": [
+				{
+					"name": "CAN_1",
+					"protocol": "PROTOCOL_UCAN",
+					"ucan_id": [
+						{
+							"mcu": 0,
+							"peripheral": "hcan1",
+							"id_map": [
+								88
+							]
+						}
+					]
+				}
+			]
+		},
+		"io接口": {
+			"di": [
+				{
+					"name": "DI_1",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 8,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": ""
+				},
+				{
+					"name": "DI_2",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 9,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": ""
+				},
+				{
+					"name": "DI_3",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPB",
+					"pin": 10,
+					"io_mode": 0,
+					"freq": 0,
+					"pull_mode": 0,
+					"open_circle_level": 1,
+					"hd_if_mode": ""
+				}
+			],
+			"do": [
+				{
+					"name": "DO_1",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 6,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 0
+				},
+				{
+					"name": "DO_2",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPC",
+					"pin": 7,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 0
+				},
+				{
+					"name": "DO_3",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPB",
+					"pin": 15,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 0
+				},
+				{
+					"name": "DO_4",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPB",
+					"pin": 14,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 0
+				},
+				{
+					"name": "DO_5",
+					"desc": "",
+					"mcu": 0,
+					"group": "GPA",
+					"pin": 8,
+					"io_mode": 1,
+					"freq": 0,
+					"pull_mode": 0,
+					"enable_level": 0
+				}
+			]
+		}
+	}
+}

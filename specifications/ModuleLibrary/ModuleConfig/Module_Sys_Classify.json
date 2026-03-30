@@ -1,0 +1,45 @@
+{
+    "Module_SubSys_Type_Desc": [
+        {
+			"SysUniqueKey": "ChassisSys",
+            "SubSysName": "底盘"
+        },
+		{
+			"SysUniqueKey": "AutobodySys",
+            "SubSysName": "车身"
+        },
+        {
+			"SysUniqueKey": "ActorSys",
+            "SubSysName": "执行"
+        },
+        {
+			"SysUniqueKey": "DriverSys",
+            "SubSysName": "驱动"
+        },
+        {
+			"SysUniqueKey": "ControlSys",
+            "SubSysName": "控制"
+			  
+        },
+        {
+			"SysUniqueKey": "SensorSys",
+            "SubSysName": "传感"
+        },
+        {
+			"SysUniqueKey": "CommunicateSys",
+            "SubSysName": "通信"
+        },
+        {
+			"SysUniqueKey": "EnergySys",
+            "SubSysName": "能源"
+        },
+        {
+			"SysUniqueKey": "InteractiveSys",
+            "SubSysName": "交互"
+        },
+		{
+			"SysUniqueKey": "UnclassifiedSys",
+            "SubSysName": "未分类"
+        }
+    ]
+}

@@ -1,0 +1,398 @@
+[
+    {
+        "Color": {
+            "b": 40,
+            "g": 40,
+            "r": 40
+        },
+        "Elem": "None",
+        "Type": "SCI_SETCARETLINEBACK"
+    },
+    {
+        "Color": {
+            "b": 255,
+            "g": 255,
+            "r": 255
+        },
+        "Elem": "SCE_P_ATTRIBUTE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_FSTRING",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_FCHARACTER",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_FTRIPLE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_FTRIPLEDOUBLE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 255,
+            "g": 255,
+            "r": 255
+        },
+        "Elem": "SCE_P_DECORATOR",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 167,
+            "g": 206,
+            "r": 155
+        },
+        "Elem": "SCE_P_NUMBER",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 220,
+            "g": 220,
+            "r": 220
+        },
+        "Elem": "SCE_P_OPERATOR",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 254,
+            "g": 220,
+            "r": 156
+        },
+        "Elem": "SCE_P_IDENTIFIER",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 192,
+            "g": 134,
+            "r": 197
+        },
+        "Elem": "SCE_P_WORD",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 214,
+            "g": 156,
+            "r": 63
+        },
+        "Elem": "SCE_P_WORD2",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_STRING",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 75,
+            "r": 172
+        },
+        "Elem": "SCE_P_CHARACTER",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 106,
+            "g": 153,
+            "r": 85
+        },
+        "Elem": "SCE_P_COMMENTLINE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 106,
+            "g": 153,
+            "r": 85
+        },
+        "Elem": "SCE_P_COMMENTBLOCK",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 120,
+            "g": 145,
+            "r": 206
+        },
+        "Elem": "SCE_P_TRIPLE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 120,
+            "g": 145,
+            "r": 206
+        },
+        "Elem": "SCE_P_TRIPLEDOUBLE",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 144,
+            "g": 201,
+            "r": 78
+        },
+        "Elem": "SCE_P_CLASSNAME",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 170,
+            "g": 220,
+            "r": 220
+        },
+        "Elem": "SCE_P_DEFNAME",
+        "Type": "SCI_STYLESETFORE"
+    },
+    {
+        "Color": {
+            "b": 201,
+            "g": 141,
+            "r": 82
+        },
+        "Elem": "SC_ELEMENT_SELECTION_BACK",
+        "Type": "SCI_SETELEMENTCOLOUR"
+    },
+    {
+        "Color": {
+            "b": 255,
+            "g": 255,
+            "r": 255
+        },
+        "Elem": "SC_ELEMENT_CARET",
+        "Type": "SCI_SETELEMENTCOLOUR"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "STYLE_DEFAULT",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_DEFAULT",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_COMMENTLINE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_COMMENTBLOCK",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_NUMBER",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_STRING",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_CHARACTER",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_WORD",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_TRIPLE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_TRIPLEDOUBLE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_CLASSNAME",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_DEFNAME",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_OPERATOR",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_IDENTIFIER",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_WORD2",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_DECORATOR",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_FSTRING",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_FCHARACTER",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_FTRIPLE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_FTRIPLEDOUBLE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "SCE_P_ATTRIBUTE",
+        "Type": "SCI_STYLESETBACK"
+    },
+    {
+        "Color": {
+            "b": 30,
+            "g": 30,
+            "r": 30
+        },
+        "Elem": "STYLE_ERROR",
+        "Type": "SCI_STYLESETBACK"
+    }
+]

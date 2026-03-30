@@ -1,0 +1,44 @@
+{
+  "RS-GY-01H-G2BH0": {
+    "基本信息": {
+	  "name": "陀螺仪小板",
+	  "desc": "",
+	  "type": "MV-89013",
+	  "ver": "V1.2.0",
+	  "id_dip":"ID_DIP_NULL",
+	  "ce_mode_set":0,
+	  "di_hd_mode_set":0,
+	  "board_type": ["BOARD_GYRO"],
+	  "mcu":[
+		  {
+			  "chip":"R136"
+		  }
+	  ]
+    },
+    "通信接口": {
+      "can": [
+        {
+			"name": "CAN_1",
+			"protocol": "PROTOCOL_UCAN",
+			"ucan_id":[
+			  { 
+				"mcu":0,
+				"peripheral": "hcan1",
+				"id_map":[126]
+			  }
+			]
+        }
+      ]
+    },
+    "internal_interface": {
+      "gyro": [
+        {
+			"name": "GYRO_1",
+			"desc": "",
+			"mcu": 0,
+			"chan": 0
+        }
+      ]
+    }
+  }
+}

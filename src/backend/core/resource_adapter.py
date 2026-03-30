@@ -2,6 +2,30 @@ import xml.etree.ElementTree as ET
 import json
 import os
 
+def xml_to_component_json(xml_path):
+    """
+    Restored XML Transmuter for board discovery.
+    """
+    if not os.path.exists(xml_path): return {}
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    
+    components = []
+    # Search for all components regardless of nesting
+    for comp in root.findall(".//Component"):
+        identity = comp.find("Identity")
+        name = identity.get("name") if identity is not None else "Unknown"
+        components.append({
+            "generalAttr": {
+                "moduleName": {"stringValue": name},
+                "subSysType": {"comboType": {"typeKey": comp.get("category")}}
+            }
+        })
+    return {
+        "moduleGroupName": root.get("name", "Unknown"),
+        "moduleComponets": components
+    }
+
 # --- 工业级标准元数据模板 ---
 # 用于补全前端缺失的、下位机解析必需的底层 Tag
 CHASSIS_GENERAL_ATTR_TEMPLATE = {

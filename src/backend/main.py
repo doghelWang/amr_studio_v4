@@ -27,7 +27,7 @@ USER_SAVES_DIR = PROJECT_ROOT / "src" / "backend" / "user_saves"
 USER_SAVES_DIR.mkdir(parents=True, exist_ok=True)
 
 # 3. Industrial Metadata (Standard Library)
-MODULE_LIBRARY_ROOT = PROJECT_ROOT / "design" / "ModuleLibrary"
+MODULE_LIBRARY_ROOT = PROJECT_ROOT / "specifications" / "ModuleLibrary"
 if not MODULE_LIBRARY_ROOT.exists():
     MODULE_LIBRARY_ROOT = BASE_DIR / "resources"
 
@@ -177,16 +177,46 @@ def compile_cmodel_api(project_id: str):
 @app.get("/api/v1/resources/boards")
 def list_boards_api():
     boards = []
+    # [ISS-FIX] 11-dimension robust discovery:
+    # Scan both the frontend assets AND the backend definitions as fallback
+    
+    # Priority A: Frontend JSON assets (High-fidelity)
     host_dir = MODULE_LIBRARY_ROOT / "board_desc" / "host"
     if host_dir.exists():
         for f in host_dir.glob("*.json"):
-            with open(f, "r", encoding="utf-8") as file:
-                data = json.load(file)
-                board_id = list(data.keys())[0]
-                info = data[board_id].get("基本信息", {})
-                boards.append({
-                    "id": board_id, "name": info.get("name", board_id), "desc": info.get("desc", ""), "board_type": info.get("board_type", [])
-                })
+            try:
+                with open(f, "r", encoding="utf-8") as file:
+                    data = json.load(file)
+                    board_id = list(data.keys())[0]
+                    info = data[board_id].get("基本信息", {})
+                    boards.append({
+                        "id": board_id, "name": info.get("name", board_id), "desc": info.get("desc", ""), "board_type": info.get("board_type", [])
+                    })
+            except: pass
+
+    # Priority B: Backend XML definitions (Structural fallback)
+    if not boards:
+        def_dir = BASE_DIR / "resources" / "definitions"
+        print(f"DEBUG_BOARDS: Fallback triggered. Looking in {def_dir}", flush=True)
+        from core import resource_adapter
+        for def_file in ["mainCPU.xml", "integratedController.xml"]:
+            fpath = def_dir / def_file
+            print(f"DEBUG_BOARDS: Checking {fpath} | Exists: {fpath.exists()}", flush=True)
+            if fpath.exists():
+                try:
+                    data = resource_adapter.xml_to_component_json(str(fpath))
+                    found_count = len(data.get("moduleComponets", []))
+                    print(f"DEBUG_BOARDS: Loaded {def_file} | Components found: {found_count}", flush=True)
+                    for comp in data.get("moduleComponets", []):
+                        gen = comp.get("generalAttr", {})
+                        boards.append({
+                            "id": gen.get("moduleName", {}).get("stringValue", "Unknown"),
+                            "name": gen.get("moduleName", {}).get("stringValue", "Unknown"),
+                            "desc": "Auto-extracted",
+                            "board_type": ["BOARD_TYPE_MCPU"]
+                        })
+                except Exception as e:
+                    print(f"DEBUG_BOARDS: Error loading {def_file}: {e}", flush=True)
     return boards
 
 @app.get("/api/v1/projects/saved-list")

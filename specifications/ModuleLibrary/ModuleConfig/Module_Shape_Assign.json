@@ -1,0 +1,20 @@
+{
+    "Module_Shape_Assign": [
+        {
+			"ModuleShapeEnum":0,
+			"ContainModuleSubType":[
+				"subButton"
+				]
+        },
+		{
+			"ModuleShapeEnum":1,
+			"ContainModuleSubType":[
+				]
+		},
+		{
+			"ModuleShapeEnum":2,
+			"ContainModuleSubType":[
+				]
+        }	
+    ]
+}

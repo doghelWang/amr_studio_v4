@@ -1,0 +1,29 @@
+{
+	"interfaceParamsArray": [
+		{
+			"key": "mode",
+			"type": "DATA_COMBOX",
+			"comboType": {
+				"typeKey": "MIPI",
+				"typeDesc": "MIPI",
+				"typeGroups": [
+					{
+						"key": "MIPI",
+						"desc": "MIPI"
+					},
+					{
+						"key": "FPD",
+						"desc": "FPD"
+					},
+					{
+						"key": "*",
+						"desc": "*"
+					}
+				]
+			},
+			"desc": "模式",
+			"boolParse": true,
+			"boolHide": true
+		}
+	]
+}
