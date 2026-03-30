@@ -9,13 +9,14 @@
 - **职责**：将 `.cmodel` (ZIP) 物理拆解，并将内部的二进制 `.model` 流无损还原为 Tag 字典 JSON。
 - **基准工具**：`tests/unit/true_parser_impl.py`
 
-### M2: 逐项对比验证 (Comparative Verification) - [NEW]
-- **职责**：自动加载“标准成果物”与“当前生成物”，执行全量 JSON 树对比。
-- **检查项**：
-  - **Tree Structure**：节点深度与 `moreModuleInfo` 递归路径对齐。
-  - **Tag Fidelity**：核对每个 Message 下的 Tag 编号（如 Tag 5 的 structParam）。
-  - **Value Integrity**：核对 float、int、string 的精度与编码。
-- **输出**：`audits/YYYYMMDD_COMPARE_REPORT.md`
+### M2: 全量节点对标验证 (Exhaustive Alignment Verification)
+- **职责**：自动加载“标准成果物”与“当前生成物”，执行全量路径对等扫描。
+- **强制要求**：报告必须逐节点体现两者的异同。**严禁仅输出差异点**，必须包含所有对齐一致的节点信息，以确证审计的完整性（Zero-Omission）。
+- **核对维度**：
+  - 物理字符串标识符命中。
+  - Tag 逻辑路径深度。
+  - 数值、类型及编码的一致性。
+- **标准产出**：`audits/ULTIMATE_FULL_NODE_REPORT.md`
 
 ### M3: Schema 合规性审计 (Deep Node Analysis)
 - **职责**：针对特定节点（如底盘 root），校验其是否具备必需的工业元数据（Tag 7/8）以及属性偏移（Tag 2 vs Tag 5）。

@@ -65,3 +65,9 @@ DISK_AUDIT: [VALUE_CHANGE] root.struct_param.extend_params: [None] -> [[{'key': 
 INFO:     127.0.0.1:52241 - "PATCH /api/v1/models/proj_1234/components/99d7d228-4018-4bab-955e-e453631de646 HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52241 - "POST /api/v1/models/proj_1234/compile HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52241 - "GET /downloads/proj_1234/proj_1234_packed.cmodel HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55025 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55025 - "GET /assets/index-B1Sa1fgH.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55027 - "GET /assets/index-CxXm1VbR.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:55027 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55025 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55025 - "GET /models/v4/BoardDescriptions.xml HTTP/1.1" 200 OK
