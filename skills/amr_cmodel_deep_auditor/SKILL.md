@@ -1,42 +1,31 @@
-# Skill: AMR-CModel-Deep-Auditor
+# Skill: AMR-CModel-Deep-Auditor (Integrated V3.0)
 
 ## 1. 技能概述
-本技能专用于针对生成的 `cmodel` 执行 100% 工业级合规审计与全链路溯源分析。其核心目标是确保导出的成果物在物理封包、协议结构及业务语义上与官方标准（如 `ModelSet312.cmodel`）实现比特级（Bit-Perfect）对齐。
+本技能是 AMR Studio V4 的最高审计准则，整合了原有的“解析、分析、属性审计、Schema 验证”四大能力。其核心使命是：**通过比特级逆向工程，确保生成的 CModel 与工业标准 100% 对齐。**
 
-## 2. 核心职责与操作流程 (Mandatory Workflow)
+## 2. 核心功能模块 (Operational Modules)
 
-### 阶段 1：数据树解构与模块匹配 (Tree Mapping)
-- **提取内容树**：使用解码器对标准与生成物进行高精度还原，获取 Tag 字典 JSON。
-- **模块节点对齐**：匹配 `moduleGroupName` 与 `typeKey`，输出《模块节点清单》。
-- **属性差异分析**：针对同类模块，逐行对比 Tag 缺失或层级错位，输出《属性字段差异表》。
+### M1: 物理层级还原 (Core Parsing)
+- **职责**：将 `.cmodel` (ZIP) 物理拆解，并将内部的二进制 `.model` 流无损还原为 Tag 字典 JSON。
+- **基准工具**：`tests/unit/true_parser_impl.py`
 
-### 阶段 2：后端溯源与数据流验证 (Backend Tracing)
-- **数据源核查**：追踪 `user_saves` 原始数据，确认字段是否在录入环节已丢失。
-- **映射路径分析**：评估 `resource_adapter.py` 是否发生静默丢弃，输出《前后端对应关系差异表》。
+### M2: 逐项对比验证 (Comparative Verification) - [NEW]
+- **职责**：自动加载“标准成果物”与“当前生成物”，执行全量 JSON 树对比。
+- **检查项**：
+  - **Tree Structure**：节点深度与 `moreModuleInfo` 递归路径对齐。
+  - **Tag Fidelity**：核对每个 Message 下的 Tag 编号（如 Tag 5 的 structParam）。
+  - **Value Integrity**：核对 float、int、string 的精度与编码。
+- **输出**：`audits/YYYYMMDD_COMPARE_REPORT.md`
 
-### 阶段 3：前端录入盲区审计 (Frontend Auditing)
-- **逆向逻辑推演**：分析 `useProjectStore.ts` 和 `SchemaEngine.ts` 的组件构建过程。
-- **盲点确认**：定位 UI 阶段的数据构造错误或冗余包装（如 `LibraryGroup` 问题）。
+### M3: Schema 合规性审计 (Deep Node Analysis)
+- **职责**：针对特定节点（如底盘 root），校验其是否具备必需的工业元数据（Tag 7/8）以及属性偏移（Tag 2 vs Tag 5）。
 
-### 阶段 4：四维全链路穿透复盘 (Four-Dimensional Review)
-- 从 **前端构造、后端存储、编码前归一化、压缩封包** 四个维度输出复盘结论。
-- 输出交付物：模块演进表、属性生命周期表、维度综合差异结论。
+## 3. 强制审计流程 (Mandatory Execution Workflow)
+1. **环境准备**：清理 `audits/temp`。
+2. **双路解析**：同时还原标准样本与当前产物。
+3. **执行 Diff**：运行 `tests/system/cmodel_diff_engine.py`。
+4. **输出报告**：给出 PASS/FAIL 结论及差异列表。
 
-### 阶段 5：根因定位与修复指导 (Root Cause & Guidance)
-- **精确切片**：指出差异产生的具体函数块（文件 + 行号）。
-- **优化设计**：给出基于工业标准的重构建议（如：Tag 偏移校准、MD5 动态计算等）。
-
-## 3. 核心工具与物理路径
-- **高精度解析器**: `scripts/true_parser_impl.py`
-- **物理层检查工具**: `zipinfo`, `xxd`, `hashlib (Python)`
-- **审计存档目录**: `docs/audit/YYYYMMDD_review/`
-
-## 4. 操作约束
-- **零猜想原则**：所有审计结论必须有物理 Hex 或解析 JSON 源码作为证据链路支撑。
-- **动态性要求**：清单文件（ModelFileDesc.json）必须采用内存动态生成，禁止读取旧磁盘缓存。
-- **物理头锁死**：在 MacOS 环境下必须强制生成 FAT32/MS-DOS 兼容的 ZIP 结构。
-
-## 5. 调试指令
-- 执行自证测试：`curl -s -X POST "http://127.0.0.1:8002/api/v1/models/{project_id}/compile"`
-- 物理头核查：`zipinfo {file_path} | grep "fat"`
-- 起始 Tag 核查：`unzip -p {file_path} CompDesc.model | head -c 8 | xxd -g 1`
+## 4. 调试指令
+- 全量审计：`auditor --compare {std_path} {gen_path}`
+- 深度节点探测：`auditor --inspect {node_uuid}`
