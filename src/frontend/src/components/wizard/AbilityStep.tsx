@@ -55,7 +55,7 @@ const RecursiveAttributeEditor: React.FC<{
     const label = (
         <div style={{ marginBottom: 4, display: 'flex', justifyContent: 'space-between' }}>
             <Text strong style={{ fontSize: 12 }}>{attr.desc || attr.key}</Text>
-            {attr.unit && <Tag size="small" style={{ fontSize: 9, opacity: 0.6 }}>{attr.unit}</Tag>}
+            {attr.unit && <Tag style={{ fontSize: 9, opacity: 0.6 }}>{attr.unit}</Tag>}
         </div>
     );
 
