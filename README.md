@@ -6,6 +6,10 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
 - **单一真理数据引擎 (Schema-Driven Engine)**:
   - 弃用大量前端属性硬编码，全面对接 `ModuleLibrary/PrivateAttribute.json`，实现 **JSON to UI** 的全自动渲染。
   - 引入了 `Engineering Constraints (工程约束)` 层，实现物理互斥显示、自动组合枚举值及深度属性联动同步。
+- **2026-03-31 核心审计与架构优化 (Latest)**:
+  - **全量比特对标审计**：完成对 CompDesc, AbiSet, FuncDesc 的三文件全链路对比，识别并定位了 AbiSet 编码管道的不完整性（P0 修复中）。
+  - **模板注册表驱动 (O-1/O-2)**：初步建立模块库模板富化逻辑，消除后端对 `mainModuleType` 和 `subSysType` 的硬编码猜测，实现“零硬编码”建模。
+  - **编码管道标准化**：补全 `sanitize_values` 与 `strip_whitespace` 环节，确保输出的二进制模型文件与工业标准完全对齐。
 - **先进底盘动力模型拓扑搭建 (Advanced Power Topology)**:
   - 完美支持 **差速底盘 (diffChassis)** 与 **舵轮底盘 (steerChassis)** 两种核心模型。
   - 完整适配 **轮组模式推导**:

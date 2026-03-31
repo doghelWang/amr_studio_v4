@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CModel 解析对照可视化工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; overflow: hidden; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        #monaco-diff-container { height: calc(100vh - 120px); border: 1px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .file-upload-btn { position: relative; overflow: hidden; }
+        .file-upload-btn input[type=file] { position: absolute; top: 0; right: 0; min-width: 100%; min-height: 100%; font-size: 100px; text-align: right; filter: alpha(opacity=0); opacity: 0; outline: none; background: white; cursor: inherit; display: block; }
+    </style>
+    <!-- Load Monaco Editor -->
+    <script>var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' } };</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/loader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.nls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs/editor/editor.main.js"></script>
+</head>
+<body class="bg-gray-50 flex flex-col p-4">
+
+    <!-- Header Section -->
+    <div class="mb-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+            <h1 class="text-2xl font-bold text-slate-800">CModel 协议对照审查器</h1>
+            <p class="text-sm text-slate-500 mt-1">请在左侧上传标准协议 (.json)，在右侧上传生成的协议 (.json)</p>
+        </div>
+        
+        <div class="flex gap-4">
+            <!-- Left File Input -->
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-xs font-semibold text-slate-600 tracking-wider uppercase">参考系 (Reference)</span>
+                <button class="file-upload-btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium shadow-sm transition-colors cursor-pointer flex items-center gap-2">
+                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span id="left-file-name">加载标准 CModel JSON</span>
+                    <input type="file" id="left-file" accept=".json" />
+                </button>
+            </div>
+
+            <div class="flex items-center text-slate-400 font-bold text-xl px-2">VS</div>
+
+            <!-- Right File Input -->
+            <div class="flex flex-col items-center gap-2">
+                <span class="text-xs font-semibold text-slate-600 tracking-wider uppercase">待检品 (Modified)</span>
+                <button class="file-upload-btn bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg font-medium shadow-sm transition-colors cursor-pointer flex items-center gap-2">
+                    <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                    <span id="right-file-name">加载生成的 CModel JSON</span>
+                    <input type="file" id="right-file" accept=".json" />
+                </button>
+            </div>
+            
+            <div class="flex items-end mb-1 ml-4">
+                <button onclick="formatBoth()" class="text-sm bg-slate-800 text-white hover:bg-slate-900 px-3 py-1.5 rounded transition">
+                    重新格式化
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monaco Editor Container -->
+    <div id="monaco-diff-container"></div>
+
+    <script>
+        let diffEditor;
+        let originalModel;
+        let modifiedModel;
+
+        const defaultLeftJson = {
+            message: "请在上方点击按钮加载您的【标准参考 ModelSet312.json】"
+        };
+        const defaultRightJson = {
+            message: "请在上方点击按钮加载您的【由系统生成的 proj_1234.json】"
+        };
+
+        // Initialize Monaco Diff Editor
+        require(['vs/editor/editor.main'], function () {
+            diffEditor = monaco.editor.createDiffEditor(document.getElementById('monaco-diff-container'), {
+                enableSplitViewResizing: true,
+                renderSideBySide: true,
+                theme: 'vs-light',
+                automaticLayout: true,
+                ignoreTrimWhitespace: false,
+                diffWordWrap: 'on',
+                formatOnPaste: true
+            });
+
+            originalModel = monaco.editor.createModel(JSON.stringify(defaultLeftJson, null, 2), "json");
+            modifiedModel = monaco.editor.createModel(JSON.stringify(defaultRightJson, null, 2), "json");
+
+            diffEditor.setModel({
+                original: originalModel,
+                modified: modifiedModel
+            });
+        });
+
+        // Safe JSON parsing & formatting
+        function parseAndFormatJson(content) {
+            try {
+                const parsed = JSON.parse(content);
+                // Standardize the ordering of 'groups' and 'generalAttr' keys for better Diff matching
+                return JSON.stringify(parsed, null, 2);
+            } catch (e) {
+                // If invalid JSON, return raw with error comment
+                return "// 解析 JSON 失败: " + e.message + "\n" + content;
+            }
+        }
+
+        function formatBoth() {
+            if (originalModel && modifiedModel) {
+                originalModel.setValue(parseAndFormatJson(originalModel.getValue()));
+                modifiedModel.setValue(parseAndFormatJson(modifiedModel.getValue()));
+            }
+        }
+
+        // Handle File Reading
+        function setupFileReader(inputId, nameId, isLeft) {
+            document.getElementById(inputId).addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                document.getElementById(nameId).innerText = file.name;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const formatData = parseAndFormatJson(e.target.result);
+                    if (isLeft) {
+                        originalModel.setValue(formatData);
+                    } else {
+                        modifiedModel.setValue(formatData);
+                    }
+                };
+                reader.readAsText(file);
+            });
+        }
+
+        setupFileReader('left-file', 'left-file-name', true);
+        setupFileReader('right-file', 'right-file-name', false);
+    </script>
+</body>
+</html>

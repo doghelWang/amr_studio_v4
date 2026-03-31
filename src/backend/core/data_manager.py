@@ -39,13 +39,7 @@ def init_project(project_id: str, blueprint_data: dict, modules_dir_path: str, a
             if item.is_file() and item.name.endswith(".json"):
                 shutil.copy2(item, m_dir / item.name)
     
-    if artifacts_dir.exists():
-        for item in artifacts_dir.iterdir():
-            if item.is_file() and (item.suffix in [".json", ".model"]):
-                if item.name == "CompDesc.json":
-                    shutil.copy2(item, p_dir / "CompDesc.json.bak")
-                else:
-                    shutil.copy2(item, p_dir / item.name)
+
 
 def deep_update(d, u, path="root"):
     """Robust deep update with dual key (Snake/Camel) support for COMBOX"""

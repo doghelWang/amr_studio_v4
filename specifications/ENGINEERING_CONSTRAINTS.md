@@ -76,3 +76,27 @@
 ## 12. 物理清除与数据安全规范 (Cleanup & Safety)
 - **验证前保留原则**：在执行任何文件移动、重构或目录清理动作时，旧文件/原始文件必须物理保留，直至新成果物通过 `AMR-CModel-Deep-Auditor` 的完整验证。
 - **人工确认机制 (Human-in-the-loop)**：所有涉及到 `rm` 指令的物理删除操作，必须在向用户呈报验证结果并获得明确的“人工确认”后方可执行。严禁任何形式的静默删除或自动化清理非临时目录。
+
+## 13. 模块字段禁止硬编码 (No Hardcoded Module Fields)
+- **核心原则**：在任何后端代码（Encoder、ResourceAdapter、Splitter）中，**严禁**硬编码模块的具体字段名称、类型标识、子系统名称或模板文件名。因为前端可能涉及多种不同类型的模块，其各自字段存在差异。
+- **模板驱动 (Template-Driven)**：所有模块的 `generalAttr`（如 `moduleDesc`, `venderName`, `moduleShape` 等）、`interfaceAttrs`、`interfaceAbility` 必须从 `resources/modules/*.json` 的模块库模板动态加载，**不得**在代码中写死任何特定模块的属性结构。
+- **类别映射外置 (Category Map Externalization)**：如 `CATEGORY_TO_TYPE_KEY`、`CATEGORY_TO_SUBSYS` 等映射表，应从模块库元数据自动生成或放入可配置的外部文件，不得内联于 `.py` 源代码中。
+- **名称启发式禁令**：严禁基于模块名称子串（如 `"mcpu" in name`、`"bat" in name`）做类型推断。类型信息必须来自 `generalAttr.mainModuleType.comboType.typeKey` 或模板元数据。
+- **特定模块名禁令**：严禁在编码逻辑中硬编码 `G_MainController`、`chassis_diff` 等特定模块标识。这些标识应由模板或前端数据驱动。
+
+## 14. 模块嵌套语义规范 (Module Nesting Semantics)
+- **Proto 定义**：`Message_Module_Info` 是自递归结构 (`repeated Message_Module_Info more_module_info = 5`)，即 `moreModuleInfo` 是每个模块组的根节点。
+- **嵌套合法性**：协议层面同时支持**扁平结构**（所有模块并列放在根节点下）和**嵌套结构**（模块包含子模块，如：轮组→驱动→电机 组成由轮组作为根节点的嵌套式模块组合）。两种均为合法 Proto 序列化。
+- **前端拓扑对应**：前端使用 `parentNodeUuid` 描述父子关系并构建树形视图时，后端序列化必须将该拓扑关系正确映射到 `moreModuleInfo` 的嵌套层级中。
+- **模块组完整性**：每个 `moreModuleInfo` 节点必须包含：
+  - `moduleGroupName` (Tag 1): 模块组名称
+  - `moduleGroupUuid` (Tag 2): 实例唯一ID
+  - `moduleComponets` (Tag 4): 该组的组件列表
+  - `moreModuleInfo` (Tag 5): 子模块组（可递归嵌套）
+
+## 15. 后端默认值填充规范 (Backend Default-Value Filling)
+- **设计背景**：当前前端交互设计的输入信息和字段是不足的（仅提供 `moduleName`, `moduleUuid`, `privateAttrs`, `mountX/Y/Z` 等少量字段）。
+- **核心规则**：后端在编码/序列化时，**必须**采用模块库模板 (`resources/modules/*.json`) 的默认值填充所有前端未提供的字段。
+- **前端值优先 (Frontend-First)**：已由前端提供的字段值不会被模板覆盖。当前端后续新增某字段的输入能力后，只需传值即可自动生效，后端无需代码改动。
+- **实现位置**：`encoder.py:enrich_from_templates()` — 在编码前遍历模块树，对每个组件加载匹配的模板并执行缺失字段补齐。
+- **逐步放开策略**：后续前端要求补充输入字段时，需记录"从模板默认 → 前端提供"的切换日志，确保可追溯。

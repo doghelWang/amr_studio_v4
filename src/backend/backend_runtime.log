@@ -71,3 +71,24 @@ INFO:     127.0.0.1:55027 - "GET /assets/index-CxXm1VbR.css HTTP/1.1" 304 Not Mo
 INFO:     127.0.0.1:55027 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55025 - "GET /api/v1/schemas HTTP/1.1" 200 OK
 INFO:     127.0.0.1:55025 - "GET /models/v4/BoardDescriptions.xml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59894 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59895 - "GET /assets/index-CxXm1VbR.css HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59894 - "GET /assets/index-B1Sa1fgH.js HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:59894 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59894 - "GET /favicon.ico HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59895 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59895 - "GET /models/v4/BoardDescriptions.xml HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59895 - "GET /api/v1/projects/load/1234 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60225 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60225 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60226 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56366 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56366 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56367 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61938 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61938 - "GET /assets/index-B1Sa1fgH.js HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61940 - "GET /assets/index-CxXm1VbR.css HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61938 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61938 - "GET /favicon.ico HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61940 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61940 - "GET /models/v4/BoardDescriptions.xml HTTP/1.1" 200 OK

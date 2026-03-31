@@ -43,10 +43,10 @@ def split_comp_desc(json_path, output_dir):
                     muuid_obj = gen.get("moduleUuid") or gen.get("module_uuid") or {}
                     mname_obj = gen.get("moduleName") or gen.get("module_name") or {}
                     
-                    muuid = muuid_obj.get("stringValue") or muuid_obj.get("string_value") or f"unknown_{module_count}"
-                    mname = mname_obj.get("stringValue") or mname_obj.get("string_value") or "unknown"
+                    muuid = (muuid_obj.get("stringValue") or muuid_obj.get("string_value") or f"unknown_{module_count}").strip()
+                    mname = (mname_obj.get("stringValue") or mname_obj.get("string_value") or "unknown").strip()
                     
-                    # 定义模块文件名：包含名称与 UUID 确保不重复
+                    # 定义模块文件名：包含名称与 UUID 确保不重复 (D-4: strip whitespace)
                     filename = f"module_{mname}_{muuid}.json"
                     filepath = os.path.join(modules_dir, filename)
                     

@@ -1,0 +1,10 @@
+- `[ ]` **前端 JSON Keys 的层级生成规则洗点与强制统一**
+  - 洗清原因为适配旧驼峰 `ModelRoot` 或者字典映射残留的历史污点字段 (尤其是在 `useProjectStore.ts` 以及组件构建字典中遗漏的蛇形和属性转换项)。
+  - 确保原生投喂的 `blueprint` 严格匹配现用的 `Message_Module_Info` 反解模型。
+- `[ ]` **强校验下发前置化**
+  - 不再试图在 `encoder.py` 内部使用强制打补丁来补全各类型 `SubSysType` 或构建强行补充的 `ControlSys / G_MainController` 树。
+  - 要在 UI 导联数据中心层以及 `ResourceAdapter` 完成数据源头的完美合规（从模型创建初始态上游解决树型结构完整度）。
+- `[ ]` **AbiSet.model 与 FuncDesc.model 的校验兼容测试**
+  - 在目前的修复流下，已确认主板核心元件能力集（`CompDesc.model`）达到原厂级位素匹配，下一步需要测试另外两份固件定义模型序列。
+- `[ ]` **下刷实机与模拟总装沙盘端到端演练测试**
+  - 最后进行项目发包编译测试以及将编出的 `proj_1234_fixed.cmodel` 应用入真机调试栈，完成实机流闭环检验。
