@@ -7,6 +7,11 @@ AMR Studio V4 是一款专为自动移动机器人（AMR）设计的高级配置
   - 弃用大量前端属性硬编码，全面对接 `ModuleLibrary/PrivateAttribute.json`，实现 **JSON to UI** 的全自动渲染。
   - 引入了 `Engineering Constraints (工程约束)` 层，实现物理互斥显示、自动组合枚举值及深度属性联动同步。
 - **2026-03-31 核心审计与架构优化 (Latest)**:
+  - **三文件全生命周期独立管理 (Tri-File Independence)**:
+    - 严格遵循 `.cmodel` 物理 ZIP 容器规范，实现 `CompDesc`, `AbiSet`, `FuncDesc` 的独立解析、存储与动态编码闭环。
+    - **解析层 (`model_parser.py`)**: 增强 ZIP 容器意识，实现对不同 Proto 定义的精确分流解析，确保成果物物理隔离。
+    - **存储层 (`data_manager.py`)**: 实现 `AbiSet.json` 与 `FuncDesc.json` 的原子级持久化管理，彻底摆脱“大 JSON”耦合。
+    - **编码层 (`encoder.py`)**: 补全三文件全管道编码逻辑，支持动态富化与比特级对标校验。
   - **全量比特对标审计**：完成对 CompDesc, AbiSet, FuncDesc 的三文件全链路对比，识别并定位了 AbiSet 编码管道的不完整性（P0 修复中）。
   - **模板注册表驱动 (O-1/O-2)**：初步建立模块库模板富化逻辑，消除后端对 `mainModuleType` 和 `subSysType` 的硬编码猜测，实现“零硬编码”建模。
   - **编码管道标准化**：补全 `sanitize_values` 与 `strip_whitespace` 环节，确保输出的二进制模型文件与工业标准完全对齐。

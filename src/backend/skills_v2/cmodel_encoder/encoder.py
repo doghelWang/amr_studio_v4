@@ -366,11 +366,33 @@ def encode_cmodel(blueprint_path, output_cmodel_path):
         abi_model_data = abi_obj.SerializeToString()
         audit.append(f"TOTAL AbiSet (Baseline-only): {len(abi_model_data)} bytes")
 
-    # 3. FuncDesc (Baseline)
+    # 3. FuncDesc Serialization
     func_model_data = b""
-    baseline_func_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "resources", "FuncDesc_base.model")
-    if os.path.exists(baseline_func_path):
-        with open(baseline_func_path, "rb") as f: func_model_data = f.read()
+    func_json_path = os.path.join(project_dir, "FuncDesc.json")
+    baseline_func_path = _BACKEND_DIR / "resources" / "FuncDesc_base.model"
+    
+    if os.path.exists(func_json_path):
+        try:
+            with open(func_json_path, "r", encoding="utf-8") as f:
+                func_data = json.load(f)
+            
+            # [O-9] Dynamic FuncDesc encoding pipeline
+            func_data = proto_final_sync(func_data)
+            func_data = sanitize_values(func_data)
+            func_data = strip_whitespace(func_data)
+            
+            from skills_v2.schemas_pb import controller_model_abi_desc_pb2
+            func_obj = controller_model_abi_desc_pb2.Controller_Abi_Set()
+            ParseDict(func_data, func_obj, ignore_unknown_fields=True)
+            func_model_data = func_obj.SerializeToString()
+            audit.append(f"TOTAL FuncDesc: {len(func_model_data)} bytes")
+        except Exception as e:
+            audit.append(f"FuncDesc Error: {str(e)}")
+    
+    if not func_model_data and baseline_func_path.exists():
+        with open(baseline_func_path, "rb") as f:
+            func_model_data = f.read()
+        audit.append(f"TOTAL FuncDesc (Baseline): {len(func_model_data)} bytes")
 
     # 4. Final Pack (FORCE Windows FAT32 Compatibility)
     def get_md5(data): return hashlib.md5(data).hexdigest()

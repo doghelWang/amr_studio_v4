@@ -114,11 +114,32 @@ def update_component(project_id: str, module_uuid: str, payload_delta: dict) -> 
 
 def update_ability(project_id: str, payload_delta: dict) -> bool:
     fpath = get_project_dir(project_id) / "AbiSet.json"
-    if not fpath.exists(): return False
+    if not fpath.exists():
+        # [O-7] Create from baseline if missing during update
+        baseline = BASE_DIR / "resources" / "AbiSet_base.json"
+        if baseline.exists():
+            shutil.copy2(baseline, fpath)
+        else:
+            with open(fpath, "w", encoding="utf-8") as f: json.dump({"version": "V1.0"}, f)
+            
     with _file_locks[str(fpath)]:
         with open(fpath, "r", encoding="utf-8") as file:
             data = json.load(file)
         print(f"DISK_AUDIT: >>> Updating AbilitySet <<<", flush=True)
+        deep_update(data, payload_delta)
+        atomic_write_json(data, fpath)
+    return True
+
+def update_function(project_id: str, payload_delta: dict) -> bool:
+    """[O-9] Manage FuncDesc.json independently."""
+    fpath = get_project_dir(project_id) / "FuncDesc.json"
+    if not fpath.exists():
+        with open(fpath, "w", encoding="utf-8") as f: json.dump({"version": "V1.0", "function": []}, f)
+            
+    with _file_locks[str(fpath)]:
+        with open(fpath, "r", encoding="utf-8") as file:
+            data = json.load(file)
+        print(f"DISK_AUDIT: >>> Updating FuncDesc <<<", flush=True)
         deep_update(data, payload_delta)
         atomic_write_json(data, fpath)
     return True
@@ -131,6 +152,13 @@ def get_component(project_id: str, module_uuid: str):
 
 def get_ability(project_id: str):
     fpath = get_project_dir(project_id) / "AbiSet.json"
+    if fpath.exists():
+        with open(fpath, "r", encoding="utf-8") as file: return json.load(file)
+    return None
+
+def get_function(project_id: str):
+    """[O-9] Retrieve FuncDesc.json."""
+    fpath = get_project_dir(project_id) / "FuncDesc.json"
     if fpath.exists():
         with open(fpath, "r", encoding="utf-8") as file: return json.load(file)
     return None
