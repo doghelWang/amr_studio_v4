@@ -222,61 +222,89 @@ def strip_whitespace(data):
     return data
 
 def standardize_sys_tree(blueprint_root):
-    """Ensure G_MainController is always present in the root module's moreModuleInfo."""
-    more_info = blueprint_root.get("moreModuleInfo", [])
-    if not isinstance(more_info, list):
+    """[ARCH REFACTOR] Implements physical SubSystem node grouping.
+    Ensures root's moreModuleInfo contains virtual container nodes for each SubSystem.
+    Solves: "未找到对应的子系统树节点" error.
+    """
+    original_info = blueprint_root.get("moreModuleInfo", [])
+    if not isinstance(original_info, list):
         return blueprint_root
 
-    # Pre-inject missing types
-    for g in more_info:
-        for comp in g.get("moduleComponets", []):
-            ga = comp.get("generalAttr", {})
-            name = ga.get("moduleName", {}).get("stringValue", "").lower()
-            
-            if "mainModuleType" not in ga:
-                if "mcpu" in name or "controller" in name or "mcore" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "mainCPU"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "ControlSys"}, "boolParse": True}
-                elif "motor" in name or "driver" in name or "wheel" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "driver"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "MotionSys"}, "boolParse": True}
-                elif "bat" in name or "power" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "battery"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "PowerSys"}, "boolParse": True}
-                elif "sensor" in name or "laser" in name or "camera" in name or "ls" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "sensor"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "SensorSys"}, "boolParse": True}
-                elif "button" in name or "lamp" in name or "light" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "button"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "SafetySys"}, "boolParse": True}
-                elif "io" in name or "board" in name or "interface" in name:
-                    ga["mainModuleType"] = {"key": "main_module_type", "type": 11, "comboType": {"typeKey": "extendedlnterface"}, "boolParse": True}
-                    ga["subSysType"] = {"key": "sub_sys_type", "type": 11, "comboType": {"typeKey": "ControlSys"}, "boolParse": True}
+    # 1. Map components to their respective SubSystems
+    # Standard SubSystems expected by firmware
+    SYS_NAMES = ["ControlSys", "ChassisSys", "MotionSys", "SensorSys", "SafetySys", "PowerSys"]
+    sys_containers = {name: {
+        "moduleGroupName": name,
+        "moduleGroupUuid": f"sys-uuid-{name}",
+        "moduleSys": name,  # Tag 3: CRITICAL for firmware node lookup
+        "moduleComponets": [],
+        "moreModuleInfo": []
+    } for name in SYS_NAMES}
 
-    found_main = False
-    for g in more_info:
-        if g.get("moduleGroupName") == "G_MainController":
-            g["moduleSys"] = "ControlSys"
-            found_main = True
+    def get_target_sys(group):
+        # Check components in this group
+        for comp in group.get("moduleComponets", []):
+            ga = comp.get("generalAttr", {})
+            st = ga.get("subSysType", {}).get("comboType", {}).get("typeKey", "")
+            if st in SYS_NAMES: return st
             
-    if not found_main:
-        for g in more_info:
-            g_name = g.get("moduleGroupName", "").lower()
-            if "mcpu" in g_name or "controller" in g_name or "main" in g_name:
-                g["moduleGroupName"] = "G_MainController"
-                g["moduleSys"] = "ControlSys"
-                found_main = True
-                break
-                
-    if not found_main and len(more_info) > 0:
-        more_info.insert(0, {
-            "moduleGroupName": "G_MainController",
-            "moduleGroupUuid": "sys-001",
-            "moduleSys": "ControlSys",
-            "moduleComponets": []
-        })
+            # Fallback guessing if subSysType missing
+            name = ga.get("moduleName", {}).get("stringValue", "").lower()
+            if "mcpu" in name or "controller" in name: return "ControlSys"
+            if "chassis" in name: return "ChassisSys"
+            if "motor" in name or "driver" in name or "wheel" in name: return "MotionSys"
+            if "sensor" in name or "laser" in name or "camera" in name: return "SensorSys"
+            if "button" in name or "lamp" in name: return "SafetySys"
+            if "bat" in name or "power" in name: return "PowerSys"
         
-    blueprint_root["moreModuleInfo"] = more_info
+        # Check group name itself
+        gname = group.get("moduleGroupName", "").lower()
+        if "chassis" in gname: return "ChassisSys"
+        if "mcpu" in gname or "control" in gname: return "ControlSys"
+        return "ControlSys" # Default fallback
+
+    # 2. Re-distribute groups into virtual containers
+    for group in original_info:
+        gname = group.get("moduleGroupName", "")
+        # If it's already a virtual container, don't double wrap
+        if gname in SYS_NAMES:
+            sys_containers[gname]["moduleComponets"].extend(group.get("moduleComponets", []))
+            sys_containers[gname]["moreModuleInfo"].extend(group.get("moreModuleInfo", []))
+            continue
+            
+        # Special case: G_MainController is usually its own thing but maps to ControlSys
+        if gname == "G_MainController":
+            sys_containers["ControlSys"]["moreModuleInfo"].append(group)
+            continue
+
+        target = get_target_sys(group)
+        sys_containers[target]["moreModuleInfo"].append(group)
+
+    # 3. Final Assembly: Only include containers that have content
+    final_more_info = []
+    # Ensure G_MainController is explicitly placed if needed, or just let ControlSys handle it
+    for name in SYS_NAMES:
+        container = sys_containers[name]
+        if container["moduleComponets"] or container["moreModuleInfo"]:
+            final_more_info.append(container)
+
+    # Special logic for G_MainController (Firmware often looks for this exact name)
+    # If not present, we ensure it exists inside ControlSys or at root
+    has_main = any(g.get("moduleGroupName") == "G_MainController" for g in final_more_info)
+    if not has_main:
+        # Check if it's inside ControlSys
+        control_sys = sys_containers["ControlSys"]
+        if not any(g.get("moduleGroupName") == "G_MainController" for g in control_sys["moreModuleInfo"]):
+            control_sys["moreModuleInfo"].insert(0, {
+                "moduleGroupName": "G_MainController",
+                "moduleGroupUuid": "sys-001",
+                "moduleSys": "ControlSys",
+                "moduleComponets": []
+            })
+            if control_sys not in final_more_info:
+                final_more_info.insert(0, control_sys)
+
+    blueprint_root["moreModuleInfo"] = final_more_info
     return blueprint_root
 
 def enrich_abiset_from_baseline(abi_data: dict) -> dict:
