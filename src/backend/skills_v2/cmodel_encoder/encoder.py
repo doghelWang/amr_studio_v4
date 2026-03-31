@@ -14,35 +14,65 @@ from skills_v2.schemas_pb import controller_model_abi_set_pb2
 # --- Module Library Template (for default-value enrichment) ---
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent  # src/backend
 _MODULE_LIB_DIR = _BACKEND_DIR / "resources" / "modules"
-_tpl_cache = {}
 
-def _load_tpl(name):
-    """Load module template by moduleGroupName or moduleName, caching results."""
-    if name in _tpl_cache:
-        return copy.deepcopy(_tpl_cache[name]) if _tpl_cache[name] else None
-    if not _MODULE_LIB_DIR.exists():
-        _tpl_cache[name] = None
+class TemplateRegistry:
+    """[O-1] Template Registry: Scans module library and builds indexes to eliminate hardcoding."""
+    def __init__(self, modules_dir: Path):
+        self._by_name = {}      # Filename mapping
+        self._by_main_type = {} # mainModuleType index
+        self._by_sub_type = {}  # subModuleType index
+        self._scan(modules_dir)
+    
+    def _scan(self, modules_dir: Path):
+        if not modules_dir.exists():
+            return
+        for json_file in modules_dir.glob("*.json"):
+            try:
+                with open(json_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                comps = data.get("moduleComponets", [])
+                if not comps: continue
+                tpl = comps[0]
+                ga = tpl.get("generalAttr", {})
+                self._by_name[json_file.stem] = tpl
+                
+                # Index by mainModuleType
+                m_type = ga.get("mainModuleType", {}).get("comboType", {}).get("typeKey", "")
+                if m_type:
+                    self._by_main_type.setdefault(m_type.lower(), []).append(tpl)
+                
+                # Index by subModuleType (more precise)
+                s_type = ga.get("subModuleType", {}).get("comboType", {}).get("typeKey", "")
+                if s_type:
+                    self._by_sub_type[s_type.lower()] = tpl
+            except Exception:
+                continue
+
+    def find(self, mod_name: str = "", group_name: str = "", 
+             main_type: str = "", sub_type: str = "") -> dict | None:
+        """Multi-strategy lookup: Exact Name > SubType > MainType"""
+        for name in [mod_name, group_name]:
+            if name and name in self._by_name:
+                return copy.deepcopy(self._by_name[name])
+        
+        if sub_type and sub_type.lower() in self._by_sub_type:
+            return copy.deepcopy(self._by_sub_type[sub_type.lower()])
+            
+        if main_type and main_type.lower() in self._by_main_type:
+            candidates = self._by_main_type[main_type.lower()]
+            # Prefer templates with "Common" in name
+            for c in candidates:
+                c_name = c.get("generalAttr", {}).get("moduleName", {}).get("stringValue", "")
+                if "Common" in c_name: return copy.deepcopy(c)
+            return copy.deepcopy(candidates[0])
         return None
-    # Exact match first
-    path = _MODULE_LIB_DIR / f"{name}.json"
-    if not path.exists():
-        # Case-insensitive fallback
-        for f in _MODULE_LIB_DIR.glob("*.json"):
-            if f.stem.lower() == name.lower():
-                path = f
-                break
-    if path.exists():
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            comps = data.get("moduleComponets", [])
-            if comps:
-                _tpl_cache[name] = comps[0]
-                return copy.deepcopy(comps[0])
-        except Exception:
-            pass
-    _tpl_cache[name] = None
-    return None
+
+_registry = None
+def get_registry():
+    global _registry
+    if _registry is None:
+        _registry = TemplateRegistry(_MODULE_LIB_DIR)
+    return _registry
 
 TYPE_STRING_TO_INT = {
     "DATA_BYTES": 0,
@@ -105,102 +135,60 @@ def sanitize_values(data):
     return data
 
 def enrich_from_templates(data):
-    """[DESIGN RULE] Backend default-value enrichment.
-    Walk the resolved module tree and fill missing generalAttr fields and
-    interfaceAttrs from the ModuleLibrary template. This ensures the generated
-    proto always contains all 13 standard fields even when the frontend only
-    provides moduleName + moduleUuid.
-    
-    Design Contract:
-      - Frontend currently provides sparse data (name, uuid, privateAttrs, mount coords)
-      - Backend fills ALL other fields from library templates as defaults
-      - When frontend adds new input fields later, those values will naturally
-        override the defaults because they're already present in the JSON
+    """[O-2] Generic Template Enrichment — ZERO HARDCODING version.
+    Eliminates _CATEGORY_FALLBACK by using the TemplateRegistry.
     """
-    if isinstance(data, dict):
-        # If this node has moduleComponets, enrich each component
-        if "moduleComponets" in data:
-            for comp in data["moduleComponets"]:
-                if not isinstance(comp, dict):
-                    continue
-                ga = comp.get("generalAttr", {})
-                # Determine template name from moduleName, group name, or category pattern
-                mod_name = ga.get("moduleName", {}).get("stringValue", "").strip()
-                group_name = data.get("moduleGroupName", "").strip()
-                main_type = ga.get("mainModuleType", {}).get("comboType", {}).get("typeKey", "")
+    if not isinstance(data, dict):
+        return data
+    
+    registry = get_registry()
+    
+    if "moduleComponets" in data:
+        for comp in data["moduleComponets"]:
+            if not isinstance(comp, dict):
+                continue
+            ga = comp.get("generalAttr", {})
+            
+            # Extract lookup dimensions (No guessing!)
+            mod_name = ga.get("moduleName", {}).get("stringValue", "").strip()
+            group_name = data.get("moduleGroupName", "").strip()
+            main_type = ga.get("mainModuleType", {}).get("comboType", {}).get("typeKey", "")
+            sub_type = ga.get("subModuleType", {}).get("comboType", {}).get("typeKey", "")
+            
+            # Use registry for multi-strategy find
+            tpl = registry.find(
+                mod_name=mod_name, group_name=group_name,
+                main_type=main_type, sub_type=sub_type
+            )
+            
+            if tpl:
+                # Fill missing generalAttr fields (Template values as fallback)
+                tpl_ga = tpl.get("generalAttr", {})
+                for field_key, field_val in tpl_ga.items():
+                    if field_key not in ga:
+                        ga[field_key] = copy.deepcopy(field_val)
+                comp["generalAttr"] = ga
                 
-                # Category-based fallback template mapping:
-                # When exact module name doesn't match a template file,
-                # derive from the naming pattern what -Common template to use
-                _CATEGORY_FALLBACK = {
-                    "chassis": "diffChassis-Common",
-                    "drivewheel": "diffWheel-Common",
-                    "driver": "subDriver-Common",
-                    "motor": "subDriver-Common",
-                    "maincpu": "mainCPU-Common",
-                    "sensor": "sensor-Common",
-                    "battery": "battery-Common",
-                    "button": "button-Common",
-                    "light": "light-Common",
-                    "extendedlnterface": "IO-Common",
-                }
+                # Enrich interfaceAttrs from template
+                comp_iface = comp.get("interfaceParams", {}).get("interfaceGroup", [])
+                tpl_iface = tpl.get("interfaceParams", {}).get("interfaceGroup", [])
+                tpl_by_key = {ig.get("key", ""): ig for ig in tpl_iface}
+                for iface in comp_iface:
+                    ikey = iface.get("key", "")
+                    if ikey in tpl_by_key:
+                        tpl_match = tpl_by_key[ikey]
+                        if not iface.get("interfaceAttrs") and tpl_match.get("interfaceAttrs"):
+                            iface["interfaceAttrs"] = copy.deepcopy(tpl_match["interfaceAttrs"])
+                        if not iface.get("interfaceParams") and tpl_match.get("interfaceParams"):
+                            iface["interfaceParams"] = copy.deepcopy(tpl_match["interfaceParams"])
                 
-                # Try loading template by various name variants
-                tpl = None
-                candidates = [mod_name, group_name]
-                
-                # Add mainModuleType-based fallback
-                if main_type:
-                    fallback = _CATEGORY_FALLBACK.get(main_type.lower())
-                    if fallback:
-                        candidates.append(fallback)
-                
-                # Add name-pattern-based fallback (e.g., driveWheel_1 → diffWheel-Common)
-                name_lower = (mod_name or group_name).lower()
-                for pattern, tpl_name in _CATEGORY_FALLBACK.items():
-                    if pattern in name_lower:
-                        candidates.append(tpl_name)
-                        break
-                # Special: if group name contains "chassis"
-                if "chassis" in group_name.lower():
-                    candidates.append("diffChassis-Common")
-                
-                for candidate in candidates:
-                    if candidate:
-                        tpl = _load_tpl(candidate)
-                        if tpl:
-                            break
-                
-                if tpl:
-                    tpl_ga = tpl.get("generalAttr", {})
-                    # Fill missing generalAttr fields with template defaults
-                    for field_key, field_val in tpl_ga.items():
-                        if field_key not in ga:
-                            ga[field_key] = copy.deepcopy(field_val)
-                    comp["generalAttr"] = ga
-                    
-                    # Enrich interfaceAttrs from template (D-2 fix)
-                    comp_iface = comp.get("interfaceParams", {}).get("interfaceGroup", [])
-                    tpl_iface = tpl.get("interfaceParams", {}).get("interfaceGroup", [])
-                    tpl_by_key = {ig.get("key", ""): ig for ig in tpl_iface}
-                    for iface in comp_iface:
-                        ikey = iface.get("key", "")
-                        if ikey in tpl_by_key:
-                            tpl_match = tpl_by_key[ikey]
-                            if not iface.get("interfaceAttrs") and tpl_match.get("interfaceAttrs"):
-                                iface["interfaceAttrs"] = copy.deepcopy(tpl_match["interfaceAttrs"])
-                            if not iface.get("interfaceParams") and tpl_match.get("interfaceParams"):
-                                iface["interfaceParams"] = copy.deepcopy(tpl_match["interfaceParams"])
-                    
-                    # Fill interfaceAbility if missing
-                    if not comp.get("interfaceAbility") and tpl.get("interfaceAbility"):
-                        comp["interfaceAbility"] = copy.deepcopy(tpl["interfaceAbility"])
-        
-        # Recurse into sub-groups
-        for key in ["moreModuleInfo"]:
-            if key in data and isinstance(data[key], list):
-                for sub in data[key]:
-                    enrich_from_templates(sub)
+                # Fill interfaceAbility if missing
+                if not comp.get("interfaceAbility") and tpl.get("interfaceAbility"):
+                    comp["interfaceAbility"] = copy.deepcopy(tpl["interfaceAbility"])
+    
+    # Recurse into sub-groups
+    for sub in data.get("moreModuleInfo", []):
+        enrich_from_templates(sub)
     return data
 
 def proto_final_sync(data):
@@ -291,6 +279,36 @@ def standardize_sys_tree(blueprint_root):
     blueprint_root["moreModuleInfo"] = more_info
     return blueprint_root
 
+def enrich_abiset_from_baseline(abi_data: dict) -> dict:
+    """[O-7] AbiSet Baseline Enrichment — Follows §15 Backend Default-Value Spec.
+    Ensures missing functionAbility and componentAbility are filled from resources/AbiSet_base.json.
+    """
+    baseline_path = _BACKEND_DIR / "resources" / "AbiSet_base.json"
+    if not baseline_path.exists():
+        return abi_data
+    
+    try:
+        with open(baseline_path, "r", encoding="utf-8") as f:
+            baseline = json.load(f)
+    except Exception:
+        return abi_data
+        
+    # Version: Frontend prioritized
+    if "version" not in abi_data:
+        abi_data["version"] = baseline.get("version", "V1.0")
+    
+    # componentAbility: Fill if empty (frontend currently doesn't provide this)
+    if not abi_data.get("componentAbility"):
+        abi_data["componentAbility"] = baseline.get("componentAbility", [])
+    
+    # functionAbility: Merge by type
+    existing_types = {fa.get("type") for fa in abi_data.get("functionAbility", []) if fa.get("type")}
+    for base_fa in baseline.get("functionAbility", []):
+        if base_fa.get("type") not in existing_types:
+            abi_data.setdefault("functionAbility", []).append(base_fa)
+            
+    return abi_data
+
 # --- MAIN ENCODER ---
 def encode_cmodel(blueprint_path, output_cmodel_path):
     audit = []
@@ -321,19 +339,32 @@ def encode_cmodel(blueprint_path, output_cmodel_path):
     # 2. AbiSet Serialization
     abi_model_data = b""
     abi_json_path = os.path.join(project_dir, "AbiSet.json")
-    try:
-        abi_obj = controller_model_abi_set_pb2.Controller_Ability()
-        if os.path.exists(abi_json_path):
+    abi_obj = controller_model_abi_set_pb2.Controller_Ability()
+    
+    if os.path.exists(abi_json_path):
+        try:
             with open(abi_json_path, "r", encoding="utf-8") as f:
-                abi_data = proto_final_sync(json.load(f))
-                ParseDict(abi_data, abi_obj, ignore_unknown_fields=True)
-        else:
-            abi_obj.version = "1.0"
-        
+                abi_data = json.load(f)
+            
+            # [O-6/O-7] Unified pipeline for AbiSet
+            abi_data = enrich_abiset_from_baseline(abi_data)
+            abi_data = proto_final_sync(abi_data)
+            abi_data = sanitize_values(abi_data)
+            abi_data = strip_whitespace(abi_data)
+            
+            ParseDict(abi_data, abi_obj, ignore_unknown_fields=True)
+            abi_model_data = abi_obj.SerializeToString()
+            audit.append(f"TOTAL AbiSet: {len(abi_model_data)} bytes")
+        except Exception as e:
+            audit.append(f"AbiSet Error: {str(e)}")
+    else:
+        # Fallback to pure baseline if AbiSet.json missing
+        abi_data = enrich_abiset_from_baseline({})
+        abi_data = proto_final_sync(abi_data)
+        abi_data = sanitize_values(abi_data)
+        ParseDict(abi_data, abi_obj, ignore_unknown_fields=True)
         abi_model_data = abi_obj.SerializeToString()
-        audit.append(f"STEP3_SERIALIZED: AbiSet.model ({len(abi_model_data)} bytes)")
-    except Exception as e:
-        audit.append(f"STEP3_ERROR: AbiSet failed: {str(e)}")
+        audit.append(f"TOTAL AbiSet (Baseline-only): {len(abi_model_data)} bytes")
 
     # 3. FuncDesc (Baseline)
     func_model_data = b""

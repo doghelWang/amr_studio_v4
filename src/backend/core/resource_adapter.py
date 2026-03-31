@@ -276,15 +276,26 @@ def frontend_to_comp_desc(config):
     }
 
 def export_abilities(abilities):
-    if not abilities or "functionAbility" not in abilities: return {"functionAbility": []}
+    """[O-8] Complete AbiSet JSON output, including version + componentAbility + tips + cloneEnable."""
+    if not abilities:
+        return {"version": "V1.0", "componentAbility": [], "functionAbility": []}
+    
     return {
+        "version": abilities.get("version", "V1.0"),
+        "componentAbility": abilities.get("componentAbility", []),
         "functionAbility": [
             {
-                "type": f.get("type"), "desc": f.get("desc", ""),
+                "type": f.get("type", ""),
+                "desc": f.get("desc", ""),
+                "tips": f.get("tips", ""),
                 "childFunction": [
                     {
-                        "key": cf.get("key"), "desc": cf.get("desc", ""),
-                        "attr": [map_attribute_to_cmodel(a, True) for a in cf.get("attr", [])]
+                        "type": cf.get("type", cf.get("key", "")),
+                        "desc": cf.get("desc", ""),
+                        "tips": cf.get("tips", ""),
+                        "key": cf.get("key", ""),
+                        "attr": [map_attribute_to_cmodel(a, True) for a in cf.get("attr", [])],
+                        "cloneEnable": cf.get("cloneEnable", False)
                     } for cf in f.get("childFunction", [])
                 ]
             } for f in abilities.get("functionAbility", [])
