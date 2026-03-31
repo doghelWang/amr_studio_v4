@@ -1,0 +1,226 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "driver_2",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "4996e7f9-af38-4846-ae24-0a1788a2bcac",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driver"
+      },
+      "boolParse": true
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "MotionSys"
+      },
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "boardAttr",
+        "desc": "控制板属性",
+        "arrayBaseEle": [
+          {
+            "key": "chipPlatform",
+            "type": "DATA_STRING",
+            "desc": "芯片平台",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "R131"
+          },
+          {
+            "key": "softwareSpec",
+            "type": "DATA_STRING",
+            "desc": "软件规格",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "NONE"
+          },
+          {
+            "key": "inputVoltage",
+            "type": "DATA_DOUBLE",
+            "desc": "输入电压",
+            "unit": "V",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 24.0
+          },
+          {
+            "key": "inputCurrent",
+            "type": "DATA_DOUBLE",
+            "desc": "输入电流",
+            "unit": "A",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.5
+          },
+          {
+            "key": "overloadCapacity",
+            "type": "DATA_DOUBLE",
+            "desc": "过载能力",
+            "unit": "倍",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 1.5
+          },
+          {
+            "key": "overloadTime",
+            "type": "DATA_DOUBLE",
+            "desc": "过载时长",
+            "unit": "S",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 3.0
+          },
+          {
+            "key": "type",
+            "type": "DATA_COMBOX",
+            "desc": "驱动类型",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "comboType": {
+              "typeKey": "MOTOR_SERVO_TYPE_AUTO",
+              "typeDesc": "伺服自动获取",
+              "typeGroups": [
+                {
+                  "key": "HYD_DRIVER_TYPE",
+                  "desc": "液压驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_AUTO",
+                  "desc": "伺服自动获取"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_STANDARD",
+                  "desc": "标准CANOPEN驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_ELMO",
+                  "desc": "ELMO驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_HIK",
+                  "desc": "自研驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_SENCHUANG",
+                  "desc": "森创驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_CURTIS",
+                  "desc": "柯蒂斯驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_ZAPI",
+                  "desc": "zapi驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_KINCO",
+                  "desc": "步科驱动器"
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_SIHENG",
+                  "desc": "四宏(横)电机"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": []
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_STRING",
+        "stringValue": "be86f9dc-47f1-4920-8b4c-3dafd2b1f69f"
+      }
+    ]
+  }
+}
