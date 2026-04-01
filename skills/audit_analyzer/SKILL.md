@@ -1,6 +1,6 @@
 ---
 name: Audit Analyzer
-description: Skill to parse the '人工检查.md' document and update the project's requirement tracking table and task list.
+description: "Skill to parse the '人工检查.md' document and update the project's requirement tracking table and task list."
 ---
 
 # Audit Analyzer Skill

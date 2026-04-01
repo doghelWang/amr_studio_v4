@@ -1,6 +1,6 @@
 ---
 name: json-visual-diff
-description: Visually compares two JSON files (e.g. compdesc.json) and requires manual confirmation from the user. Use when the user wants to see a visual diff of two JSON files and explicitly confirm the changes.
+description: "Visually compares two JSON files (e.g. compdesc.json) and requires manual confirmation from the user. Use when the user wants to see a visual diff of two JSON files and explicitly confirm the changes."
 ---
 # JSON Visual Diff
 

@@ -1,6 +1,6 @@
 ---
 name: Protobuf Semantic Mapper
-description: A tool to automatically derive hierarchical Protobuf tag-to-string-key mappings by correlating a raw protoc output with a reference JSON file.
+description: "A tool to automatically derive hierarchical Protobuf tag-to-string-key mappings by correlating a raw protoc output with a reference JSON file."
 ---
 
 # Protobuf Semantic Mapper Skill
