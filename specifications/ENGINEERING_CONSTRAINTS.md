@@ -108,11 +108,12 @@
 - **历史教训**：2026-03-31 发现 `resource_adapter.py` 的 `is_chassis` 分支将底盘 privateAttrs 错误地移入 extendParams，导致客户端无法显示底盘参数（3组/33属性全部丢失）。
 
 ## 17. 子系统类型有效值约束 (SubSystem Type Validation)
-- **有效值集合** (基于 ModelSet312 标准基线 + 协议扩展)：subSysType.comboType.typeKey 仅允许使用以下标准值：
-  - `ChassisSys` (底盘系统), `DriverSys` (驱动系统), `ControlSys` (控制系统), `SensorSys` (传感器系统), `InteractiveSys` (交互系统: button/light/charger), `PowerSys` (电源系统: battery/energyController), `Other`
-- **⚠️ 标准基线发现 (2026-04-01 CR-04)**: ModelSet312 中 button/light/charger 使用 `InteractiveSys` 而非 `SafetySys`。`SafetySys` 在标准基线中**无实例**，待客户端确认后可考虑废弃。
+- **有效值集合** (基于 MQ-Q3-600LE-D(T) 官方基线 + 协议扩展)：subSysType.comboType.typeKey 仅允许使用以下标准值：
+  - `ChassisSys` (底盘系统), `DriverSys` (驱动系统), `ControlSys` (控制系统), `SensorSys` (传感器系统), `InteractiveSys` (交互系统: button/light/screen/speaker/charger), `EnergySys` (能源系统: battery/energyController), `Other`
+- **⚠️ moduleSys 填充规则 (2026-04-02 修订)**: `moduleSys` (Tag 3) **仅允许**在组合模块（含 `moreModuleInfo` 子组的节点）上填充，默认值为 `DriverSys`。**单一模块节点严禁填充 `moduleSys`**，必须保持空字符串。违反此规则将导致 RoboDesigner 报错"未找到对应的子系统树节点"。
+- **⚠️ 已废弃值**: `PowerSys` 在标准基线中**无实例**，已被 `EnergySys` 取代 (2026-04-02)。`SafetySys` 在标准基线中无实例，`MotionSys` 为历史遗留错误值。
 - **禁止值**：`MotionSys` 为历史遗留错误值，**必须**在模板加载阶段被自动修正为 `DriverSys`。
-- **校验位置**：`encoder.py:enrich_from_templates()` 中执行 `_INVALID_SUBSYS` 自动修正。
+- **校验位置**：`encoder.py:standardize_sys_tree()` — 递归检查每个组的 `moreModuleInfo` 是否非空来决定填充。
 
 ---
 

@@ -135,7 +135,7 @@ CATEGORY_TO_SUBSYS = {
     'MOTOR': 'DriverSys',
     'MAINCPU': 'ControlSys',
     'SENSOR': 'SensorSys',
-    'BATTERY': 'PowerSys',
+    'BATTERY': 'EnergySys',  # Official baseline uses EnergySys, not PowerSys
     'BUTTON': 'InteractiveSys',  # CR-11: Corrected from SafetySys
     'LIGHT': 'InteractiveSys',   # CR-11: Corrected from SafetySys
     'IO': 'ControlSys',
@@ -284,7 +284,7 @@ def frontend_to_comp_desc(config):
     
     return {
         "moduleGroupName": identity.get("robotName", "Robot"),
-        "modelVersion": "1.0",
+        "modelVersion": "",  # §21: Root must be anonymous, modelVersion only on composite sub-groups
         "moreModuleInfo": [map_module_group(c, components) for c in root_comps]
     }
 

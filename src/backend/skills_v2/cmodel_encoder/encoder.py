@@ -426,6 +426,9 @@ def standardize_sys_tree(blueprint_root):
     Rule 1: The Root Message_Module_Info must be anonymous (no Name/UUID).
     Rule 2: Components/Groups are placed directly into Root's moreModuleInfo.
     Rule 3: No virtual container nodes (No invented 'ControlSys' wrappers).
+    Rule 4 (§21): moduleSys ONLY on composite modules (those with sub-groups).
+                   Single modules MUST have empty moduleSys.
+                   Default composite value: "DriverSys".
     """
     original_info = blueprint_root.get("moreModuleInfo", [])
     if not isinstance(original_info, list):
@@ -433,7 +436,7 @@ def standardize_sys_tree(blueprint_root):
 
     # Flatten any previous virtual containers and keep only real groups
     real_groups = []
-    SYS_NAMES = ["ControlSys", "ChassisSys", "MotionSys", "SensorSys", "SafetySys", "PowerSys"]
+    SYS_NAMES = ["ControlSys", "ChassisSys", "MotionSys", "SensorSys", "SafetySys", "PowerSys", "EnergySys", "InteractiveSys", "DriverSys"]
     
     for g in original_info:
         if g.get("moduleGroupName") in SYS_NAMES and not g.get("moduleComponets"):
@@ -442,14 +445,22 @@ def standardize_sys_tree(blueprint_root):
         else:
             real_groups.append(g)
 
-    # Sync moduleSys (Tag 3) from component subSysType for each group
-    for g in real_groups:
-        for comp in g.get("moduleComponets", []):
-            ga = comp.get("generalAttr", {})
-            st = ga.get("subSysType", {}).get("comboType", {}).get("typeKey", "")
-            if st:
-                g["moduleSys"] = st # Tag 3: Now maps to component's SubSystem type
-                break
+    # [§21] moduleSys Rule: ONLY composite modules get moduleSys.
+    # A "composite module" is one that has moreModuleInfo children.
+    # Single modules MUST have empty moduleSys.
+    def apply_module_sys_rule(groups):
+        for g in groups:
+            has_children = bool(g.get("moreModuleInfo"))
+            if has_children:
+                # Composite module: set moduleSys = "DriverSys" (safe default per user directive)
+                g["moduleSys"] = "DriverSys"
+                # Recursively apply to sub-groups
+                apply_module_sys_rule(g.get("moreModuleInfo", []))
+            else:
+                # Single module: moduleSys MUST be empty
+                g["moduleSys"] = ""
+
+    apply_module_sys_rule(real_groups)
 
     # Final Construction: Clear Root fields to match 'Naked' standard
     blueprint_root["moduleGroupName"] = ""
@@ -458,6 +469,7 @@ def standardize_sys_tree(blueprint_root):
     blueprint_root["moreModuleInfo"] = real_groups
     
     return blueprint_root
+
 
 def enrich_abiset_from_baseline(abi_data: dict) -> dict:
     """[O-7] AbiSet Baseline Enrichment — Follows §15 Backend Default-Value Spec.
