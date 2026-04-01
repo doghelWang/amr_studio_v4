@@ -27,7 +27,7 @@
       "key": "sub_sys_type",
       "type": "DATA_COMBOX",
       "comboType": {
-        "typeKey": "PowerSys"
+        "typeKey": "EnergySys"
       },
       "boolParse": true
     }

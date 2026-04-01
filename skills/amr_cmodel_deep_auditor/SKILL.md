@@ -1,3 +1,8 @@
+---
+name: amr_cmodel_deep_auditor
+description: "Highest level auditor for AMR Studio V4, ensuring 100% CModel bit-level alignment with industrial standards."
+---
+
 # Skill: AMR-CModel-Deep-Auditor (Integrated V3.0)
 
 ## 1. 技能概述

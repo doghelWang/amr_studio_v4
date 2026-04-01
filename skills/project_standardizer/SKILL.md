@@ -1,3 +1,8 @@
+---
+name: project_standardizer
+description: "Standardizes AMR Studio V4 project structure using the 11-dimension classification for documentation and source code."
+---
+
 # Skill: AMR-Project-Standardizer
 
 ## 1. 技能概述

@@ -1,3 +1,8 @@
+---
+name: amr_backend_engine
+description: "Expert skill for AMR Studio V4 backend operations, focusing on model serialization, de-serialization, and structural fidelity."
+---
+
 # Skill: AMR-Backend-Engine-Expert
 
 ## 1. 技能概述
