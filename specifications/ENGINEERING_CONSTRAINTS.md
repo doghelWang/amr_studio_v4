@@ -100,3 +100,82 @@
 - **前端值优先 (Frontend-First)**：已由前端提供的字段值不会被模板覆盖。当前端后续新增某字段的输入能力后，只需传值即可自动生效，后端无需代码改动。
 - **实现位置**：`encoder.py:enrich_from_templates()` — 在编码前遍历模块树，对每个组件加载匹配的模板并执行缺失字段补齐。
 - **逐步放开策略**：后续前端要求补充输入字段时，需记录"从模板默认 → 前端提供"的切换日志，确保可追溯。
+
+## 16. 私有属性存储位置规范 (Private Attributes Location)
+- **核心规则**：**所有**模块类型（包括底盘 chassis）的私有属性 (`privateAttrs`) **必须**存储在 Proto Tag 2 (`privateAttr.privateAttrs`) 中，以 `Message_Base_Group_Element` 分组结构保存。
+- **禁止事项**：**严禁**将 privateAttrs 扁平化后移入 `structParam.extendParams`（Tag 5）。`extendParams` 仅用于安装坐标 (`locCoordX/Y/Z/ROLL/PITCH/YAW`) 和 `parentNodeUuid`。
+- **分组保留**：私有属性的分组结构 (`motionCenterAttr`, `chassisAttr`, `wheelsAttr` 等 groupKey) 是客户端渲染分区表单的依据，破坏分组等同于破坏 UI。
+- **历史教训**：2026-03-31 发现 `resource_adapter.py` 的 `is_chassis` 分支将底盘 privateAttrs 错误地移入 extendParams，导致客户端无法显示底盘参数（3组/33属性全部丢失）。
+
+## 17. 子系统类型有效值约束 (SubSystem Type Validation)
+- **有效值集合** (基于 ModelSet312 标准基线 + 协议扩展)：subSysType.comboType.typeKey 仅允许使用以下标准值：
+  - `ChassisSys` (底盘系统), `DriverSys` (驱动系统), `ControlSys` (控制系统), `SensorSys` (传感器系统), `InteractiveSys` (交互系统: button/light/charger), `PowerSys` (电源系统: battery/energyController), `Other`
+- **⚠️ 标准基线发现 (2026-04-01 CR-04)**: ModelSet312 中 button/light/charger 使用 `InteractiveSys` 而非 `SafetySys`。`SafetySys` 在标准基线中**无实例**，待客户端确认后可考虑废弃。
+- **禁止值**：`MotionSys` 为历史遗留错误值，**必须**在模板加载阶段被自动修正为 `DriverSys`。
+- **校验位置**：`encoder.py:enrich_from_templates()` 中执行 `_INVALID_SUBSYS` 自动修正。
+
+---
+
+## 18. 模块库规格规范 (Module Library Specification - XML Aggregated)
+自 2026-04-01 起，为了提升扫描性能与数据一致性，硬件模块与接口的“事实来源”从离散 JSON 迁移至聚合 XML 体系。
+
+### 18.1 聚合 XML 体系结构 (Source of Truth)
+所有的编解码逻辑（Encoder, ResourceAdapter）必须优先从以下路径读取规格数据：
+- `specifications/ModuleLibrary/Aggregated/PrivateAttributes.xml` (77 个叶子模块)
+- `specifications/ModuleLibrary/Aggregated/InterfaceSpecs.xml` (34 个接口类型)
+- `specifications/ModuleLibrary/Aggregated/ModuleConfigs.xml` (全量约束规则)
+- `specifications/ModuleLibrary/Aggregated/BoardDescriptions.xml` (主板规格)
+
+### 18.2 标准硬件大类 (18 Hardware Groups)
+系统定义的顶级分类，凡不属于以下分类的模块必须在 `ModuleConfigs.xml` 中明确定义父子关系：
+- `chassis` (底盘), `driveWheel` (驱动轮), `autobody` (车身), `actor` (执行器), `driver` (驱动控制器), `mainCPU` (主控制器), `intergratedController` (集成控制器), `energyController` (能源控制器), `sensorProcessor` (传感器处理器), `extendedlnterface` (接口扩展模块), `sensor` (传感器), `communication` (通信模块), `battery` (电池模块), `light` (灯光), `button` (按钮), `audio` (声音), `screen` (显示屏), `handOperator` (手操器)。
+
+### 18.3 标准接口分类 (34 Interface Types)
+所有的 `interfaceParams` 构建必须遵循以下四类划分：
+- **CommInterface (通信)**：CAN, ETH, HDMI, LIN, LVDS, PWM, RS232, RS422, RS485, SPI, UART, USB
+- **FuncInterface (功能)**：BAR, BAT, ENCR, GRAV, LINE, PZTB, SMA, SPK
+- **InOutputInterface (IO)**：AI, AO, DI, DO, PI, PO 以及 sub-variant (DI/DI0~3, DO/DO0~3)
+- **PowerInterface (电源)**：PI, PO
+
+### 18.4 XML 兼容性约束 (Tag Naming Rules)
+- **数字起始 Key 处理**：由于 XML 标签名严禁以数字开头，对于原始 JSON 键名为数字（如 `3DLaser`）的情况，聚合 XML 必须使用 `<Entry key="3DLaser">` 结构。解析器必须能正确反解 `_original_key` 属性。
+- **Lua 脚本集成**：Lua 约束脚本以 `<Script file="...">` 节点保存，解析器加载时应保留其原始文本格式，严禁修改脚本逻辑。
+
+### 18.5 变更保护
+- **禁止静默修改**：严禁在未运行 `aggregate_specs.py` 的情况下手动修改 XML 聚合文件。
+- **强制回归校验**：任何 XML 聚合逻辑的变动，必须通过 `verify_aggregation.py` 对比原始离散 JSON，确保 100% 数据保真。
+
+---
+
+## 19. 接口属性数据格式约束 (Interface Attribute Format — CR-01)
+- **Proto 定义依据**: `Message_Interface_Attribute` 包含 `repeated Message_Base_Element interface_params_array = 1`。
+- **正确格式 (必须遵循)**:
+  ```json
+  "interfaceAttrs": {
+      "interfaceParamsArray": [
+          { "key": "VIN", "type": "DATA_DOUBLE", "unit": "V", ... },
+          { "key": "IMAX", "type": "DATA_DOUBLE", "unit": "A", ... }
+      ]
+  }
+  ```
+- **禁止格式**: 严禁以 key 为索引的扁平 dict（如 `{ "VIN": {...}, "IMAX": {...} }`），因为这不符合 `repeated` 数组语义，`ParseDict` 将**静默丢弃**非数组格式的数据。
+- **校验标准**: 所有 `interfaceAttrs` 和 `interfaceParams` 的值必须为 `{ "interfaceParamsArray": [...] }` 结构。
+
+## 20. 模块树结构约束 (Module Tree Structure — CR-03)
+- **标准基线事实**: ModelSet312 标准文件使用**完全扁平结构**（19 个一级节点，无嵌套）。
+- **Proto 兼容性**: `more_module_info` 是自递归字段，协议层面嵌套和扁平均合法。
+- **当前状态 (待客户端确认)**: 我方前端使用 `parentNodeUuid` 构建嵌套树（如 driveWheel→driver→motor），后端如实序列化为嵌套 `moreModuleInfo`。若客户端仅支持扁平模式，则需在 `standardize_sys_tree()` 中增加 `flatten_all` 逻辑。
+- **安全规则**: 无论扁平或嵌套，`parentNodeUuid` 必须在 `structParam.extendParams` 中正确保留以支持反向解析。
+
+## 21. moduleSys 填充规则 (Module System Tag — CR-09)
+- **Proto 定义**: `Message_Module_Info.module_sys = 3` (string 字段)。
+- **标准基线事实 (ModelSet312)**: 19 个一级节点中，**仅 `G_MainController` 的 `moduleSys="ControlSys"`**，其余 18 个节点 `moduleSys` 全部为空。
+- **客户端说明 (问题一-3)**: "组合模块必须有值，单个模块时无所谓"。
+- **推导规则**: 在扁平结构下，仅当节点含有 `moreModuleInfo` 子组时才视为"组合模块"，才需填充 `moduleSys`。孤立节点严禁主动填充。
+- **当前违规**: `enrich_from_templates()` 和 `standardize_sys_tree()` 为所有节点都填充了 `moduleSys`，需修正。
+
+## 22. 数据框架一致性约束 (Data Framework Integrity)
+- **前端类型安全**: 前端 `types.ts` 中定义的 `MainModuleType` 枚举必须与 §18.2 的 18 个硬件大类保持 1:1 映射。当前存在 `IO_BOARD`, `MOTOR`, `VISUAL` 等非标准类型，需清理或注释为别名。
+- **ExportService 默认值约束**: `ExportService.ts` 中的 `moduleGroupName` 默认值 `"LibraryGroup"` 无标准依据，应改为使用模块的 `name` 字段。
+- **映射表外置要求 (§13 补充)**: `PROTO_TO_SPEC_MAP`、`INTF_TO_SPEC_MAP`、`CATEGORY_TO_TYPE_KEY`、`CATEGORY_TO_SUBSYS` 等映射表虽当前以内联常量形式存在于代码中，但中期目标是从 XML 元数据自动生成或迁移至外部配置文件，消除硬编码依赖。
+

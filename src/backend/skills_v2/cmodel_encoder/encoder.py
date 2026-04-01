@@ -15,63 +15,147 @@ from skills_v2.schemas_pb import controller_model_abi_set_pb2
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent  # src/backend
 _MODULE_LIB_DIR = _BACKEND_DIR / "resources" / "modules"
 
-class TemplateRegistry:
-    """[O-1] Template Registry: Scans module library and builds indexes to eliminate hardcoding."""
-    def __init__(self, modules_dir: Path):
-        self._by_name = {}      # Filename mapping
-        self._by_main_type = {} # mainModuleType index
-        self._by_sub_type = {}  # subModuleType index
-        self._scan(modules_dir)
-    
-    def _scan(self, modules_dir: Path):
-        if not modules_dir.exists():
-            return
-        for json_file in modules_dir.glob("*.json"):
-            try:
-                with open(json_file, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                comps = data.get("moduleComponets", [])
-                if not comps: continue
-                tpl = comps[0]
-                ga = tpl.get("generalAttr", {})
-                self._by_name[json_file.stem] = tpl
-                
-                # Index by mainModuleType
-                m_type = ga.get("mainModuleType", {}).get("comboType", {}).get("typeKey", "")
-                if m_type:
-                    self._by_main_type.setdefault(m_type.lower(), []).append(tpl)
-                
-                # Index by subModuleType (more precise)
-                s_type = ga.get("subModuleType", {}).get("comboType", {}).get("typeKey", "")
-                if s_type:
-                    self._by_sub_type[s_type.lower()] = tpl
-            except Exception:
-                continue
+import xml.etree.ElementTree as ET
 
-    def find(self, mod_name: str = "", group_name: str = "", 
-             main_type: str = "", sub_type: str = "") -> dict | None:
-        """Multi-strategy lookup: Exact Name > SubType > MainType"""
-        for name in [mod_name, group_name]:
-            if name and name in self._by_name:
-                return copy.deepcopy(self._by_name[name])
+# --- Module Library Aggregated Specs (Source of Truth) ---
+_AGG_DIR = _BACKEND_DIR.parent.parent / "specifications" / "ModuleLibrary" / "Aggregated"
+
+# --- Type Mapping for XML Lookups ---
+PROTO_TO_SPEC_MAP = {
+    "chassis": "diffChassis",
+    "mainCPU": "subMainCPU",
+    "intergratedController": "subIntergratedController",
+    "energyController": "powerController",
+    "handOperator": "subHandOperator",
+    "battery": "subBattery",
+    "button": "subButton",
+    "motor": "PMSMMotor",
+    "driver": "subDriver",
+    "screen": "subScreen"
+}
+
+# --- Interface Mapping ---
+INTF_TO_SPEC_MAP = {
+    "SERIAL": "RS232",
+    "Eth": "ETH",
+    "ETH": "ETH",
+    "Can": "CAN",
+    "CAN": "CAN"
+}
+
+class XmlTemplateRegistry:
+    """[O-1] XML Template Registry: Loads aggregated specifications once on startup."""
+    def __init__(self, agg_dir: Path):
+        self.agg_dir = agg_dir
+        self._xmls = {}
+        self._load_all()
         
-        if sub_type and sub_type.lower() in self._by_sub_type:
-            return copy.deepcopy(self._by_sub_type[sub_type.lower()])
-            
-        if main_type and main_type.lower() in self._by_main_type:
-            candidates = self._by_main_type[main_type.lower()]
-            # Prefer templates with "Common" in name
-            for c in candidates:
-                c_name = c.get("generalAttr", {}).get("moduleName", {}).get("stringValue", "")
-                if "Common" in c_name: return copy.deepcopy(c)
-            return copy.deepcopy(candidates[0])
+    def _load_all(self):
+        files = {
+            "private": "PrivateAttributes.xml",
+            "interface": "InterfaceSpecs.xml",
+            "config": "ModuleConfigs.xml",
+            "board": "BoardDescriptions.xml"
+        }
+        for key, fname in files.items():
+            path = self.agg_dir / fname
+            if path.exists():
+                try:
+                    self._xmls[key] = ET.parse(path).getroot()
+                except Exception as e:
+                    print(f"Error loading {fname}: {e}")
+
+    def get_private_attr_spec(self, module_type: str) -> ET.Element | None:
+        """Find <Module type="..."> in PrivateAttributes.xml"""
+        root = self._xmls.get("private")
+        if root is not None:
+            # Handle case-insensitive match for typeKey
+            for m in root.findall("Module"):
+                if m.get("type", "").lower() == module_type.lower():
+                    return m
         return None
+
+    def get_interface_spec(self, intf_type: str) -> dict:
+        """Combines InterfaceFixAttrs and InterfaceParams into a unified spec dictionary."""
+        spec = {"fix_attrs": {}, "params": {}}
+        root = self._xmls.get("interface")
+        if root is not None:
+            # Fix Attrs
+            fix_node = root.find("InterfaceFixAttrs")
+            if fix_node is not None:
+                for i in fix_node.findall("Interface"):
+                    if i.get("type", "").lower() == intf_type.lower():
+                        items_node = i.find("interfaceParamsArray")
+                        if items_node is not None:
+                            for p in items_node.findall("Item"):
+                                spec["fix_attrs"][p.get("key")] = self._xml_node_to_dict(p)
+            # Params
+            param_node = root.find("InterfaceParams")
+            if param_node is not None:
+                for i in param_node.findall("Interface"):
+                    if i.get("type", "").lower() == intf_type.lower():
+                        items_node = i.find("interfaceParamsArray")
+                        if items_node is not None:
+                            for p in items_node.findall("Item"):
+                                spec["params"][p.get("key")] = self._xml_node_to_dict(p)
+        return spec
+
+    def get_config(self, config_file: str) -> ET.Element | None:
+        """Find <Config file="..."> in ModuleConfigs.xml"""
+        root = self._xmls.get("config")
+        if root is not None:
+            return root.find(f"Config[@file='{config_file}']")
+        return None
+
+    def _xml_node_to_dict(self, node: ET.Element) -> dict:
+        """Recursively convert XML node back to JSON-like dict.
+        Handles: repeated tags (→ list), Group/Attribute mapping, Entry workaround.
+        """
+        d = {}
+        # Copy XML attributes with key mapping for known structures
+        for attr_name, attr_val in node.attrib.items():
+            if attr_name == "_original_key":
+                continue
+            # Map XML attribute names to expected JSON names
+            if node.tag == "Group" and attr_name == "key":
+                d["groupKey"] = attr_val
+            elif node.tag == "Group" and attr_name == "desc":
+                d["groupName"] = attr_val
+            else:
+                d[attr_name] = attr_val
+        
+        # Handle Entry tags (dynamic keys workaround)
+        if node.tag == "Entry":
+            return {node.get("key"): node.text}
+        
+        # Process children, aggregating repeated tags into lists
+        children_by_tag = {}
+        for child in node:
+            tag = child.tag
+            if child.get("_original_key"):
+                tag = child.get("_original_key")
+            
+            if tag == "Entry":
+                d[child.get("key")] = child.text
+                continue
+            
+            child_dict = self._xml_node_to_dict(child)
+            children_by_tag.setdefault(tag, []).append(child_dict)
+        
+        # Merge into result dict
+        for tag, items in children_by_tag.items():
+            if len(items) == 1:
+                d[tag] = items[0]
+            else:
+                d[tag] = items
+        
+        return d
 
 _registry = None
 def get_registry():
     global _registry
     if _registry is None:
-        _registry = TemplateRegistry(_MODULE_LIB_DIR)
+        _registry = XmlTemplateRegistry(_AGG_DIR)
     return _registry
 
 TYPE_STRING_TO_INT = {
@@ -126,7 +210,9 @@ def sanitize_values(data):
             elif k == 'int32Minvalue' and v is not None:
                 new_data[k] = int(v)
             elif k == 'arrayCmobEle':
-                pass  # Extraneous UI field, skip
+                # array_cmob_ele is a VALID proto field (Tag 3 in Message_Combox_Item)
+                # It holds sub-attributes of dropdown options - must be preserved!
+                new_data[k] = sanitize_values(v)
             else:
                 new_data[k] = sanitize_values(v)
         return new_data
@@ -134,9 +220,29 @@ def sanitize_values(data):
         return [sanitize_values(item) for item in data]
     return data
 
+def _build_interface_type_ref(registry, main_type):
+    """[FIX 一-2] Build a {interface_type: interfaceAttrs} reference from
+    all templates sharing the same mainModuleType.
+    
+    When a specific model template (e.g. R318BN) has empty interfaceAttrs,
+    we look at sibling templates (e.g. R349AD) for valid interface patterns.
+    """
+    ref = {}
+    if not main_type:
+        return ref
+    candidates = registry._by_main_type.get(main_type.lower(), [])
+    for tpl in candidates:
+        for iface in tpl.get("interfaceParams", {}).get("interfaceGroup", []):
+            itype = iface.get("type", "")
+            if itype and itype not in ref:
+                attrs = iface.get("interfaceAttrs", {})
+                if attrs and attrs != {}:
+                    ref[itype] = attrs
+    return ref
+
 def enrich_from_templates(data):
-    """[O-2] Generic Template Enrichment — ZERO HARDCODING version.
-    Eliminates _CATEGORY_FALLBACK by using the TemplateRegistry.
+    """[O-2] XML-Spec Driven Enrichment — 100% FIDELITY version.
+    Uses Aggregated XMLs as the single source of truth for attributes and parameters.
     """
     if not isinstance(data, dict):
         return data
@@ -149,44 +255,88 @@ def enrich_from_templates(data):
                 continue
             ga = comp.get("generalAttr", {})
             
-            # Extract lookup dimensions (No guessing!)
-            mod_name = ga.get("moduleName", {}).get("stringValue", "").strip()
-            group_name = data.get("moduleGroupName", "").strip()
+            # Extract lookup dimensions
             main_type = ga.get("mainModuleType", {}).get("comboType", {}).get("typeKey", "")
             sub_type = ga.get("subModuleType", {}).get("comboType", {}).get("typeKey", "")
+            type_key = sub_type or main_type  # Prefer sub_type for specificity
             
-            # Use registry for multi-strategy find
-            tpl = registry.find(
-                mod_name=mod_name, group_name=group_name,
-                main_type=main_type, sub_type=sub_type
-            )
+            if not type_key: continue
             
-            if tpl:
-                # Fill missing generalAttr fields (Template values as fallback)
-                tpl_ga = tpl.get("generalAttr", {})
-                for field_key, field_val in tpl_ga.items():
-                    if field_key not in ga:
-                        ga[field_key] = copy.deepcopy(field_val)
-                comp["generalAttr"] = ga
+            # Use mapping if key isn't found directly
+            spec_key = type_key
+            if registry.get_private_attr_spec(type_key) is None:
+                spec_key = PROTO_TO_SPEC_MAP.get(type_key, type_key)
+            
+            # 1. Fetch Private Attributes Spec from XML
+            module_node = registry.get_private_attr_spec(spec_key)
+            if module_node is not None:
+                spec_pa_root = registry._xml_node_to_dict(module_node)
                 
-                # Enrich interfaceAttrs from template
-                comp_iface = comp.get("interfaceParams", {}).get("interfaceGroup", [])
-                tpl_iface = tpl.get("interfaceParams", {}).get("interfaceGroup", [])
-                tpl_by_key = {ig.get("key", ""): ig for ig in tpl_iface}
-                for iface in comp_iface:
-                    ikey = iface.get("key", "")
-                    if ikey in tpl_by_key:
-                        tpl_match = tpl_by_key[ikey]
-                        if not iface.get("interfaceAttrs") and tpl_match.get("interfaceAttrs"):
-                            iface["interfaceAttrs"] = copy.deepcopy(tpl_match["interfaceAttrs"])
-                        if not iface.get("interfaceParams") and tpl_match.get("interfaceParams"):
-                            iface["interfaceParams"] = copy.deepcopy(tpl_match["interfaceParams"])
+                # [RC-CHASSIS] Ensure privateAttr structure exists
+                if not comp.get("privateAttr"):
+                    comp["privateAttr"] = {"privateAttrs": []}
                 
-                # Fill interfaceAbility if missing
-                if not comp.get("interfaceAbility") and tpl.get("interfaceAbility"):
-                    comp["interfaceAbility"] = copy.deepcopy(tpl["interfaceAbility"])
+                curr_pa = comp["privateAttr"]
+                if "Group" in spec_pa_root:
+                    spec_groups = spec_pa_root["Group"]
+                    if not isinstance(spec_groups, list): spec_groups = [spec_groups]
+                    
+                    try:
+                        curr_groups = {g.get("groupKey"): g for g in curr_pa.get("privateAttrs", [])}
+                    except AttributeError:
+                        curr_pa["privateAttrs"] = []
+                        curr_groups = {}
+                    
+                    for spec_g in spec_groups:
+                        g_key = spec_g.get("groupKey")
+                        if g_key not in curr_groups or not curr_groups[g_key].get("arrayBaseEle"):
+                            new_group = {
+                                "groupKey": g_key,
+                                "groupName": spec_g.get("groupName", g_key),
+                                "arrayBaseEle": spec_g.get("Attribute", [])
+                            }
+                            if not isinstance(new_group["arrayBaseEle"], list):
+                                new_group["arrayBaseEle"] = [new_group["arrayBaseEle"]]
+                                
+                            if g_key in curr_groups:
+                                curr_groups[g_key].update(new_group)
+                            else:
+                                curr_pa.setdefault("privateAttrs", []).append(new_group)
+
+            # 2. Fetch Interface Specs from XML
+            comp_iface = comp.get("interfaceParams", {}).get("interfaceGroup", [])
+            for iface in comp_iface:
+                itype = iface.get("type", "")
+                if not itype: continue
+                
+                spec_itype = INTF_TO_SPEC_MAP.get(itype, itype)
+                intf_spec = registry.get_interface_spec(spec_itype)
+                if not iface.get("interfaceAttrs") or iface["interfaceAttrs"] == {}:
+                    if intf_spec["fix_attrs"]:
+                        iface["interfaceAttrs"] = intf_spec["fix_attrs"]
+                if not iface.get("interfaceParams") or iface["interfaceParams"] == {}:
+                    if intf_spec["params"]:
+                        iface["interfaceParams"] = intf_spec["params"]
+
+            # 3. Handle subSysType Normalization
+            _INVALID_SUBSYS = {"MotionSys"}
+            comp_subsys = ga.get("subSysType", {}).get("comboType", {}).get("typeKey", "")
+            if comp_subsys in _INVALID_SUBSYS:
+                ga["subSysType"] = {
+                    "comboType": {"typeKey": "DriverSys", "stringValue": "驱动系统"},
+                    "boolNoeditable": False,
+                    "boolHide": False
+                }
+            comp["generalAttr"] = ga
+
+    children = data.get("moreModuleInfo", [])
+    if children and not data.get("moduleSys"):
+        for comp in data.get("moduleComponets", []):
+            sub_sys = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey", "")
+            if sub_sys:
+                data["moduleSys"] = sub_sys
+                break
     
-    # Recurse into sub-groups
     for sub in data.get("moreModuleInfo", []):
         enrich_from_templates(sub)
     return data

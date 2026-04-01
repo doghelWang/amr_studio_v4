@@ -1,0 +1,1107 @@
+<?xml version="1.0" ?>
+<InterfaceSpecs>
+  <InterfaceFixAttrs>
+    <Interface type="AI">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="Resistive" typeDesc="电阻型">
+            <typeGroups>
+              <Item key="Resistive" desc="电阻型"/>
+              <Item key="*" desc="*"/>
+              <Item key="Voltage" desc="电压型"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="高电平" boolParse="True"/>
+        <Item key="IH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="高电平电流能力" boolParse="True"/>
+        <Item key="VL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="低电平" boolParse="True"/>
+        <Item key="IL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="低电平电流能力" boolParse="True"/>
+        <Item key="Z" type="DATA_STRING" stringValue="" desc="高阻态" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="AO">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="Resistive" typeDesc="电阻型">
+            <typeGroups>
+              <Item key="Resistive" desc="电阻型"/>
+              <Item key="*" desc="*"/>
+              <Item key="Voltage" desc="电压型"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="高电平" boolParse="True"/>
+        <Item key="IH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="高电平电流能力" boolParse="True"/>
+        <Item key="VL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="低电平" boolParse="True"/>
+        <Item key="IL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="低电平电流能力" boolParse="True"/>
+        <Item key="Z" type="DATA_STRING" stringValue="" desc="高阻态" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="BAR">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="PRESSURE" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="Pa" desc="压力" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="BAT">
+      <interfaceParamsArray>
+        <Item key="VOUT" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="0" unit="V" desc="额定输出电压" boolParse="True"/>
+        <Item key="CAPACITY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="AH" desc="容量" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="CAN">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DI/DI3">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="PDO" typeDesc="PDO">
+            <typeGroups>
+              <Item key="PDO" desc="PDO"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="COLOR" type="DATA_COMBOX" desc="颜色" boolParse="True">
+          <comboType typeKey="LAMP_COLOR_RED" typeDesc="LAMP_COLOR_RED">
+            <typeGroups>
+              <Item key="LAMP_COLOR_RED" desc="LAMP_COLOR_RED"/>
+              <Item key="LAMP_COLOR_GREEN" desc="LAMP_COLOR_GREEN"/>
+              <Item key="LAMP_COLOR_BULE" desc="LAMP_COLOR_BULE"/>
+              <Item key="LAMP_COLOR_YELLOW" desc="LAMP_COLOR_YELLOW"/>
+              <Item key="LAMP_COLOR_WHITE" desc="LAMP_COLOR_WHITE"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="额定输入电压" boolParse="True"/>
+        <Item key="IIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="额定输入电流" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DI/DI2">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="BRAKE" typeDesc="BRAKE">
+            <typeGroups>
+              <Item key="BRAKE" desc="BRAKE"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="额定输入电压" boolParse="True"/>
+        <Item key="IIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="额定输入电流" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DI/DI0">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="PWM" typeDesc="PWM">
+            <typeGroups>
+              <Item key="PWM" desc="PWM"/>
+              <Item key="NPN" desc="NPN"/>
+              <Item key="PNP" desc="PNP"/>
+              <Item key=" NO" desc=" NO"/>
+              <Item key=" NC" desc=" NC"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="EMO" typeDesc="EMO">
+            <typeGroups>
+              <Item key="EMO" desc="EMO"/>
+              <Item key="BUTT" desc="BUTT"/>
+              <Item key="SWITCH" desc="SWITCH"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="高电平" boolParse="True"/>
+        <Item key="IH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="高电平电流能力" boolParse="True"/>
+        <Item key="VL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="低电平" boolParse="True"/>
+        <Item key="IL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="低电平电流能力" boolParse="True"/>
+        <Item key="Z" type="DATA_STRING" stringValue="" desc="高阻态" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DI/DI1">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="PWM" typeDesc="PWM">
+            <typeGroups>
+              <Item key="PWM" desc="PWM"/>
+              <Item key="NPN" desc="NPN"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="LED" typeDesc="LED">
+            <typeGroups>
+              <Item key="LED" desc="LED"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="COLOR" type="DATA_COMBOX" desc="颜色" boolParse="True">
+          <comboType typeKey="LAMP_COLOR_GREEN" typeDesc="LAMP_COLOR_GREEN">
+            <typeGroups>
+              <Item key="LAMP_COLOR_GREEN" desc="LAMP_COLOR_GREEN"/>
+              <Item key="LAMP_COLOR_RED" desc="LAMP_COLOR_RED"/>
+              <Item key="LAMP_COLOR_BULE" desc="LAMP_COLOR_BULE"/>
+              <Item key="LAMP_COLOR_YELLOW" desc="LAMP_COLOR_YELLOW"/>
+              <Item key="LAMP_COLOR_WHITE" desc="LAMP_COLOR_WHITE"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DO/DO1">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True" boolHide="True">
+          <comboType typeKey="NO" typeDesc="NO">
+            <typeGroups>
+              <Item key="NO" desc="NO"/>
+              <Item key="NC" desc="NC"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="EMO" typeDesc="EMO">
+            <typeGroups>
+              <Item key="EMO" desc="EMO"/>
+              <Item key="BUTT" desc="BUTT"/>
+              <Item key="SWITCH" desc="SWITCH"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DO/DO0">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="PP" desc="PP"/>
+              <Item key="OD" desc="OD"/>
+              <Item key="PWM" desc="PWM"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="PDO" typeDesc="PDO">
+            <typeGroups>
+              <Item key="PDO" desc="PDO"/>
+              <Item key="LED" desc="LED"/>
+              <Item key="BRAKE" desc="BRAKE"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="高电平" boolParse="True"/>
+        <Item key="IH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="高电平电流能力" boolParse="True"/>
+        <Item key="VL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="低电平" boolParse="True"/>
+        <Item key="IL" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="低电平电流能力" boolParse="True"/>
+        <Item key="Z" type="DATA_STRING" stringValue="" desc="高阻态" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DO/DO2">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="NPN" typeDesc="NPN">
+            <typeGroups>
+              <Item key="NPN" desc="NPN"/>
+              <Item key="PNP" desc="PNP"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="DIS" type="DATA_DOUBLE" doubleValue="8" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="检测距离" boolParse="True"/>
+        <Item key="OPEVOL" type="DATA_DOUBLE" doubleValue="0.713" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="动作电压" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DO/DO3">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True" boolHide="True">
+          <comboType typeKey="NO" typeDesc="NO">
+            <typeGroups>
+              <Item key="NO" desc="NO"/>
+              <Item key="NC" desc="NC"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="BUTT" typeDesc="BUTT">
+            <typeGroups>
+              <Item key="EMO" desc="EMO"/>
+              <Item key="BUTT" desc="BUTT"/>
+              <Item key="SWITCH" desc="SWITCH"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="FUNCTAGS" type="DATA_COMBOX" desc="功能标签属性" boolParse="True">
+          <comboType typeKey="ho_access" typeDesc="接入">
+            <typeGroups>
+              <Item key="ho_access" desc="接入"/>
+              <Item key="ho_ahead" desc="前进"/>
+              <Item key="ho_back" desc="后退"/>
+              <Item key="ho_left" desc="左移"/>
+              <Item key="ho_right" desc="右移"/>
+              <Item key="ho_turn_left" desc="左转"/>
+              <Item key="ho_turn_right" desc="右转"/>
+              <Item key="ho_lift_up" desc="举升"/>
+              <Item key="ho_lift_down" desc="放下"/>
+              <Item key="ho_disable_obs" desc="避障关闭"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="ENCR">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="HALL" typeDesc="HALL">
+            <typeGroups>
+              <Item key="HALL" desc="HALL"/>
+              <Item key="ABZ" desc="ABZ"/>
+              <Item key="RS422" desc="RS422"/>
+              <Item key="RS485" desc="RS485"/>
+              <Item key="ABZ+HALL" desc="ABZ+HALL"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="ETH">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="100M" typeDesc="100M">
+            <typeGroups>
+              <Item key="1000M" desc="1000M"/>
+              <Item key="100M" desc="100M"/>
+              <Item key="10M" desc="10M"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="GRAV">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="Resistive" typeDesc="电阻型">
+            <typeGroups>
+              <Item key="Resistive" desc="电阻型"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="HDMI">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="LIN">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="HIK-US-01" typeDesc="HIK-US-01">
+            <typeGroups>
+              <Item key="HIK-US-01" desc="HIK-US-01"/>
+              <Item key="HIK-US-02" desc="HIK-US-02"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="LINE">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="One-Phase" desc="单相（液压）"/>
+              <Item key="Two-Phase" desc="两相（步进）"/>
+              <Item key="Three-Phase" desc="三相（伺服）"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="IOUT" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mA" desc="额定输出电流" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="LVDS">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="MIPI" typeDesc="MIPI">
+            <typeGroups>
+              <Item key="MIPI" desc="MIPI"/>
+              <Item key="*" desc="*"/>
+              <Item key="FPD" desc="FPD"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="VIR" desc="VIR"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="PI">
+      <interfaceParamsArray>
+        <Item key="VIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="额定输入电压" boolParse="True"/>
+        <Item key="IIN" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="额定输入电流" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="PO">
+      <interfaceParamsArray>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="CPWR" typeDesc="CPWR">
+            <typeGroups>
+              <Item key="CPWR" desc="CPWR"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="VOUT" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="V" desc="额定输出电压" boolParse="True"/>
+        <Item key="IOUT" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999999" doubleMinvalue="0" unit="mA" desc="额定输出电流" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="PWM"/>
+    <Interface type="PZTB">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="Resistive" typeDesc="电阻型">
+            <typeGroups>
+              <Item key="Resistive" desc="电阻型"/>
+              <Item key="*" desc="*"/>
+              <Item key="Voltage" desc="电压型"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWITCHCHAR" type="DATA_COMBOX" desc="开关特性" boolParse="True">
+          <comboType typeKey="NC" typeDesc="NC">
+            <typeGroups>
+              <Item key="NC" desc="NC"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="RESIST" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="0" unit="Ω" desc="电阻值" boolParse="True"/>
+        <Item key="RELATION" type="DATA_COMBOX" desc="关系" boolParse="True">
+          <comboType typeKey="parallel" typeDesc="并联">
+            <typeGroups>
+              <Item key="parallel" desc="并联"/>
+              <Item key="series" desc="串联"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="RS232">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="RS422">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="RS485">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="HIK-BAT-01" typeDesc="HIK-BAT-01">
+            <typeGroups>
+              <Item key="HIK-BAT-01" desc="HIK-BAT-01"/>
+              <Item key="HIK-BAT-02" desc="HIK-BAT-02"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="SMA">
+      <interfaceParamsArray>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="SPI">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="HIK-GYRO-01" typeDesc="HIK-GYRO-01">
+            <typeGroups>
+              <Item key="HIK-GYRO-01" desc="HIK-GYRO-01"/>
+              <Item key="HIK-GYRO-02" desc="HIK-GYRO-02"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="HWTAGS" type="DATA_COMBOX" desc="硬件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="VIR" desc="VIR"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="SPK">
+      <interfaceParamsArray>
+        <Item key="Power" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="W" desc="输出功率" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="UART">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="HIK-TOF-01" desc="HIK-TOF-01"/>
+              <Item key="HIK-TOF-02" desc="HIK-TOF-02"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="USB">
+      <interfaceParamsArray>
+        <Item key="MODE" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="SWTAGS" type="DATA_COMBOX" desc="软件标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="BUSTAGS" type="DATA_COMBOX" desc="总线标签属性" boolParse="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+              <Item key="BUS" desc="BUS"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+  </InterfaceFixAttrs>
+  <InterfaceParams>
+    <Interface type="AI"/>
+    <Interface type="AO"/>
+    <Interface type="BAR">
+      <interfaceParamsArray>
+        <Item key="pressureThreshold" type="DATA_INT32" int32Value="100" int32Maxvalue="300" int32Minvalue="100" desc="气压阈值" boolParse="True" boolHide="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="BAT"/>
+    <Interface type="CAN">
+      <interfaceParamsArray>
+        <Item key="resistor" type="DATA_COMBOX" desc="带终端电阻" boolParse="True" boolHide="True">
+          <comboType typeKey="RESISTOR_HAVE" typeDesc="是">
+            <typeGroups>
+              <Item key="RESISTOR_HAVE" desc="是"/>
+              <Item key="RESISTOR_NO" desc="否"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="baudrate" type="DATA_COMBOX" desc="波特率" boolParse="True" boolNoeditable="True">
+          <comboType typeKey="1M" typeDesc="1M">
+            <typeGroups>
+              <Item key="1M" desc="1M"/>
+              <Item key="500K" desc="500K"/>
+              <Item key="250K" desc="250K"/>
+              <Item key="125K" desc="125K"/>
+              <Item key="100K" desc="100K"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True">
+          <comboType typeKey="PROTOCOL_CANOPEN" typeDesc="PROTOCOL_CANOPEN">
+            <typeGroups>
+              <Item key="PROTOCOL_EXT_CAN" desc="PROTOCOL_EXT_CAN"/>
+              <Item key="PROTOCOL_CANOPEN" desc="PROTOCOL_CANOPEN"/>
+              <Item key="PROTOCOL_UCAN" desc="PROTOCOL_UCAN"/>
+              <Item key="PROTOCOL_STD_CAN" desc="PROTOCOL_STD_CAN"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="dialValue" type="DATA_STRING" stringValue="" desc="拨码值" boolParse="True" boolHide="True"/>
+        <Item key="nodeId" type="DATA_INT32" int32Value="1" int32Maxvalue="127" int32Minvalue="1" desc="节点Id" boolParse="True"/>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DI">
+      <interfaceParamsArray>
+        <Item key="isReversed" type="DATA_COMBOX" desc="是否反向" boolParse="True" boolHide="True">
+          <comboType typeKey="0" typeDesc="0">
+            <typeGroups>
+              <Item key="0" desc="0"/>
+              <Item key="1" desc="1"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="activeLevel" type="DATA_COMBOX" desc="有效电平" boolParse="True">
+          <comboType typeKey="1" typeDesc="高电平生效">
+            <typeGroups>
+              <Item key="1" desc="高电平生效"/>
+              <Item key="0" desc="低电平生效"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="DO">
+      <interfaceParamsArray>
+        <Item key="isReversed" type="DATA_COMBOX" desc="是否反向" boolParse="True" boolHide="True">
+          <comboType typeKey="0" typeDesc="0">
+            <typeGroups>
+              <Item key="0" desc="0"/>
+              <Item key="1" desc="1"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="mode" type="DATA_COMBOX" desc="模式" boolParse="True">
+          <comboType typeKey="NO" typeDesc="常开">
+            <typeGroups>
+              <Item key="NO" desc="常开"/>
+              <Item key="NC" desc="常闭"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="ENCR"/>
+    <Interface type="ETH">
+      <interfaceParamsArray>
+        <Item key="deviceId" type="DATA_STRING" stringValue="" desc="设备id" boolParse="True" boolHide="True"/>
+        <Item key="ip" type="DATA_STRING" stringValue="" desc="ip参数" boolParse="True"/>
+        <Item key="gate" type="DATA_STRING" stringValue="" desc="网关" boolParse="True" boolHide="True"/>
+        <Item key="port" type="DATA_INT32" int32Value="1" int32Maxvalue="65536" int32Minvalue="1" desc="端口" boolParse="True"/>
+        <Item key="speed" type="DATA_COMBOX" desc="速度" boolParse="True" boolHide="True">
+          <comboType typeKey="100M" typeDesc="100M">
+            <typeGroups>
+              <Item key="1000M" desc="1000M"/>
+              <Item key="100M" desc="100M"/>
+              <Item key="10M" desc="10M"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="GRAV"/>
+    <Interface type="HDMI"/>
+    <Interface type="LIN">
+      <interfaceParamsArray>
+        <Item key="mode" type="DATA_COMBOX" desc="模式" boolParse="True" boolHide="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="HIK_US_V1" typeDesc="HIK_US_V1">
+            <typeGroups>
+              <Item key="HIK_US_V1" desc="HIK_US_V1"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="LINE"/>
+    <Interface type="LVDS">
+      <interfaceParamsArray>
+        <Item key="mode" type="DATA_COMBOX" desc="模式" boolParse="True" boolHide="True">
+          <comboType typeKey="MIPI" typeDesc="MIPI">
+            <typeGroups>
+              <Item key="MIPI" desc="MIPI"/>
+              <Item key="FPD" desc="FPD"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="PI"/>
+    <Interface type="PO"/>
+    <Interface type="PWM"/>
+    <Interface type="PZTB"/>
+    <Interface type="RS232">
+      <interfaceParamsArray>
+        <Item key="baudrate" type="DATA_COMBOX" desc="波特率" boolParse="True" boolHide="True">
+          <comboType typeKey="9600" typeDesc="9600">
+            <typeGroups>
+              <Item key="9600" desc="9600"/>
+              <Item key="4800" desc="4800"/>
+              <Item key="19200" desc="19200"/>
+              <Item key="38400" desc="38400"/>
+              <Item key="115200" desc="115200"/>
+              <Item key="921600" desc="921600"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="dataBits" type="DATA_INT32" int32Value="1" int32Maxvalue="999" int32Minvalue="1" desc="有效数字位" boolParse="True" boolHide="True"/>
+        <Item key="patity" type="DATA_COMBOX" desc="奇偶校验" boolParse="True" boolHide="True">
+          <comboType typeKey="None" typeDesc="None">
+            <typeGroups>
+              <Item key="None" desc="None"/>
+              <Item key="Odd" desc="Odd"/>
+              <Item key="Even" desc="Even"/>
+              <Item key="Mark" desc="Mark"/>
+              <Item key="Space" desc="Space"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="stopBits" type="DATA_COMBOX" desc="停止位" boolParse="True" boolHide="True">
+          <comboType typeKey="1" typeDesc="1">
+            <typeGroups>
+              <Item key="1" desc="1"/>
+              <Item key="1.5" desc="1.5"/>
+              <Item key="2" desc="2"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="ModbusRTU" typeDesc="ModbusRTU">
+            <typeGroups>
+              <Item key="ModbusRTU" desc="ModbusRTU"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="siteType" type="DATA_COMBOX" desc="类型" boolParse="True" boolHide="True">
+          <comboType typeKey="SITE_MASTER" typeDesc="主站">
+            <typeGroups>
+              <Item key="SITE_MASTER" desc="主站"/>
+              <Item key="SITE_SLAVE" desc="从站"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="RS422">
+      <interfaceParamsArray>
+        <Item key="baudrate" type="DATA_COMBOX" desc="波特率" boolParse="True" boolHide="True">
+          <comboType typeKey="9600" typeDesc="9600">
+            <typeGroups>
+              <Item key="9600" desc="9600"/>
+              <Item key="4800" desc="4800"/>
+              <Item key="19200" desc="19200"/>
+              <Item key="38400" desc="38400"/>
+              <Item key="115200" desc="115200"/>
+              <Item key="921600" desc="921600"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="dataBits" type="DATA_INT32" int32Value="1" int32Maxvalue="999" int32Minvalue="1" desc="有效数字位" boolParse="True" boolHide="True"/>
+        <Item key="patity" type="DATA_COMBOX" desc="奇偶校验" boolParse="True" boolHide="True">
+          <comboType typeKey="None" typeDesc="None">
+            <typeGroups>
+              <Item key="None" desc="None"/>
+              <Item key="Odd" desc="Odd"/>
+              <Item key="Even" desc="Even"/>
+              <Item key="Mark" desc="Mark"/>
+              <Item key="Space" desc="Space"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="stopBits" type="DATA_COMBOX" desc="停止位" boolParse="True" boolHide="True">
+          <comboType typeKey="1" typeDesc="1">
+            <typeGroups>
+              <Item key="1" desc="1"/>
+              <Item key="1.5" desc="1.5"/>
+              <Item key="2" desc="2"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="ModbusRTU" typeDesc="ModbusRTU">
+            <typeGroups>
+              <Item key="ModbusRTU" desc="ModbusRTU"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="siteType" type="DATA_COMBOX" desc="类型" boolParse="True" boolHide="True">
+          <comboType typeKey="SITE_MASTER" typeDesc="主站">
+            <typeGroups>
+              <Item key="SITE_MASTER" desc="主站"/>
+              <Item key="SITE_SLAVE" desc="从站"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="RS485">
+      <interfaceParamsArray>
+        <Item key="baudrate" type="DATA_COMBOX" desc="波特率" boolParse="True" boolHide="True">
+          <comboType typeKey="9600" typeDesc="9600">
+            <typeGroups>
+              <Item key="9600" desc="9600"/>
+              <Item key="4800" desc="4800"/>
+              <Item key="19200" desc="19200"/>
+              <Item key="38400" desc="38400"/>
+              <Item key="115200" desc="115200"/>
+              <Item key="921600" desc="921600"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="dataBits" type="DATA_INT32" int32Value="1" int32Maxvalue="999" int32Minvalue="1" desc="有效数字位" boolParse="True" boolHide="True"/>
+        <Item key="patity" type="DATA_COMBOX" desc="奇偶校验" boolParse="True" boolHide="True">
+          <comboType typeKey="None" typeDesc="None">
+            <typeGroups>
+              <Item key="None" desc="None"/>
+              <Item key="Odd" desc="Odd"/>
+              <Item key="Even" desc="Even"/>
+              <Item key="Mark" desc="Mark"/>
+              <Item key="Space" desc="Space"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="stopBits" type="DATA_COMBOX" desc="停止位" boolParse="True" boolHide="True">
+          <comboType typeKey="1" typeDesc="1">
+            <typeGroups>
+              <Item key="1" desc="1"/>
+              <Item key="1.5" desc="1.5"/>
+              <Item key="2" desc="2"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="ModbusRTU" typeDesc="ModbusRTU">
+            <typeGroups>
+              <Item key="ModbusRTU" desc="ModbusRTU"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="siteType" type="DATA_COMBOX" desc="类型" boolParse="True" boolHide="True">
+          <comboType typeKey="SITE_MASTER" typeDesc="主站">
+            <typeGroups>
+              <Item key="SITE_MASTER" desc="主站"/>
+              <Item key="SITE_SLAVE" desc="从站"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="SMA"/>
+    <Interface type="SPI">
+      <interfaceParamsArray>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="HIK_GYRO_V1" typeDesc="HIK_GYRO_V1">
+            <typeGroups>
+              <Item key="HIK_GYRO_V1" desc="HIK_GYRO_V1"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="speed" type="DATA_COMBOX" desc="速度" boolParse="True" boolHide="True">
+          <comboType typeKey="1M" typeDesc="1M">
+            <typeGroups>
+              <Item key="1M" desc="1M"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="SPK"/>
+    <Interface type="UART">
+      <interfaceParamsArray>
+        <Item key="baudrate" type="DATA_COMBOX" desc="波特率" boolParse="True" boolHide="True">
+          <comboType typeKey="9600" typeDesc="9600">
+            <typeGroups>
+              <Item key="9600" desc="9600"/>
+              <Item key="4800" desc="4800"/>
+              <Item key="19200" desc="19200"/>
+              <Item key="38400" desc="38400"/>
+              <Item key="115200" desc="115200"/>
+              <Item key="921600" desc="921600"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="dataBits" type="DATA_INT32" int32Value="0" int32Maxvalue="999" int32Minvalue="1" desc="有效数字位" boolParse="True" boolHide="True"/>
+        <Item key="patity" type="DATA_COMBOX" desc="奇偶校验" boolParse="True" boolHide="True">
+          <comboType typeKey="None" typeDesc="None">
+            <typeGroups>
+              <Item key="None" desc="None"/>
+              <Item key="Odd" desc="Odd"/>
+              <Item key="Even" desc="Even"/>
+              <Item key="Mark" desc="Mark"/>
+              <Item key="Space" desc="Space"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="stopBits" type="DATA_COMBOX" desc="停止位" boolParse="True" boolHide="True">
+          <comboType typeKey="1" typeDesc="1">
+            <typeGroups>
+              <Item key="1" desc="1"/>
+              <Item key="1.5" desc="1.5"/>
+              <Item key="2" desc="2"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="mode" type="DATA_COMBOX" desc="模式" boolParse="True" boolHide="True">
+          <comboType typeKey="*" typeDesc="*">
+            <typeGroups>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+        <Item key="protocol" type="DATA_COMBOX" desc="协议" boolParse="True" boolHide="True">
+          <comboType typeKey="HIK_TOF_V1" typeDesc="HIK_TOF_V1">
+            <typeGroups>
+              <Item key="HIK_TOF_V1" desc="HIK_TOF_V1"/>
+              <Item key="*" desc="*"/>
+            </typeGroups>
+          </comboType>
+        </Item>
+      </interfaceParamsArray>
+    </Interface>
+    <Interface type="USB">
+      <interfaceParamsArray>
+        <Item key="port" type="DATA_INT32" int32Value="1" int32Maxvalue="99999" int32Minvalue="1" desc="端口" boolParse="True" boolHide="True"/>
+      </interfaceParamsArray>
+    </Interface>
+  </InterfaceParams>
+</InterfaceSpecs>

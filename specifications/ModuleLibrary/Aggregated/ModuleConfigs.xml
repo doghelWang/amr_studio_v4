@@ -1,0 +1,2039 @@
+<?xml version="1.0" ?>
+<ModuleConfigs>
+  <Config file="Attr_Allow_Change.json">
+    <Attr_Param_Change>
+      <Value>relatedMotorFunc</Value>
+      <Value>relatedServoFunc</Value>
+      <Value>actualScanRangeHorizonStart</Value>
+      <Value>actualScanRangeHorizonEnd</Value>
+      <Value>actualScanRangeVerticalStart</Value>
+      <Value>actualScanRangeVerticalEnd</Value>
+    </Attr_Param_Change>
+  </Config>
+  <Config file="Attr_Range_Check.json">
+    <Attr_Range_Check>
+      <Item>
+        <Attr_Range_Key>
+          <Value>scanRangeHorizonStart</Value>
+          <Value>scanRangeHorizonEnd</Value>
+        </Attr_Range_Key>
+      </Item>
+      <Item>
+        <Attr_Range_Key>
+          <Value>actualScanRangeHorizonStart</Value>
+          <Value>actualScanRangeHorizonEnd</Value>
+        </Attr_Range_Key>
+      </Item>
+      <Item>
+        <Attr_Range_Key>
+          <Value>scanDistence@10%</Value>
+          <Value>scanDistence@90%</Value>
+        </Attr_Range_Key>
+      </Item>
+    </Attr_Range_Check>
+  </Config>
+  <Config file="CodeReader_Dir_Config.json">
+    <CodeReader_Dir_Config>
+      <Item outletDir="OUTLET_DIR_FRONT" lensOrientation="LENS_DIR_DOWN" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" lensOrientation="LENS_DIR_DOWN" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" lensOrientation="LENS_DIR_DOWN" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" lensOrientation="LENS_DIR_DOWN" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_FRONT" lensOrientation="LENS_DIR_UP" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_LEFT" lensOrientation="LENS_DIR_UP" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_BACK" lensOrientation="LENS_DIR_UP" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" lensOrientation="LENS_DIR_UP" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_UP" lensOrientation="LENS_DIR_FRONT" locCoordYAW="0" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" lensOrientation="LENS_DIR_FRONT" locCoordYAW="180" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" lensOrientation="LENS_DIR_FRONT" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" lensOrientation="LENS_DIR_FRONT" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_UP" lensOrientation="LENS_DIR_BACK" locCoordYAW="180" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" lensOrientation="LENS_DIR_BACK" locCoordYAW="0" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" lensOrientation="LENS_DIR_BACK" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" lensOrientation="LENS_DIR_BACK" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_FRONT" lensOrientation="LENS_DIR_LEFT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_UP" lensOrientation="LENS_DIR_LEFT" locCoordYAW="90" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" lensOrientation="LENS_DIR_LEFT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" lensOrientation="LENS_DIR_LEFT" locCoordYAW="-90" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_FRONT" lensOrientation="LENS_DIR_RIGHT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_UP" lensOrientation="LENS_DIR_RIGHT" locCoordYAW="-90" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" lensOrientation="LENS_DIR_RIGHT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" lensOrientation="LENS_DIR_RIGHT" locCoordYAW="90" locCoordPITCH="90" locCoordROLL="0"/>
+    </CodeReader_Dir_Config>
+  </Config>
+  <Config file="CodeReader_Ip_Config.json">
+    <CodeReader_Ip_Assign>
+      <Item Level="1" lensOrientation="LENS_DIR_DOWN" deviceId="100000000000000" deviceIp="192.168.1.20"/>
+      <Item Level="1" lensOrientation="LENS_DIR_UP" deviceId="100000010000000" deviceIp="192.168.1.21"/>
+      <Item Level="1" lensOrientation="LENS_DIR_LEFT" deviceId="100000020000000" deviceIp="192.168.1.22"/>
+      <Item Level="1" lensOrientation="LENS_DIR_RIGHT" deviceId="100000030000000" deviceIp="192.168.1.23"/>
+      <Item Level="1" lensOrientation="LENS_DIR_FRONT" deviceId="100000040000000" deviceIp="192.168.1.24"/>
+      <Item Level="1" lensOrientation="LENS_DIR_BACK" deviceId="100000050000000" deviceIp="192.168.1.25"/>
+      <Item Level="2" lensOrientation="LENS_DIR_DOWN" deviceId="100000060000000" deviceIp="192.168.1.26"/>
+      <Item Level="2" lensOrientation="LENS_DIR_UP" deviceId="100000070000000" deviceIp="192.168.1.27"/>
+      <Item Level="2" lensOrientation="LENS_DIR_LEFT" deviceId="100000080000000" deviceIp="192.168.1.28"/>
+      <Item Level="2" lensOrientation="LENS_DIR_RIGHT" deviceId="100000090000000" deviceIp="192.168.1.29"/>
+      <Item Level="2" lensOrientation="LENS_DIR_FRONT" deviceId="100000100000000" deviceIp="192.168.1.30"/>
+      <Item Level="2" lensOrientation="LENS_DIR_BACK" deviceId="100000110000000" deviceIp="192.168.1.31"/>
+      <Item Level="3" lensOrientation="LENS_DIR_DOWN" deviceId="100000120000000" deviceIp="192.168.1.32"/>
+      <Item Level="3" lensOrientation="LENS_DIR_UP" deviceId="100000130000000" deviceIp="192.168.1.33"/>
+      <Item Level="3" lensOrientation="LENS_DIR_LEFT" deviceId="100000140000000" deviceIp="192.168.1.34"/>
+      <Item Level="3" lensOrientation="LENS_DIR_RIGHT" deviceId="100000150000000" deviceIp="192.168.1.35"/>
+      <Item Level="3" lensOrientation="LENS_DIR_FRONT" deviceId="100000160000000" deviceIp="192.168.1.36"/>
+      <Item Level="3" lensOrientation="LENS_DIR_BACK" deviceId="100000170000000" deviceIp="192.168.1.37"/>
+    </CodeReader_Ip_Assign>
+  </Config>
+  <Script file="ConnectAction.lua">local json = require ("dkjson")
+
+-- local interfaces = {
+--     "PI", "PO", "DI0", "DO0", 
+--     "AI", "CAN", "ETH", "USB", 
+--     "RS232", "RS485", "RS422", 
+--     "SPI", "HDMI", "LVDS", "UART", 
+--     "LIN", "LINE", "ENCR", "SPK", 
+--     "SMA", "BAR", "GRAV", "BAT", 
+--     "DI1", "DO1", "PZTB", "AO"
+-- }
+local interfaceDict = {
+    ["PI"] = "PO",
+    ["DI0"] = "PO0",
+    ["AI"] = "AO",
+    ["DI1"] = "DO1",
+    ["DI"] = "DO",
+    
+    ["PO"] = "PI",
+    ["DO0"] = "PI0",
+    ["AO"] = "AI",
+    ["DO1"] = "DI1",
+    ["DO"] = "DI"
+}
+
+local portHandler = {
+    ENCR = function (msg1, msg2)
+        local arr1 = msg1.interfaceAttrs.interfaceParamsArray
+        local arr2 = msg2.interfaceAttrs.interfaceParamsArray
+        for index, value in ipairs(arr1) do
+            if value.key == "MODE" then
+                return arr1[index].comboType.typeKey == arr2[index].comboType.typeKey
+            end
+        end
+        return false
+    end
+}
+
+function PrintMessage(data)
+    print("\n\n")
+    print(json.encode(data, {indent = "  "}))
+end
+
+
+function ConnectAction(port1, port2)
+    local ret = false
+    if interfaceDict[port1.name] == nil then
+        ret = port1.name == port2.name
+    else
+        ret = interfaceDict[port1.name] == port2.name
+    end
+    local msg1, pos1, err1 = json.decode(port1.message)
+    local msg2, pos2, err2 = json.decode(port2.message)
+    if msg1.type == msg2.type then
+        if portHandler[msg1.type] then
+            ret = portHandler[msg1.type](msg1, msg2)
+        end
+    end
+    ret =   ret and 
+            port1.connectNum == 0 and 
+            port2.connectNum == 0 and 
+            port1.linkID ~= port2.linkID and
+            port1.node.instanceID ~= port2.node.instanceID and
+            port1.node.type ~= port2.node.type and 
+            (port1.node.type + port2.node.type) ~= (NodeType.CPU + NodeType.Board)
+    return ret
+end
+
+</Script>
+  <Script file="ConnectBusAction.lua">local json = require ("dkjson")
+
+
+function PrintMessage(data)
+    print("\n\n")
+    print(json.encode(data, {indent = "  "}))
+end
+
+local ConnectHandler = {
+    CAN = function (port1, port2)
+        local protocol1 = ""
+        local protocol2 = ""
+        for index, value in ipairs(port1.interfaceParams.interfaceParamsArray) do
+            if value.key == "protocol" then
+                protocol1 = value.comboType.typeKey
+            end
+        end
+        for index, value in ipairs(port2.interfaceParams.interfaceParamsArray) do
+            if value.key == "protocol" then
+                protocol2 = value.comboType.typeKey
+            end
+        end
+        local start1, finish1 = string.find(protocol1, protocol2)
+        local start2, finish2 = string.find(protocol2, protocol1)
+        return start1 or start2
+    end, 
+    ETH = function (port1, port2)
+        return true
+    end
+}
+
+function ConnectBusAction(info1, info2)
+    local port1, pos1, err1 = json.decode(info1)
+    local port2, pos2, err2 = json.decode(info2)
+    if port1.type ~= port2.type then
+        return false
+    end
+    local ret = false
+    if ConnectHandler[port1.type] then
+        ret = ConnectHandler[port1.type](port1, port2)
+    end
+    return ret
+end</Script>
+  <Config file="Cpu_Bus_Module_Type.json">
+    <Bus_Contain_SubType>
+      <Item TypeName="ModuleSubKey">
+        <TypeDetail>
+          <Value>subMainCPU</Value>
+          <Value>intergratedController</Value>
+          <Value>safetyController</Value>
+          <Value>powerController</Value>
+          <Value>prechargeController</Value>
+          <Value>binocularCameraProcessor</Value>
+          <Value>ultrasonicProcessor</Value>
+          <Value>TOFProcessor</Value>
+          <Value>airPressureProcessor</Value>
+          <Value>weighProcessor</Value>
+          <Value>encoderProcessor</Value>
+          <Value>IOModule</Value>
+          <Value>safetyIOModule</Value>
+          <Value>ethernetSwitch</Value>
+          <Value>interfaceModule</Value>
+          <Value>servo</Value>
+          <Value>HYD</Value>
+          <Value>gyro</Value>
+          <Value>segDisplays</Value>
+        </TypeDetail>
+      </Item>
+      <Item TypeName="InterfaceKey">
+        <TypeDetail>
+          <Value>CAN</Value>
+          <Value>ETH</Value>
+        </TypeDetail>
+      </Item>
+    </Bus_Contain_SubType>
+  </Config>
+  <Config file="Gyro_Dir_Config.json">
+    <Gyro_Dir_Config>
+      <Item outletDir="OUTLET_DIR_FRONT" GyroUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_LEFT" GyroUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_BACK" GyroUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" GyroUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_FRONT" GyroUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" GyroUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" GyroUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" GyroUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_UP" GyroUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" GyroUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_LEFT" GyroUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="180" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" GyroUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="0" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_UP" GyroUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" GyroUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_LEFT" GyroUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="180" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" GyroUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="0" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_FRONT" GyroUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="90" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_UP" GyroUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_BACK" GyroUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="-90" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" GyroUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_FRONT" GyroUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="90" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_UP" GyroUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_BACK" GyroUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="-90" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" GyroUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="90"/>
+    </Gyro_Dir_Config>
+  </Config>
+  <Config file="Install_Alias_Show.json">
+    <ModuleList>
+      <Item ModuleTypeKey="carrier" ModuleAlias="载台"/>
+      <Item ModuleTypeKey="covers" ModuleAlias="覆盖件"/>
+      <Item ModuleTypeKey="diffChassis" ModuleAlias="差速底盘"/>
+      <Item ModuleTypeKey="steerChassis" ModuleAlias="舵轮底盘"/>
+      <Item ModuleTypeKey="diffWheel" ModuleAlias="差速轮"/>
+      <Item ModuleTypeKey="diffSteerWheel" ModuleAlias="差速舵轮"/>
+      <Item ModuleTypeKey="weakSteerWheel" ModuleAlias="无动力差速轮"/>
+      <Item ModuleTypeKey="verticalSteerWheel" ModuleAlias="立式舵轮"/>
+      <Item ModuleTypeKey="horizontalSteerWheel" ModuleAlias="卧式舵轮"/>
+      <Item ModuleTypeKey="weakTurnWheel" ModuleAlias="可控转向轮"/>
+      <Item ModuleTypeKey="lift" ModuleAlias="举升机构"/>
+      <Item ModuleTypeKey="rotate" ModuleAlias="旋转机构"/>
+      <Item ModuleTypeKey="translation" ModuleAlias="平移机构"/>
+      <Item ModuleTypeKey="linear" ModuleAlias="线性机构"/>
+      <Item ModuleTypeKey="clamp" ModuleAlias="夹持机构"/>
+      <Item ModuleTypeKey="block" ModuleAlias="挡块机构"/>
+      <Item ModuleTypeKey="motor" ModuleAlias="电机"/>
+      <Item ModuleTypeKey="PMSMMotor" ModuleAlias="永磁同步伺服电机"/>
+      <Item ModuleTypeKey="BLDCMotor" ModuleAlias="直流无刷电机"/>
+      <Item ModuleTypeKey="BDCMotor" ModuleAlias="直流有刷电机"/>
+      <Item ModuleTypeKey="subDriver" ModuleAlias="驱动"/>
+      <Item ModuleTypeKey="servo" ModuleAlias="伺服驱动"/>
+      <Item ModuleTypeKey="HYD" ModuleAlias="液压驱动"/>
+      <Item ModuleTypeKey="subMainCPU" ModuleAlias="主控制器"/>
+      <Item ModuleTypeKey="subIntergratedController" ModuleAlias="集成控制器"/>
+      <Item ModuleTypeKey="safetyController" ModuleAlias="安全控制器"/>
+      <Item ModuleTypeKey="powerController" ModuleAlias="电源控制器"/>
+      <Item ModuleTypeKey="prechargeController" ModuleAlias="预充控制器"/>
+      <Item ModuleTypeKey="binocularCameraProcessor" ModuleAlias="双目处理器"/>
+      <Item ModuleTypeKey="ultrasonicProcessor" ModuleAlias="超声处理器"/>
+      <Item ModuleTypeKey="TOFProcessor" ModuleAlias="TOF处理器"/>
+      <Item ModuleTypeKey="airPressureProcessor" ModuleAlias="气压处理器"/>
+      <Item ModuleTypeKey="weighProcessor" ModuleAlias="称重处理器"/>
+      <Item ModuleTypeKey="encoderProcessor" ModuleAlias="编码器处理器"/>
+      <Item ModuleTypeKey="IOModule" ModuleAlias="IO模块"/>
+      <Item ModuleTypeKey="safetyIOModule" ModuleAlias="安全IO模块"/>
+      <Item ModuleTypeKey="ethernetSwitch" ModuleAlias="以太网交换机"/>
+      <Item ModuleTypeKey="interfaceModule" ModuleAlias="接口模块"/>
+      <Item ModuleTypeKey="laser" ModuleAlias="激光"/>
+      <Item ModuleTypeKey="3DLaser" ModuleAlias="3D激光"/>
+      <Item ModuleTypeKey="codeReader" ModuleAlias="读码器"/>
+      <Item ModuleTypeKey="stereo" ModuleAlias="双目"/>
+      <Item ModuleTypeKey="camera" ModuleAlias="相机"/>
+      <Item ModuleTypeKey="infrared" ModuleAlias="红外"/>
+      <Item ModuleTypeKey="TOFCamera" ModuleAlias="3DTOF"/>
+      <Item ModuleTypeKey="TOF" ModuleAlias="TOF"/>
+      <Item ModuleTypeKey="pullWireEncode" ModuleAlias="拉线编码器"/>
+      <Item ModuleTypeKey="ABZEncode" ModuleAlias="磁栅编码器"/>
+      <Item ModuleTypeKey="absoluteValueEncode" ModuleAlias="绝对式编码器"/>
+      <Item ModuleTypeKey="incrementalEncode" ModuleAlias="增量式编码器"/>
+      <Item ModuleTypeKey="gyro" ModuleAlias="陀螺仪"/>
+      <Item ModuleTypeKey="collisionPize" ModuleAlias="压电碰撞条"/>
+      <Item ModuleTypeKey="collisionBaro" ModuleAlias="气动碰撞条"/>
+      <Item ModuleTypeKey="tempSensor" ModuleAlias="温感传感器"/>
+      <Item ModuleTypeKey="ultrasonicSensor" ModuleAlias="超声传感器"/>
+      <Item ModuleTypeKey="weighSensor" ModuleAlias="称重传感器"/>
+      <Item ModuleTypeKey="proximitySensor" ModuleAlias="接近传感器"/>
+      <Item ModuleTypeKey="PT" ModuleAlias="光电开关"/>
+      <Item ModuleTypeKey="comDo" ModuleAlias="通用DO器件"/>
+      <Item ModuleTypeKey="WIFI" ModuleAlias="WIFI"/>
+      <Item ModuleTypeKey="bluetooth" ModuleAlias="蓝牙"/>
+      <Item ModuleTypeKey="RFID" ModuleAlias="RFID"/>
+      <Item ModuleTypeKey="PIO" ModuleAlias="PIO"/>
+      <Item ModuleTypeKey="fifthGeneration" ModuleAlias="5G"/>
+      <Item ModuleTypeKey="WAPI" ModuleAlias="WAPI"/>
+      <Item ModuleTypeKey="subBattery" ModuleAlias="电池"/>
+      <Item ModuleTypeKey="power" ModuleAlias="电源"/>
+      <Item ModuleTypeKey="charge" ModuleAlias="充电继电器"/>
+      <Item ModuleTypeKey="lamp" ModuleAlias="灯带"/>
+      <Item ModuleTypeKey="warningLight" ModuleAlias="警示灯"/>
+      <Item ModuleTypeKey="subButton" ModuleAlias="按钮"/>
+      <Item ModuleTypeKey="audioIn" ModuleAlias="拾音器"/>
+      <Item ModuleTypeKey="audioOut" ModuleAlias="扬声器"/>
+      <Item ModuleTypeKey="subScreen" ModuleAlias="显示屏"/>
+      <Item ModuleTypeKey="segDisplays" ModuleAlias="数码管"/>
+      <Item ModuleTypeKey="subHandOperator" ModuleAlias="手操器"/>
+      <Item ModuleTypeKey="valveCtrl" ModuleAlias="控制阀"/>
+      <Item ModuleTypeKey="generalAnalogDistance" ModuleAlias="通用模拟量测距传感器"/>
+    </ModuleList>
+  </Config>
+  <Config file="Install_Name_Show.json">
+    <ModuleList>
+      <Item ModuleTypeKey="carrier" ModuleNameInstall="carrier"/>
+      <Item ModuleTypeKey="covers" ModuleNameInstall="cover"/>
+      <Item ModuleTypeKey="diffChassis" ModuleNameInstall="chassis_diff"/>
+      <Item ModuleTypeKey="steerChassis" ModuleNameInstall="chassis_steer"/>
+      <Item ModuleTypeKey="diffWheel" ModuleNameInstall="diffWheel"/>
+      <Item ModuleTypeKey="diffSteerWheel" ModuleNameInstall="Steerwheel"/>
+      <Item ModuleTypeKey="weakSteerWheel" ModuleNameInstall="Steerwheel"/>
+      <Item ModuleTypeKey="verticalSteerWheel" ModuleNameInstall="Steerwheel"/>
+      <Item ModuleTypeKey="horizontalSteerWheel" ModuleNameInstall="Steerwheel"/>
+      <Item ModuleTypeKey="weakTurnWheel" ModuleNameInstall="Steerwheel"/>
+      <Item ModuleTypeKey="lift" ModuleNameInstall="lifter"/>
+      <Item ModuleTypeKey="rotate" ModuleNameInstall="rotator"/>
+      <Item ModuleTypeKey="translation" ModuleNameInstall="transporter"/>
+      <Item ModuleTypeKey="linear" ModuleNameInstall="linear"/>
+      <Item ModuleTypeKey="clamp" ModuleNameInstall="clamper"/>
+      <Item ModuleTypeKey="block" ModuleNameInstall="block"/>
+      <Item ModuleTypeKey="motor" ModuleNameInstall="motor"/>
+      <Item ModuleTypeKey="PMSMMotor" ModuleNameInstall="motor"/>
+      <Item ModuleTypeKey="BLDCMotor" ModuleNameInstall="motor"/>
+      <Item ModuleTypeKey="BDCMotor" ModuleNameInstall="motor"/>
+      <Item ModuleTypeKey="subDriver" ModuleNameInstall="driver"/>
+      <Item ModuleTypeKey="servo" ModuleNameInstall="servo_driver"/>
+      <Item ModuleTypeKey="HYD" ModuleNameInstall="HYD_driver"/>
+      <Item ModuleTypeKey="subMainCPU" ModuleNameInstall="MainController"/>
+      <Item ModuleTypeKey="subIntergratedController" ModuleNameInstall="slaveController"/>
+      <Item ModuleTypeKey="safetyController" ModuleNameInstall="safety_slaveController"/>
+      <Item ModuleTypeKey="powerController" ModuleNameInstall="powerController"/>
+      <Item ModuleTypeKey="prechargeController" ModuleNameInstall="preChargeController"/>
+      <Item ModuleTypeKey="binocularCameraProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="ultrasonicProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="TOFProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="airPressureProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="weighProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="encoderProcessor" ModuleNameInstall="sensor_cpu"/>
+      <Item ModuleTypeKey="IOModule" ModuleNameInstall="IO module"/>
+      <Item ModuleTypeKey="safetyIOModule" ModuleNameInstall="safety_io_module"/>
+      <Item ModuleTypeKey="ethernetSwitch" ModuleNameInstall="ethernetSwitch"/>
+      <Item ModuleTypeKey="interfaceModule" ModuleNameInstall="interface"/>
+      <Item ModuleTypeKey="laser" ModuleNameInstall="laser"/>
+      <Item ModuleTypeKey="3DLaser" ModuleNameInstall="laser"/>
+      <Item ModuleTypeKey="codeReader" ModuleNameInstall="smart camera"/>
+      <Item ModuleTypeKey="stereo" ModuleNameInstall="stereo camera"/>
+      <Item ModuleTypeKey="camera" ModuleNameInstall="camera"/>
+      <Item ModuleTypeKey="infrared" ModuleNameInstall="infrared"/>
+      <Item ModuleTypeKey="TOFCamera" ModuleNameInstall="3DTOF"/>
+      <Item ModuleTypeKey="TOF" ModuleNameInstall="TOF"/>
+      <Item ModuleTypeKey="pullWireEncode" ModuleNameInstall="wireEncoder"/>
+      <Item ModuleTypeKey="ABZEncode" ModuleNameInstall="ABZEncode"/>
+      <Item ModuleTypeKey="absoluteValueEncode" ModuleNameInstall="absEncoder"/>
+      <Item ModuleTypeKey="incrementalEncode" ModuleNameInstall="incEncoder"/>
+      <Item ModuleTypeKey="ABZEncode" ModuleNameInstall="ABZEncode"/>
+      <Item ModuleTypeKey="gyro" ModuleNameInstall="gyro"/>
+      <Item ModuleTypeKey="collisionPize" ModuleNameInstall="collision"/>
+      <Item ModuleTypeKey="collisionBaro" ModuleNameInstall="collision"/>
+      <Item ModuleTypeKey="tempSensor" ModuleNameInstall="tempsensor"/>
+      <Item ModuleTypeKey="ultrasonicSensor" ModuleNameInstall="ultrasensor"/>
+      <Item ModuleTypeKey="weighSensor" ModuleNameInstall="weighsensor"/>
+      <Item ModuleTypeKey="proximitySensor" ModuleNameInstall="proximitySensor"/>
+      <Item ModuleTypeKey="PT" ModuleNameInstall="PT"/>
+      <Item ModuleTypeKey="comDo" ModuleNameInstall="comDo"/>
+      <Item ModuleTypeKey="WIFI" ModuleNameInstall="wifi module"/>
+      <Item ModuleTypeKey="bluetooth" ModuleNameInstall="bluetooth"/>
+      <Item ModuleTypeKey="RFID" ModuleNameInstall="RFID"/>
+      <Item ModuleTypeKey="PIO" ModuleNameInstall="PIO"/>
+      <Item ModuleTypeKey="fifthGeneration" ModuleNameInstall="5G module"/>
+      <Item ModuleTypeKey="WAPI" ModuleNameInstall="wapi module"/>
+      <Item ModuleTypeKey="subBattery" ModuleNameInstall="battery"/>
+      <Item ModuleTypeKey="power" ModuleNameInstall="power"/>
+      <Item ModuleTypeKey="charge" ModuleNameInstall="charger"/>
+      <Item ModuleTypeKey="lamp" ModuleNameInstall="lamp"/>
+      <Item ModuleTypeKey="warningLight" ModuleNameInstall="warninglight"/>
+      <Item ModuleTypeKey="subButton" ModuleNameInstall="button"/>
+      <Item ModuleTypeKey="audioIn" ModuleNameInstall="audio inputer"/>
+      <Item ModuleTypeKey="audioOut" ModuleNameInstall="speaker"/>
+      <Item ModuleTypeKey="subScreen" ModuleNameInstall="screen"/>
+      <Item ModuleTypeKey="segDisplays" ModuleNameInstall="display"/>
+      <Item ModuleTypeKey="subHandOperator" ModuleNameInstall="handOperator"/>
+      <Item ModuleTypeKey="valveCtrl" ModuleNameInstall="valveCtrl"/>
+      <Item ModuleTypeKey="generalAnalogDistance" ModuleNameInstall="generalAnalogDistance"/>
+    </ModuleList>
+  </Config>
+  <Config file="Interface_Attr_Assign.json">
+    <Interface_Type_Assign>
+      <Item InterfaceMainKey="DI">
+        <InterfaceType>
+          <Item InterfaceSubKey="DI0">
+            <ContainModuleSubType>
+              <Value>subMainCPU</Value>
+              <Value>subIntergratedController</Value>
+              <Value>safetyController</Value>
+              <Value>powerController</Value>
+              <Value>prechargeController</Value>
+              <Value>binocularCameraProcessor</Value>
+              <Value>ultrasonicProcessor</Value>
+              <Value>TOFProcessor</Value>
+              <Value>airPressureProcessor</Value>
+              <Value>weighProcessor</Value>
+              <Value>encoderProcessor</Value>
+              <Value>IOModule</Value>
+              <Value>safetyIOModule</Value>
+              <Value>ethernetSwitch</Value>
+              <Value>interfaceModule</Value>
+              <Value>servo</Value>
+              <Value>HYD</Value>
+              <Value>lift</Value>
+              <Value>rotate</Value>
+              <Value>diffWheel</Value>
+              <Value>diffSteerWheel</Value>
+              <Value>verticalSteerWheel</Value>
+              <Value>horizontalSteerWheel</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DI1">
+            <ContainModuleSubType>
+              <Value>lamp</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DI2">
+            <ContainModuleSubType>
+              <Value>motor</Value>
+              <Value>PMSMMotor</Value>
+              <Value>BLDCMotor</Value>
+              <Value>BDCMotor</Value>
+              <Value>subDriver</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DI3">
+            <ContainModuleSubType>
+              <Value>warningLight</Value>
+            </ContainModuleSubType>
+          </Item>
+        </InterfaceType>
+      </Item>
+      <Item InterfaceMainKey="DO">
+        <InterfaceType>
+          <Item InterfaceSubKey="DO0">
+            <ContainModuleSubType>
+              <Value>subMainCPU</Value>
+              <Value>subIntergratedController</Value>
+              <Value>safetyController</Value>
+              <Value>powerController</Value>
+              <Value>prechargeController</Value>
+              <Value>binocularCameraProcessor</Value>
+              <Value>ultrasonicProcessor</Value>
+              <Value>TOFProcessor</Value>
+              <Value>airPressureProcessor</Value>
+              <Value>weighProcessor</Value>
+              <Value>encoderProcessor</Value>
+              <Value>IOModule</Value>
+              <Value>safetyIOModule</Value>
+              <Value>ethernetSwitch</Value>
+              <Value>interfaceModule</Value>
+              <Value>servo</Value>
+              <Value>HYD</Value>
+              <Value>lift</Value>
+              <Value>rotate</Value>
+              <Value>diffWheel</Value>
+              <Value>diffSteerWheel</Value>
+              <Value>verticalSteerWheel</Value>
+              <Value>horizontalSteerWheel</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DO1">
+            <ContainModuleSubType>
+              <Value>subButton</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DO2">
+            <ContainModuleSubType>
+              <Value>proximitySensor</Value>
+            </ContainModuleSubType>
+          </Item>
+          <Item InterfaceSubKey="DO3">
+            <ContainModuleSubType>
+              <Value>subHandOperator</Value>
+            </ContainModuleSubType>
+          </Item>
+        </InterfaceType>
+      </Item>
+    </Interface_Type_Assign>
+  </Config>
+  <Config file="Interface_Draw_Control.json">
+    <Interface_Draw_Control>
+      <Item InterfaceTypeKey="PI" bInterfaceHide="True" Docked="left" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="PO" bInterfaceHide="True" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="AI" bInterfaceHide="False" Docked="left" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="AO" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="BAR" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="BAT" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="CAN" bInterfaceHide="False" Docked="top" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="DI" bInterfaceHide="False" Docked="left" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="DO" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="ENCR" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="ETH" bInterfaceHide="False" Docked="top" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="GRAV" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="HDMI" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="LIN" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="LINE" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="LVDS" bInterfaceHide="True" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="PZTB" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="RS232" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="RS422" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="RS485" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="SPI" bInterfaceHide="True" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="SPK" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="SMA" bInterfaceHide="True" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="UART" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+      <Item InterfaceTypeKey="USB" bInterfaceHide="False" Docked="right" InterfaceDrawColor=""/>
+    </Interface_Draw_Control>
+  </Config>
+  <Config file="Interface_MainSubType_Classify.json">
+    <Interface_MainSub_Type_Desc>
+      <Item>
+        <MainTypeInfo MainUniqueKey="PowerInterface" MainTypeName="电源接口">
+          <SubTypeInfo>
+            <Item SubUniquekey="PI" SubTypeDesc="电源输入"/>
+            <Item SubUniquekey="PO" SubTypeDesc="电源输出"/>
+          </SubTypeInfo>
+        </MainTypeInfo>
+      </Item>
+      <Item>
+        <MainTypeInfo MainUniqueKey="InOutputInterface" MainTypeName="IO接口">
+          <SubTypeInfo>
+            <Item SubUniquekey="DI" SubTypeDesc="数字输入"/>
+            <Item SubUniquekey="DO" SubTypeDesc="数字输出"/>
+            <Item SubUniquekey="AI" SubTypeDesc="模拟输入"/>
+            <Item SubUniquekey="AO" SubTypeDesc="模拟输出"/>
+          </SubTypeInfo>
+        </MainTypeInfo>
+      </Item>
+      <Item>
+        <MainTypeInfo MainUniqueKey="CommInterface" MainTypeName="通信接口">
+          <SubTypeInfo>
+            <Item SubUniquekey="CAN" SubTypeDesc="控制器局域网总线，是一种用于实时应用的串行通讯协议总线"/>
+            <Item SubUniquekey="ETH" SubTypeDesc="以太网，是一种广泛使用的局域网（LAN）技术，用于在计算机和其他设备之间进行数据通信"/>
+            <Item SubUniquekey="USB" SubTypeDesc="通用串行总线，是一种串口总线标准"/>
+            <Item SubUniquekey="RS232" SubTypeDesc="推荐标准232"/>
+            <Item SubUniquekey="RS485" SubTypeDesc="推荐标准485"/>
+            <Item SubUniquekey="RS422" SubTypeDesc="推荐标准422"/>
+            <Item SubUniquekey="SPI" SubTypeDesc="一种串行通信协议，常用于单片机和各种外围设备之间的通信‌"/>
+            <Item SubUniquekey="HDMI" SubTypeDesc=" 高清多媒体接口"/>
+            <Item SubUniquekey="LVDS" SubTypeDesc="一种低压差分信号技术接口，采用数字视频信号传输方式"/>
+            <Item SubUniquekey="UART" SubTypeDesc="通用异步收发器，在计算机与串行设备之间通信时使用"/>
+            <Item SubUniquekey="LIN" SubTypeDesc="是一种用于车辆内部通信的网络标准"/>
+            <Item SubUniquekey="PWM" SubTypeDesc="是一种通过调节脉冲宽度来控制模拟信号的数字技术"/>
+          </SubTypeInfo>
+        </MainTypeInfo>
+      </Item>
+      <Item>
+        <MainTypeInfo MainUniqueKey="FuncInterface" MainTypeName="功能接口">
+          <SubTypeInfo>
+            <Item SubUniquekey="LINE" SubTypeDesc="电气相线接口"/>
+            <Item SubUniquekey="ENCR" SubTypeDesc="编码器接口"/>
+            <Item SubUniquekey="SPK" SubTypeDesc="扬声器接口"/>
+            <Item SubUniquekey="SMA" SubTypeDesc="主要用于微波领域"/>
+            <Item SubUniquekey="BAR" SubTypeDesc="气压计接口"/>
+            <Item SubUniquekey="GRAV" SubTypeDesc="重力计‌接口"/>
+            <Item SubUniquekey="BAT" SubTypeDesc="电池‌接口"/>
+            <Item SubUniquekey="PZTB" SubTypeDesc="压电式传感器碰撞条接口"/>
+          </SubTypeInfo>
+        </MainTypeInfo>
+      </Item>
+    </Interface_MainSub_Type_Desc>
+  </Config>
+  <Config file="Laser_ObsAvoidOnly_Type.json">
+    <Laser_ObsAvoidOnly>
+      <Value>SICK/TIM240-2050300</Value>
+      <Value>SICK/TIM473-2050106</Value>
+      <Value>SICK/TIM510-9950000S01</Value>
+      <Value>SICK/TIM510-9950000S08</Value>
+      <Value>SICK/LMS111-10100</Value>
+      <Value>SICK/MICS3-CBAZ90PZ1P01</Value>
+      <Value>HOKUYO/UST-05LA</Value>
+      <Value>HOKUYO/UST-05LN</Value>
+      <Value>WHST/STL1-3</Value>
+      <Value>WHST/MR-LS-02H-S2725</Value>
+      <Value>WHST/MR-LS-07H-S2025</Value>
+      <Value>PACECAT/LDS-50C-C30E</Value>
+      <Value>PACECAT/LDS-E300-E</Value>
+      <Value>PACECAT/LDS-E200-E-7</Value>
+      <Value>PACECAT/LDS-E300-E-6</Value>
+      <Value>FREE-OPTICS/MR-LS-01F-S1533-BLACK</Value>
+      <Value>FREE-OPTICS/MR-LS-01F-S1533-MIDDLE</Value>
+      <Value>VANJEE/WLR-718H</Value>
+      <Value>LITRA/LTME-02A-JK-YQ1</Value>
+      <Value>ORD/MS200</Value>
+    </Laser_ObsAvoidOnly>
+  </Config>
+  <Config file="Laser_Port_Setting_Defaule.json">
+    <Laser_Port_Setting>
+      <Item Type="PEPPERL-FUCHS/OMD25M-R2000-B23-V1V1D-SD-1L" PortDefault="5000"/>
+      <Item Type="PEPPERL-FUCHS/OMD30M-R2000-B23-V1V1D-HD-1L" PortDefault="5000"/>
+      <Item Type="PEPPERL-FUCHS/OMD30M-R2000-B23-V1V1D-1L" PortDefault="5000"/>
+      <Item Type="SICK/TIM240-2050300" PortDefault="1"/>
+      <Item Type="SICK/TIM473-2050106" PortDefault="2111"/>
+      <Item Type="SICK/TIM510-9950000S01" PortDefault="1"/>
+      <Item Type="SICK/TIM510-9950000S08" PortDefault="1"/>
+      <Item Type="SICK/TIM561-2050101" PortDefault="2111"/>
+      <Item Type="SICK/LMS111-10100" PortDefault="1"/>
+      <Item Type="SICK/NANS3-AAAZ30AN1" PortDefault="2122"/>
+      <Item Type="SICK/MICS3-CBAZ90PZ1P01" PortDefault="2122"/>
+      <Item Type="SICK/PicoScan 150" PortDefault="2112"/>
+      <Item Type="HOKUYO/UST-20LX" PortDefault="10940"/>
+      <Item Type="HOKUYO/UAM-05LP-T301" PortDefault="10940"/>
+      <Item Type="HOKUYO/UST-05LA" PortDefault="1"/>
+      <Item Type="HOKUYO/UST-05LN" PortDefault="1"/>
+      <Item Type="WHST/STL1-3" PortDefault="10940"/>
+      <Item Type="WHST/MR-LS-01H-N2725" PortDefault="10940"/>
+      <Item Type="WHST/MR-LS-01H-N2725N" PortDefault="10940"/>
+      <Item Type="WHST/MR-LS-02H-S2725" PortDefault="10940"/>
+      <Item Type="WHST/MR-LS-06H-N3025" PortDefault="10941"/>
+      <Item Type="WHST/MR-LS-07H-S2025" PortDefault="10941"/>
+      <Item Type="WHST/MR-LS-04H-N2005" PortDefault="10941"/>
+      <Item Type="WHST/MR-LS-05H-N4017" PortDefault="10941"/>
+      <Item Type="KELI/LS-2027DE/H03" PortDefault="2112"/>
+      <Item Type="KELI/KLMs-0327PE" PortDefault="2112"/>
+      <Item Type="PACECAT/LDS-50C-C30E" PortDefault="6543"/>
+      <Item Type="PACECAT/LDS-E300-E" PortDefault="6543"/>
+      <Item Type="PACECAT/LDS-E200-E-7" PortDefault="6543"/>
+      <Item Type="PACECAT/LDS-E300-E-6" PortDefault="1"/>
+      <Item Type="FREE-OPTICS/MR-LS-01F-S1533-BLACK" PortDefault="2111"/>
+      <Item Type="FREE-OPTICS/MR-LS-01F-S1533-MIDDLE" PortDefault="2111"/>
+      <Item Type="FREE-OPTICS/MR-LS-02F-N3010" PortDefault="2111"/>
+      <Item Type="VANJEE/WLR-716" PortDefault="2110"/>
+      <Item Type="VANJEE/WLR-716MINI" PortDefault="2110"/>
+      <Item Type="VANJEE/WLR-718H" PortDefault="2110"/>
+      <Item Type="VANJEE/WLR-719" PortDefault="6050"/>
+      <Item Type="HINSON/LE-50821" PortDefault="8080"/>
+      <Item Type="HINSON/LE-50821-2" PortDefault="8080"/>
+      <Item Type="ROBOSENSE/RS-LS-RS-HELIOS16P" PortDefault="6699"/>
+      <Item Type="LEISHEN/CX16" PortDefault="6699"/>
+      <Item Type="LIVOX/MID-360" PortDefault="57000"/>
+      <Item Type="OLEI/LR-1F" PortDefault="2368"/>
+      <Item Type="LITRA/LTME-02A-JK-YQ1" PortDefault="2105"/>
+      <Item Type="JIUWU/M30E" PortDefault="10940"/>
+      <Item Type="ORD/MS200" PortDefault="8081"/>
+    </Laser_Port_Setting>
+  </Config>
+  <Config file="MainCpu_Dir_Config.json">
+    <MainCpu_Dir_Config>
+      <Item outletDir="OUTLET_DIR_FRONT" mainCpuUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" mainCpuUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" mainCpuUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" mainCpuUpSurfaceOri="UPSUFACE_ORI_UP" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_FRONT" mainCpuUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_LEFT" mainCpuUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_BACK" mainCpuUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" mainCpuUpSurfaceOri="UPSUFACE_ORI_DOWN" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="180"/>
+      <Item outletDir="OUTLET_DIR_UP" mainCpuUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="180" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" mainCpuUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="0" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" mainCpuUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" mainCpuUpSurfaceOri="UPSUFACE_ORI_BACK" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_UP" mainCpuUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="0" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_DOWN" mainCpuUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="180" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_LEFT" mainCpuUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="-90" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_RIGHT" mainCpuUpSurfaceOri="UPSUFACE_ORI_FRONT" locCoordYAW="90" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_FRONT" mainCpuUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_UP" mainCpuUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="-90" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" mainCpuUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" mainCpuUpSurfaceOri="UPSUFACE_ORI_RIGHT" locCoordYAW="90" locCoordPITCH="-90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_FRONT" mainCpuUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="180" locCoordPITCH="0" locCoordROLL="90"/>
+      <Item outletDir="OUTLET_DIR_UP" mainCpuUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="90" locCoordPITCH="90" locCoordROLL="0"/>
+      <Item outletDir="OUTLET_DIR_BACK" mainCpuUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="0" locCoordPITCH="0" locCoordROLL="-90"/>
+      <Item outletDir="OUTLET_DIR_DOWN" mainCpuUpSurfaceOri="UPSUFACE_ORI_LEFT" locCoordYAW="-90" locCoordPITCH="-90" locCoordROLL="0"/>
+    </MainCpu_Dir_Config>
+  </Config>
+  <Config file="ModuleTypeObjDefault.json">
+    <Module_ObjDefalut>
+      <Item MoudelSubType="diffWheel" ObjDefalutPath="./ModuleLibrary/3dModelRes/drivewheel.obj"/>
+      <Item MoudelSubType="diffSteerWheel" ObjDefalutPath="./ModuleLibrary/3dModelRes/DifferentialWheels.obj"/>
+      <Item MoudelSubType="verticalSteerWheel" ObjDefalutPath="./ModuleLibrary/3dModelRes/VerticalSteeringWheel.obj"/>
+      <Item MoudelSubType="horizontalSteerWheel" ObjDefalutPath="./ModuleLibrary/3dModelRes/HorizontalSteeringWheel.obj"/>
+      <Item MoudelSubType="carrier" ObjDefalutPath="./ModuleLibrary/3dModelRes/Platform.obj"/>
+      <Item MoudelSubType="covers" ObjDefalutPath="./ModuleLibrary/3dModelRes/Cover.obj"/>
+    </Module_ObjDefalut>
+  </Config>
+  <Config file="Module_Classify_Control.json">
+    <Module_Type_Classify>
+      <Item ModuleType="Comp">
+        <ContainModuleSubType>
+          <Value>carrier</Value>
+          <Value>covers</Value>
+          <Value>diffChassis</Value>
+          <Value>steerChassis</Value>
+          <Value>diffWheel</Value>
+          <Value>diffSteerWheel</Value>
+          <Value>verticalSteerWheel</Value>
+          <Value>weakSteerWheel</Value>
+          <Value>weakTurnWheel</Value>
+          <Value>horizontalSteerWheel</Value>
+          <Value>lift</Value>
+          <Value>rotate</Value>
+          <Value>translate</Value>
+          <Value>stretch</Value>
+          <Value>clamp</Value>
+          <Value>block</Value>
+          <Value>motor</Value>
+          <Value>PMSMMotor</Value>
+          <Value>BLDCMotor</Value>
+          <Value>BDCMotor</Value>
+          <Value>laser</Value>
+          <Value>3DLaser</Value>
+          <Value>codeReader</Value>
+          <Value>stereo</Value>
+          <Value>camera</Value>
+          <Value>infrared</Value>
+          <Value>TOFCamera</Value>
+          <Value>TOF</Value>
+          <Value>pullWireEncode</Value>
+          <Value>ABZEncode</Value>
+          <Value>absoluteValueEncode</Value>
+          <Value>incrementalEncode</Value>
+          <Value>gyro</Value>
+          <Value>collisionPize</Value>
+          <Value>collisionBaro</Value>
+          <Value>collisionMechanistic</Value>
+          <Value>tempSensor</Value>
+          <Value>ultrasonicSensor</Value>
+          <Value>weighSensor</Value>
+          <Value>proximitySensor</Value>
+          <Value>PT</Value>
+          <Value>comDo</Value>
+          <Value>WIFI</Value>
+          <Value>bluetooth</Value>
+          <Value>RFID</Value>
+          <Value>PIO</Value>
+          <Value>fifthGeneration</Value>
+          <Value>WAPI</Value>
+          <Value>subBattery</Value>
+          <Value>power</Value>
+          <Value>charge</Value>
+          <Value>lamp</Value>
+          <Value>warningLight</Value>
+          <Value>subButton</Value>
+          <Value>audioIn</Value>
+          <Value>audioOut</Value>
+          <Value>subScreen</Value>
+          <Value>segDisplays</Value>
+          <Value>valveCtrl</Value>
+          <Value>subHandOperator</Value>
+          <Value>generalAnalogDistance</Value>
+        </ContainModuleSubType>
+      </Item>
+      <Item ModuleType="Board">
+        <ContainModuleSubType>
+          <Value>subDriver</Value>
+          <Value>servo</Value>
+          <Value>HYD</Value>
+          <Value>subMainCPU</Value>
+          <Value>subIntergratedController</Value>
+          <Value>safetyController</Value>
+          <Value>powerController</Value>
+          <Value>prechargeController</Value>
+          <Value>binocularCameraProcessor</Value>
+          <Value>ultrasonicProcessor</Value>
+          <Value>TOFProcessor</Value>
+          <Value>airPressureProcessor</Value>
+          <Value>weighProcessor</Value>
+          <Value>encoderProcessor</Value>
+          <Value>IOModule</Value>
+          <Value>safetyIOModule</Value>
+          <Value>ethernetSwitch</Value>
+          <Value>interfaceModule</Value>
+        </ContainModuleSubType>
+      </Item>
+    </Module_Type_Classify>
+  </Config>
+  <Config file="Module_Del_SubType.json">
+    <Module_Del_SubType>
+      <Value>motor</Value>
+      <Value>servo</Value>
+      <Value>HYD</Value>
+    </Module_Del_SubType>
+  </Config>
+  <Config file="Module_Install_Control.json">
+    <Module_Install_Control>
+      <Item ModuleInstallMode="0">
+        <ContainModuleSubType>
+          <Value>subDriver</Value>
+          <Value>servo</Value>
+          <Value>HYD</Value>
+          <Value>powerController</Value>
+          <Value>subIntergratedController</Value>
+          <Value>prechargeController</Value>
+          <Value>safetyController</Value>
+          <Value>binocularCameraProcessor</Value>
+          <Value>ultrasonicProcessor</Value>
+          <Value>TOFProcessor</Value>
+          <Value>airPressureProcessor</Value>
+          <Value>weighProcessor</Value>
+          <Value>encoderProcessor</Value>
+          <Value>IOModule</Value>
+          <Value>safetyIOModule</Value>
+          <Value>ethernetSwitch</Value>
+          <Value>interfaceModule</Value>
+          <Value>infrared</Value>
+          <Value>weighSensor</Value>
+          <Value>ultrasonicSensor</Value>
+          <Value>pullWireEncode</Value>
+          <Value>absoluteValueEncode</Value>
+          <Value>incrementalEncode</Value>
+          <Value>PT</Value>
+          <Value>fifthGeneration</Value>
+          <Value>subBattery</Value>
+          <Value>power</Value>
+          <Value>audioOut</Value>
+          <Value>subScreen</Value>
+          <Value>proximitySensor</Value>
+          <Value>comDo</Value>
+          <Value>motor</Value>
+          <Value>PMSMMotor</Value>
+          <Value>BLDCMotor</Value>
+          <Value>BDCMotor</Value>
+          <Value>subHandOperator</Value>
+        </ContainModuleSubType>
+      </Item>
+      <Item ModuleInstallMode="1">
+        <ContainModuleSubType>
+          <Value>diffWheel</Value>
+          <Value>weakSteerWheel</Value>
+          <Value>diffSteerWheel</Value>
+          <Value>verticalSteerWheel</Value>
+          <Value>horizontalSteerWheel</Value>
+          <Value>weakTurnWheel</Value>
+          <Value>lift</Value>
+          <Value>rotate</Value>
+          <Value>translation</Value>
+          <Value>linear</Value>
+          <Value>block</Value>
+          <Value>clamp</Value>
+          <Value>lamp</Value>
+          <Value>warningLight</Value>
+          <Value>subButton</Value>
+        </ContainModuleSubType>
+      </Item>
+      <Item ModuleInstallMode="2">
+        <ContainModuleSubType>
+          <Value>laser</Value>
+          <Value>3DLaser</Value>
+          <Value>codeReader</Value>
+          <Value>stereo</Value>
+          <Value>camera</Value>
+          <Value>TOFCamera</Value>
+          <Value>TOF </Value>
+          <Value>gyro</Value>
+          <Value>collisionPize</Value>
+          <Value>collisionBaro</Value>
+          <Value>subMainCPU</Value>
+        </ContainModuleSubType>
+      </Item>
+    </Module_Install_Control>
+  </Config>
+  <Config file="Module_Lib_Desc.json">
+    <Module_Lib_Desc>
+      <Item SubSysUniqueKey="ActorSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/block-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/clamp-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/lift-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/lift-Q3.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/linear-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/rotate-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/rotate-Q3.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ActorSys/Internal/translation-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="AutobodySys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/AutobodySys/Internal/carrier-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/AutobodySys/Internal/covers-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="ChassisSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffChassis-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffSteerWheel-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/diffWheel-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/DWD-R-Q3.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/horizontalSteerWheel-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/Q3-600LE-DIF.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/steerChassis-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/SteerChassis_DoubleWheel.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/SteerChassis_SingleWheel.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/verticalSteerWheel-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/weakSteerWheel-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ChassisSys/Internal/weakTurnWheel-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="CommunicateSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/5G-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/5G-TE310.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/bluetooth-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/PIO-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/RFID-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/WAPI-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/CommunicateSys/Internal/WIFI-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="ControlSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/binocularCameraProcessor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/encoderProcessor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/ethernetSwitch-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/IC-R-fourth-sensor processor-NS.02.R-A1.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/IM-R-R-Commen-Upper board-PC.COM.-A1.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/interfaceModule.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/intergratedController-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/IO module 4in4out.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/IO-lnterface board.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/IOModule-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/mainCPU-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R318AT.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R318BN.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/MCPU-RA-MC-R349AD-21BH0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/Power Controller board.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/powerController-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/prechargeController-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/RA-IC_I-F-1R6BH0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/RA-SP_E-A-11AH0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/safetyController-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/safetyIOModule-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/SC-R-fourth-safety controller-NS.02.R-A1.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/TOFProcessor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/ultrasonicProcessor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/ControlSys/Internal/weighProcessor-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="DriverSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/BDCMotor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/BLDCMotor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_STEER_WHEEL(单差速舵轮).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_STEER_WHEELS_DOUBL(双差速舵轮).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/DIFF_WHEELS(差速轮组).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/EC-SV11D1-100M01NB-C01.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 _motor(RUN).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 servo_driver.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/F6-2000 SteerWheel.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/H8-Steerwheel.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/IxLII 20.40.48.C.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/IxLII 30.60.48.C .json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-00SV04202-0750K-012.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-MCXL501TAF3KM.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/MOTOR-MCXL501TAFUKM.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/PMSMMotor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/RA-DRD-4825DB.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SD-R-Q3-DriveVV1.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SD-RA-DRD-4814SA.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM020BA-45.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM020BB-50.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM15030BA-18.9.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/SM15030BA-20.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/subDriver-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/TYD150-SM07530BA-18.9-10020-SM020BB-50.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/TYD150-SM07530BA-20-11020-SM020BA-45.H173.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/DriverSys/Internal/VER_STEER_WHEELS_DOUBL(双立式舵轮).json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="EnergySys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/EnergySys/Internal/BAT-LSM18-J050LB-T0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/EnergySys/Internal/BAT-U-MR-LFP-480024-F1-C-Aa0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/EnergySys/Internal/battery-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/EnergySys/Internal/charge-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/EnergySys/Internal/power-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="InteractiveSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioIn-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioOut-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/audioOutWithCan-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/AUO-R-MV-83139-Speak.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-Cable-Mizu2F-to-Switch-70mm-RD-BK.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-Emergency.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/BTN-NoEmergency.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/button-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/lamp-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/LAMP-MV-85016-REV1.0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/RemoteControl.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/screen-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/screenHDMI-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/SDSP-MV-85017(V1.0)-GD.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/segDisplays-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/SSC-RS-HMI-LED.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/WARLIGHT-RS-PLS-L563T01.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/InteractiveSys/Internal/warningLight-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+      <Item SubSysUniqueKey="SensorSys">
+        <ModuleInfo>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/3DLaser-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/3DTOF-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABS_ENCODE.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/AbsEncoder-H8.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/absoluteValueEncode-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABZEncode-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/ABZEncode.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/CAMERA-MV_SC2000AM.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/codeReader-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/collisionBaro-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/collisionPize-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/comDo-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/gyro-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/GYRO-GENERAL.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/INCEncoder.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/incrementalEncode-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/infrared-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/laser-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MID_360.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01F-S1533.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01F.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-01H-N2725.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/LS-MR-LS-05H-N4017.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-06H-N3025(1-6A).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-06H-N3025N.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/MR-LS-07H-S2025(1-6C).json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/proximitySensor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/PT-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/pullWireEncode-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/PX-SN18-08BNAE-1.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/PX-SP12-04BNA.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/PZTB-WMN-A539-850-A0.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/stereo-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/STEREO-MV-EB435i.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/tempSensor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/TOF-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/ultrasonicSensor-Common.json" bCollect="False"/>
+          <Item ModulePath="/ModuleLibrary/ModuleEntity/SensorSys/Internal/weighSensor-Common.json" bCollect="False"/>
+        </ModuleInfo>
+      </Item>
+    </Module_Lib_Desc>
+  </Config>
+  <Config file="Module_MainSubType_Classify.json">
+    <Module_MainSub_Type_Desc>
+      <Item>
+        <MainTypeDesc MainUniqueKey="chassis" MainTypeName="底盘">
+          <SubTypeDesc>
+            <Item SubUniquekey="diffChassis" SubTypeName="差速底盘"/>
+            <Item SubUniquekey="steerChassis" SubTypeName="舵轮底盘"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="driveWheel" MainTypeName="驱动轮">
+          <SubTypeDesc>
+            <Item SubUniquekey="diffWheel" SubTypeName="差速轮"/>
+            <Item SubUniquekey="diffSteerWheel" SubTypeName="差速舵轮"/>
+            <Item SubUniquekey="weakTurnWheel" SubTypeName="可控转向轮"/>
+            <Item SubUniquekey="verticalSteerWheel" SubTypeName="立式舵轮"/>
+            <Item SubUniquekey="horizontalSteerWheel" SubTypeName="卧式舵轮"/>
+            <Item SubUniquekey="weakSteerWheel" SubTypeName="无动力差速轮"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="autobody" MainTypeName="车身">
+          <SubTypeDesc>
+            <Item SubUniquekey="carrier" SubTypeName="载台"/>
+            <Item SubUniquekey="covers" SubTypeName="覆盖件"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="actor" MainTypeName="执行器">
+          <SubTypeDesc>
+            <Item SubUniquekey="lift" SubTypeName="升降"/>
+            <Item SubUniquekey="rotate" SubTypeName="旋转"/>
+            <Item SubUniquekey="translation" SubTypeName="平移"/>
+            <Item SubUniquekey="linear" SubTypeName="线性"/>
+            <Item SubUniquekey="block" SubTypeName="挡块"/>
+            <Item SubUniquekey="clamp" SubTypeName="夹持"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="driver" MainTypeName="驱动">
+          <SubTypeDesc>
+            <Item SubUniquekey="motor" SubTypeName="电机"/>
+            <Item SubUniquekey="PMSMMotor" SubTypeName="永磁同步伺服电机"/>
+            <Item SubUniquekey="BLDCMotor" SubTypeName="直流无刷电机"/>
+            <Item SubUniquekey="BDCMotor" SubTypeName="直流有刷电机"/>
+            <Item SubUniquekey="servo" SubTypeName="伺服驱动"/>
+            <Item SubUniquekey="HYD" SubTypeName="液压驱动"/>
+            <Item SubUniquekey="subDriver" SubTypeName="驱动器"/>
+            <Item SubUniquekey="valveCtrl" SubTypeName="控制阀"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="mainCPU" MainTypeName="主控制器">
+          <SubTypeDesc>
+            <Item SubUniquekey="subMainCPU" SubTypeName="主控制器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="intergratedController" MainTypeName="集成控制器">
+          <SubTypeDesc>
+            <Item SubUniquekey="subIntergratedController" SubTypeName="集成控制器"/>
+            <Item SubUniquekey="safetyController" SubTypeName="安全控制器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="energyController" MainTypeName="能源控制器">
+          <SubTypeDesc>
+            <Item SubUniquekey="powerController" SubTypeName="电源控制器"/>
+            <Item SubUniquekey="prechargeController" SubTypeName="预充控制器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="sensorProcessor" MainTypeName="传感器处理器">
+          <SubTypeDesc>
+            <Item SubUniquekey="binocularCameraProcessor" SubTypeName="双目处理器"/>
+            <Item SubUniquekey="ultrasonicProcessor" SubTypeName="超声处理器"/>
+            <Item SubUniquekey="TOFProcessor" SubTypeName="TOF处理器"/>
+            <Item SubUniquekey="airPressureProcessor" SubTypeName="气压处理器"/>
+            <Item SubUniquekey="weighProcessor" SubTypeName="称重处理器"/>
+            <Item SubUniquekey="encoderProcessor" SubTypeName="编码器处理器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="extendedlnterface" MainTypeName="接口扩展模块">
+          <SubTypeDesc>
+            <Item SubUniquekey="IOModule" SubTypeName="IO模块"/>
+            <Item SubUniquekey="safetyIOModule" SubTypeName="安全IO模块"/>
+            <Item SubUniquekey="ethernetSwitch" SubTypeName="以太网交换机"/>
+            <Item SubUniquekey="interfaceModule" SubTypeName="接口模块"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="sensor" MainTypeName="传感">
+          <SubTypeDesc>
+            <Item SubUniquekey="laser" SubTypeName="激光"/>
+            <Item SubUniquekey="3DLaser" SubTypeName="3D激光"/>
+            <Item SubUniquekey="codeReader" SubTypeName="读码器"/>
+            <Item SubUniquekey="stereo" SubTypeName="双目"/>
+            <Item SubUniquekey="camera" SubTypeName="相机"/>
+            <Item SubUniquekey="infrared" SubTypeName="红外"/>
+            <Item SubUniquekey="TOF" SubTypeName="TOF"/>
+            <Item SubUniquekey="TOFCamera" SubTypeName="3DTOF"/>
+            <Item SubUniquekey="pullWireEncode" SubTypeName="拉线编码器"/>
+            <Item SubUniquekey="absoluteValueEncode" SubTypeName="绝对式编码器"/>
+            <Item SubUniquekey="incrementalEncode" SubTypeName="增量式编码器"/>
+            <Item SubUniquekey="ABZEncode" SubTypeName="磁栅编码器(ABZ)"/>
+            <Item SubUniquekey="gyro" SubTypeName="陀螺仪"/>
+            <Item SubUniquekey="collisionPize" SubTypeName="压电碰撞条"/>
+            <Item SubUniquekey="collisionBaro" SubTypeName="气动碰撞条"/>
+            <Item SubUniquekey="tempSensor" SubTypeName="温感传感器"/>
+            <Item SubUniquekey="ultrasonicSensor" SubTypeName="超声传感器"/>
+            <Item SubUniquekey="weighSensor" SubTypeName="称重传感器"/>
+            <Item SubUniquekey="proximitySensor" SubTypeName="接近传感器"/>
+            <Item SubUniquekey="PT" SubTypeName="光电开关"/>
+            <Item SubUniquekey="comDo" SubTypeName="通用DO器件"/>
+            <Item SubUniquekey="generalAnalogDistance" SubTypeName="通用模拟量测距传感器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="communication" MainTypeName="通信模块">
+          <SubTypeDesc>
+            <Item SubUniquekey="WIFI" SubTypeName="WIFI"/>
+            <Item SubUniquekey="bluetooth" SubTypeName="蓝牙"/>
+            <Item SubUniquekey="RFID" SubTypeName="RFID"/>
+            <Item SubUniquekey="PIO" SubTypeName="PIO"/>
+            <Item SubUniquekey="fifthGeneration" SubTypeName="5G"/>
+            <Item SubUniquekey="WAPI" SubTypeName="WAPI"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="battery" MainTypeName="电池模块">
+          <SubTypeDesc>
+            <Item SubUniquekey="subBattery" SubTypeName="电池"/>
+            <Item SubUniquekey="power" SubTypeName="电源"/>
+            <Item SubUniquekey="charge" SubTypeName="充电继电器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="light" MainTypeName="灯光">
+          <SubTypeDesc>
+            <Item SubUniquekey="lamp" SubTypeName="灯带"/>
+            <Item SubUniquekey="warningLight" SubTypeName="警示灯"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="button" MainTypeName="按钮">
+          <SubTypeDesc>
+            <Item SubUniquekey="subButton" SubTypeName="按钮"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="audio" MainTypeName="声音">
+          <SubTypeDesc>
+            <Item SubUniquekey="audioIn" SubTypeName="拾音器"/>
+            <Item SubUniquekey="audioOut" SubTypeName="扬声器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="screen" MainTypeName="显示屏">
+          <SubTypeDesc>
+            <Item SubUniquekey="subScreen" SubTypeName="显示屏"/>
+            <Item SubUniquekey="segDisplays" SubTypeName="数码管"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+      <Item>
+        <MainTypeDesc MainUniqueKey="handOperator" MainTypeName="手操器">
+          <SubTypeDesc>
+            <Item SubUniquekey="subHandOperator" SubTypeName="手操器"/>
+          </SubTypeDesc>
+        </MainTypeDesc>
+      </Item>
+    </Module_MainSub_Type_Desc>
+  </Config>
+  <Config file="Module_Map_Config.json">
+    <Module_Map_Config>
+      <Item source="intergratedController" target="intergratedType"/>
+      <Item source="sensorProcessor" target="processorType"/>
+      <Item source="energyController" target="energyType"/>
+      <Item source="extendedlnterface" target="InterfaceType"/>
+      <Item source="encode" target="encodeType"/>
+    </Module_Map_Config>
+  </Config>
+  <Config file="Module_Shape_Assign.json">
+    <Module_Shape_Assign>
+      <Item ModuleShapeEnum="0">
+        <ContainModuleSubType>
+          <Value>subButton</Value>
+        </ContainModuleSubType>
+      </Item>
+      <Item ModuleShapeEnum="1">
+        <ContainModuleSubType/>
+      </Item>
+      <Item ModuleShapeEnum="2">
+        <ContainModuleSubType/>
+      </Item>
+    </Module_Shape_Assign>
+  </Config>
+  <Config file="Module_Size_Assign.json">
+    <Module_Size_Assign>
+      <Item ModuleShapeEnum="0" ModuleLength="30" ModuleWidth="30" ModuleHeigth="30"/>
+      <Item ModuleShapeEnum="1" ModuleLength="100" ModuleWidth="100" ModuleHeigth="100"/>
+      <Item ModuleShapeEnum="2" ModuleLength="100" ModuleWidth="100" ModuleHeigth="100"/>
+    </Module_Size_Assign>
+  </Config>
+  <Config file="Module_Sys_Classify.json">
+    <Module_SubSys_Type_Desc>
+      <Item SysUniqueKey="ChassisSys" SubSysName="底盘"/>
+      <Item SysUniqueKey="AutobodySys" SubSysName="车身"/>
+      <Item SysUniqueKey="ActorSys" SubSysName="执行"/>
+      <Item SysUniqueKey="DriverSys" SubSysName="驱动"/>
+      <Item SysUniqueKey="ControlSys" SubSysName="控制"/>
+      <Item SysUniqueKey="SensorSys" SubSysName="传感"/>
+      <Item SysUniqueKey="CommunicateSys" SubSysName="通信"/>
+      <Item SysUniqueKey="EnergySys" SubSysName="能源"/>
+      <Item SysUniqueKey="InteractiveSys" SubSysName="交互"/>
+      <Item SysUniqueKey="UnclassifiedSys" SubSysName="未分类"/>
+    </Module_SubSys_Type_Desc>
+  </Config>
+  <Config file="Module_Sys_MainSubType_Classify.json">
+    <Module_SubSys_MainSub_Type_Desc>
+      <Item SysUniqueKey="ChassisSys" SubSysName="底盘">
+        <MainTypeDesc>
+          <Item MainUniqueKey="chassis" MainTypeName="底盘">
+            <SubTypeDesc>
+              <Item SubUniquekey="diffChassis" SubTypeName="差速底盘"/>
+              <Item SubUniquekey="steerChassis" SubTypeName="舵轮底盘"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="driveWheel" MainTypeName="驱动轮">
+            <SubTypeDesc>
+              <Item SubUniquekey="diffWheel" SubTypeName="差速轮"/>
+              <Item SubUniquekey="diffSteerWheel" SubTypeName="差速舵轮"/>
+              <Item SubUniquekey="weakTurnWheel" SubTypeName="可控转向轮"/>
+              <Item SubUniquekey="verticalSteerWheel" SubTypeName="立式舵轮"/>
+              <Item SubUniquekey="horizontalSteerWheel" SubTypeName="卧式舵轮"/>
+              <Item SubUniquekey="weakSteerWheel" SubTypeName="无动力差速轮"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="AutobodySys" SubSysName="车身">
+        <MainTypeDesc>
+          <Item MainUniqueKey="autobody" MainTypeName="车身">
+            <SubTypeDesc>
+              <Item SubUniquekey="carrier" SubTypeName="载台"/>
+              <Item SubUniquekey="covers" SubTypeName="覆盖件"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="ActorSys" SubSysName="执行">
+        <MainTypeDesc>
+          <Item MainUniqueKey="actor" MainTypeName="执行器">
+            <SubTypeDesc>
+              <Item SubUniquekey="lift" SubTypeName="升降"/>
+              <Item SubUniquekey="rotate" SubTypeName="旋转"/>
+              <Item SubUniquekey="translation" SubTypeName="平移"/>
+              <Item SubUniquekey="linear" SubTypeName="线性"/>
+              <Item SubUniquekey="block" SubTypeName="挡块"/>
+              <Item SubUniquekey="clamp" SubTypeName="夹持"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="DriverSys" SubSysName="驱动">
+        <MainTypeDesc>
+          <Item MainUniqueKey="driver" MainTypeName="驱动">
+            <SubTypeDesc>
+              <Item SubUniquekey="PMSMMotor" SubTypeName="永磁同步伺服电机"/>
+              <Item SubUniquekey="BLDCMotor" SubTypeName="直流无刷电机"/>
+              <Item SubUniquekey="BDCMotor" SubTypeName="直流有刷电机"/>
+              <Item SubUniquekey="subDriver" SubTypeName="驱动器"/>
+              <Item SubUniquekey="valveCtrl" SubTypeName="控制阀"/>
+              <Item SubUniquekey="servo" SubTypeName="伺服驱动"/>
+              <Item SubUniquekey="HYD" SubTypeName="液压驱动"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="ControlSys" SubSysName="控制">
+        <MainTypeDesc>
+          <Item MainUniqueKey="mainCPU" MainTypeName="主控制器">
+            <SubTypeDesc>
+              <Item SubUniquekey="subMainCPU" SubTypeName="主控制器"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="intergratedController" MainTypeName="集成控制器">
+            <SubTypeDesc>
+              <Item SubUniquekey="subIntergratedController" SubTypeName="集成控制器"/>
+              <Item SubUniquekey="safetyController" SubTypeName="安全控制器"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="energyController" MainTypeName="能源控制器">
+            <SubTypeDesc>
+              <Item SubUniquekey="powerController" SubTypeName="电源控制器"/>
+              <Item SubUniquekey="prechargeController" SubTypeName="预充控制器"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="sensorProcessor" MainTypeName="传感器处理器">
+            <SubTypeDesc>
+              <Item SubUniquekey="binocularCameraProcessor" SubTypeName="双目处理器"/>
+              <Item SubUniquekey="ultrasonicProcessor" SubTypeName="超声处理器"/>
+              <Item SubUniquekey="TOFProcessor" SubTypeName="TOF处理器"/>
+              <Item SubUniquekey="airPressureProcessor" SubTypeName="气压处理器"/>
+              <Item SubUniquekey="weighProcessor" SubTypeName="称重处理器"/>
+              <Item SubUniquekey="encoderProcessor" SubTypeName="编码器处理器"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="extendedlnterface" MainTypeName="接口扩展模块">
+            <SubTypeDesc>
+              <Item SubUniquekey="IOModule" SubTypeName="IO模块"/>
+              <Item SubUniquekey="safetyIOModule" SubTypeName="安全IO模块"/>
+              <Item SubUniquekey="ethernetSwitch" SubTypeName="以太网交换机"/>
+              <Item SubUniquekey="interfaceModule" SubTypeName="接口模块"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="SensorSys" SubSysName="传感">
+        <MainTypeDesc>
+          <Item MainUniqueKey="sensor" MainTypeName="传感">
+            <SubTypeDesc>
+              <Item SubUniquekey="laser" SubTypeName="激光"/>
+              <Item SubUniquekey="3DLaser" SubTypeName="3D激光"/>
+              <Item SubUniquekey="codeReader" SubTypeName="读码器"/>
+              <Item SubUniquekey="stereo" SubTypeName="双目"/>
+              <Item SubUniquekey="camera" SubTypeName="相机"/>
+              <Item SubUniquekey="infrared" SubTypeName="红外"/>
+              <Item SubUniquekey="TOF" SubTypeName="TOF"/>
+              <Item SubUniquekey="TOFCamera" SubTypeName="3DTOF"/>
+              <Item SubUniquekey="pullWireEncode" SubTypeName="拉线编码器"/>
+              <Item SubUniquekey="absoluteValueEncode" SubTypeName="绝对式编码器"/>
+              <Item SubUniquekey="incrementalEncode" SubTypeName="增量式编码器"/>
+              <Item SubUniquekey="ABZEncode" SubTypeName="磁栅编码器(ABZ)"/>
+              <Item SubUniquekey="gyro" SubTypeName="陀螺仪"/>
+              <Item SubUniquekey="collisionPize" SubTypeName="压电碰撞条"/>
+              <Item SubUniquekey="collisionBaro" SubTypeName="气动碰撞条"/>
+              <Item SubUniquekey="tempSensor" SubTypeName="温感传感器"/>
+              <Item SubUniquekey="ultrasonicSensor" SubTypeName="超声传感器"/>
+              <Item SubUniquekey="weighSensor" SubTypeName="称重传感器"/>
+              <Item SubUniquekey="proximitySensor" SubTypeName="接近传感器"/>
+              <Item SubUniquekey="PT" SubTypeName="光电开关"/>
+              <Item SubUniquekey="comDo" SubTypeName="通用DO器件"/>
+              <Item SubUniquekey="generalAnalogDistance" SubTypeName="通用模拟量测距传感器"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="CommunicateSys" SubSysName="通信">
+        <MainTypeDesc>
+          <Item MainUniqueKey="communication" MainTypeName="通信模块">
+            <SubTypeDesc>
+              <Item SubUniquekey="WIFI" SubTypeName="WIFI"/>
+              <Item SubUniquekey="bluetooth" SubTypeName="蓝牙"/>
+              <Item SubUniquekey="RFID" SubTypeName="RFID"/>
+              <Item SubUniquekey="PIO" SubTypeName="PIO"/>
+              <Item SubUniquekey="fifthGeneration" SubTypeName="5G"/>
+              <Item SubUniquekey="WAPI" SubTypeName="WAPI"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="EnergySys" SubSysName="能源">
+        <MainTypeDesc>
+          <Item MainUniqueKey="battery" MainTypeName="电池模块">
+            <SubTypeDesc>
+              <Item SubUniquekey="subBattery" SubTypeName="电池"/>
+              <Item SubUniquekey="power" SubTypeName="电源"/>
+              <Item SubUniquekey="charge" SubTypeName="充电继电器"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="InteractiveSys" SubSysName="交互">
+        <MainTypeDesc>
+          <Item MainUniqueKey="light" MainTypeName="灯光">
+            <SubTypeDesc>
+              <Item SubUniquekey="lamp" SubTypeName="灯带"/>
+              <Item SubUniquekey="warningLight" SubTypeName="警示灯"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="button" MainTypeName="按钮">
+            <SubTypeDesc>
+              <Item SubUniquekey="subButton" SubTypeName="按钮"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="audio" MainTypeName="声音">
+            <SubTypeDesc>
+              <Item SubUniquekey="audioIn" SubTypeName="拾音器"/>
+              <Item SubUniquekey="audioOut" SubTypeName="扬声器"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="screen" MainTypeName="显示屏">
+            <SubTypeDesc>
+              <Item SubUniquekey="subScreen" SubTypeName="显示屏"/>
+              <Item SubUniquekey="segDisplays" SubTypeName="数码管"/>
+            </SubTypeDesc>
+          </Item>
+          <Item MainUniqueKey="handOperator" MainTypeName="手操器">
+            <SubTypeDesc>
+              <Item SubUniquekey="subHandOperator" SubTypeName="手操器"/>
+            </SubTypeDesc>
+          </Item>
+        </MainTypeDesc>
+      </Item>
+      <Item SysUniqueKey="UnclassifiedSys" SubSysName="未分类">
+        <MainTypeDesc/>
+      </Item>
+    </Module_SubSys_MainSub_Type_Desc>
+  </Config>
+  <Config file="Module_Type_Struct.json">
+    <Module_Type_Struct>
+      <Value>carrier</Value>
+      <Value>covers</Value>
+      <Value>diffChassis</Value>
+      <Value>steerChassis</Value>
+      <Value>diffWheel</Value>
+      <Value>diffSteerWheel</Value>
+      <Value>verticalSteerWheel</Value>
+      <Value>unPowerDiffWheel</Value>
+      <Value>weakSteerWheel</Value>
+      <Value>horizontalSteerWheel</Value>
+      <Value>lift</Value>
+      <Value>rotate</Value>
+      <Value>translate</Value>
+      <Value>stretch</Value>
+      <Value>clamp</Value>
+      <Value>block</Value>
+      <Value>motor</Value>
+      <Value>PMSMMotor</Value>
+      <Value>BLDCMotor</Value>
+      <Value>BDCMotor</Value>
+      <Value>translation</Value>
+      <Value>linear</Value>
+    </Module_Type_Struct>
+  </Config>
+  <Config file="Module_Version_Manage.json">
+    <Module_Version_Manage>
+      <Item Modulekey="3DLaser" ModuleVer="V1.0"/>
+      <Item Modulekey="absoluteValueEncode" ModuleVer="V1.0"/>
+      <Item Modulekey="airPressureProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="audioIn" ModuleVer="V1.0"/>
+      <Item Modulekey="audioOut" ModuleVer="V1.0"/>
+      <Item Modulekey="binocularCameraProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="block" ModuleVer="V1.0"/>
+      <Item Modulekey="bluetooth" ModuleVer="V1.0"/>
+      <Item Modulekey="camera" ModuleVer="V1.0"/>
+      <Item Modulekey="carrier" ModuleVer="V1.0"/>
+      <Item Modulekey="charge" ModuleVer="V1.0"/>
+      <Item Modulekey="clamp" ModuleVer="V1.0"/>
+      <Item Modulekey="codeReader" ModuleVer="V1.0"/>
+      <Item Modulekey="collisionBaro" ModuleVer="V1.0"/>
+      <Item Modulekey="collisionMechanistic" ModuleVer="V1.0"/>
+      <Item Modulekey="collisionPize" ModuleVer="V1.0"/>
+      <Item Modulekey="comDo" ModuleVer="V1.0"/>
+      <Item Modulekey="covers" ModuleVer="V1.0"/>
+      <Item Modulekey="diffChassis" ModuleVer="V1.0"/>
+      <Item Modulekey="diffSteerWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="diffWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="encoderProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="ethernetSwitch" ModuleVer="V1.0"/>
+      <Item Modulekey="fifthGeneration" ModuleVer="V1.0"/>
+      <Item Modulekey="gyro" ModuleVer="V1.0"/>
+      <Item Modulekey="horizontalSteerWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="HYD" ModuleVer="V1.0"/>
+      <Item Modulekey="incrementalEncode" ModuleVer="V1.0"/>
+      <Item Modulekey="infrared" ModuleVer="V1.0"/>
+      <Item Modulekey="interfaceModule" ModuleVer="V1.0"/>
+      <Item Modulekey="IOModule" ModuleVer="V1.0"/>
+      <Item Modulekey="lamp" ModuleVer="V1.0"/>
+      <Item Modulekey="laser" ModuleVer="V1.0"/>
+      <Item Modulekey="lift" ModuleVer="V1.0"/>
+      <Item Modulekey="motor" ModuleVer="V1.0"/>
+      <Item Modulekey="PMSMMotor" ModuleVer="V1.0"/>
+      <Item Modulekey="BDCMotor" ModuleVer="V1.0"/>
+      <Item Modulekey="PIO" ModuleVer="V1.0"/>
+      <Item Modulekey="power" ModuleVer="V1.0"/>
+      <Item Modulekey="powerController" ModuleVer="V1.0"/>
+      <Item Modulekey="prechargeController" ModuleVer="V1.0"/>
+      <Item Modulekey="proximitySensor" ModuleVer="V1.0"/>
+      <Item Modulekey="PT" ModuleVer="V1.0"/>
+      <Item Modulekey="pullWireEncode" ModuleVer="V1.0"/>
+      <Item Modulekey="RFID" ModuleVer="V1.0"/>
+      <Item Modulekey="rotate" ModuleVer="V1.0"/>
+      <Item Modulekey="safetyController" ModuleVer="V1.0"/>
+      <Item Modulekey="safetyIOModule" ModuleVer="V1.0"/>
+      <Item Modulekey="segDisplays" ModuleVer="V1.0"/>
+      <Item Modulekey="servo" ModuleVer="V1.0"/>
+      <Item Modulekey="steerChassis" ModuleVer="V1.0"/>
+      <Item Modulekey="stereo" ModuleVer="V1.0"/>
+      <Item Modulekey="stretch" ModuleVer="V1.0"/>
+      <Item Modulekey="subBattery" ModuleVer="V1.0"/>
+      <Item Modulekey="subButton" ModuleVer="V1.0"/>
+      <Item Modulekey="subDriver" ModuleVer="V1.0"/>
+      <Item Modulekey="subIntergratedController" ModuleVer="V1.0"/>
+      <Item Modulekey="subMainCPU" ModuleVer="V1.0"/>
+      <Item Modulekey="subScreen" ModuleVer="V1.0"/>
+      <Item Modulekey="tempSensor" ModuleVer="V1.0"/>
+      <Item Modulekey="TOF" ModuleVer="V1.0"/>
+      <Item Modulekey="TOFCamera" ModuleVer="V1.0"/>
+      <Item Modulekey="TOFProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="translate" ModuleVer="V1.0"/>
+      <Item Modulekey="ultrasonicProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="ultrasonicSensor" ModuleVer="V1.0"/>
+      <Item Modulekey="unPowerDiffWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="verticalSteerWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="WAPI" ModuleVer="V1.0"/>
+      <Item Modulekey="warningLight" ModuleVer="V1.0"/>
+      <Item Modulekey="weakSteerWheel" ModuleVer="V1.0"/>
+      <Item Modulekey="weighProcessor" ModuleVer="V1.0"/>
+      <Item Modulekey="weighSensor" ModuleVer="V1.0"/>
+      <Item Modulekey="WIFI" ModuleVer="V1.0"/>
+    </Module_Version_Manage>
+  </Config>
+  <Config file="Motion_Mode_Assign.json">
+    <Actor_MotionMode_Assign>
+      <Item MotionModeKey="translate">
+        <ContainModuleSubType>
+          <Value>lift</Value>
+          <Value>translation</Value>
+          <Value>linear</Value>
+          <Value>clamp</Value>
+          <Value>block</Value>
+        </ContainModuleSubType>
+      </Item>
+      <Item MotionModeKey="rotate">
+        <ContainModuleSubType>
+          <Value>rotate</Value>
+        </ContainModuleSubType>
+      </Item>
+    </Actor_MotionMode_Assign>
+  </Config>
+  <Config file="QCodeEditorStyle.json">
+    <Item Elem="None" Type="SCI_SETCARETLINEBACK">
+      <Color b="40" g="40" r="40"/>
+    </Item>
+    <Item Elem="SCE_P_ATTRIBUTE" Type="SCI_STYLESETFORE">
+      <Color b="255" g="255" r="255"/>
+    </Item>
+    <Item Elem="SCE_P_FSTRING" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_FCHARACTER" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_FTRIPLE" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_FTRIPLEDOUBLE" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_DECORATOR" Type="SCI_STYLESETFORE">
+      <Color b="255" g="255" r="255"/>
+    </Item>
+    <Item Elem="SCE_P_NUMBER" Type="SCI_STYLESETFORE">
+      <Color b="167" g="206" r="155"/>
+    </Item>
+    <Item Elem="SCE_P_OPERATOR" Type="SCI_STYLESETFORE">
+      <Color b="220" g="220" r="220"/>
+    </Item>
+    <Item Elem="SCE_P_IDENTIFIER" Type="SCI_STYLESETFORE">
+      <Color b="254" g="220" r="156"/>
+    </Item>
+    <Item Elem="SCE_P_WORD" Type="SCI_STYLESETFORE">
+      <Color b="192" g="134" r="197"/>
+    </Item>
+    <Item Elem="SCE_P_WORD2" Type="SCI_STYLESETFORE">
+      <Color b="214" g="156" r="63"/>
+    </Item>
+    <Item Elem="SCE_P_STRING" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_CHARACTER" Type="SCI_STYLESETFORE">
+      <Color b="30" g="75" r="172"/>
+    </Item>
+    <Item Elem="SCE_P_COMMENTLINE" Type="SCI_STYLESETFORE">
+      <Color b="106" g="153" r="85"/>
+    </Item>
+    <Item Elem="SCE_P_COMMENTBLOCK" Type="SCI_STYLESETFORE">
+      <Color b="106" g="153" r="85"/>
+    </Item>
+    <Item Elem="SCE_P_TRIPLE" Type="SCI_STYLESETFORE">
+      <Color b="120" g="145" r="206"/>
+    </Item>
+    <Item Elem="SCE_P_TRIPLEDOUBLE" Type="SCI_STYLESETFORE">
+      <Color b="120" g="145" r="206"/>
+    </Item>
+    <Item Elem="SCE_P_CLASSNAME" Type="SCI_STYLESETFORE">
+      <Color b="144" g="201" r="78"/>
+    </Item>
+    <Item Elem="SCE_P_DEFNAME" Type="SCI_STYLESETFORE">
+      <Color b="170" g="220" r="220"/>
+    </Item>
+    <Item Elem="SC_ELEMENT_SELECTION_BACK" Type="SCI_SETELEMENTCOLOUR">
+      <Color b="201" g="141" r="82"/>
+    </Item>
+    <Item Elem="SC_ELEMENT_CARET" Type="SCI_SETELEMENTCOLOUR">
+      <Color b="255" g="255" r="255"/>
+    </Item>
+    <Item Elem="STYLE_DEFAULT" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_DEFAULT" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_COMMENTLINE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_COMMENTBLOCK" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_NUMBER" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_STRING" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_CHARACTER" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_WORD" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_TRIPLE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_TRIPLEDOUBLE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_CLASSNAME" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_DEFNAME" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_OPERATOR" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_IDENTIFIER" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_WORD2" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_DECORATOR" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_FSTRING" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_FCHARACTER" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_FTRIPLE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_FTRIPLEDOUBLE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="SCE_P_ATTRIBUTE" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+    <Item Elem="STYLE_ERROR" Type="SCI_STYLESETBACK">
+      <Color b="30" g="30" r="30"/>
+    </Item>
+  </Config>
+  <Config file="Vender_Type_Controller.json">
+    <Vender_Type_Controller>
+      <laser>
+        <Item VenderName="FREE-OPTICS">
+          <DeviceModel>
+            <Value>MR-LS-01F-S1533-BLACK</Value>
+            <Value>MR-LS-01F-S1533-MIDDLE</Value>
+            <Value>MR-LS-02F-N3010</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="HOKUYO">
+          <DeviceModel>
+            <Value>UST-20LX</Value>
+            <Value>UAM-05LP-T301</Value>
+            <Value>UST-05LA</Value>
+            <Value>UST-05LN</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="KELI">
+          <DeviceModel>
+            <Value>LS-2027DE/H03</Value>
+            <Value>KLMs-0327PE</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="LITRA">
+          <DeviceModel>
+            <Value>LTME-02A-JK-YQ1</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="JIUWU">
+          <DeviceModel>
+            <Value>M30E</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="ORD">
+          <DeviceModel>
+            <Value>MS200</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="PACECAT">
+          <DeviceModel>
+            <Value>LDS-50C-C30E</Value>
+            <Value>LDS-E300-E</Value>
+            <Value>LDS-E200-E-7</Value>
+            <Value>LDS-E300-E-6</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="PEPPERL-FUCHS">
+          <DeviceModel>
+            <Value>OMD25M-R2000-B23-V1V1D-SD-1L</Value>
+            <Value>OMD30M-R2000-B23-V1V1D-HD-1L</Value>
+            <Value>OMD30M-R2000-B23-V1V1D-1L</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="OLEI">
+          <DeviceModel>
+            <Value>LR-1F</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="LEISHEN">
+          <DeviceModel>
+            <Value>CX16</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="ROBOSENSE">
+          <DeviceModel>
+            <Value>RS-LS-RS-HELIOS16P</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="HINSON">
+          <DeviceModel>
+            <Value>LE-50821</Value>
+            <Value>LE-50821-2</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="SICK">
+          <DeviceModel>
+            <Value>TIM561-2050101</Value>
+            <Value>LMS111-10100</Value>
+            <Value>TIM510-9950000S01</Value>
+            <Value>TIM510-9950000S08</Value>
+            <Value>NANS3-AAAZ30AN1</Value>
+            <Value>TIM240-2050300</Value>
+            <Value>TIM473-2050106</Value>
+            <Value>MICS3-CBAZ90PZ1P01</Value>
+            <Value>PicoScan 150</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="VANJEE">
+          <DeviceModel>
+            <Value>WLR-716</Value>
+            <Value>WLR-716Mini</Value>
+            <Value>WLR-718H</Value>
+            <Value>WLR-719</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="WHST">
+          <DeviceModel>
+            <Value>STL1-3</Value>
+            <Value>MR-LS-01H-N2725</Value>
+            <Value>MR-LS-01H-N2725N</Value>
+            <Value>MR-LS-02H-S2725</Value>
+            <Value>MR-LS-04H-N2005</Value>
+            <Value>MR-LS-05H-N4017</Value>
+            <Value>MR-LS-06H-N3025</Value>
+            <Value>MR-LS-07H-S2025</Value>
+          </DeviceModel>
+        </Item>
+      </laser>
+      <Entry _original_key="3DLaser">
+        <Item VenderName="LIVOX">
+          <DeviceModel>
+            <Value>MID-360</Value>
+          </DeviceModel>
+        </Item>
+      </Entry>
+      <codeReader>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel>
+            <Value>MV_SC2000AM</Value>
+            <Value>MV_ID3016PM</Value>
+          </DeviceModel>
+        </Item>
+      </codeReader>
+      <stereo>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel>
+            <Value>REALSENS_STEREO</Value>
+            <Value>MV_EB435I</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="BERXELP">
+          <DeviceModel>
+            <Value>100R</Value>
+          </DeviceModel>
+        </Item>
+      </stereo>
+      <TOFCamera>
+        <Item VenderName="IFM">
+          <DeviceModel>
+            <Value>O3X_120</Value>
+          </DeviceModel>
+        </Item>
+      </TOFCamera>
+      <subBattery>
+        <Item VenderName="Goldencell">
+          <DeviceModel>
+            <Value>U-BAT-LFP-480024-F1-Aa-HJ</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="CBAK">
+          <DeviceModel>
+            <Value>U_MR_LFP_480024_F1_C_AA0</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="MT">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="JUYUN">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="LP">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="JBD">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="JINYUAN">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="BAIWEI">
+          <DeviceModel>
+            <Value>BATTERY</Value>
+          </DeviceModel>
+        </Item>
+      </subBattery>
+      <gyro>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel>
+            <Value>SPI_ON_BOARD</Value>
+            <Value>MV_89013_V13</Value>
+          </DeviceModel>
+        </Item>
+      </gyro>
+      <fifthGeneration>
+        <Item VenderName="LIERDA">
+          <DeviceModel>
+            <Value>5G</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="TROY">
+          <DeviceModel>
+            <Value>5G</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="HONGDIAN">
+          <DeviceModel>
+            <Value>5G</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="JENET">
+          <DeviceModel>
+            <Value>5G</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="OTHER">
+          <DeviceModel>
+            <Value>5G</Value>
+          </DeviceModel>
+        </Item>
+      </fifthGeneration>
+      <subScreen>
+        <Item VenderName="FLEXEM">
+          <DeviceModel/>
+        </Item>
+        <Item VenderName="KINCO">
+          <DeviceModel/>
+        </Item>
+        <Item VenderName="WEINVIEW">
+          <DeviceModel/>
+        </Item>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel/>
+        </Item>
+      </subScreen>
+      <audioOut>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel>
+            <Value>HOST_UCAN_CTRL</Value>
+            <Value>DSP_CTRL</Value>
+            <Value>HOST_CAN_CTRL</Value>
+          </DeviceModel>
+        </Item>
+      </audioOut>
+      <BDCMotor>
+        <Item VenderName="">
+          <DeviceModel>
+            <Value>28ZY38-2450-28JX51G620</Value>
+            <Value>28ZY47P-2450-28JN30K51G0620</Value>
+            <Value>BS28395246000-72KE3</Value>
+            <Value>M28GXR51L6D385-2450</Value>
+            <Value>DC3657A-G51A3</Value>
+            <Value>DC3177A-G200A1</Value>
+            <Value>SDC2847A24-PG51-AC408</Value>
+            <Value>OTHER</Value>
+          </DeviceModel>
+        </Item>
+      </BDCMotor>
+      <weighSensor>
+        <Item VenderName="LEAP">
+          <DeviceModel>
+            <Value>RS_PSW_LEAP5000_0.01</Value>
+          </DeviceModel>
+        </Item>
+        <Item VenderName="">
+          <DeviceModel>
+            <Value>WEIGH_SPOKE_PRESSURE</Value>
+            <Value>WEIGH_HYD_PRESSURE</Value>
+          </DeviceModel>
+        </Item>
+      </weighSensor>
+      <common>
+        <Item VenderName="HIKROBOT">
+          <DeviceModel>
+            <Value>HIKROBOT</Value>
+          </DeviceModel>
+        </Item>
+      </common>
+    </Vender_Type_Controller>
+  </Config>
+</ModuleConfigs>

@@ -1,53 +1,50 @@
-import xml.etree.ElementTree as ET
-import json
-import os
-import copy
-from pathlib import Path
-
-# --- Module Library Template Directory ---
-# Templates contain complete proto-compatible JSON for each hardware type
-_ADAPTER_DIR = Path(__file__).resolve().parent.parent  # src/backend
-MODULE_LIB_DIR = _ADAPTER_DIR / "resources" / "modules"
-
-_template_cache = {}
+from skills_v2.cmodel_encoder.encoder import get_registry
 
 def load_module_template(component_type: str):
     """Load a module library template by component type name.
-    Searches for exact match, then common-variant match in resources/modules/*.json.
-    Returns the first moduleComponets[0] dict (generalAttr, privateAttr, interfaceParams etc), or None.
+    Uses the XmlTemplateRegistry (Source of Truth) instead of scanning the filesystem.
+    Returns a unified dictionary containing generalAttr, privateAttr, and interfaceParams.
     """
-    if component_type in _template_cache:
-        return copy.deepcopy(_template_cache[component_type])
-    
-    if not MODULE_LIB_DIR.exists():
+    registry = get_registry()
+    node = registry.get_private_attr_spec(component_type)
+    if node is None:
         return None
     
-    # Try exact match first, then partial match
-    candidates = [
-        MODULE_LIB_DIR / f"{component_type}.json",
-    ]
+    spec_dict = registry._xml_node_to_dict(node)
     
-    # Fallback: search for a file that starts with the component type
-    if not any(c.exists() for c in candidates):
-        for f in MODULE_LIB_DIR.glob("*.json"):
-            if f.stem.lower() == component_type.lower():
-                candidates.insert(0, f)
-                break
+    # --- Structural Mapping to match the old Template JSON format ---
+    # The XML structure has <Module type="diffChassis"> <Group ...> ... </Module>
+    # The old JSON structure was: { "generalAttr": ..., "privateAttr": { "privateAttrs": [...] }, "interfaceParams": ... }
     
-    for path in candidates:
-        if path.exists():
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    data = json.load(f)
-                comps = data.get("moduleComponets", [])
-                if comps:
-                    _template_cache[component_type] = comps[0]
-                    return copy.deepcopy(comps[0])
-            except Exception:
-                pass
+    # 1. Private Attrs
+    private_attr_list = []
+    if "Group" in spec_dict:
+        groups = spec_dict["Group"]
+        if not isinstance(groups, list): groups = [groups]
+        for g in groups:
+            new_group = {
+                "groupKey": g.get("groupKey"),
+                "groupName": g.get("groupName", g.get("groupKey")),
+                "arrayBaseEle": g.get("Attribute", [])
+            }
+            if not isinstance(new_group["arrayBaseEle"], list):
+                new_group["arrayBaseEle"] = [new_group["arrayBaseEle"]]
+            private_attr_list.append(new_group)
+            
+    # 2. Interface Params (Fetch from InterfaceSpecs.xml if available)
+    # We fetch for the most likely interface types for this module if needed
+    # but for individual modules, the registry.get_interface_spec is more appropriate.
+    # However, to maintain the 'template' object structure:
+    interface_params = {"interfaceGroup": []}
     
-    _template_cache[component_type] = None
-    return None
+    # 3. Construct the 'tpl' object
+    tpl = {
+        "generalAttr": spec_dict.get("generalAttr", {}), # Fallback if present in XML
+        "privateAttr": {"privateAttrs": private_attr_list},
+        "interfaceParams": interface_params,
+        "interfaceAbility": spec_dict.get("interfaceAbility", [])
+    }
+    return tpl
 
 # --- 工业级标准元数据模板 ---
 CHASSIS_GENERAL_ATTR_TEMPLATE = {
@@ -119,8 +116,8 @@ CATEGORY_TO_TYPE_KEY = {
 CATEGORY_TO_SUBSYS = {
     'CHASSIS': 'ChassisSys',
     'DRIVEWHEEL': 'ChassisSys',
-    'DRIVER': 'MotionSys',
-    'MOTOR': 'MotionSys',
+    'DRIVER': 'DriverSys',
+    'MOTOR': 'DriverSys',
     'MAINCPU': 'ControlSys',
     'SENSOR': 'SensorSys',
     'BATTERY': 'PowerSys',
@@ -193,20 +190,16 @@ def map_component_to_cmodel(c):
         {"key": "parentNodeUuid", "type": "DATA_STRING", "stringValue": c.get("parentNodeUuid", "")}
     ]
 
-    priv_attrs_for_pb = []
-    if is_chassis:
-        # Move all private attributes to extend_params for bit-perfect alignment
-        for g in c.get("privateAttrs", []):
-            for e in g.get("elements", []):
-                extend_params.append(map_attribute_to_cmodel(e))
-    else:
-        # Normal components keep their private attributes in Tag 2
-        priv_attrs_for_pb = [
-            {
-                "key": g.get("key"), "desc": g.get("desc", ""),
-                "arrayBaseEle": [map_attribute_to_cmodel(e, False) for e in g.get("elements", [])]
-            } for g in c.get("privateAttrs", [])
-        ]
+    # [FIX RC-CHASSIS] ALL modules (including chassis) keep privateAttrs in Tag 2 (privateAttr).
+    # Previous code erroneously moved chassis privateAttrs into structParam.extendParams (Tag 5),
+    # destroying the group hierarchy (motionCenterAttr/chassisAttr/wheelsAttr) required by RoboDesigner.
+    # Standard ModelSet312.cmodel confirms: chassis has privateAttrs in Tag 2, extendParams is Tag 5 for mount pose only.
+    priv_attrs_for_pb = [
+        {
+            "key": g.get("key"), "desc": g.get("desc", ""),
+            "arrayBaseEle": [map_attribute_to_cmodel(e, False) for e in g.get("elements", [])]
+        } for g in c.get("privateAttrs", [])
+    ]
 
     # --- Step 2: Build interface data with template enrichment (D-1/D-2 fix) ---
     frontend_interfaces = c.get("interfaces", [])

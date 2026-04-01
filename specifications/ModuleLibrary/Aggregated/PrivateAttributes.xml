@@ -1,0 +1,1638 @@
+<?xml version="1.0" ?>
+<PrivateAttributes>
+  <Module type="3DLaser">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="waveLength" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="nm" desc="波长" boolHide="True"/>
+      <Attribute key="antiLight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="klux" desc="抗光干扰" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="scanAttr" desc="扫描属性">
+      <Attribute key="scanDirect" type="DATA_COMBOX" desc="扫描方向" boolMustfill="True" boolNoeditable="True" boolHide="True">
+        <comboType typeKey="SCAN_COUNTERCLOCKWISE" typeDesc="逆时针">
+          <typeGroups>
+            <Item key="SCAN_CLOCKWISE" desc="顺时针"/>
+            <Item key="SCAN_COUNTERCLOCKWISE" desc="逆时针"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="usageMode" type="DATA_COMBOX" desc="应用方式" boolNoeditable="True">
+        <comboType typeKey="PClOUD_LASER" typeDesc="轮廓激光">
+          <typeGroups>
+            <Item key="PClOUD_LASER" desc="轮廓激光">
+              <arrayCmobEle>
+                <Item key="resolution" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="角分辨率" boolHide="True"/>
+                <Item key="pointsRate" type="DATA_INT32" int32Value="0" int32Maxvalue="999999" int32Minvalue="0" unit="/s" desc="采样点" boolHide="True"/>
+                <Item key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="HZ" desc="帧率" boolHide="True"/>
+                <Item key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角理论起始角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角理论终止角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="-180" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角应用起始角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="actualScanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="180" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角应用终止角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角理论起始角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角理论终止角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="52" doubleMinvalue="-7" unit="°" desc="垂直视场角应用起始角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="52" doubleMinvalue="-7" unit="°" desc="垂直视场角应用终止角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="reflectThreshold" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="cd" desc="有效强度阈值" boolHide="True"/>
+                <Item key="scanDistence@10%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@10%" boolHide="True"/>
+                <Item key="scanDistence@90%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@90%" boolHide="True"/>
+                <Item key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="测量精度" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="AREA_LASER" desc="区域激光">
+              <arrayCmobEle>
+                <Item key="areaCnt" type="DATA_INT32" int32Value="0" int32Maxvalue="999" int32Minvalue="0" desc="区域方案数量"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="PCLOUD_AND_AREA_LASER" desc="轮廓加区域激光">
+              <arrayCmobEle>
+                <Item key="resolution" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="角分辨率" boolHide="True"/>
+                <Item key="pointsRate" type="DATA_INT32" int32Value="0" int32Maxvalue="999999" int32Minvalue="0" unit="/s" desc="采样点" boolHide="True"/>
+                <Item key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="HZ" desc="帧率" boolHide="True"/>
+                <Item key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角理论起始角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角理论终止角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角应用起始角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="actualScanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角应用终止角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角理论起始角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角理论终止角度" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="52" doubleMinvalue="-7" unit="°" desc="垂直视场角应用起始角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="actualScanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="52" doubleMinvalue="-7" unit="°" desc="垂直视场角应用终止角度" boolMustfill="True" boolBasic="True"/>
+                <Item key="reflectThreshold" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="cd" desc="有效强度阈值" boolHide="True"/>
+                <Item key="scanDistence@10%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@10%" boolHide="True"/>
+                <Item key="scanDistence@90%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@90%" boolHide="True"/>
+                <Item key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="测量精度" boolHide="True"/>
+                <Item key="areaCnt" type="DATA_INT32" int32Value="0" int32Maxvalue="999" int32Minvalue="0" desc="区域方案数量"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="ABZEncode">
+    <Group key="encodeAttr" desc="编码器属性">
+      <Attribute key="lineCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="线数" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="isInvert" type="DATA_BOOL" boolValue="False" desc="是否反向" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="BDCMotor">
+    <Group key="motorAttr" desc="电机属性">
+      <Attribute key="ENCType" type="DATA_COMBOX" desc="编码器类型" boolMustfill="True">
+        <comboType typeKey="ENCODER_NULL" typeDesc="无">
+          <typeGroups>
+            <Item key="ENCODER_NULL" desc="无"/>
+            <Item key="ENCODER_INC" desc="增量式编码器">
+              <arrayCmobEle>
+                <Item key="encoderLine" type="DATA_INT32" int32Value="100" int32Maxvalue="10000" int32Minvalue="1" desc="编码器线数"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="ratedSpeed" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" unit="RPM" desc="电机额定转速" boolMustfill="True"/>
+      <Attribute key="bHbrake" type="DATA_COMBOX" desc="是否带抱闸">
+        <comboType typeKey="WITH_HBRAKE" typeDesc="带抱闸">
+          <typeGroups>
+            <Item key="WITH_HBRAKE" desc="带抱闸">
+              <arrayCmobEle>
+                <Item key="brakeVolt" type="DATA_DOUBLE" doubleValue="12" doubleMaxvalue="48" doubleMinvalue="0" unit="V" desc="抱闸额定电压" boolMustfill="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="WITHOUT_HBRAKE" desc="不带抱闸"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="torque" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="N*m" desc="额定扭矩" boolMustfill="True"/>
+      <Attribute key="ratedCurr" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="28" doubleMinvalue="0" unit="A" desc="额定电流" boolMustfill="True"/>
+      <Attribute key="ratedVolt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="V" desc="额定电压" boolMustfill="True"/>
+      <Attribute key="powerVolt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="V" desc="供电电压" boolMustfill="True"/>
+      <Attribute key="bReverse" type="DATA_BOOL" boolValue="False" desc="是否反向" boolHide="True"/>
+      <Attribute key="posKp" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="位置环Kp值" boolMustfill="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="BLDCMotor">
+    <Group key="motorAttr" desc="电机属性">
+      <Attribute key="ENCType" type="DATA_COMBOX" desc="编码器类型" boolMustfill="True">
+        <comboType typeKey="ENCODER_NULL" typeDesc="无">
+          <typeGroups>
+            <Item key="ENCODER_NULL" desc="无"/>
+            <Item key="ENCODER_INC" desc="增量式编码器">
+              <arrayCmobEle>
+                <Item key="encoderLine" type="DATA_INT32" int32Value="100" int32Maxvalue="10000" int32Minvalue="1" desc="编码器线数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="20" int32Minvalue="1" desc="编码器单圈位数"/>
+                <Item key="multiTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="24" int32Minvalue="1" desc="编码器多圈位数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="20" int32Minvalue="1" desc="编码器单圈位数"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="initMode" type="DATA_COMBOX" desc="电机初始状态" boolHide="True">
+        <comboType typeKey="MODE_FREERUN" typeDesc="FREERUN模式">
+          <typeGroups>
+            <Item key="MODE_FREERUN" desc="FREERUN模式"/>
+            <Item key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="RPM" type="DATA_INT32" int32Value="0" int32Maxvalue="9999" int32Minvalue="0" unit="RPM" desc="电机额定转速" boolMustfill="True"/>
+      <Attribute key="bTemper" type="DATA_BOOL" boolValue="False" desc="是否支持电机温度获取" boolHide="True"/>
+      <Attribute key="bHbrake" type="DATA_BOOL" boolValue="False" desc="是否带抱闸"/>
+      <Attribute key="bReverse" type="DATA_BOOL" boolValue="False" desc="是否反向" boolHide="True"/>
+      <Attribute key="torque" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="N*m" desc="额定扭矩"/>
+      <Attribute key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比"/>
+      <Attribute key="ratedCurr" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="A" desc="额定电流"/>
+      <Attribute key="overCurrCoef" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="过流系数"/>
+      <Attribute key="defaultAcc" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="默认加速度" boolHide="True"/>
+      <Attribute key="defaultDec" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="默认减速度" boolHide="True"/>
+      <Attribute key="maxAcc" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="电机支持的最大加速度" boolHide="True"/>
+      <Attribute key="maxDec" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="电机支持的最大减速度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="HYD">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="inputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="输入电压" boolHide="True"/>
+      <Attribute key="inputCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="输入电流" boolHide="True"/>
+      <Attribute key="overloadCapacity" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="倍" desc="过载能力" boolMustfill="True" boolHide="True"/>
+      <Attribute key="overloadTime" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="S" desc="过载时长" boolMustfill="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="IOModule">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="bipolar" type="DATA_COMBOX" desc="双极晶体管类型">
+        <comboType typeKey="PNP" typeDesc="PNP">
+          <typeGroups>
+            <Item key="PNP" desc="PNP"/>
+            <Item key="NPN" desc="NPN"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="PIO">
+    <Group key="PIOAttr" desc="PIO属性">
+      <Attribute key="transType" type="DATA_STRING" stringValue="" desc="传输方式" boolHide="True"/>
+      <Attribute key="transCounts" type="DATA_INT32" int32Value="0" int32Maxvalue="99" int32Minvalue="0" desc="传输点数" boolHide="True"/>
+      <Attribute key="transDis" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="传输距离" boolHide="True"/>
+      <Attribute key="transTime" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="s" desc="传输时间" boolHide="True"/>
+      <Attribute key="modulateType" type="DATA_STRING" stringValue="" desc="调制方式" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="PMSMMotor">
+    <Group key="motorAttr" desc="电机属性">
+      <Attribute key="ENCType" type="DATA_COMBOX" desc="编码器类型" boolMustfill="True">
+        <comboType typeKey="ENCODER_NULL" typeDesc="无">
+          <typeGroups>
+            <Item key="ENCODER_NULL" desc="无"/>
+            <Item key="ENCODER_INC" desc="增量式编码器">
+              <arrayCmobEle>
+                <Item key="encoderLine" type="DATA_INT32" int32Value="100" int32Maxvalue="10000" int32Minvalue="1" desc="编码器线数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="ENCODER_MULTI_TURN_ABS" desc="多圈绝对式编码器">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="20" int32Minvalue="1" desc="编码器单圈位数"/>
+                <Item key="multiTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="24" int32Minvalue="1" desc="编码器多圈位数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="ENCODER_SGL_TURN_ABS" desc="单圈绝对式编码器">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="8" int32Maxvalue="20" int32Minvalue="1" desc="编码器单圈位数"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="initMode" type="DATA_COMBOX" desc="电机初始状态" boolHide="True">
+        <comboType typeKey="MODE_FREERUN" typeDesc="FREERUN模式">
+          <typeGroups>
+            <Item key="MODE_FREERUN" desc="FREERUN模式"/>
+            <Item key="MODE_VELOCITY_ZERO" desc="速度0模式"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="RPM" type="DATA_INT32" int32Value="0" int32Maxvalue="9999" int32Minvalue="0" unit="RPM" desc="电机额定转速" boolMustfill="True"/>
+      <Attribute key="bTemper" type="DATA_BOOL" boolValue="False" desc="是否支持电机温度获取" boolHide="True"/>
+      <Attribute key="bHbrake" type="DATA_BOOL" boolValue="False" desc="是否带抱闸"/>
+      <Attribute key="bReverse" type="DATA_BOOL" boolValue="False" desc="是否反向" boolHide="True"/>
+      <Attribute key="torque" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="N*m" desc="额定扭矩"/>
+      <Attribute key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比"/>
+      <Attribute key="ratedCurr" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="A" desc="额定电流"/>
+      <Attribute key="overCurrCoef" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="过流系数"/>
+      <Attribute key="defaultAcc" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="默认加速度" boolHide="True"/>
+      <Attribute key="defaultDec" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="默认减速度" boolHide="True"/>
+      <Attribute key="maxAcc" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="电机支持的最大加速度" boolHide="True"/>
+      <Attribute key="maxDec" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="r/s^2" desc="电机支持的最大减速度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="PT">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="antiLight" type="DATA_BOOL" boolValue="False" unit="klux" desc="抗光干扰" boolHide="True"/>
+      <Attribute key="blindZone" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="盲区" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="scanAttr" desc="扫描属性">
+      <Attribute key="pointAngleMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="指向角最小值" boolHide="True"/>
+      <Attribute key="pointAngleMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="指向角最大值" boolHide="True"/>
+      <Attribute key="detecteDistence" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="最大测量距离" boolHide="True"/>
+      <Attribute key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="mm" desc="测量精度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="RFID"/>
+  <Module type="TOF">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="resolutionH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率H" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="resolutionW" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率W" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="detectDistance" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="检测距离" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="TOFCamera">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="resolutionH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率H" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="resolutionW" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率W" boolMustfill="True" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="TOFProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="WAPI"/>
+  <Module type="WIFI">
+    <Group key="WIFIAttr" desc="WIFI属性">
+      <Attribute key="decodeType" type="DATA_STRING" stringValue="" desc="密码方式" boolHide="True"/>
+      <Attribute key="wirelessProto" type="DATA_STRING" stringValue="" desc="无线标准" boolHide="True"/>
+      <Attribute key="wirelessCertify" type="DATA_STRING" stringValue="" desc="无线认证" boolHide="True"/>
+      <Attribute key="workFreq" type="DATA_COMBOX" unit="HZ" desc="工作频率" boolHide="True">
+        <comboType typeKey="2.4G" typeDesc="2.4G">
+          <typeGroups>
+            <Item key="2.4G" desc="2.4G"/>
+            <Item key="5G" desc="5G"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="absoluteValueEncode">
+    <Group key="encodeAttr" desc="编码器属性">
+      <Attribute key="absEncodeType" type="DATA_COMBOX" desc="编码器类型">
+        <comboType typeKey="SSI_ENCODER" typeDesc="SSI编码器">
+          <typeGroups>
+            <Item key="SSI_ENCODER" desc="SSI编码器">
+              <arrayCmobEle>
+                <Item key="codeType" type="DATA_COMBOX" desc="编码格式">
+                  <comboType typeKey="ENCODER_GRAY_CODE" typeDesc="格雷码编码">
+                    <typeGroups>
+                      <Item key="ENCODER_GRAY_CODE" desc="格雷码编码"/>
+                      <Item key="ENCODER_BINARY_CODE" desc="二进制编码"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="MOTOR_ENCODER" desc="电机编码器"/>
+            <Item key="CANOPEN_ENCODER" desc="CANOPEN编码器"/>
+            <Item key="CAN_BRT_ENCODER" desc="CAN自定义(BRT)"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="resolutionMode" type="DATA_COMBOX" desc="分辨率模式">
+        <comboType typeKey="RES_BIT_MODE" typeDesc="位数模式">
+          <typeGroups>
+            <Item key="RES_BIT_MODE" desc="位数模式">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="单圈位数"/>
+                <Item key="mutiTurnBit" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="多圈位数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="RES_NUM_MODE" desc="数值模式">
+              <arrayCmobEle>
+                <Item key="sglTurnCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="单圈分辨率"/>
+                <Item key="mutiTurnCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="多圈圈数"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="isInvert" type="DATA_BOOL" boolValue="False" desc="是否反向" boolMustfill="True"/>
+    </Group>
+  </Module>
+  <Module type="airPressureProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="audioIn"/>
+  <Module type="audioOut"/>
+  <Module type="binocularCameraProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="block">
+    <Group key="blockAttr" desc="挡块属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolHide="True">
+        <comboType typeKey="block" typeDesc="挡块">
+          <typeGroups>
+            <Item key="block" desc="挡块"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolHide="True">
+        <comboType typeKey="BDC" typeDesc="BDC">
+          <typeGroups>
+            <Item key="BDC" desc="BDC"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" boolHide="True">
+        <comboType typeKey="linear" typeDesc="线性">
+          <typeGroups>
+            <Item key="linear" desc="线性"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="totalSpeedRatio" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="总速比" boolMustfill="False" boolHide="True"/>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="stroke" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="行程" boolMustfill="True" boolHide="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="bluetooth"/>
+  <Module type="camera">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="focalLength" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="焦距" boolHide="True"/>
+      <Attribute key="exposure" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="s" desc="曝光时长范围" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="pictureAttr" desc="图像属性">
+      <Attribute key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolHide="True"/>
+      <Attribute key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角终止" boolHide="True"/>
+      <Attribute key="resolutionH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率H" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="resolutionW" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率W" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="codecMode" type="DATA_STRING" stringValue="" desc="视频编码标准" boolHide="True"/>
+      <Attribute key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="fps" desc="最大帧率" boolHide="True"/>
+    </Group>
+    <Group key="resultAttr" desc="识别属性">
+      <Attribute key="resultType" type="DATA_STRING" stringValue="" desc="识别结果类型" boolHide="True"/>
+      <Attribute key="resultValue" type="DATA_STRING" stringValue="" desc="识别结果" boolHide="True"/>
+      <Attribute key="scanDistence" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="有效扫描距离" boolHide="True"/>
+      <Attribute key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="识别精度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="carrier">
+    <Group key="carrierAttr" desc="载台属性">
+      <Attribute key="ratedLoad" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="额定承载" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="carrierType" type="DATA_COMBOX" desc="载台类型" boolMustfill="True" boolBasic="True">
+        <comboType typeKey="countertop" typeDesc="台面">
+          <typeGroups>
+            <Item key="countertop" desc="台面"/>
+            <Item key="disconnectedLocation" desc="断开储位"/>
+            <Item key="flatLocation" desc="平板储位"/>
+            <Item key="fork" desc="货叉"/>
+            <Item key="combLocation" desc="梳齿储位"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="charge">
+    <Group key="chargerAttr" desc="充电属性">
+      <Attribute key="dir" type="DATA_COMBOX" desc="充电方向">
+        <comboType typeKey="AGV_CHARGE_RELAY_DIR_BACK" typeDesc="尾充">
+          <typeGroups>
+            <Item key="AGV_CHARGE_RELAY_DIR_BACK" desc="尾充"/>
+            <Item key="AGV_CHARGE_RELAY_DIR_LEFT" desc="左侧"/>
+            <Item key="AGV_CHARGE_RELAY_DIR_RIGHT" desc="右侧"/>
+            <Item key="AGV_CHARGE_RELAY_DIR_DOWN" desc="底部"/>
+            <Item key="AGV_CHARGE_RELAY_DIR_FRONT" desc="前部"/>
+            <Item key="AGV_CHARGE_RELAY_DIR_UP" desc="顶部"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="type" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="IOCharger" typeDesc="IO继电器">
+          <typeGroups>
+            <Item key="valveVoltCharger" desc="阀继电器">
+              <arrayCmobEle>
+                <Item key="ratedVolt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="V" desc="额定电压"/>
+                <Item key="ratedCur" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="A" desc="额定电流"/>
+                <Item key="powerVolt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="V" desc="供电电压"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="IOCharger" desc="IO继电器"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="voltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="工作电压" boolBasic="True" boolHide="True"/>
+      <Attribute key="contactResistance" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mΩ" desc="接触电阻" boolHide="True"/>
+      <Attribute key="insulationResistance" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mΩ" desc="绝缘电阻" boolHide="True"/>
+      <Attribute key="maxCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="最大工作电流" boolHide="True"/>
+      <Attribute key="maxTemperature" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="℃" desc="最高工作温度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="clamp">
+    <Group key="clampAttr" desc="夹持属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolHide="True">
+        <comboType typeKey="leadScrew" typeDesc="丝杠">
+          <typeGroups>
+            <Item key="leadScrew" desc="丝杠"/>
+            <Item key="belt" desc=" 皮带"/>
+            <Item key="gear" desc="齿轮齿条"/>
+            <Item key="rod" desc="连杆"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolHide="True">
+        <comboType typeKey="servo" typeDesc="伺服">
+          <typeGroups>
+            <Item key="servo" desc="伺服"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" boolHide="True">
+        <comboType typeKey="linear" typeDesc="线性">
+          <typeGroups>
+            <Item key="linear" desc="线性"/>
+            <Item key="nolinear" desc="非线性"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="lead" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="导程" boolMustfill="False" boolHide="True"/>
+      <Attribute key="totalSpeedRatio" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="总速比" boolMustfill="False" boolHide="True"/>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="stroke" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="行程" boolMustfill="True" boolHide="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="codeReader">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="focalLength" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="焦距" boolHide="True"/>
+      <Attribute key="exposure" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="s" desc="曝光时长范围" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="pictureAttr" desc="图像属性">
+      <Attribute key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolHide="True"/>
+      <Attribute key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角终止" boolHide="True"/>
+      <Attribute key="resolutionH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率H" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="resolutionW" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率W" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="codecMode" type="DATA_STRING" stringValue="" desc="视频编码标准" boolHide="True"/>
+      <Attribute key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="fps" desc="最大帧率" boolHide="True"/>
+    </Group>
+    <Group key="resultAttr" desc="识别属性">
+      <Attribute key="resultType" type="DATA_STRING" stringValue="" desc="识别结果类型" boolHide="True"/>
+      <Attribute key="resultValue" type="DATA_STRING" stringValue="" desc="识别结果" boolHide="True"/>
+      <Attribute key="scanDistence" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="有效扫描距离" boolHide="True"/>
+      <Attribute key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="识别精度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="collisionBaro">
+    <Group key="collisionAttr" desc="传感属性">
+      <Attribute key="thresholdBaro" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="220" doubleMinvalue="0" unit="Pa" desc="气压阈值" boolMustfill="True" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="collisionPize">
+    <Group key="collisionAttr" desc="传感属性">
+      <Attribute key="normalVol" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="220" doubleMinvalue="0" unit="V" desc="正常电压值" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="thresholdVol" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="220" doubleMinvalue="0" unit="V" desc="浮动阈值" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="triggerVol" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="220" doubleMinvalue="0" unit="V" desc="触发电压值" boolMustfill="True" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="comDo"/>
+  <Module type="covers"/>
+  <Module type="diffChassis">
+    <Group key="motionCenterAttr" desc="运动中心参数">
+      <Attribute key="headOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="tailOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="leftOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="rightOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="headOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="tailOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="leftOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="rightOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+    </Group>
+    <Group key="chassisAttr" desc="底盘参数">
+      <Attribute key="wheelsNum" type="DATA_INT32" int32Value="1" int32Maxvalue="99" int32Minvalue="1" unit="个" desc="轮组个数" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="maxAcceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Idle)" type="DATA_DOUBLE" doubleValue="500" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Idle)" type="DATA_DOUBLE" doubleValue="10" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Idle)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateDiameter" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="旋转直径" boolMustfill="True"/>
+      <Attribute key="maxClimbingAngle" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="90" doubleMinvalue="0" unit="°" desc="爬坡能力" boolHide="True"/>
+      <Attribute key="totalLoadWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="额定负载" boolMustfill="True" boolHide="True"/>
+      <Attribute key="selfWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="自重" boolHide="True"/>
+    </Group>
+    <Group key="wheelsAttr" desc="轮组属性">
+      <Attribute key="wheelSpace" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="轮间距" boolMustfill="True"/>
+      <Attribute key="locCoordNX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心X坐标" boolHide="True"/>
+      <Attribute key="locCoordNY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心Y坐标" boolHide="True"/>
+      <Attribute key="locCoordNZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心Z坐标" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="diffSteerWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="wheelSpace" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮间距" boolMustfill="True"/>
+      <Attribute key="angleLmtPos" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="175" doubleMinvalue="0" unit="°" desc="正限位角度"/>
+      <Attribute key="angleLmtNeg" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="-175" unit="°" desc="负限位角度"/>
+      <Attribute key="rotOmgLmt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="°/s" desc="转向能力(最大)" boolHide="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_ABS_EXTERNAL" typeDesc="绝对式编码器(外置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_INC_EXTERNAL" desc="增量编码器(外置)">
+              <arrayCmobEle>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/incrementalEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relatePosIo" type="DATA_FIXED_E" stringFix="" desc="正限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateNegIo" type="DATA_FIXED_E" stringFix="" desc="负限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateZeroIo" type="DATA_FIXED_E" stringFix="" desc="零位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="angleDeviationZero" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="零位角度偏差" boolHide="True"/>
+                <Item key="detectModeZero" type="DATA_COMBOX" desc="零位检测模式" boolHide="True">
+                  <comboType typeKey="DETECT_MODE_NONE" typeDesc="无">
+                    <typeGroups>
+                      <Item key="DETECT_MODE_NONE" desc="无"/>
+                      <Item key="ZERO_TRIG_MODE_POINT" desc="单点检测"/>
+                      <Item key="ZERO_TRIG_MODE_POS_AREA" desc="正向区域检测"/>
+                      <Item key="ZERO_TRIG_MODE_NEG_AREA" desc="负向区域检测"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_INC_ABZ" desc="磁栅编码器(ABZ)">
+              <arrayCmobEle>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/ABZEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="zToZeroAngle" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°" desc="Z信号距零位偏差" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)">
+              <arrayCmobEle>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/absoluteValueEncode</Value>
+                  </fixedSource>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+    <Group key="linkMotorAttr" desc="电机">
+      <Attribute key="relateLeftMotor" type="DATA_FIXED_E" stringFix="" desc="左行走电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+      <Attribute key="relateRightMotor" type="DATA_FIXED_E" stringFix="" desc="右行走电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="diffWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+    </Group>
+    <Group key="linkMotorAttr" desc="关联电机">
+      <Attribute key="relateMotor" type="DATA_FIXED_E" stringFix="" desc="行走电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="encoderProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="ethernetSwitch"/>
+  <Module type="fifthGeneration"/>
+  <Module type="generalAnalogDistance">
+    <Group key="analogDistanceAttr" desc="模拟量测距属性">
+      <Attribute key="minDist" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="最小检测范围"/>
+      <Attribute key="maxDist" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="最大检测范围"/>
+      <Attribute key="compType" type="DATA_COMBOX" desc="器件类型" boolHide="True">
+        <comboType typeKey="ANALOG_DISTANCE_LASER" typeDesc="测距激光">
+          <typeGroups>
+            <Item key="ANALOG_DISTANCE_LASER" desc="测距激光"/>
+            <Item key="ANALOG_ULTRASONIC" desc="超声"/>
+            <Item key="ANALOG_TOF" desc="TOF"/>
+            <Item key="ANALOG_PULLWIRE" desc="拉线传感器"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="accessType" type="DATA_COMBOX" desc="接入类型">
+        <comboType typeKey="VOLTAGE_ANALOG_SENSOR" typeDesc="电压型模拟量测距传感器">
+          <typeGroups>
+            <Item key="VOLTAGE_ANALOG_SENSOR" desc="电压型模拟量测距传感器">
+              <arrayCmobEle>
+                <Item key="voltR" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mV" desc="最大行程处对应的输出电压值"/>
+                <Item key="bReverse" type="DATA_BOOL" boolValue="False" desc="是否反向"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="RESISTANCE_ANALOG_SENSOR" desc="电阻型模拟量测距传感器">
+              <arrayCmobEle>
+                <Item key="resisR" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="Ω" desc="传感器在最大行程处对应的电阻值"/>
+                <Item key="bReverse" type="DATA_BOOL" boolValue="False" desc="是否反向"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="gyro">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="yawRangeMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="偏航角最小值" boolHide="True"/>
+      <Attribute key="yawRangeMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="偏航角最大值" boolHide="True"/>
+      <Attribute key="rollRangeMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="翻滚角最小值" boolHide="True"/>
+      <Attribute key="rollRangeMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="翻滚角最大值" boolHide="True"/>
+      <Attribute key="pitchRangeMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="俯仰角最小值" boolHide="True"/>
+      <Attribute key="pitchRangeMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="俯仰角最大值" boolHide="True"/>
+      <Attribute key="angularResolution" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="角度分辨率" boolHide="True"/>
+      <Attribute key="accelerationResolution" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s" desc="加速度分辩率" boolHide="True"/>
+      <Attribute key="accelerationAccuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s" desc="加速度精度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="horizontalSteerWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="angleLmtPos" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="175" doubleMinvalue="0" unit="°" desc="正限位角度"/>
+      <Attribute key="angleLmtNeg" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="-175" unit="°" desc="负限位角度"/>
+      <Attribute key="rotOmgLmt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="°/s" desc="转向能力(最大)" boolHide="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_ABS_INTERNAL" typeDesc="绝对式编码器(内置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+            <Item key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)">
+              <arrayCmobEle>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/absoluteValueEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)">
+              <arrayCmobEle>
+                <Item key="relatePosIo" type="DATA_FIXED_E" stringFix="" desc="正限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateNegIo" type="DATA_FIXED_E" stringFix="" desc="负限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateAngleZero" type="DATA_FIXED_E" stringFix="" desc="零位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="angleDeviationZero" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="零位角度偏差" boolHide="True"/>
+                <Item key="detectModeZero" type="DATA_COMBOX" desc="零位检测模式" boolHide="True">
+                  <comboType typeKey="DETECT_MODE_NONE" typeDesc="无">
+                    <typeGroups>
+                      <Item key="DETECT_MODE_NONE" desc="无"/>
+                      <Item key="ZERO_TRIG_MODE_POINT" desc="单点检测"/>
+                      <Item key="ZERO_TRIG_MODE_POS_AREA" desc="正向区域检测"/>
+                      <Item key="ZERO_TRIG_MODE_NEG_AREA" desc="负向区域检测"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+    <Group key="linkMotorAttr" desc="电机">
+      <Attribute key="relateRotMotor" type="DATA_FIXED_E" stringFix="" desc="转向电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+      <Attribute key="relateWalkMotor" type="DATA_FIXED_E" stringFix="" desc="行走电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="incrementalEncode">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="encodeAttr" desc="编码器属性">
+      <Attribute key="lineCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="线数" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="isInvert" type="DATA_BOOL" boolValue="False" desc="是否反向" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="infrared"/>
+  <Module type="interfaceModule">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="lamp">
+    <Group key="lightAttr" desc="灯光属性">
+      <Attribute key="lightType" type="DATA_COMBOX" desc="指示灯类型" boolHide="True">
+        <comboType typeKey="projectionLights" typeDesc="投影灯">
+          <typeGroups>
+            <Item key="projectionLights" desc="投影灯"/>
+            <Item key="towerLights" desc="塔灯"/>
+            <Item key="ballLights" desc="球灯"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="lightColor" type="DATA_COMBOX" desc="指示灯颜色" boolHide="True">
+        <comboType typeKey="blue" typeDesc="蓝色">
+          <typeGroups>
+            <Item key="blue" desc="蓝色"/>
+            <Item key="RYG" desc="三色"/>
+            <Item key="red&amp;bule" desc="红蓝(一字线型)"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="laser">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="waveLength" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="nm" desc="波长" boolHide="True"/>
+      <Attribute key="antiLight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="klux" desc="抗光干扰" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="scanAttr" desc="扫描属性">
+      <Attribute key="scanDirect" type="DATA_COMBOX" desc="扫描方向" boolMustfill="True" boolNoeditable="True" boolHide="True">
+        <comboType typeKey="SCAN_COUNTERCLOCKWISE" typeDesc="逆时针">
+          <typeGroups>
+            <Item key="SCAN_CLOCKWISE" desc="顺时针"/>
+            <Item key="SCAN_COUNTERCLOCKWISE" desc="逆时针"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="usageMode" type="DATA_COMBOX" desc="应用方式">
+        <comboType typeKey="PClOUD_LASER" typeDesc="轮廓激光">
+          <typeGroups>
+            <Item key="PClOUD_LASER" desc="轮廓激光">
+              <arrayCmobEle>
+                <Item key="resolution" type="DATA_DOUBLE" doubleValue="0.25" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="角分辨率" boolHide="True"/>
+                <Item key="pointsRate" type="DATA_INT32" int32Value="0" int32Maxvalue="999999" int32Minvalue="0" unit="/s" desc="采样点" boolHide="True"/>
+                <Item key="frameRate" type="DATA_DOUBLE" doubleValue="15" doubleMaxvalue="999" doubleMinvalue="0" unit="HZ" desc="帧率" boolHide="True"/>
+                <Item key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="应用水平视场角起始" boolMustfill="True" boolBasic="True"/>
+                <Item key="actualScanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="应用水平视场角终止" boolMustfill="True" boolBasic="True"/>
+                <Item key="reflectThreshold" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="cd" desc="有效强度阈值" boolHide="True"/>
+                <Item key="scanDistence@10%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@10%" boolHide="True"/>
+                <Item key="scanDistence@90%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@90%" boolHide="True"/>
+                <Item key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="测量精度" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="AREA_LASER" desc="区域激光">
+              <arrayCmobEle>
+                <Item key="areaCnt" type="DATA_INT32" int32Value="0" int32Maxvalue="999" int32Minvalue="0" desc="区域方案数量"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="PCLOUD_AND_AREA_LASER" desc="轮廓加区域激光">
+              <arrayCmobEle>
+                <Item key="resolution" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="0" unit="°" desc="角分辨率" boolHide="True"/>
+                <Item key="pointsRate" type="DATA_INT32" int32Value="0" int32Maxvalue="999999" int32Minvalue="0" unit="/s" desc="采样点" boolHide="True"/>
+                <Item key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="HZ" desc="帧率" boolHide="True"/>
+                <Item key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolMustfill="True" boolBasic="True" boolHide="True"/>
+                <Item key="actualScanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="应用水平视场角起始" boolMustfill="True" boolBasic="True"/>
+                <Item key="actualScanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="应用水平视场角终止" boolMustfill="True" boolBasic="True"/>
+                <Item key="reflectThreshold" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="cd" desc="有效强度阈值" boolHide="True"/>
+                <Item key="scanDistence@10%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@10%" boolHide="True"/>
+                <Item key="scanDistence@90%" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="m" desc="有效扫描距离@90%" boolHide="True"/>
+                <Item key="accuracy" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="mm" desc="测量精度" boolHide="True"/>
+                <Item key="areaCnt" type="DATA_INT32" int32Value="0" int32Maxvalue="999" int32Minvalue="0" desc="区域方案数量"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="lift">
+    <Group key="liftAttr" desc="举升属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolMustfill="True" boolBasic="True" boolHide="True">
+        <comboType typeKey="leadScrewLift" typeDesc="丝杠举升">
+          <typeGroups>
+            <Item key="leadScrewLift" desc="丝杠举升"/>
+            <Item key="chainLift" desc=" 链条提升"/>
+            <Item key="mastLift" desc="门架"/>
+            <Item key="connectingRodLift" desc="连杆举升"/>
+            <Item key="scissorLift" desc="剪叉举升"/>
+            <Item key="electricPushRodLift" desc="电推杆举升"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolMustfill="True" boolHide="True">
+        <comboType typeKey="HYD" typeDesc="液压">
+          <typeGroups>
+            <Item key="HYD" desc="液压"/>
+            <Item key="servo" desc="伺服"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" boolMustfill="True" boolHide="True">
+        <comboType typeKey="line" typeDesc="线性">
+          <typeGroups>
+            <Item key="line" desc="线性"/>
+            <Item key="unline" desc="非线性"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="sensorMode" type="DATA_COMBOX" desc="传感模式" boolMustfill="True" boolHide="True">
+        <comboType typeKey="zero" typeDesc="零位">
+          <typeGroups>
+            <Item key="zero" desc="零位"/>
+            <Item key="zeroPosSensor" desc="零位+到位传感器"/>
+            <Item key="encoder" desc="绝对编码器"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="lead" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="导程" boolMustfill="False"/>
+      <Attribute key="totalSpeedRatio" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="总速比" boolMustfill="False"/>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（空载）" boolMustfill="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="stroke" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="行程" boolMustfill="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="linear">
+    <Group key="linearAttr" desc="线性属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolHide="True">
+        <comboType typeKey="clampStretch" typeDesc="夹抱伸缩">
+          <typeGroups>
+            <Item key="clampStretch" desc="夹抱伸缩"/>
+            <Item key="liftStretch" desc=" 托举伸缩"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolHide="True">
+        <comboType typeKey="servo" typeDesc="伺服">
+          <typeGroups>
+            <Item key="servo" desc="伺服"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" boolHide="True">
+        <comboType typeKey="linear" typeDesc="线性">
+          <typeGroups>
+            <Item key="linear" desc="线性"/>
+            <Item key="nolinear" desc="非线性"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="sensorMode" type="DATA_COMBOX" desc="传感模式" boolHide="True">
+        <comboType typeKey="zeroSensor" typeDesc="零位">
+          <typeGroups>
+            <Item key="zeroSensor" desc="零位"/>
+            <Item key="zeroAndInPlaceSensor" desc="零位+到位传感器"/>
+            <Item key="pullWireSensor" desc="拉线传感器"/>
+            <Item key="ABSEncoderSensor" desc="绝对编码器"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="totalSpeedRatio" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="总速比" boolMustfill="False" boolHide="True"/>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="stroke" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="行程" boolMustfill="True" boolHide="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="power">
+    <Group key="powerAttr" desc="能源属性">
+      <Attribute key="outputCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="输出电流" boolBasic="True" boolHide="True"/>
+      <Attribute key="maxInputCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="最大输入电流(AC)" boolHide="True"/>
+      <Attribute key="minOutputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="最低输出电压" boolHide="True"/>
+      <Attribute key="maxOutputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="最高输出电压" boolHide="True"/>
+      <Attribute key="minInputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="最低输入电压" boolHide="True"/>
+      <Attribute key="maxInputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="最高输入电压" boolHide="True"/>
+      <Attribute key="efficiency" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="100" doubleMinvalue="0" unit="%" desc="效率" boolHide="True"/>
+      <Attribute key="factor" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" desc="功率因数" boolHide="True"/>
+      <Attribute key="workTempMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="-999" unit="℃" desc="最低工作温度" boolHide="True"/>
+      <Attribute key="workTempMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="-999" unit="℃" desc="最高工作温度" boolHide="True"/>
+      <Attribute key="relativeHumidity" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="-999" unit="%" desc="工作相对湿度" boolHide="True"/>
+      <Attribute key="firmwareVersion" type="DATA_STRING" stringValue="" desc="固件版本" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="powerController">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="prechargeController">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="proximitySensor"/>
+  <Module type="pullWireEncode">
+    <Group key="encodeAttr" desc="编码器属性">
+      <Attribute key="wheelCirc" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="轮周长"/>
+      <Attribute key="absEncodeType" type="DATA_COMBOX" desc="编码器类型">
+        <comboType typeKey="SSI_ENCODER" typeDesc="SSI编码器">
+          <typeGroups>
+            <Item key="SSI_ENCODER" desc="SSI编码器">
+              <arrayCmobEle>
+                <Item key="codeType" type="DATA_COMBOX" desc="编码格式">
+                  <comboType typeKey="ENCODER_GRAY_CODE" typeDesc="格雷码编码">
+                    <typeGroups>
+                      <Item key="ENCODER_GRAY_CODE" desc="格雷码编码"/>
+                      <Item key="ENCODER_BINARY_CODE" desc="二进制编码"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="MOTOR_ENCODER" desc="电机编码器"/>
+            <Item key="CANOPEN_ENCODER" desc="CANOPEN编码器"/>
+            <Item key="CAN_BRT_ENCODER" desc="CAN自定义(BRT)"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="resolutionMode" type="DATA_COMBOX" desc="分辨率模式">
+        <comboType typeKey="RES_BIT_MODE" typeDesc="位数模式">
+          <typeGroups>
+            <Item key="RES_BIT_MODE" desc="位数模式">
+              <arrayCmobEle>
+                <Item key="sglTurnBit" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="单圈位数"/>
+                <Item key="mutiTurnBit" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="多圈位数"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="RES_NUM_MODE" desc="数值模式">
+              <arrayCmobEle>
+                <Item key="sglTurnCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="单圈分辨率"/>
+                <Item key="mutiTurnCount" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" desc="多圈圈数"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="isInvert" type="DATA_BOOL" boolValue="False" desc="是否反向" boolMustfill="True"/>
+    </Group>
+  </Module>
+  <Module type="rotate">
+    <Group key="rotateAttr" desc="私有属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolMustfill="True" boolBasic="True" boolHide="True">
+        <comboType typeKey="wormGear" typeDesc="蜗轮蜗杆">
+          <typeGroups>
+            <Item key="wormGear" desc="蜗轮蜗杆"/>
+            <Item key="gearDrive" desc="齿轮传动"/>
+            <Item key="beltDrive" desc="带传动"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolMustfill="True" boolHide="True">
+        <comboType typeKey="servo" typeDesc="伺服">
+          <typeGroups>
+            <Item key="servo" desc="伺服"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="transmissionRelationship" type="DATA_COMBOX" desc="传动关系" boolMustfill="True" boolHide="True">
+        <comboType typeKey="line" typeDesc="线性">
+          <typeGroups>
+            <Item key="line" desc="线性"/>
+            <Item key="unline" desc="非线性"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="sensorMode" type="DATA_COMBOX" desc="传感模式" boolMustfill="True" boolHide="True">
+        <comboType typeKey="zero" typeDesc="零位">
+          <typeGroups>
+            <Item key="zero" desc="零位"/>
+            <Item key="zeroBlock" desc="零位+弧形检测块"/>
+            <Item key="encoder" desc="绝对式编码"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="lead" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="导程" boolMustfill="True" boolHide="True"/>
+      <Attribute key="totalSpeedRatio" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" desc="总速比" boolMustfill="True"/>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s" desc="最大角速度（空载）" boolMustfill="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s^2" desc="最大角加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s^2" desc="最大角减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s" desc="最大角速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s^2" desc="最大角加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="0" unit="°/s^2" desc="最大角减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="negativeLimit" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="负限位" boolMustfill="True" boolHide="True"/>
+      <Attribute key="positiveLimit" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="正限位" boolMustfill="True" boolHide="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="safetyController">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="safetyIOModule">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="segDisplays"/>
+  <Module type="servo">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="inputVoltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="输入电压" boolHide="True"/>
+      <Attribute key="inputCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="输入电流" boolHide="True"/>
+      <Attribute key="overloadCapacity" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="倍" desc="过载能力" boolMustfill="True" boolHide="True"/>
+      <Attribute key="overloadTime" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="S" desc="过载时长" boolMustfill="True" boolHide="True"/>
+      <Attribute key="servoType" type="DATA_COMBOX" desc="伺服类型">
+        <comboType typeKey="MOTOR_SERVO_TYPE_AUTO" typeDesc="自动获取">
+          <typeGroups>
+            <Item key="MOTOR_SERVO_TYPE_AUTO" desc="自动获取"/>
+            <Item key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="steerChassis">
+    <Group key="motionCenterAttr" desc="运动中心参数">
+      <Attribute key="headOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（空载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="tailOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（空载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="leftOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（空载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="rightOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（空载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="headOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（满载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="tailOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（满载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="leftOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（满载）" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="rightOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（满载）" boolMustfill="True" boolBasic="True"/>
+    </Group>
+    <Group key="chassisAttr" desc="底盘参数">
+      <Attribute key="wheelsNum" type="DATA_INT32" int32Value="1" int32Maxvalue="99" int32Minvalue="1" unit="个" desc="轮组个数" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="maxAcceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Idle)" type="DATA_DOUBLE" doubleValue="500" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Idle)" type="DATA_DOUBLE" doubleValue="10" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Idle)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateDiameter" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="旋转直径" boolMustfill="True"/>
+      <Attribute key="maxClimbingAngle" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="90" doubleMinvalue="0" unit="°" desc="爬坡能力" boolHide="True"/>
+      <Attribute key="totalLoadWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="额定负载" boolMustfill="True" boolHide="True"/>
+      <Attribute key="selfWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="自重" boolHide="True"/>
+    </Group>
+    <Group key="wheelsAttr" desc="轮组属性">
+      <Attribute key="locCoordNX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="X坐标" boolHide="True"/>
+      <Attribute key="locCoordNY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="Y坐标" boolHide="True"/>
+      <Attribute key="locCoordNZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="Z坐标" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="stereo">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="focalLength" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="焦距" boolHide="True"/>
+      <Attribute key="exposure" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="s" desc="曝光时长范围" boolHide="True"/>
+      <Attribute key="needCalib" type="DATA_BOOL" boolValue="False" desc="是否需要标定" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+    <Group key="pictureAttr" desc="图像属性">
+      <Attribute key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolHide="True"/>
+      <Attribute key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角终止" boolHide="True"/>
+      <Attribute key="resolutionH" type="DATA_COMBOX" desc="分辨率H" boolHide="True">
+        <comboType typeKey="360" typeDesc="360">
+          <typeGroups>
+            <Item key="360" desc="360">
+              <arrayCmobEle>
+                <Item key="resolutionW" type="DATA_COMBOX" desc="分辨率W" boolHide="True">
+                  <comboType typeKey="640" typeDesc="640">
+                    <typeGroups>
+                      <Item key="640" desc="640"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="720" desc="720">
+              <arrayCmobEle>
+                <Item key="resolutionW" type="DATA_COMBOX" desc="分辨率W" boolHide="True">
+                  <comboType typeKey="1280" typeDesc="1280">
+                    <typeGroups>
+                      <Item key="1280" desc="1280"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="codecMode" type="DATA_STRING" stringValue="" desc="视频编码标准" boolHide="True"/>
+      <Attribute key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="fps" desc="最大帧率" boolHide="True"/>
+    </Group>
+    <Group key="pointAttr" desc="深度相机属性">
+      <Attribute key="scanRangeHorizonStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeHorizonEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="水平视场角终止" boolHide="True"/>
+      <Attribute key="scanRangeVerticalStart" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角起始" boolHide="True"/>
+      <Attribute key="scanRangeVerticalEnd" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="180" doubleMinvalue="-180" unit="°" desc="垂直视场角终止" boolHide="True"/>
+      <Attribute key="resolutionH" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率H" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="resolutionW" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率W" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="codecMode" type="DATA_STRING" stringValue="" desc="视频编码标准" boolHide="True"/>
+      <Attribute key="frameRate" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="fps" desc="最大帧率" boolHide="True"/>
+    </Group>
+    <Group key="resultAttr" desc="识别属性">
+      <Attribute key="scanDistence" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="mm" desc="有效扫描距离" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="subBattery">
+    <Group key="batteryAttr" desc="电池属性">
+      <Attribute key="capacity" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="Ah" desc="电池容量" boolBasic="True" boolHide="True"/>
+      <Attribute key="stdChargeCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="标准充电电流" boolBasic="True" boolHide="True"/>
+      <Attribute key="maxChargeCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="最大充电电流" boolHide="True"/>
+      <Attribute key="stdDischargeCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="标准放电电流" boolBasic="True" boolHide="True"/>
+      <Attribute key="maxDischargeCurrent" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="最大放电电流" boolHide="True"/>
+      <Attribute key="voltage" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="额定电压" boolHide="True"/>
+      <Attribute key="maxPower" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="W" desc="最大功率" boolHide="True"/>
+      <Attribute key="resistance" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mΩ" desc="内阻" boolHide="True"/>
+      <Attribute key="cycleLife" type="DATA_INT32" int32Value="0" int32Maxvalue="99999" int32Minvalue="0" unit="次" desc="循环寿命" boolHide="True"/>
+      <Attribute key="chargeTempMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="135" doubleMinvalue="-50" unit="℃" desc="最低充电温度" boolHide="True"/>
+      <Attribute key="chargeTempMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="135" doubleMinvalue="-50" unit="℃" desc="最高充电温度" boolHide="True"/>
+      <Attribute key="dischargeTempMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="135" doubleMinvalue="-50" unit="℃" desc="最低放电温度" boolHide="True"/>
+      <Attribute key="dischargeTempMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="135" doubleMinvalue="-50" unit="℃" desc="最高放电温度" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="subButton">
+    <Group key="buttonAttr" desc="按钮属性">
+      <Attribute key="buttonType" type="DATA_COMBOX" desc="按钮类型" boolMustfill="True" boolBasic="True">
+        <comboType typeKey="BUTTON_COMP_NOT_EMCY" typeDesc="非急停按钮">
+          <typeGroups>
+            <Item key="BUTTON_COMP_NOT_EMCY" desc="非急停按钮"/>
+            <Item key="BUTTON_COMP_EMCY" desc="急停按钮"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="switchMode" type="DATA_COMBOX" desc="开关方式" boolMustfill="True" boolBasic="True" boolHide="True">
+        <comboType typeKey="knob" typeDesc="旋钮式">
+          <typeGroups>
+            <Item key="knob" desc="旋钮式"/>
+            <Item key="push" desc="按钮式"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="buttonLamp" type="DATA_COMBOX" desc="按钮灯控制">
+        <comboType typeKey="BUTTON_LAMP_NULL" typeDesc="无按钮灯">
+          <typeGroups>
+            <Item key="BUTTON_LAMP_NULL" desc="无按钮灯"/>
+            <Item key="SOFT_BUTTON_LAMP" desc="软件控制按钮灯"/>
+            <Item key="HARD_BUTTON_LAMP" desc="硬件控制按钮灯"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="selfLock" type="DATA_BOOL" boolValue="False" desc="是否自锁" boolMustfill="True" boolBasic="True"/>
+    </Group>
+  </Module>
+  <Module type="subDriver">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="inputVoltage" type="DATA_DOUBLE" doubleValue="24" doubleMaxvalue="999" doubleMinvalue="0" unit="V" desc="输入电压" boolHide="True"/>
+      <Attribute key="inputCurrent" type="DATA_DOUBLE" doubleValue="0.5" doubleMaxvalue="999" doubleMinvalue="0" unit="A" desc="输入电流" boolHide="True"/>
+      <Attribute key="overloadCapacity" type="DATA_DOUBLE" doubleValue="1.5" doubleMaxvalue="99" doubleMinvalue="0" unit="倍" desc="过载能力" boolMustfill="True" boolHide="True"/>
+      <Attribute key="overloadTime" type="DATA_DOUBLE" doubleValue="3" doubleMaxvalue="99" doubleMinvalue="0" unit="S" desc="过载时长" boolMustfill="True" boolHide="True"/>
+      <Attribute key="type" type="DATA_COMBOX" desc="驱动类型">
+        <comboType typeKey="MOTOR_SERVO_TYPE_AUTO" typeDesc="伺服自动获取">
+          <typeGroups>
+            <Item key="HYD_DRIVER_TYPE" desc="液压驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_AUTO" desc="伺服自动获取"/>
+            <Item key="MOTOR_SERVO_TYPE_STANDARD" desc="标准CANOPEN驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_ELMO" desc="ELMO驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_HIK" desc="自研驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_SENCHUANG" desc="森创驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_CURTIS" desc="柯蒂斯驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_ZAPI" desc="zapi驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_KINCO" desc="步科驱动器"/>
+            <Item key="MOTOR_SERVO_TYPE_SIHENG" desc="四宏(横)电机"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="subHandOperator"/>
+  <Module type="subIntergratedController">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="subMainCPU">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="isWithGyro" type="DATA_COMBOX" desc="是否有板载陀螺仪">
+        <comboType typeKey="no" typeDesc="否">
+          <typeGroups>
+            <Item key="no" desc="否"/>
+            <Item key="yes" desc="是">
+              <arrayCmobEle>
+                <Item key="GyroX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载陀螺仪X坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="GyroY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载陀螺仪Y坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="GyroZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载陀螺仪Z坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="GyroRoll" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载陀螺仪翻滚角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="GyroPitch" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载陀螺仪俯仰角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="GyroYaw" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载陀螺仪偏航角(相对主板)" boolMustfill="True" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="isWithUpCamera" type="DATA_COMBOX" desc="是否有板载上读码头">
+        <comboType typeKey="no" typeDesc="否">
+          <typeGroups>
+            <Item key="no" desc="否"/>
+            <Item key="yes" desc="是">
+              <arrayCmobEle>
+                <Item key="UpCameraX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载上读码头X坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="UpCameraY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载上读码头Y坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="UpCameraZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载上读码头Z坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="UpCameraRoll" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载上读码头翻滚角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="UpCameraPitch" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载上读码头俯仰角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="UpCameraYaw" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载上读码头偏航角(相对主板)" boolMustfill="True" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="isWithDownCamera" type="DATA_COMBOX" desc="是否有板载下读码头">
+        <comboType typeKey="no" typeDesc="否">
+          <typeGroups>
+            <Item key="no" desc="否"/>
+            <Item key="yes" desc="是">
+              <arrayCmobEle>
+                <Item key="DownCameraX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载下读码头X坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="DownCameraY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载下读码头Y坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="DownCameraZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="mm" desc="板载下读码头Z坐标(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="DownCameraRoll" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载下读码头翻滚角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="DownCameraPitch" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载下读码头俯仰角(相对主板)" boolMustfill="True" boolHide="True"/>
+                <Item key="DownCameraYaw" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="-99999" unit="°" desc="板载下读码头偏航角(相对主板)" boolMustfill="True" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="subScreen">
+    <Group key="screenAttr" desc="屏幕属性">
+      <Attribute key="resolutionWidth" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率宽" boolBasic="True" boolHide="True"/>
+      <Attribute key="resolutionHeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="PPI" desc="分辨率高" boolBasic="True" boolHide="True"/>
+      <Attribute key="screenSize" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99" doubleMinvalue="0" unit="inch" desc="屏幕尺寸" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="tempSensor">
+    <Group key="sensorAttr" desc="传感属性">
+      <Attribute key="threshold" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="0" unit="℃" desc="检测阈值"/>
+      <Attribute key="temperatureRangeMin" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="-999" unit="℃" desc="温度最小值"/>
+      <Attribute key="temperatureRangeMax" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="-999" unit="℃" desc="温度最大值"/>
+    </Group>
+  </Module>
+  <Module type="translation">
+    <Group key="translateAttr" desc="平移属性">
+      <Attribute key="structureForm" type="DATA_COMBOX" desc="结构形式" boolHide="True">
+        <comboType typeKey="electircRoll" typeDesc="电滚筒">
+          <typeGroups>
+            <Item key="electircRoll" desc="电滚筒"/>
+            <Item key="selfPowerRoll" desc="自带动力滚筒"/>
+            <Item key="externalPowerRoll" desc="外动力滚筒"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="drivingForm" type="DATA_COMBOX" desc="驱动形式" boolHide="True">
+        <comboType typeKey="servo" typeDesc="伺服">
+          <typeGroups>
+            <Item key="servo" desc="伺服"/>
+            <Item key="controlCard" desc="控制卡"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="maximumSpeed (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（空载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s" desc="最大线速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumAcceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线加速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="maximumDeceleration  (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm/s^2" desc="最大线减速度（满载）" boolMustfill="True" boolHide="True"/>
+      <Attribute key="load" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="额定负载" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="ultrasonicProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="ultrasonicSensor"/>
+  <Module type="valveCtrl">
+    <Group key="valveCtrlAttr" desc="控制阀属性">
+      <Attribute key="ctrlMode" type="DATA_COMBOX" desc="控制模式">
+        <comboType typeKey="VALVE_DRIVE_VOLT" typeDesc="开关控制型">
+          <typeGroups>
+            <Item key="VALVE_DRIVE_VOLT" desc="开关控制型"/>
+            <Item key="VALVE_DRIVE_DUTY" desc="占空比控制型"/>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+      <Attribute key="ratedVolt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="V" desc="额定电压" boolMustfill="True"/>
+      <Attribute key="ratedCur" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="A" desc="额定电流" boolMustfill="True"/>
+      <Attribute key="powerVlot" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="99999" doubleMinvalue="0" unit="V" desc="供电电压" boolMustfill="True"/>
+    </Group>
+  </Module>
+  <Module type="verticalSteerWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="angleLmtPos" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="175" doubleMinvalue="0" unit="°" desc="正限位角度"/>
+      <Attribute key="angleLmtNeg" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="-175" unit="°" desc="负限位角度"/>
+      <Attribute key="rotOmgLmt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="°/s" desc="转向能力(最大)" boolHide="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_ABS_INTERNAL" typeDesc="绝对式编码器(内置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+            <Item key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)">
+              <arrayCmobEle>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/absoluteValueEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)">
+              <arrayCmobEle>
+                <Item key="relatePosIo" type="DATA_FIXED_E" stringFix="" desc="正限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateNegIo" type="DATA_FIXED_E" stringFix="" desc="负限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateAngleZero" type="DATA_FIXED_E" stringFix="" desc="零位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="angleDeviationZero" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="零位角度偏差" boolHide="True"/>
+                <Item key="detectModeZero" type="DATA_COMBOX" desc="零位检测模式" boolHide="True">
+                  <comboType typeKey="DETECT_MODE_NONE" typeDesc="无">
+                    <typeGroups>
+                      <Item key="DETECT_MODE_NONE" desc="无"/>
+                      <Item key="ZERO_TRIG_MODE_POINT" desc="单点检测"/>
+                      <Item key="ZERO_TRIG_MODE_POS_AREA" desc="正向区域检测"/>
+                      <Item key="ZERO_TRIG_MODE_NEG_AREA" desc="负向区域检测"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+    <Group key="linkMotorAttr" desc="电机">
+      <Attribute key="relateRotMotor" type="DATA_FIXED_E" stringFix="" desc="转向电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+      <Attribute key="relateWalkMotor" type="DATA_FIXED_E" stringFix="" desc="行走电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="warningLight"/>
+  <Module type="weakSteerWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="wheelSpace" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮间距" boolMustfill="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_INC_EXTERNAL" typeDesc="增量编码器(外置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_INC_EXTERNAL" desc="增量编码器(外置)">
+              <arrayCmobEle>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/incrementalEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="otherRelatedEncode" type="DATA_FIXED_E" stringFix="" desc="二号关联编码器">
+                  <fixedSource>
+                    <Value>sensor/incrementalEncode</Value>
+                  </fixedSource>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="weakTurnWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="angleLmtPos" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="175" doubleMinvalue="0" unit="°" desc="正限位角度"/>
+      <Attribute key="angleLmtNeg" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="-175" unit="°" desc="负限位角度"/>
+      <Attribute key="rotOmgLmt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="°/s" desc="转向能力(最大)" boolHide="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_ABS_INTERNAL" typeDesc="绝对式编码器(内置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_ABS_INTERNAL" desc="绝对式编码器(内置)"/>
+            <Item key="GROUP_CALI_ABS_EXTERNAL" desc="绝对式编码器(外置)">
+              <arrayCmobEle>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/absoluteValueEncode</Value>
+                  </fixedSource>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_HELM_IO" desc="增量编码器(内置)">
+              <arrayCmobEle>
+                <Item key="relatePosIo" type="DATA_FIXED_E" stringFix="" desc="正限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateNegIo" type="DATA_FIXED_E" stringFix="" desc="负限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateAngleZero" type="DATA_FIXED_E" stringFix="" desc="零位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="angleDeviationZero" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="零位角度偏差" boolHide="True"/>
+                <Item key="detectModeZero" type="DATA_COMBOX" desc="零位检测模式" boolHide="True">
+                  <comboType typeKey="DETECT_MODE_NONE" typeDesc="无">
+                    <typeGroups>
+                      <Item key="DETECT_MODE_NONE" desc="无"/>
+                      <Item key="ZERO_TRIG_MODE_POINT" desc="单点检测"/>
+                      <Item key="ZERO_TRIG_MODE_POS_AREA" desc="正向区域检测"/>
+                      <Item key="ZERO_TRIG_MODE_NEG_AREA" desc="负向区域检测"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+          </typeGroups>
+        </comboType>
+      </Attribute>
+    </Group>
+    <Group key="linkMotorAttr" desc="电机">
+      <Attribute key="relateRotMotor" type="DATA_FIXED_E" stringFix="" desc="转向电机">
+        <fixedSource>
+          <Value>driver/PMSMMotor</Value>
+        </fixedSource>
+      </Attribute>
+    </Group>
+  </Module>
+  <Module type="weighProcessor">
+    <Group key="boardAttr" desc="控制板属性">
+      <Attribute key="chipPlatform" type="DATA_STRING" stringValue="" desc="芯片平台" boolMustfill="True" boolBasic="True" boolHide="True"/>
+      <Attribute key="softwareSpec" type="DATA_STRING" stringValue="" desc="软件规格" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="offsetAddress" type="DATA_STRING" stringValue="" desc="偏移地址拨码" boolMustfill="True" boolBasic="True" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="weighSensor"/>
+</PrivateAttributes>
