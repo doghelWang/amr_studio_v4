@@ -1,0 +1,30 @@
+theme: jekyll-theme-primer
+title: AMR Studio V4 Documentation
+description: "Official documentation and specifications for AMR Studio V4."
+
+# Exclude non-documentation directories to prevent Jekyll build errors
+# especially in node_modules where {{ syntax is common in libraries.
+exclude:
+  - "node_modules"
+  - "src/frontend/node_modules"
+  - "src/backend/node_modules"
+  - "venv"
+  - ".python-version"
+  - ".DS_Store"
+  - "tests"
+  - "scripts"
+  - "saved_projects"
+  - "CompDesc.json"
+  - "ModelSet312.json"
+  - "ModelSet312_UserProto.json"
+  - "start.bat"
+  - "start.py"
+  - "start_all.sh"
+  - "json-visual-diff.skill"
+  - "proj_1234.cmodel"
+  - "proj_1234_fixed.cmodel"
+  - "proj_1234_fixed_decoded.json"
+  - "verify_proj_1234"
+  - "backend"
+  - "frontend"
+  - "src"

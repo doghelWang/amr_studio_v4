@@ -201,11 +201,13 @@ func main() {
         },
     }
     // ToolParam must be wrapped in ToolUnionParam for the Tools slice
+    {% raw %}
     tools := []anthropic.ToolUnionParam{{OfTool: &addTool}}
 
     messages := []anthropic.MessageParam{
         anthropic.NewUserMessage(anthropic.NewTextBlock("What is 2 + 3?")),
     }
+    {% endraw %}
 
     for {
         resp, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
@@ -319,12 +321,14 @@ To disable: `anthropic.ThinkingConfigParamUnion{OfDisabled: &anthropic.ThinkingC
 
 `System` is `[]TextBlockParam`; set `CacheControl` on the last block to cache tools + system together. For placement patterns and the silent-invalidator audit checklist, see `shared/prompt-caching.md`.
 
+{% raw %}
 ```go
 System: []anthropic.TextBlockParam{{
     Text:         longSystemPrompt,
     CacheControl: anthropic.NewCacheControlEphemeralParam(), // default 5m TTL
 }},
 ```
+{% endraw %}
 
 For 1-hour TTL: `anthropic.CacheControlEphemeralParam{TTL: anthropic.CacheControlEphemeralTTLTTL1h}`. There's also a top-level `CacheControl` on `MessageNewParams` that auto-places on the last cacheable block.
 
@@ -389,6 +393,7 @@ Other `Beta.Files` methods: `List`, `Delete`, `Download`, `GetMetadata`.
 
 Use `Beta.Messages.New` with `ContextManagement` on `BetaMessageNewParams`. There is no `NewBetaAssistantMessage` — use `.ToParam()` for the round-trip.
 
+{% raw %}
 ```go
 params := anthropic.BetaMessageNewParams{
     Model:     anthropic.ModelClaudeOpus4_6,  // also supported: ModelClaudeSonnet4_6
@@ -401,6 +406,8 @@ params := anthropic.BetaMessageNewParams{
     },
     Messages: []anthropic.BetaMessageParam{ /* ... */ },
 }
+```
+{% endraw %}
 
 resp, err := client.Beta.Messages.New(ctx, params)
 if err != nil {
