@@ -10,7 +10,7 @@
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89",
+      "stringValue": "247ab1e1-4538-48ca-90db-0e006b96f437",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -89,7 +89,7 @@
       {
         "key": "locCoordY",
         "type": "DATA_DOUBLE",
-        "doubleValue": 400.0
+        "doubleValue": 0.0
       },
       {
         "key": "locCoordZ",

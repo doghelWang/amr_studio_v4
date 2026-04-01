@@ -3,14 +3,14 @@
     "moduleName": {
       "key": "module_name",
       "type": "DATA_STRING",
-      "stringValue": "button-Common",
+      "stringValue": "emc",
       "desc": "模块名称",
       "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "99d7d228-4018-4bab-955e-e453631de646",
+      "stringValue": "93d257b8-c8d8-45bd-b5db-32cc7674baa9",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -138,7 +138,7 @@
             "boolMustfill": true,
             "boolNoeditable": false,
             "fixedSource": [],
-            "boolValue": false
+            "boolValue": true
           }
         ]
       }
@@ -158,8 +158,10 @@
         "key": "DO_1",
         "type": "DO",
         "desc": "DO_1",
-        "interfaceUuid": "65b25d7b-39af-40d7-85d5-81b1e5f5a444",
-        "linkedInterfaceUuid": [],
+        "interfaceUuid": "aa66d14d-ebb4-4473-a4c7-1dfd68f34683",
+        "linkedInterfaceUuid": [
+          "75e8b215-680c-448b-8866-b10379c8ee28"
+        ],
         "interfaceAttrs": {
           "interfaceParamsArray": [
             {

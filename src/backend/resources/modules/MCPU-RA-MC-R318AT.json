@@ -1,511 +1,511 @@
 {
-    "moduleGroupName": "MCPU-RA-MC-R318AT",
-    "moduleComponets": [
-        {
-            "generalAttr": {
-                "moduleName": {
-                    "key": "module_name",
-                    "type": "DATA_STRING",
-                    "stringValue": "MCPU-RA-MC-R318AT",
-                    "desc": "模块名称",
-                    "boolParse": true
-                },
-                "moduleDesc": {
-                    "key": "module_desc",
-                    "type": "DATA_STRING",
-                    "stringValue": "四代主控，Q3(Q7)款/R318+R129，上下镜头，上镜头300mm物距，CAN不合并，无终端",
-                    "desc": "模块描述",
-                    "boolParse": true
-                },
-                "moduleUuid": {
-                    "key": "module_uuid",
-                    "type": "DATA_STRING",
-                    "desc": "模块Uuid",
-                    "boolParse": true,
-                    "boolHide": true
-                },
-                "versionInfo": {
-                    "key": "version_info",
-                    "type": "DATA_STRING",
-                    "stringValue": "V1.0/2025-08-04 20:59:32.372",
-                    "desc": "版本信息",
-                    "boolParse": true,
-                    "boolNoeditable": true
-                },
-                "module3dIcon": {
-                    "key": "module_3d_icon",
-                    "type": "DATA_STRING",
-                    "stringValue": "D:/内置库/ReleaseTest20241127/Release/ModuleLibrary/3dModelRes",
-                    "desc": "3D模型",
-                    "boolParse": true
-                },
-                "subSysType": {
-                    "key": "sub_sys_type",
-                    "type": "DATA_COMBOX",
-                    "comboType": {
-                        "typeKey": "ControlSys"
+  "moduleGroupName": "MCPU-RA-MC-R318AT",
+  "moduleComponets": [
+    {
+      "generalAttr": {
+        "moduleName": {
+          "key": "module_name",
+          "type": "DATA_STRING",
+          "stringValue": "MCPU-RA-MC-R318AT",
+          "desc": "模块名称",
+          "boolParse": true
+        },
+        "moduleDesc": {
+          "key": "module_desc",
+          "type": "DATA_STRING",
+          "stringValue": "四代主控，Q3(Q7)款/R318+R129，上下镜头，上镜头300mm物距，CAN不合并，无终端",
+          "desc": "模块描述",
+          "boolParse": true
+        },
+        "moduleUuid": {
+          "key": "module_uuid",
+          "type": "DATA_STRING",
+          "desc": "模块Uuid",
+          "boolParse": true,
+          "boolHide": true
+        },
+        "versionInfo": {
+          "key": "version_info",
+          "type": "DATA_STRING",
+          "stringValue": "V1.0/2025-08-04 20:59:32.372",
+          "desc": "版本信息",
+          "boolParse": true,
+          "boolNoeditable": true
+        },
+        "module3dIcon": {
+          "key": "module_3d_icon",
+          "type": "DATA_STRING",
+          "stringValue": "D:/内置库/ReleaseTest20241127/Release/ModuleLibrary/3dModelRes",
+          "desc": "3D模型",
+          "boolParse": true
+        },
+        "subSysType": {
+          "key": "sub_sys_type",
+          "type": "DATA_COMBOX",
+          "comboType": {
+            "typeKey": "ControlSys"
+          },
+          "desc": "子系统",
+          "boolParse": true
+        },
+        "mainModuleType": {
+          "key": "main_module_type",
+          "type": "DATA_COMBOX",
+          "comboType": {
+            "typeKey": "mainCPU",
+            "typeDesc": "\u0005"
+          },
+          "desc": "主类型",
+          "boolParse": true
+        },
+        "subModuleType": {
+          "key": "sub_module_type",
+          "type": "DATA_COMBOX",
+          "comboType": {
+            "typeKey": "subMainCPU"
+          },
+          "desc": "子类型",
+          "boolParse": true
+        },
+        "venderName": {
+          "key": "vender_name",
+          "type": "DATA_COMBOX",
+          "comboType": {
+            "typeKey": "HIKROBOT"
+          },
+          "desc": "供应商",
+          "boolParse": true
+        },
+        "moduleDscType": {
+          "key": "module_dsc_type",
+          "type": "DATA_COMBOX",
+          "comboType": {
+            "typeKey": "HIKROBOT"
+          },
+          "desc": "设备型号",
+          "boolParse": true
+        },
+        "moduleIcon": {
+          "key": "module_icon",
+          "type": "DATA_STRING",
+          "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+          "desc": "模块图片",
+          "boolParse": true
+        },
+        "moduleShape": {
+          "shapeType": "ENUM_BOX",
+          "box": {
+            "sizeLen": 120,
+            "sizeWidth": 100,
+            "sizeHeight": 40
+          }
+        },
+        "extendParams": [
+          {
+            "key": "material_code",
+            "type": "DATA_STRING",
+            "desc": "物料代码",
+            "boolParse": true,
+            "boolHide": true
+          },
+          {
+            "key": "module_srcname",
+            "type": "DATA_STRING",
+            "stringValue": "MCPU-RA-MC-R318AT",
+            "desc": "模块原始名称",
+            "boolParse": true,
+            "boolHide": true
+          },
+          {
+            "key": "module_alias",
+            "type": "DATA_STRING",
+            "desc": "模块别名",
+            "boolParse": true,
+            "boolHide": true
+          }
+        ]
+      },
+      "privateAttr": {
+        "privateAttrs": [
+          {
+            "key": "boardAttr",
+            "desc": "控制板属性",
+            "arrayBaseEle": [
+              {
+                "key": "chipPlatform",
+                "type": "DATA_STRING",
+                "stringValue": "R318",
+                "desc": "芯片平台",
+                "boolHide": true,
+                "boolMustfill": true,
+                "boolBasic": true
+              },
+              {
+                "key": "softwareSpec",
+                "type": "DATA_STRING",
+                "stringValue": "RA-MC-R318AT",
+                "desc": "软件规格",
+                "boolMustfill": true,
+                "boolBasic": true
+              },
+              {
+                "key": "isWithGyro",
+                "type": "DATA_COMBOX",
+                "comboType": {
+                  "typeKey": "yes",
+                  "typeDesc": "是",
+                  "typeGroups": [
+                    {
+                      "key": "no",
+                      "desc": "否"
                     },
-                    "desc": "子系统",
-                    "boolParse": true
-                },
-                "mainModuleType": {
-                    "key": "main_module_type",
-                    "type": "DATA_COMBOX",
-                    "comboType": {
-                        "typeKey": "mainCPU",
-                        "typeDesc": "\u0005"
-                    },
-                    "desc": "主类型",
-                    "boolParse": true
-                },
-                "subModuleType": {
-                    "key": "sub_module_type",
-                    "type": "DATA_COMBOX",
-                    "comboType": {
-                        "typeKey": "subMainCPU"
-                    },
-                    "desc": "子类型",
-                    "boolParse": true
-                },
-                "venderName": {
-                    "key": "vender_name",
-                    "type": "DATA_COMBOX",
-                    "comboType": {
-                        "typeKey": "HIKROBOT"
-                    },
-                    "desc": "供应商",
-                    "boolParse": true
-                },
-                "moduleDscType": {
-                    "key": "module_dsc_type",
-                    "type": "DATA_COMBOX",
-                    "comboType": {
-                        "typeKey": "HIKROBOT"
-                    },
-                    "desc": "设备型号",
-                    "boolParse": true
-                },
-                "moduleIcon": {
-                    "key": "module_icon",
-                    "type": "DATA_STRING",
-                    "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
-                    "desc": "模块图片",
-                    "boolParse": true
-                },
-                "moduleShape": {
-                    "shapeType": "ENUM_BOX",
-                    "box": {
-                        "sizeLen": 120,
-                        "sizeWidth": 100,
-                        "sizeHeight": 40
+                    {
+                      "key": "yes",
+                      "desc": "是",
+                      "arrayCmobEle": [
+                        {
+                          "key": "GyroX",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载陀螺仪X坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "GyroY",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载陀螺仪Y坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "GyroZ",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载陀螺仪Z坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "GyroRoll",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载陀螺仪翻滚角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "GyroPitch",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载陀螺仪俯仰角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "GyroYaw",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载陀螺仪偏航角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        }
+                      ]
                     }
+                  ]
                 },
-                "extendParams": [
+                "desc": "是否有板载陀螺仪"
+              },
+              {
+                "key": "isWithUpCamera",
+                "type": "DATA_COMBOX",
+                "comboType": {
+                  "typeKey": "yes",
+                  "typeDesc": "是",
+                  "typeGroups": [
                     {
-                        "key": "material_code",
-                        "type": "DATA_STRING",
-                        "desc": "物料代码",
-                        "boolParse": true,
-                        "boolHide": true
+                      "key": "no",
+                      "desc": "否"
                     },
                     {
-                        "key": "module_srcname",
-                        "type": "DATA_STRING",
-                        "stringValue": "MCPU-RA-MC-R318AT",
-                        "desc": "模块原始名称",
-                        "boolParse": true,
-                        "boolHide": true
-                    },
-                    {
-                        "key": "module_alias",
-                        "type": "DATA_STRING",
-                        "desc": "模块别名",
-                        "boolParse": true,
-                        "boolHide": true
+                      "key": "yes",
+                      "desc": "是",
+                      "arrayCmobEle": [
+                        {
+                          "key": "UpCameraX",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载上读码头X坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "UpCameraY",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载上读码头Y坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "UpCameraZ",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载上读码头Z坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "UpCameraRoll",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载上读码头翻滚角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "UpCameraPitch",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载上读码头俯仰角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "UpCameraYaw",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载上读码头偏航角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        }
+                      ]
                     }
-                ]
-            },
-            "privateAttr": {
-                "privateAttrs": [
+                  ]
+                },
+                "desc": "是否有板载上读码头"
+              },
+              {
+                "key": "isWithDownCamera",
+                "type": "DATA_COMBOX",
+                "comboType": {
+                  "typeKey": "yes",
+                  "typeDesc": "是",
+                  "typeGroups": [
                     {
-                        "key": "boardAttr",
-                        "desc": "控制板属性",
-                        "arrayBaseEle": [
-                            {
-                                "key": "chipPlatform",
-                                "type": "DATA_STRING",
-                                "stringValue": "R318",
-                                "desc": "芯片平台",
-                                "boolHide": true,
-                                "boolMustfill": true,
-                                "boolBasic": true
-                            },
-                            {
-                                "key": "softwareSpec",
-                                "type": "DATA_STRING",
-                                "stringValue": "RA-MC-R318AT",
-                                "desc": "软件规格",
-                                "boolMustfill": true,
-                                "boolBasic": true
-                            },
-                            {
-                                "key": "isWithGyro",
-                                "type": "DATA_COMBOX",
-                                "comboType": {
-                                    "typeKey": "yes",
-                                    "typeDesc": "是",
-                                    "typeGroups": [
-                                        {
-                                            "key": "no",
-                                            "desc": "否"
-                                        },
-                                        {
-                                            "key": "yes",
-                                            "desc": "是",
-                                            "arrayCmobEle": [
-                                                {
-                                                    "key": "GyroX",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载陀螺仪X坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "GyroY",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载陀螺仪Y坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "GyroZ",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载陀螺仪Z坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "GyroRoll",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载陀螺仪翻滚角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "GyroPitch",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载陀螺仪俯仰角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "GyroYaw",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载陀螺仪偏航角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "desc": "是否有板载陀螺仪"
-                            },
-                            {
-                                "key": "isWithUpCamera",
-                                "type": "DATA_COMBOX",
-                                "comboType": {
-                                    "typeKey": "yes",
-                                    "typeDesc": "是",
-                                    "typeGroups": [
-                                        {
-                                            "key": "no",
-                                            "desc": "否"
-                                        },
-                                        {
-                                            "key": "yes",
-                                            "desc": "是",
-                                            "arrayCmobEle": [
-                                                {
-                                                    "key": "UpCameraX",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载上读码头X坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "UpCameraY",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载上读码头Y坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "UpCameraZ",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载上读码头Z坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "UpCameraRoll",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载上读码头翻滚角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "UpCameraPitch",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载上读码头俯仰角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "UpCameraYaw",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载上读码头偏航角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "desc": "是否有板载上读码头"
-                            },
-                            {
-                                "key": "isWithDownCamera",
-                                "type": "DATA_COMBOX",
-                                "comboType": {
-                                    "typeKey": "yes",
-                                    "typeDesc": "是",
-                                    "typeGroups": [
-                                        {
-                                            "key": "no",
-                                            "desc": "否"
-                                        },
-                                        {
-                                            "key": "yes",
-                                            "desc": "是",
-                                            "arrayCmobEle": [
-                                                {
-                                                    "key": "DownCameraX",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载下读码头X坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "DownCameraY",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载下读码头Y坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "DownCameraZ",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "mm",
-                                                    "desc": "板载下读码头Z坐标(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "DownCameraRoll",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载下读码头翻滚角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "DownCameraPitch",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载下读码头俯仰角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                },
-                                                {
-                                                    "key": "DownCameraYaw",
-                                                    "type": "DATA_DOUBLE",
-                                                    "doubleValue": 0,
-                                                    "doubleMaxvalue": 99999,
-                                                    "doubleMinvalue": -99999,
-                                                    "unit": "°",
-                                                    "desc": "板载下读码头偏航角(相对主板)",
-                                                    "boolHide": true,
-                                                    "boolMustfill": true
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                },
-                                "desc": "是否有板载下读码头"
-                            }
-                        ]
+                      "key": "no",
+                      "desc": "否"
+                    },
+                    {
+                      "key": "yes",
+                      "desc": "是",
+                      "arrayCmobEle": [
+                        {
+                          "key": "DownCameraX",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载下读码头X坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "DownCameraY",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载下读码头Y坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "DownCameraZ",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "mm",
+                          "desc": "板载下读码头Z坐标(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "DownCameraRoll",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载下读码头翻滚角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "DownCameraPitch",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载下读码头俯仰角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        },
+                        {
+                          "key": "DownCameraYaw",
+                          "type": "DATA_DOUBLE",
+                          "doubleValue": 0,
+                          "doubleMaxvalue": 99999,
+                          "doubleMinvalue": -99999,
+                          "unit": "°",
+                          "desc": "板载下读码头偏航角(相对主板)",
+                          "boolHide": true,
+                          "boolMustfill": true
+                        }
+                      ]
                     }
-                ]
-            },
-            "interfaceAbility": {
-                "busInterfaceAbility": [
-                    {
-                        "busInterfaceType": "CAN",
-                        "busInterfaceNums": 3
-                    },
-                    {
-                        "busInterfaceType": "SERIAL",
-                        "busInterfaceNums": 4
-                    }
-                ]
-            },
-            "interfaceParams": {
-                "interfaceGroup": [
-                    {
-                        "key": "CAN_1",
-                        "type": "CAN",
-                        "desc": "CAN_1",
-                        "interfaceUuid": "1cbebdb5-23e9-4f98-9e45-8bdcbf3f3c30",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "CAN_2",
-                        "type": "CAN",
-                        "desc": "CAN_2",
-                        "interfaceUuid": "03551bd9-d580-4ac2-b444-2392ea576f70",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "CAN_3",
-                        "type": "CAN",
-                        "desc": "CAN_3",
-                        "interfaceUuid": "9d71aa2e-4846-45e7-8304-c4e3f337f4ec",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "uart0",
-                        "type": "SERIAL",
-                        "desc": "uart0",
-                        "interfaceUuid": "b98f8a89-b8c4-4498-be8b-7bfd9d81a613",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "uart1",
-                        "type": "SERIAL",
-                        "desc": "uart1",
-                        "interfaceUuid": "c831a3a4-23f6-4e2f-b77f-3729ed3e0640",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "RS485_1",
-                        "type": "SERIAL",
-                        "desc": "RS485_1",
-                        "interfaceUuid": "175cc3b2-d24e-4551-b34b-8246db49bca5",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "RS485_2",
-                        "type": "SERIAL",
-                        "desc": "RS485_2",
-                        "interfaceUuid": "1e0a000b-73e0-4ee6-b186-cdd3a911553c",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "ETH_1",
-                        "type": "ETH",
-                        "desc": "以太网口 1",
-                        "interfaceUuid": "df03be0c-55e5-4f82-8587-1930064eda45",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "ETH_2",
-                        "type": "ETH",
-                        "desc": "以太网口 2",
-                        "interfaceUuid": "032a58b8-ea16-4f8c-9b49-f13db4796207",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "ETH_3",
-                        "type": "ETH",
-                        "desc": "以太网口 3",
-                        "interfaceUuid": "811de59e-f1af-4af2-bab0-98030f18900b",
-                        "interfaceParams": {}
-                    },
-                    {
-                        "key": "ETH_4",
-                        "type": "ETH",
-                        "desc": "以太网口 4",
-                        "interfaceUuid": "e0458b01-2466-4db1-bb35-83a0f9ecbc97",
-                        "interfaceParams": {}
-                    }
-                ]
-            }
-        }
-    ]
+                  ]
+                },
+                "desc": "是否有板载下读码头"
+              }
+            ]
+          }
+        ]
+      },
+      "interfaceAbility": {
+        "busInterfaceAbility": [
+          {
+            "busInterfaceType": "CAN",
+            "busInterfaceNums": 3
+          },
+          {
+            "busInterfaceType": "SERIAL",
+            "busInterfaceNums": 4
+          }
+        ]
+      },
+      "interfaceParams": {
+        "interfaceGroup": [
+          {
+            "key": "CAN_1",
+            "type": "CAN",
+            "desc": "CAN_1",
+            "interfaceUuid": "1cbebdb5-23e9-4f98-9e45-8bdcbf3f3c30",
+            "interfaceParams": {}
+          },
+          {
+            "key": "CAN_2",
+            "type": "CAN",
+            "desc": "CAN_2",
+            "interfaceUuid": "03551bd9-d580-4ac2-b444-2392ea576f70",
+            "interfaceParams": {}
+          },
+          {
+            "key": "CAN_3",
+            "type": "CAN",
+            "desc": "CAN_3",
+            "interfaceUuid": "9d71aa2e-4846-45e7-8304-c4e3f337f4ec",
+            "interfaceParams": {}
+          },
+          {
+            "key": "uart0",
+            "type": "SERIAL",
+            "desc": "uart0",
+            "interfaceUuid": "b98f8a89-b8c4-4498-be8b-7bfd9d81a613",
+            "interfaceParams": {}
+          },
+          {
+            "key": "uart1",
+            "type": "SERIAL",
+            "desc": "uart1",
+            "interfaceUuid": "c831a3a4-23f6-4e2f-b77f-3729ed3e0640",
+            "interfaceParams": {}
+          },
+          {
+            "key": "RS485_1",
+            "type": "SERIAL",
+            "desc": "RS485_1",
+            "interfaceUuid": "175cc3b2-d24e-4551-b34b-8246db49bca5",
+            "interfaceParams": {}
+          },
+          {
+            "key": "RS485_2",
+            "type": "SERIAL",
+            "desc": "RS485_2",
+            "interfaceUuid": "1e0a000b-73e0-4ee6-b186-cdd3a911553c",
+            "interfaceParams": {}
+          },
+          {
+            "key": "ETH_1",
+            "type": "ETH",
+            "desc": "以太网口 1",
+            "interfaceUuid": "df03be0c-55e5-4f82-8587-1930064eda45",
+            "interfaceParams": {}
+          },
+          {
+            "key": "ETH_2",
+            "type": "ETH",
+            "desc": "以太网口 2",
+            "interfaceUuid": "032a58b8-ea16-4f8c-9b49-f13db4796207",
+            "interfaceParams": {}
+          },
+          {
+            "key": "ETH_3",
+            "type": "ETH",
+            "desc": "以太网口 3",
+            "interfaceUuid": "811de59e-f1af-4af2-bab0-98030f18900b",
+            "interfaceParams": {}
+          },
+          {
+            "key": "ETH_4",
+            "type": "ETH",
+            "desc": "以太网口 4",
+            "interfaceUuid": "e0458b01-2466-4db1-bb35-83a0f9ecbc97",
+            "interfaceParams": {}
+          }
+        ]
+      }
+    }
+  ]
 }

@@ -3,14 +3,14 @@
     "moduleName": {
       "key": "module_name",
       "type": "DATA_STRING",
-      "stringValue": "walkMotor_1",
+      "stringValue": "walkMotor_2",
       "desc": "模块名称",
       "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "98e86a2d-93c8-439d-aeaf-b60ef1d235d3",
+      "stringValue": "073b4289-50ef-4136-92e2-4ac2b8ffb1a4",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -202,7 +202,7 @@
             "boolMustfill": false,
             "boolNoeditable": false,
             "fixedSource": [],
-            "boolValue": false
+            "boolValue": true
           },
           {
             "key": "torque",
@@ -228,7 +228,7 @@
             "boolMustfill": false,
             "boolNoeditable": false,
             "fixedSource": [],
-            "doubleValue": 20.0
+            "doubleValue": 1.0
           },
           {
             "key": "ratedCurr",
@@ -351,7 +351,7 @@
       {
         "key": "parentNodeUuid",
         "type": "DATA_STRING",
-        "stringValue": "bfcb1b7d-92e4-4eb8-9984-e8fca87850e3"
+        "stringValue": "8f6159bf-5f5c-478c-8cf0-d19d046c84e5"
       }
     ]
   }

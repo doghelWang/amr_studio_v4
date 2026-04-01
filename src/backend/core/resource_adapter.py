@@ -1,3 +1,5 @@
+import json
+import copy
 from skills_v2.cmodel_encoder.encoder import get_registry
 
 def load_module_template(component_type: str):
@@ -47,20 +49,33 @@ def load_module_template(component_type: str):
     return tpl
 
 # --- 工业级标准元数据模板 ---
+# --- 工业级标准元数据模板 (2026-04-01 CR-10: 补全 13 字段) ---
 CHASSIS_GENERAL_ATTR_TEMPLATE = {
     "moduleName": {"key": "module_name", "type": "DATA_STRING", "desc": "模块名称", "boolParse": True},
     "moduleDesc": {"key": "module_desc", "type": "DATA_STRING", "stringValue": "通用底盘", "desc": "模块描述", "boolParse": True},
     "moduleUuid": {"key": "module_uuid", "type": "DATA_STRING", "desc": "模块Uuid", "boolParse": True, "boolHide": True},
+    "moduleDscType": {"key": "module_dsc_type", "type": "DATA_UINT32", "uint32Value": 0, "desc": "模块描述类型", "boolParse": True, "boolHide": True},
+    "versionInfo": {"key": "version_info", "type": "DATA_STRING", "stringValue": "1.0.0", "desc": "版本信息", "boolParse": True},
+    "module3dIcon": {"key": "module_3d_icon", "type": "DATA_STRING", "stringValue": "chassis.png", "desc": "3D图标", "boolParse": True, "boolHide": True},
     "subSysType": {
         "key": "sub_sys_type", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "ChassisSys", "typeDesc": ""},
+        "comboType": {"typeKey": "ChassisSys", "typeDesc": "底盘系统"},
         "desc": "子系统", "boolParse": True
     },
     "mainModuleType": {
         "key": "main_module_type", "type": "DATA_COMBOX", 
-        "comboType": {"typeKey": "chassis", "typeDesc": ""},
+        "comboType": {"typeKey": "chassis", "typeDesc": "底盘"},
         "desc": "主类型", "boolParse": True
-    }
+    },
+    "subModuleType": {
+        "key": "sub_module_type", "type": "DATA_COMBOX",
+        "comboType": {"typeKey": "diffChassis", "typeDesc": "差速底盘"},
+        "desc": "子类型", "boolParse": True
+    },
+    "moduleType": {"key": "module_type", "type": "DATA_STRING", "stringValue": "CHASSIS", "desc": "模块型号", "boolParse": True},
+    "moduleSupplier": {"key": "module_supplier", "type": "DATA_STRING", "stringValue": "Standard", "desc": "供应商", "boolParse": True},
+    "moduleWeight": {"key": "module_weight", "type": "DATA_DOUBLE", "doubleValue": 50.0, "desc": "质量(kg)", "boolParse": True},
+    "modulePower": {"key": "module_power", "type": "DATA_DOUBLE", "doubleValue": 100.0, "desc": "功率(W)", "boolParse": True}
 }
 
 def map_attribute_to_cmodel(a, is_ability=False):
@@ -121,8 +136,8 @@ CATEGORY_TO_SUBSYS = {
     'MAINCPU': 'ControlSys',
     'SENSOR': 'SensorSys',
     'BATTERY': 'PowerSys',
-    'BUTTON': 'SafetySys',
-    'LIGHT': 'SafetySys',
+    'BUTTON': 'InteractiveSys',  # CR-11: Corrected from SafetySys
+    'LIGHT': 'InteractiveSys',   # CR-11: Corrected from SafetySys
     'IO': 'ControlSys',
 }
 
@@ -159,23 +174,28 @@ def map_component_to_cmodel(c):
         }
 
     # [FIX RC-6] Inject missing mainModuleType and subSysType (fallback if template didn't have them)
+    # 2026-04-01 Goal: Trust XML Spec/Template first, then Category Map
     if "mainModuleType" not in gen_attr:
+        # Check if template has it under a different path or if we need default
         type_key = CATEGORY_TO_TYPE_KEY.get(category.upper(), "")
         if type_key:
             gen_attr["mainModuleType"] = {
-                "key": "main_module_type", 
-                "type": "DATA_COMBOX", 
-                "comboType": {"typeKey": type_key},
-                "boolParse": True
+                "key": "main_module_type", "type": "DATA_COMBOX", 
+                "comboType": {"typeKey": type_key}, "boolParse": True
             }
     
     if "subSysType" not in gen_attr:
         subsys = CATEGORY_TO_SUBSYS.get(category.upper(), "Other")
         gen_attr["subSysType"] = {
-            "key": "sub_sys_type",
-            "type": "DATA_COMBOX",
-            "comboType": {"typeKey": subsys},
-            "boolParse": True
+            "key": "sub_sys_type", "type": "DATA_COMBOX",
+            "comboType": {"typeKey": subsys}, "boolParse": True
+        }
+    
+    # CR-06: Ensure subModuleType is present if possible (especially for chassis)
+    if "subModuleType" not in gen_attr and is_chassis:
+        gen_attr["subModuleType"] = {
+            "key": "sub_module_type", "type": "DATA_COMBOX",
+            "comboType": {"typeKey": "diffChassis"}, "boolParse": True
         }
 
     # [FIX F-008] Chassis Kinematics redirection to Tag 5 (structParam)

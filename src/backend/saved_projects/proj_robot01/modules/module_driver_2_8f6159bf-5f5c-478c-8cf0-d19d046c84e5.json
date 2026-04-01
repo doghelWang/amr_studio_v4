@@ -3,14 +3,14 @@
     "moduleName": {
       "key": "module_name",
       "type": "DATA_STRING",
-      "stringValue": "driver_1",
+      "stringValue": "driver_2",
       "desc": "模块名称",
       "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "bfcb1b7d-92e4-4eb8-9984-e8fca87850e3",
+      "stringValue": "8f6159bf-5f5c-478c-8cf0-d19d046c84e5",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -217,7 +217,7 @@
       {
         "key": "parentNodeUuid",
         "type": "DATA_STRING",
-        "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89"
+        "stringValue": "395495fa-37ef-4446-9746-a9b573a4ad7a"
       }
     ]
   }

@@ -3,14 +3,14 @@
     "moduleName": {
       "key": "module_name",
       "type": "DATA_STRING",
-      "stringValue": "driveWheel_1",
+      "stringValue": "driveWheel_2",
       "desc": "模块名称",
       "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89",
+      "stringValue": "395495fa-37ef-4446-9746-a9b573a4ad7a",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -89,7 +89,7 @@
       {
         "key": "locCoordY",
         "type": "DATA_DOUBLE",
-        "doubleValue": 400.0
+        "doubleValue": 0.0
       },
       {
         "key": "locCoordZ",

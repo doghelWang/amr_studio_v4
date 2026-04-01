@@ -19,7 +19,7 @@
 					"stringValue": "",
 					"desc": "软件规格",
 					"boolMustfill": true,
-					"boolBasic": true,
+					"boolBasic": true
 				},
 				{
 					"key": "inputVoltage",

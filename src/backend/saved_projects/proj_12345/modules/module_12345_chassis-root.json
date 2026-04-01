@@ -5,7 +5,7 @@
       "type": "DATA_STRING",
       "desc": "模块名称",
       "boolParse": true,
-      "stringValue": "1234"
+      "stringValue": "12345"
     },
     "moduleDesc": {
       "key": "module_desc",

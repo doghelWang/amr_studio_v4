@@ -22,14 +22,15 @@
     </Attributes>
     <Interfaces>
       <Ability type="ETH" nums="4" /><Ability type="CAN" nums="3" />
-      <Ability type="SERIAL" nums="4" />
+      <Ability type="UART" nums="2" />
+      <Ability type="RS485" nums="2" />
       <Instance key="CAN_1" type="CAN" />
       <Instance key="CAN_2" type="CAN" />
       <Instance key="CAN_3" type="CAN" />
-      <Instance key="uart0" type="SERIAL" />
-      <Instance key="uart1" type="SERIAL" />
-      <Instance key="RS485_1" type="SERIAL" />
-      <Instance key="RS485_2" type="SERIAL" />
+      <Instance key="uart0" type="UART" />
+      <Instance key="uart1" type="UART" />
+      <Instance key="RS485_1" type="RS485" />
+      <Instance key="RS485_2" type="RS485" />
     <Instance key="ETH_1" type="ETH" /><Instance key="ETH_2" type="ETH" /><Instance key="ETH_3" type="ETH" /><Instance key="ETH_4" type="ETH" /></Interfaces>
   </Component>
 </ModuleGroup>

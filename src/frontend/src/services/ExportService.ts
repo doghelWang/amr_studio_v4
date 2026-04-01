@@ -41,7 +41,7 @@ export class ExportService {
     private static mapModuleGroup(comp: ComponentConfig, all: ComponentConfig[]): any {
         const children = all.filter(c => c.parentNodeUuid === comp.id);
         return {
-            moduleGroupName: comp.moduleGroupName || "LibraryGroup",
+            moduleGroupName: comp.moduleGroupName || comp.name || "UnnamedModule",
             moduleGroupUuid: comp.moduleGroupUuid,
             moduleComponets: [this.mapComponentToCModel(comp)],
             moreModuleInfo: children.map(c => this.mapModuleGroup(c, all))

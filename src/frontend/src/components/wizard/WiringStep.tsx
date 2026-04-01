@@ -25,7 +25,7 @@ const getBusTheme = (type: string) => {
     const t = type?.toUpperCase() || '';
     if (t.includes('CAN')) return { color: '#fa8c16', label: 'CAN总线', icon: <ShareAltOutlined /> };
     if (t.includes('ETH') || t.includes('NETWORK')) return { color: '#1890ff', label: '以太网', icon: <DeploymentUnitOutlined /> };
-    if (t.includes('485') || t.includes('232') || t.includes('SERIAL')) return { color: '#52c41a', label: '串口线路', icon: <SwapOutlined /> };
+    if (t.includes('485') || t.includes('232') || t.includes('UART')) return { color: '#52c41a', label: '串口线路', icon: <SwapOutlined /> };
     if (t === 'DI') return { color: '#1677ff', label: '数字输入', icon: <ControlOutlined /> };
     if (t === 'DO') return { color: '#52c41a', label: '数字输出', icon: <BulbOutlined /> };
     return { color: 'var(--text-muted)', label: type, icon: <ApiOutlined /> };

@@ -13,7 +13,7 @@
 						"typeGroups": [
 							{
 								"key": "VALVE_DRIVE_VOLT",
-								"desc": "开关控制型",
+								"desc": "开关控制型"
 							},
 							{
 								"key": "VALVE_DRIVE_DUTY",
@@ -52,7 +52,7 @@
 					"unit": "V",
 					"desc": "供电电压",
 					"boolMustfill": true
-				},
+				}
 			]
 		}
 	]

@@ -3,14 +3,14 @@
     "moduleName": {
       "key": "module_name",
       "type": "DATA_STRING",
-      "stringValue": "button-Common",
+      "stringValue": "reset",
       "desc": "模块名称",
       "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "99d7d228-4018-4bab-955e-e453631de646",
+      "stringValue": "107b4e06-b18b-42dd-bb51-0bf413367d73",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -158,8 +158,10 @@
         "key": "DO_1",
         "type": "DO",
         "desc": "DO_1",
-        "interfaceUuid": "65b25d7b-39af-40d7-85d5-81b1e5f5a444",
-        "linkedInterfaceUuid": [],
+        "interfaceUuid": "4683c8c0-ec07-41d1-b615-522926b6b8f3",
+        "linkedInterfaceUuid": [
+          "d346f024-d631-4bcb-b717-55e5cfd2f51e"
+        ],
         "interfaceAttrs": {
           "interfaceParamsArray": [
             {

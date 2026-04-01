@@ -76,29 +76,43 @@ class XmlTemplateRegistry:
         return None
 
     def get_interface_spec(self, intf_type: str) -> dict:
-        """Combines InterfaceFixAttrs and InterfaceParams into a unified spec dictionary."""
-        spec = {"fix_attrs": {}, "params": {}}
-        root = self._xmls.get("interface")
-        if root is not None:
-            # Fix Attrs
-            fix_node = root.find("InterfaceFixAttrs")
-            if fix_node is not None:
-                for i in fix_node.findall("Interface"):
-                    if i.get("type", "").lower() == intf_type.lower():
-                        items_node = i.find("interfaceParamsArray")
-                        if items_node is not None:
-                            for p in items_node.findall("Item"):
-                                spec["fix_attrs"][p.get("key")] = self._xml_node_to_dict(p)
+        """Combines InterfaceFixAttrs and InterfaceParams into a unified spec dictionary.
+        Returns the correct Proto format: { "interfaceParamsArray": [...] }
+        """
+        spec = {
+            "fix_attrs": {"interfaceParamsArray": []},
+            "params": {"interfaceParamsArray": []}
+        }
+        root = self._xml_node_to_dict_raw(self._xmls.get("interface"))
+        if root:
+            # Fix Attrs (Standard 2026-04-01: CR-01 Alignment)
+            fix_node = root.get("InterfaceFixAttrs", {})
+            for i in self._ensure_list(fix_node.get("Interface", [])):
+                if i.get("type", "").lower() == intf_type.lower():
+                    # The XML already has interfaceParamsArray structure from _xml_node_to_dict
+                    # Because we flatten <Item> wrappers, this is now directly a list
+                    items = i.get("interfaceParamsArray", [])
+                    if isinstance(items, dict) and "Item" in items: items = items["Item"] # Fallback
+                    spec["fix_attrs"]["interfaceParamsArray"] = self._ensure_list(items)
+                    break
+            
             # Params
-            param_node = root.find("InterfaceParams")
-            if param_node is not None:
-                for i in param_node.findall("Interface"):
-                    if i.get("type", "").lower() == intf_type.lower():
-                        items_node = i.find("interfaceParamsArray")
-                        if items_node is not None:
-                            for p in items_node.findall("Item"):
-                                spec["params"][p.get("key")] = self._xml_node_to_dict(p)
+            param_node = root.get("InterfaceParams", {})
+            for i in self._ensure_list(param_node.get("Interface", [])):
+                if i.get("type", "").lower() == intf_type.lower():
+                    items = i.get("interfaceParamsArray", [])
+                    if isinstance(items, dict) and "Item" in items: items = items["Item"] # Fallback
+                    spec["params"]["interfaceParamsArray"] = self._ensure_list(items)
+                    break
         return spec
+
+    def _ensure_list(self, obj):
+        if obj is None: return []
+        return obj if isinstance(obj, list) else [obj]
+
+    def _xml_node_to_dict_raw(self, node: ET.Element) -> dict:
+        if node is None: return {}
+        return self._xml_node_to_dict(node)
 
     def get_config(self, config_file: str) -> ET.Element | None:
         """Find <Config file="..."> in ModuleConfigs.xml"""
@@ -116,13 +130,25 @@ class XmlTemplateRegistry:
         for attr_name, attr_val in node.attrib.items():
             if attr_name == "_original_key":
                 continue
+            
+            # [CR-20260401] Deep Type Sanitization: Prevent Protobuf ParseDict string violations
+            final_val = attr_val
+            if attr_name.startswith("bool") and isinstance(attr_val, str):
+                final_val = attr_val.lower() == "true"
+            elif attr_name == "doubleValue" and isinstance(attr_val, str):
+                try: final_val = float(attr_val)
+                except ValueError: pass
+            elif attr_name in ("int32Value", "uint32Value", "int64Value", "uint64Value") and isinstance(attr_val, str):
+                try: final_val = int(attr_val)
+                except ValueError: pass
+
             # Map XML attribute names to expected JSON names
             if node.tag == "Group" and attr_name == "key":
-                d["groupKey"] = attr_val
+                d["groupKey"] = final_val
             elif node.tag == "Group" and attr_name == "desc":
-                d["groupName"] = attr_val
+                d["groupName"] = final_val
             else:
-                d[attr_name] = attr_val
+                d[attr_name] = final_val
         
         # Handle Entry tags (dynamic keys workaround)
         if node.tag == "Entry":
@@ -148,6 +174,13 @@ class XmlTemplateRegistry:
                 d[tag] = items[0]
             else:
                 d[tag] = items
+                
+        # [CR-20260401] Schema Array Alignment
+        # If the XML node ONLY contained <Item> elements (no attributes, no other tags)
+        # return it immediately as a List to be compatible with Protobuf `repeated` fields.
+        if len(d.keys()) == 1 and "Item" in d:
+            ret = d["Item"]
+            return ret if isinstance(ret, list) else [ret]
         
         return d
 
@@ -318,24 +351,41 @@ def enrich_from_templates(data):
                     if intf_spec["params"]:
                         iface["interfaceParams"] = intf_spec["params"]
 
-            # 3. Handle subSysType Normalization
-            _INVALID_SUBSYS = {"MotionSys"}
+            # 3. Handle subSysType Normalization (2026-04-01 Audit: CR-04/11)
+            # Align with ModelSet312: InteractiveSys is the standard for Buttons/Lights
+            _SUBSYS_FIX = {
+                "MotionSys": "DriverSys", 
+                "SafetySys": "InteractiveSys"
+            }
             comp_subsys = ga.get("subSysType", {}).get("comboType", {}).get("typeKey", "")
-            if comp_subsys in _INVALID_SUBSYS:
+            if comp_subsys in _SUBSYS_FIX:
+                new_key = _SUBSYS_FIX[comp_subsys]
                 ga["subSysType"] = {
-                    "comboType": {"typeKey": "DriverSys", "stringValue": "驱动系统"},
+                    "comboType": {"typeKey": new_key, "stringValue": new_key.replace("Sys", "系统")},
                     "boolNoeditable": False,
                     "boolHide": False
                 }
             comp["generalAttr"] = ga
 
+    # CR-13: Metadata alignment
+    if "modelVersion" not in data:
+        data["modelVersion"] = ""
+
+    # CR-09: moduleSys Population Rule
+    # "Combinatorial modules must have a value, independent modules don't care"
     children = data.get("moreModuleInfo", [])
     if children and not data.get("moduleSys"):
+        # Detect from first component's subsystem
         for comp in data.get("moduleComponets", []):
             sub_sys = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey", "")
             if sub_sys:
                 data["moduleSys"] = sub_sys
                 break
+    elif not children:
+        # Per ModelSet312 baseline: Only composite roots have moduleSys
+        # We clear it for standard instances unless it's G_MainController
+        if data.get("moduleGroupName", "") != "G_MainController":
+            data["moduleSys"] = ""
     
     for sub in data.get("moreModuleInfo", []):
         enrich_from_templates(sub)

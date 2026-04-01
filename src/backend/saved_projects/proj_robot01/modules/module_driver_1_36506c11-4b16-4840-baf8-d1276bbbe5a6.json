@@ -10,7 +10,7 @@
     "moduleUuid": {
       "key": "module_uuid",
       "type": "DATA_STRING",
-      "stringValue": "bfcb1b7d-92e4-4eb8-9984-e8fca87850e3",
+      "stringValue": "36506c11-4b16-4840-baf8-d1276bbbe5a6",
       "desc": "模块Uuid",
       "boolParse": true,
       "boolHide": true
@@ -217,7 +217,7 @@
       {
         "key": "parentNodeUuid",
         "type": "DATA_STRING",
-        "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89"
+        "stringValue": "247ab1e1-4538-48ca-90db-0e006b96f437"
       }
     ]
   }
