@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-blackboxprotobuf
 python-multipart
 aiofiles
 pydantic

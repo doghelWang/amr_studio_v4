@@ -1,55 +1,65 @@
-import blackboxprotobuf
-import pprint
+import sys
+from pathlib import Path
 
-def safe_traverse(data):
-    if isinstance(data, list):
-        for item in data: yield from safe_traverse(item)
-    elif isinstance(data, dict):
-        yield data
-        for v in data.values():
-            if isinstance(v, (dict, list)): yield from safe_traverse(v)
+# Add src/backend to path to import schemas
+backend_dir = Path(__file__).parent.absolute()
+sys.path.append(str(backend_dir))
 
-with open('/Users/wangfeifei/code/amr_studio_v4/backend/templates/CompDesc.model', 'rb') as f:
-    msg, _ = blackboxprotobuf.decode_message(f.read())
+from skills_v2.schemas_pb.controller_model_comp_desc_pb2 import Message_Module_Info
 
-print("=== DEEP INTERFACE AUDIT ===")
+def safe_print_element(ele):
+    """Helper to print Message_Base_Element content."""
+    val = "None"
+    if ele.HasField('string_value'): val = ele.string_value
+    elif ele.HasField('int32_value'): val = ele.int32_value
+    elif ele.HasField('double_value'): val = ele.double_value
+    elif ele.HasField('bool_value'): val = ele.bool_value
+    elif ele.HasField('combo_type'): val = f"[Combo: {ele.combo_type.type_key}]"
+    
+    print(f"    - {ele.key}: {val} ({ele.desc})")
 
-for mod_entry in msg.get("5", []):
-    # Get Module Name
-    m_data = mod_entry.get("4")
-    if not isinstance(m_data, list): m_data = [m_data]
-    m_data = m_data[0] if m_data else {}
+def audit_model(file_path):
+    print(f"=== DEEP INTERFACE AUDIT: {file_path} ===")
     
-    m_name_bytes = m_data.get("1", {}).get("1", {}).get("10", b"Unknown")
-    m_name = m_name_bytes.decode('utf-8') if isinstance(m_name_bytes, bytes) else "Unknown"
+    with open(file_path, 'rb') as f:
+        raw = f.read()
     
-    print(f"\nMODULE: {m_name}")
+    msg = Message_Module_Info()
+    msg.ParseFromString(raw)
     
-    # 1. Look for all Interface Attributes (Tag 4 inside module data)
-    itf_root = m_data.get("4", {}).get("1", [])
-    if isinstance(itf_root, dict): itf_root = [itf_root]
+    print(f"Model Version: {msg.model_version}")
     
-    for itf in itf_root:
-        itf_name = itf.get("1", b"").decode('utf-8')
-        itf_type = itf.get("2", b"").decode('utf-8')
-        print(f"  [Interface] {itf_name} (Type: {itf_type})")
+    for comp in msg.module_componets:
+        ga = comp.general_attr
+        m_name = ga.module_name.string_value
+        m_type = ga.main_module_type.combo_type.type_key
         
-        # Look for BUS ID or Protocol (Tag 8 or 9)
-        if "8" in itf: # Likely CAN
-            can_node = itf["8"].get("1", [])
-            if isinstance(can_node, dict): can_node = [can_node]
-            for p in can_node:
-                if p.get("1") == b"nodeId": print(f"    CAN NodeID Tag detected")
+        print(f"\nMODULE: {m_name} (Type: {m_type})")
         
-        if "9" in itf: # Likely Ethernet
-            print(f"    Network Params Tag detected")
+        # Print General Attributes
+        print("  [General Attributes]")
+        safe_print_element(ga.module_name)
+        safe_print_element(ga.sub_sys_type)
+        safe_print_element(ga.main_module_type)
+        
+        # Print Private Attributes
+        print("  [Private Attributes]")
+        for grp in comp.private_attr.private_attrs:
+            print(f"    Group: {grp.key} ({grp.desc})")
+            for ele in grp.array_base_ele:
+                safe_print_element(ele)
+                
+        # Print Interfaces
+        print("  [Interfaces]")
+        for itf_grp in comp.interface_params.interface_Group:
+            print(f"    Interface: {itf_grp.key} (Type: {itf_grp.type})")
+            for ele in itf_grp.interface_params.interface_params_array:
+                safe_print_element(ele)
 
-    # 2. Look for IO Channel Definitions (Crucial for IO Boards)
-    # Search for anything that looks like a channel list
-    for sub in safe_traverse(m_data):
-        if sub.get("1") == b"channelNum":
-            print(f"  [IO Spec] channelNum: {sub.get('12')}")
-        if sub.get("1") == b"diNum":
-            print(f"  [IO Spec] diNum: {sub.get('12')}")
-        if sub.get("1") == b"doNum":
-            print(f"  [IO Spec] doNum: {sub.get('12')}")
+if __name__ == "__main__":
+    # Update this path to a valid .model file if needed
+    model_path = backend_dir / 'templates' / 'CompDesc.model'
+    if model_path.exists():
+        audit_model(model_path)
+    else:
+        print(f"Template not found at {model_path}")
