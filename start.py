@@ -55,6 +55,25 @@ def kill_process_on_port(port: int):
     except Exception:
         pass
 
+def check_dependencies(python_exe: str, backend_dir: Path):
+    """Verify that required dependencies (like protobuf) are present and working."""
+    print("🔍 Checking backend dependencies...", flush=True)
+    try:
+        # Check for protobuf and runtime_version
+        cmd = [python_exe, "-c", "import google.protobuf; from google.protobuf import runtime_version; print('Protobuf Runtime OK')"]
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(backend_dir)
+        subprocess.run(cmd, check=True, capture_output=True, env=env)
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Dependency check failed: {e.stderr.decode()}", file=sys.stderr)
+        print("\n[FIX] Please run the following command to repair your environment:", file=sys.stderr)
+        print(f"    {python_exe} -m pip install -r {backend_dir}/requirements.txt --upgrade", file=sys.stderr)
+        return False
+    except Exception as e:
+        print(f"⚠️ Warning: Could not verify dependencies: {e}", file=sys.stderr)
+    
+    return True
+
 def main():
     parser = argparse.ArgumentParser(description="AMR Studio V4 Unified Deployment Tool")
     parser.add_argument("--host", type=str, default="0.0.0.0", help="Binding host (default: 0.0.0.0)")
@@ -96,14 +115,20 @@ def main():
     python_exe = get_python_executable(backend_dir)
     print(f"Using Python: {python_exe}", flush=True)
 
+    if not check_dependencies(python_exe, backend_dir):
+        sys.exit(1)
+
     try:
         # Standard execution command
+        env = os.environ.copy()
+        env["PYTHONPATH"] = str(backend_dir)
+        
         cmd = [python_exe, "main.py", "--host", args.host, "--port", str(args.port)]
         if args.dev:
             # If dev mode, we use uvicorn CLI for hot-reload
             cmd = [python_exe, "-m", "uvicorn", "main:app", "--host", args.host, "--port", str(args.port), "--reload"]
         
-        subprocess.run(cmd, cwd=str(backend_dir))
+        subprocess.run(cmd, cwd=str(backend_dir), env=env)
     except KeyboardInterrupt:
         print("\n👋 Shutdown requested by user.", flush=True)
     except Exception as e:

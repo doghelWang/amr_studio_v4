@@ -4,3 +4,4 @@ blackboxprotobuf
 python-multipart
 aiofiles
 pydantic
+protobuf>=5.26.1
