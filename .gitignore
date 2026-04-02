@@ -16,13 +16,14 @@ frontend/frontend_runtime.log
 *.debug.json
 
 # ━━━ CRITICAL: PROTOCOL ISOLATION (LOCAL ONLY) ━━━
-# These files are restricted to local environment and MUST NOT be uploaded to GitHub.
-*controller_model_abi*
-*controller_model_comp*
-*controller_model_func*
-*AbiSet*
-*CompDesc*
-*FuncDesc*
+# These abstract source files are restricted to local environment and MUST NOT be uploaded to GitHub.
+# We explicitly only ignore .proto files so that generated Python stub files (_pb2.py) can be synced.
+*controller_model_abi*.proto
+*controller_model_comp*.proto
+*controller_model_func*.proto
+*AbiSet*.proto
+*CompDesc*.proto
+*FuncDesc*.proto
 
 # Frontend
 frontend/node_modules/
