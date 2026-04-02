@@ -242,6 +242,19 @@ def sanitize_values(data):
                 new_data[k] = int(v)
             elif k == 'int32Minvalue' and v is not None:
                 new_data[k] = int(v)
+            elif k == 'fixedSource':
+                # [FIX 2026-04-02] fixedSource is 'repeated string' in proto.
+                # XML templates may produce {'Value': {}} or list of dicts — must coerce to string list.
+                raw = v
+                if isinstance(v, dict):
+                    # Extract the inner Value if present
+                    raw = v.get('Value', [])
+                    if not isinstance(raw, list):
+                        raw = [raw] if raw else []
+                elif not isinstance(v, list):
+                    raw = []
+                # Filter: only keep string items, discard empty dicts/None
+                new_data[k] = [item for item in raw if isinstance(item, str) and item]
             elif k == 'arrayCmobEle':
                 # array_cmob_ele is a VALID proto field (Tag 3 in Message_Combox_Item)
                 # It holds sub-attributes of dropdown options - must be preserved!
@@ -315,7 +328,13 @@ def enrich_from_templates(data):
                     if not isinstance(spec_groups, list): spec_groups = [spec_groups]
                     
                     try:
-                        curr_groups = {g.get("groupKey"): g for g in curr_pa.get("privateAttrs", [])}
+                        # [FIX 2026-04-02] Dedup index must check BOTH 'groupKey' (from XML) 
+                        # AND 'key' (from frontend) to prevent duplicate group injection
+                        curr_groups = {}
+                        for g in curr_pa.get("privateAttrs", []):
+                            gk = g.get("groupKey") or g.get("key")
+                            if gk:
+                                curr_groups[gk] = g
                     except AttributeError:
                         curr_pa["privateAttrs"] = []
                         curr_groups = {}
