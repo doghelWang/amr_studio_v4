@@ -108,12 +108,12 @@
 - **历史教训**：2026-03-31 发现 `resource_adapter.py` 的 `is_chassis` 分支将底盘 privateAttrs 错误地移入 extendParams，导致客户端无法显示底盘参数（3组/33属性全部丢失）。
 
 ## 17. 子系统类型有效值约束 (SubSystem Type Validation)
-- **有效值集合** (基于 MQ-Q3-600LE-D(T) 官方基线 + 协议扩展)：subSysType.comboType.typeKey 仅允许使用以下标准值：
-  - `ChassisSys` (底盘系统), `DriverSys` (驱动系统), `ControlSys` (控制系统), `SensorSys` (传感器系统), `InteractiveSys` (交互系统: button/light/screen/speaker/charger), `EnergySys` (能源系统: battery/energyController), `Other`
-- **⚠️ moduleSys 填充规则 (2026-04-02 修订)**: `moduleSys` (Tag 3) **仅允许**在组合模块（含 `moreModuleInfo` 子组的节点）上填充，默认值为 `DriverSys`。**单一模块节点严禁填充 `moduleSys`**，必须保持空字符串。违反此规则将导致 RoboDesigner 报错"未找到对应的子系统树节点"。
-- **⚠️ 已废弃值**: `PowerSys` 在标准基线中**无实例**，已被 `EnergySys` 取代 (2026-04-02)。`SafetySys` 在标准基线中无实例，`MotionSys` 为历史遗留错误值。
-- **禁止值**：`MotionSys` 为历史遗留错误值，**必须**在模板加载阶段被自动修正为 `DriverSys`。
-- **校验位置**：`encoder.py:standardize_sys_tree()` — 递归检查每个组的 `moreModuleInfo` 是否非空来决定填充。
+- **有效值集合** (基于 2026-04-02 客户端调整版验证)：subSysType.comboType.typeKey 仅允许使用以下标准值：
+  - `ChassisSys` (底盘系统/驱动轮), `UnclassifiedSys` (未分类 — 所有独立模块的默认值), `ControlSys` (控制系统 — 仅用于组合模块的 moduleSys), `DriverSys` (驱动系统), `SensorSys` (传感器系统), `InteractiveSys` (交互系统), `EnergySys` (能源系统), `Other`
+- **⛔ 独立模块子系统规则 (2026-04-02 客户端确认)**：除 `chassis`（ChassisSys）和 `driveWheel`（ChassisSys）外，所有独立模块的 `subSysType` **必须统一设为 `UnclassifiedSys`**。后端**严禁**自行推断子系统分类（如将 battery 归为 PowerSys、sensor 归为 SensorSys）。
+- **⚠️ moduleSys 填充规则 (2026-04-02 修订)**: `moduleSys` (Tag 3) **仅允许**在 `G_MainController` 等组合模块上保留。所有其他模块组的 `moduleSys` **必须为空字符串**。
+- **⚠️ 已废弃值**: `PowerSys`、`SafetySys`、`MotionSys` 在客户端标准中均**无实例**，**严禁使用**。
+- **校验位置**：`resource_adapter.py:CATEGORY_TO_SUBSYS` 映射表 + `encoder.py:standardize_sys_tree()` 扁平化后处理。
 
 ---
 
@@ -164,16 +164,17 @@
 
 ## 20. 模块树结构约束 (Module Tree Structure — CR-03)
 - **标准基线事实**: ModelSet312 标准文件使用**完全扁平结构**（19 个一级节点，无嵌套）。
-- **Proto 兼容性**: `more_module_info` 是自递归字段，协议层面嵌套和扁平均合法。
-- **当前状态 (待客户端确认)**: 我方前端使用 `parentNodeUuid` 构建嵌套树（如 driveWheel→driver→motor），后端如实序列化为嵌套 `moreModuleInfo`。若客户端仅支持扁平模式，则需在 `standardize_sys_tree()` 中增加 `flatten_all` 逻辑。
-- **安全规则**: 无论扁平或嵌套，`parentNodeUuid` 必须在 `structParam.extendParams` 中正确保留以支持反向解析。
+- **⛔ 客户端确认 (2026-04-02)**：客户端仅支持**完全扁平模式**。所有模块（包括轮组的子驱动器和电机）必须**全部平铺**在根级 `moreModuleInfo` 下，**禁止嵌套**。
+- **实现方式**：`encoder.py:standardize_sys_tree()` 执行递归扁平化 (`collect_all_groups`)，将所有嵌套的 `moreModuleInfo` 子节点提升到根级。
+- **parentNodeUuid 编码 (2026-04-02)**：`parentNodeUuid` 使用 `DATA_COMBOX` 类型编码（`comboType.typeKey` 存储 UUID 值），而非 `DATA_STRING`。
+- **安全规则**: 扁平化后，`parentNodeUuid` 必须在每个模块的 `structParam.extendParams` 中正确保留以支持反向解析。
 
 ## 21. moduleSys 填充规则 (Module System Tag — CR-09)
 - **Proto 定义**: `Message_Module_Info.module_sys = 3` (string 字段)。
 - **标准基线事实 (ModelSet312)**: 19 个一级节点中，**仅 `G_MainController` 的 `moduleSys="ControlSys"`**，其余 18 个节点 `moduleSys` 全部为空。
-- **客户端说明 (问题一-3)**: "组合模块必须有值，单个模块时无所谓"。
-- **推导规则**: 在扁平结构下，仅当节点含有 `moreModuleInfo` 子组时才视为"组合模块"，才需填充 `moduleSys`。孤立节点严禁主动填充。
-- **当前违规**: `enrich_from_templates()` 和 `standardize_sys_tree()` 为所有节点都填充了 `moduleSys`，需修正。
+- **⛔ 2026-04-02 客户端确认**: 扁平化后，**仅 `G_MainController` 保留 `moduleSys`**，所有其他模块组的 `moduleSys` 必须为空字符串 `""`。
+- **实现位置**: `encoder.py:standardize_sys_tree()` — 扁平化后遍历所有 group，仅当 `moduleGroupName == "G_MainController"` 时保留 `moduleSys`，其余一律清空。
+- **已修正 (2026-04-02)**: 移除了 `enrich_from_templates()` 中的 `_SUBSYS_FIX` 逻辑和 `apply_module_sys_rule()` 的 `DriverSys` 默认填充。
 
 ## 22. 数据框架一致性约束 (Data Framework Integrity)
 - **前端类型安全**: 前端 `types.ts` 中定义的 `MainModuleType` 枚举必须与 §18.2 的 18 个硬件大类保持 1:1 映射。当前存在 `IO_BOARD`, `MOTOR`, `VISUAL` 等非标准类型，需清理或注释为别名。

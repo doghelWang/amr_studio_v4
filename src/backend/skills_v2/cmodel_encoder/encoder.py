@@ -351,21 +351,9 @@ def enrich_from_templates(data):
                     if intf_spec["params"]:
                         iface["interfaceParams"] = intf_spec["params"]
 
-            # 3. Handle subSysType Normalization (2026-04-01 Audit: CR-04/11)
-            # Align with ModelSet312: InteractiveSys is the standard for Buttons/Lights
-            _SUBSYS_FIX = {
-                "MotionSys": "DriverSys", 
-                "SafetySys": "InteractiveSys"
-            }
-            comp_subsys = ga.get("subSysType", {}).get("comboType", {}).get("typeKey", "")
-            if comp_subsys in _SUBSYS_FIX:
-                new_key = _SUBSYS_FIX[comp_subsys]
-                ga["subSysType"] = {
-                    "comboType": {"typeKey": new_key, "stringValue": new_key.replace("Sys", "系统")},
-                    "boolNoeditable": False,
-                    "boolHide": False
-                }
-            comp["generalAttr"] = ga
+            # 3. [REMOVED 2026-04-02] No longer override subSysType.
+            # Client standard: independent modules use UnclassifiedSys (set by resource_adapter).
+            # Previous _SUBSYS_FIX logic was incorrectly mutating subsystem classifications.
 
     # CR-13: Metadata alignment
     if "modelVersion" not in data:
@@ -422,45 +410,55 @@ def strip_whitespace(data):
     return data
 
 def standardize_sys_tree(blueprint_root):
-    """[ARCH REFACTOR] Aligns with standard binary structure.
+    """[ARCH REFACTOR 2026-04-02] Aligns with client-validated binary structure.
     Rule 1: The Root Message_Module_Info must be anonymous (no Name/UUID).
-    Rule 2: Components/Groups are placed directly into Root's moreModuleInfo.
+    Rule 2: ALL module groups are FLAT under Root's moreModuleInfo (no nesting).
     Rule 3: No virtual container nodes (No invented 'ControlSys' wrappers).
-    Rule 4 (§21): moduleSys ONLY on composite modules (those with sub-groups).
-                   Single modules MUST have empty moduleSys.
-                   Default composite value: "DriverSys".
+    Rule 4: moduleSys: Only the G_MainController composite keeps its moduleSys.
+            All other groups have moduleSys = "" (per 2026-04-02 client standard).
     """
     original_info = blueprint_root.get("moreModuleInfo", [])
     if not isinstance(original_info, list):
         return blueprint_root
 
-    # Flatten any previous virtual containers and keep only real groups
-    real_groups = []
-    SYS_NAMES = ["ControlSys", "ChassisSys", "MotionSys", "SensorSys", "SafetySys", "PowerSys", "EnergySys", "InteractiveSys", "DriverSys"]
+    # [FIX #4] Deep flatten: recursively collect ALL leaf groups into a flat list
+    SYS_NAMES = ["ControlSys", "ChassisSys", "MotionSys", "SensorSys", "SafetySys", 
+                 "PowerSys", "EnergySys", "InteractiveSys", "DriverSys"]
     
-    for g in original_info:
-        if g.get("moduleGroupName") in SYS_NAMES and not g.get("moduleComponets"):
-            # This was likely a virtual wrapper, extract its children
-            real_groups.extend(g.get("moreModuleInfo", []))
-        else:
-            real_groups.append(g)
-
-    # [§21] moduleSys Rule: ONLY composite modules get moduleSys.
-    # A "composite module" is one that has moreModuleInfo children.
-    # Single modules MUST have empty moduleSys.
-    def apply_module_sys_rule(groups):
+    def collect_all_groups(groups):
+        """Recursively flatten all moreModuleInfo into a single flat list."""
+        result = []
         for g in groups:
-            has_children = bool(g.get("moreModuleInfo"))
-            if has_children:
-                # Composite module: set moduleSys = "DriverSys" (safe default per user directive)
-                g["moduleSys"] = "DriverSys"
-                # Recursively apply to sub-groups
-                apply_module_sys_rule(g.get("moreModuleInfo", []))
+            is_virtual_wrapper = (g.get("moduleGroupName") in SYS_NAMES 
+                                  and not g.get("moduleComponets"))
+            children = g.get("moreModuleInfo", [])
+            
+            if is_virtual_wrapper:
+                # Virtual wrapper — skip it, collect its children
+                result.extend(collect_all_groups(children))
+            elif children:
+                # Real group WITH children — flatten: keep this group WITHOUT children,
+                # then recursively collect children as siblings
+                flat_group = dict(g)
+                flat_group["moreModuleInfo"] = []  # Remove nesting
+                result.append(flat_group)
+                result.extend(collect_all_groups(children))
             else:
-                # Single module: moduleSys MUST be empty
-                g["moduleSys"] = ""
+                # Leaf group — keep as-is
+                result.append(g)
+        return result
 
-    apply_module_sys_rule(real_groups)
+    real_groups = collect_all_groups(original_info)
+
+    # [Rule 4] moduleSys: Only G_MainController-like composites keep moduleSys.
+    # Per 2026-04-02 client standard: all others get empty moduleSys.
+    for g in real_groups:
+        group_name = g.get("moduleGroupName", "")
+        if group_name == "G_MainController":
+            # Keep its moduleSys (e.g. 'ControlSys')
+            pass
+        else:
+            g["moduleSys"] = ""
 
     # Final Construction: Clear Root fields to match 'Naked' standard
     blueprint_root["moduleGroupName"] = ""

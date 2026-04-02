@@ -69,7 +69,7 @@ CHASSIS_GENERAL_ATTR_TEMPLATE = {
     },
     "subModuleType": {
         "key": "sub_module_type", "type": "DATA_COMBOX",
-        "comboType": {"typeKey": "diffChassis", "typeDesc": "差速底盘"},
+        "comboType": {"typeKey": "steerChassis", "typeDesc": "舵轮底盘"},
         "desc": "子类型", "boolParse": True
     },
     "moduleType": {"key": "module_type", "type": "DATA_STRING", "stringValue": "CHASSIS", "desc": "模块型号", "boolParse": True},
@@ -130,15 +130,15 @@ CATEGORY_TO_TYPE_KEY = {
 
 CATEGORY_TO_SUBSYS = {
     'CHASSIS': 'ChassisSys',
-    'DRIVEWHEEL': 'ChassisSys',
-    'DRIVER': 'DriverSys',
-    'MOTOR': 'DriverSys',
-    'MAINCPU': 'ControlSys',
-    'SENSOR': 'SensorSys',
-    'BATTERY': 'EnergySys',  # Official baseline uses EnergySys, not PowerSys
-    'BUTTON': 'InteractiveSys',  # CR-11: Corrected from SafetySys
-    'LIGHT': 'InteractiveSys',   # CR-11: Corrected from SafetySys
-    'IO': 'ControlSys',
+    'DRIVEWHEEL': 'ChassisSys',  # 2026-04-02: Client confirmed driveWheel → ChassisSys
+    'DRIVER': 'UnclassifiedSys',  # 2026-04-02: Client standard — independent modules use UnclassifiedSys
+    'MOTOR': 'UnclassifiedSys',
+    'MAINCPU': 'UnclassifiedSys',
+    'SENSOR': 'UnclassifiedSys',
+    'BATTERY': 'UnclassifiedSys',
+    'BUTTON': 'UnclassifiedSys',
+    'LIGHT': 'UnclassifiedSys',
+    'IO': 'UnclassifiedSys',
 }
 
 def map_component_to_cmodel(c):
@@ -165,7 +165,8 @@ def map_component_to_cmodel(c):
             gen_attr["moduleUuid"] = {"key": "module_uuid", "type": "DATA_STRING", "stringValue": comp_uuid, "desc": "模块Uuid", "boolParse": True, "boolHide": True}
     elif is_chassis:
         gen_attr = json.loads(json.dumps(CHASSIS_GENERAL_ATTR_TEMPLATE))
-        gen_attr["moduleName"]["stringValue"] = c.get("name", "chassis").strip()
+        # FIX #1 (2026-04-02): Chassis module_name must be 'chassis_diff', NOT the project name
+        gen_attr["moduleName"]["stringValue"] = "chassis_diff"
         gen_attr["moduleUuid"]["stringValue"] = c.get("id", "chassis-root")
     else:
         gen_attr = {
@@ -191,12 +192,19 @@ def map_component_to_cmodel(c):
             "comboType": {"typeKey": subsys}, "boolParse": True
         }
     
-    # CR-06: Ensure subModuleType is present if possible (especially for chassis)
-    if "subModuleType" not in gen_attr and is_chassis:
-        gen_attr["subModuleType"] = {
-            "key": "sub_module_type", "type": "DATA_COMBOX",
-            "comboType": {"typeKey": "diffChassis"}, "boolParse": True
-        }
+    # CR-06: Ensure subModuleType is present if possible
+    if "subModuleType" not in gen_attr:
+        if is_chassis:
+            gen_attr["subModuleType"] = {
+                "key": "sub_module_type", "type": "DATA_COMBOX",
+                "comboType": {"typeKey": "steerChassis"}, "boolParse": True
+            }
+        elif category.upper() == 'DRIVEWHEEL':
+            # FIX #3 (2026-04-02): driveWheel subModuleType = horizontalSteerWheel
+            gen_attr["subModuleType"] = {
+                "key": "sub_module_type", "type": "DATA_COMBOX",
+                "comboType": {"typeKey": "horizontalSteerWheel"}, "boolParse": True
+            }
 
     # [FIX F-008] Chassis Kinematics redirection to Tag 5 (structParam)
     # Standard tools expect headOffset etc. inside structParam.extendParams
@@ -207,7 +215,8 @@ def map_component_to_cmodel(c):
         {"key": "locCoordROLL", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountRoll", 0))},
         {"key": "locCoordPITCH", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountPitch", 0))},
         {"key": "locCoordYAW", "type": "DATA_DOUBLE", "doubleValue": float(c.get("mountYaw", 0))},
-        {"key": "parentNodeUuid", "type": "DATA_STRING", "stringValue": c.get("parentNodeUuid", "")}
+        # FIX #7 (2026-04-02): parentNodeUuid encoded as DATA_COMBOX per client standard
+        {"key": "parentNodeUuid", "type": "DATA_COMBOX", "comboType": {"typeKey": c.get("parentNodeUuid", "")}}
     ]
 
     # [FIX RC-CHASSIS] ALL modules (including chassis) keep privateAttrs in Tag 2 (privateAttr).
