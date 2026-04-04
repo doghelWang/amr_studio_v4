@@ -9,6 +9,14 @@ import shutil
 import tempfile
 import json
 from pathlib import Path
+from datetime import datetime, timezone, timedelta
+
+# Service version and start time (UTC+8 China Standard Time)
+SERVICE_START_TIME = datetime.now(timezone(timedelta(hours=8)))
+BACKEND_VERSION = "1.0.1" 
+BUILD_DATE = "2026-04-04"
+COMMIT_HASH = "f664e948"
+
 from core import data_manager
 from skills_v2.cmodel_decoder.decoder import decode_cmodel
 from skills_v2.model_splitter.splitter import split_comp_desc
@@ -40,6 +48,17 @@ app.add_middleware(
 
 app.mount("/downloads", StaticFiles(directory=str(SAVED_PROJECTS_DIR)), name="downloads")
 
+
+@app.get("/api/v1/system/version")
+def get_system_version_api():
+    return {
+        "backendVersion": BACKEND_VERSION,
+        "buildDate": BUILD_DATE,
+        "commitHash": COMMIT_HASH,
+        "serviceStartTime": SERVICE_START_TIME.isoformat()
+    }
+
+
 from fastapi import Request
 
 @app.exception_handler(Exception)
@@ -50,15 +69,11 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 # --- HELPERS ---
 def strip_ui_wrappers(node):
-    """
-    Decisively strips 'LibraryGroup' and promote children during serialization or init.
-    """
     if isinstance(node, dict):
         if "moreModuleInfo" in node:
             new_subs = []
             for sub in node["moreModuleInfo"]:
                 if sub.get("moduleGroupName") == "LibraryGroup":
-                    # Promote sub-items directly to current level
                     new_subs.extend(strip_ui_wrappers(sub).get("moreModuleInfo", []))
                 else:
                     new_subs.append(strip_ui_wrappers(sub))
@@ -77,7 +92,6 @@ def init_sandbox_api(payload: dict = Body(...)):
 
     from core.resource_adapter import frontend_to_comp_desc
     full_json = frontend_to_comp_desc(config)
-    # [FIX F-001] Strip UI Shells before saving to blueprint
     sanitized_json = strip_ui_wrappers(full_json)
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -94,7 +108,7 @@ def init_sandbox_api(payload: dict = Body(...)):
         with open(blueprint_path, "r", encoding="utf-8") as f:
             blueprint = json.load(f)
             
-        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), tmp_path)
+        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), sanitized_json)
         
         abi_path = data_manager.get_project_dir(project_id) / "AbiSet.json"
         if config.get("abilities"):
@@ -165,11 +179,96 @@ async def update_abilities_api(project_id: str, request: Request):
 def compile_cmodel_api(project_id: str):
     try:
         p_dir = data_manager.get_project_dir(project_id)
-        blueprint_path = str(p_dir / "blueprint_CompDesc.json")
         fname = f"{project_id}_packed.cmodel"
         output_cmodel = str(p_dir / fname)
-        audit_log = encode_cmodel(blueprint_path, output_cmodel)
-        return {"status": "success", "download_url": f"/downloads/{project_id}/{fname}", "audit": audit_log}
+        
+        import csv
+        enriched_path = p_dir / "CompDesc.json"
+        blueprint_path = p_dir / "blueprint_CompDesc.json"
+        
+        module_list_data = []
+        full_data = None
+        if enriched_path.exists():
+            with open(enriched_path, "r", encoding="utf-8") as f:
+                full_data = json.load(f)
+        elif blueprint_path.exists():
+            with open(blueprint_path, "r", encoding="utf-8") as f:
+                blueprint = json.load(f)
+                from skills_v2.cmodel_encoder.encoder import resolve_with_fidelity
+                full_data = resolve_with_fidelity(blueprint, str(p_dir))
+
+        if full_data:
+            from core.resource_adapter import CATEGORY_TO_SUBSYS, CATEGORY_TO_TYPE_KEY
+            
+            def collect_from_tree(node):
+                comps = node.get("module_componets", []) or node.get("moduleComponets", [])
+                for c in comps:
+                    gen = c.get("generalAttr", {}) or c.get("general_attr", {})
+                    struct = c.get("structParam", {}) or c.get("struct_param", {})
+                    ext = struct.get("extendParams", []) or struct.get("extend_params", [])
+                    coords = {e.get("key"): e.get("doubleValue") or e.get("double_value", 0) for e in ext}
+                    
+                    m_name = gen.get("moduleName", {}).get("stringValue") or gen.get("module_name", {}).get("string_value") or "Unknown"
+                    
+                    # 提取类别 (Desc + Key)
+                    m_cat_obj = gen.get("mainModuleType", {}) or gen.get("main_module_type", {})
+                    m_cat_desc = m_cat_obj.get("comboType", {}).get("typeDesc") or m_cat_obj.get("combo_type", {}).get("type_desc")
+                    m_cat_key = m_cat_obj.get("comboType", {}).get("typeKey") or m_cat_obj.get("combo_type", {}).get("type_key")
+                    
+                    if not m_cat_desc:
+                        raw_cat = str(c.get("category") or gen.get("moduleType", {}).get("stringValue") or "").upper()
+                        # Robust Fix for IO / extendedlnterface variants
+                        if any(k in raw_cat for k in ["INTERFACE", "IOMODULE", "IO_BOARD"]):
+                            raw_cat = "IO"
+                        
+                        m_cfg = CATEGORY_TO_TYPE_KEY.get(raw_cat, {"desc": "未知", "key": "unknown"})
+                        m_cat_desc = m_cfg["desc"]
+                        m_cat_key = m_cfg["key"]
+                    
+                    m_sub_type_obj = gen.get("subModuleType", {}) or gen.get("sub_module_type", {})
+                    m_sub_type_desc = m_sub_type_obj.get("comboType", {}).get("typeDesc") or m_sub_type_obj.get("combo_type", {}).get("type_desc")
+                    m_sub_type_key = m_sub_type_obj.get("comboType", {}).get("typeKey") or m_sub_type_obj.get("combo_type", {}).get("type_key")
+                    
+                    if not m_sub_type_desc:
+                        m_sub_type_desc = gen.get("moduleType", {}).get("stringValue") or gen.get("module_type", {}).get("string_value") or c.get("type", "Unknown")
+                        m_sub_type_key = m_sub_type_desc
+                    
+                    # 提取子系统 (Desc + Key)
+                    sub_sys = gen.get("subSysType", {}) or gen.get("sub_sys_type", {})
+                    sub_sys_desc = sub_sys.get("comboType", {}).get("typeDesc") or sub_sys.get("combo_type", {}).get("type_desc") or "未分类系统"
+                    sub_sys_key = sub_sys.get("comboType", {}).get("typeKey") or sub_sys.get("combo_type", {}).get("type_key") or "UnclassifiedSys"
+                    
+                    module_list_data.append({
+                        "模块名": m_name,
+                        "所属子系统": sub_sys_desc,
+                        "子系统Key": sub_sys_key,
+                        "模块主类别": m_cat_desc,
+                        "主类别Key": m_cat_key,
+                        "子类别": m_sub_type_desc,
+                        "子类别Key": m_sub_type_key,
+                        "安装位置(X/Y/Z)": f"{coords.get('locCoordX',0)}/{coords.get('locCoordY',0)}/{coords.get('locCoordZ',0)}",
+                        "旋转姿态(R/P/Y)": f"{coords.get('locCoordROLL',0)}/{coords.get('locCoordPITCH',0)}/{coords.get('locCoordYAW',0)}"
+                    })
+                for sub in node.get("moreModuleInfo", []) or node.get("more_module_info", []):
+                    collect_from_tree(sub)
+            
+            collect_from_tree(full_data)
+        
+        csv_name = f"{project_id}_module_list.csv"
+        csv_path = p_dir / csv_name
+        with open(csv_path, "w", encoding="utf-8-sig", newline="") as f:
+            headers = ["模块名", "所属子系统", "子系统Key", "模块主类别", "主类别Key", "子类别", "子类别Key", "安装位置(X/Y/Z)", "旋转姿态(R/P/Y)"]
+            writer = csv.DictWriter(f, fieldnames=headers)
+            writer.writeheader()
+            writer.writerows(module_list_data)
+
+        audit_log = encode_cmodel(str(p_dir), str(output_cmodel))
+        return {
+            "status": "success", 
+            "download_url": f"/downloads/{project_id}/{fname}",
+            "module_list_url": f"/downloads/{project_id}/{csv_name}",
+            "audit": audit_log
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -230,7 +329,7 @@ def get_schemas_api():
             primary = data_xml or data_json
             sys_name = "Other"
             try:
-                comp = (primary.get("moduleComponets") or [])[0]
+                comp = (primary.get("module_componets") or primary.get("moduleComponets") or [])[0]
                 sys_name = comp.get("generalAttr", {}).get("subSysType", {}).get("comboType", {}).get("typeKey") or "Other"
             except: pass
             if sys_name not in entities: entities[sys_name] = []
@@ -241,15 +340,6 @@ def get_schemas_api():
         except: pass
     return entities
 
-FRONTEND_DIST = PROJECT_ROOT / "src" / "frontend" / "dist"
-if FRONTEND_DIST.exists():
-    app.mount("/assets", StaticFiles(directory=str(FRONTEND_DIST / "assets")), name="assets")
-    @app.get("/{full_path:path}")
-    async def serve_frontend(full_path: str):
-        if full_path.startswith("api") or full_path.startswith("downloads"): return JSONResponse(status_code=404, content={})
-        file_path = FRONTEND_DIST / full_path
-        if file_path.is_file(): return FileResponse(file_path)
-        return FileResponse(FRONTEND_DIST / "index.html")
-
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host=os.getenv("HOST", "0.0.0.0"), port=int(os.getenv("PORT", "8002")))

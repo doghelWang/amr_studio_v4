@@ -1,0 +1,16 @@
+{
+  "moduleGroupName": "PerfectAlignedBot",
+  "modelVersion": "1.0",
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_diff",
+      "moduleGroupUuid": "chassis-root",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_chassis_diff_chassis-root.json"
+        }
+      ],
+      "moreModuleInfo": []
+    }
+  ]
+}

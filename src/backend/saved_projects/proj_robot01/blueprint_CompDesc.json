@@ -1,0 +1,160 @@
+{
+  "moduleGroupName": "robot01",
+  "modelVersion": "1.0",
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_diff",
+      "moduleGroupUuid": "chassis-root",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_robot01_chassis-root.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "driveWheel_1",
+      "moduleGroupUuid": "247ab1e1-4538-48ca-90db-0e006b96f437",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driveWheel_1_247ab1e1-4538-48ca-90db-0e006b96f437.json"
+        }
+      ],
+      "moreModuleInfo": [
+        {
+          "moduleGroupName": "driver_1",
+          "moduleGroupUuid": "36506c11-4b16-4840-baf8-d1276bbbe5a6",
+          "moduleComponets": [
+            {
+              "$ref": "modules/module_driver_1_36506c11-4b16-4840-baf8-d1276bbbe5a6.json"
+            }
+          ],
+          "moreModuleInfo": [
+            {
+              "moduleGroupName": "walkMotor_1",
+              "moduleGroupUuid": "f9f7a2d0-c771-4b65-acda-6f9ef281d981",
+              "moduleComponets": [
+                {
+                  "$ref": "modules/module_walkMotor_1_f9f7a2d0-c771-4b65-acda-6f9ef281d981.json"
+                }
+              ],
+              "moreModuleInfo": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleGroupName": "driveWheel_2",
+      "moduleGroupUuid": "395495fa-37ef-4446-9746-a9b573a4ad7a",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driveWheel_2_395495fa-37ef-4446-9746-a9b573a4ad7a.json"
+        }
+      ],
+      "moreModuleInfo": [
+        {
+          "moduleGroupName": "driver_2",
+          "moduleGroupUuid": "8f6159bf-5f5c-478c-8cf0-d19d046c84e5",
+          "moduleComponets": [
+            {
+              "$ref": "modules/module_driver_2_8f6159bf-5f5c-478c-8cf0-d19d046c84e5.json"
+            }
+          ],
+          "moreModuleInfo": [
+            {
+              "moduleGroupName": "walkMotor_2",
+              "moduleGroupUuid": "073b4289-50ef-4136-92e2-4ac2b8ffb1a4",
+              "moduleComponets": [
+                {
+                  "$ref": "modules/module_walkMotor_2_073b4289-50ef-4136-92e2-4ac2b8ffb1a4.json"
+                }
+              ],
+              "moreModuleInfo": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleGroupName": "MCPU-RA-MC-R318BN",
+      "moduleGroupUuid": "50b7d78f-da88-4383-ac5c-303e13770bac",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_MCPU-RA-MC-R318BN_50b7d78f-da88-4383-ac5c-303e13770bac.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "IO-lnterface board",
+      "moduleGroupUuid": "66154fce-9766-45a7-991f-0c14d597bc80",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_IO-lnterface board_66154fce-9766-45a7-991f-0c14d597bc80.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "laser_0",
+      "moduleGroupUuid": "df8e88b0-5b07-4e94-9596-31375d6eced8",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_laser_0_df8e88b0-5b07-4e94-9596-31375d6eced8.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "laser_1",
+      "moduleGroupUuid": "89802bef-3355-4f1a-a0bc-7658d1da30a3",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_laser_1_89802bef-3355-4f1a-a0bc-7658d1da30a3.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "battery",
+      "moduleGroupUuid": "6805ac36-8ca4-4e1c-81e9-c8f40790e0e9",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_battery_6805ac36-8ca4-4e1c-81e9-c8f40790e0e9.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "emc",
+      "moduleGroupUuid": "93d257b8-c8d8-45bd-b5db-32cc7674baa9",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_emc_93d257b8-c8d8-45bd-b5db-32cc7674baa9.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "start",
+      "moduleGroupUuid": "ac40db3a-9afc-4387-a68f-f5cba991128a",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_start_ac40db3a-9afc-4387-a68f-f5cba991128a.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "reset",
+      "moduleGroupUuid": "107b4e06-b18b-42dd-bb51-0bf413367d73",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_reset_107b4e06-b18b-42dd-bb51-0bf413367d73.json"
+        }
+      ],
+      "moreModuleInfo": []
+    }
+  ]
+}

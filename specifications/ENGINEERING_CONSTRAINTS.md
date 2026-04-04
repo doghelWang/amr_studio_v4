@@ -14,7 +14,9 @@
 ## 2. 无损闭环保护 (Data Fidelity)
 - **约束**：
   - **元数据保留**：前端 Store 必须完整保存 `componentAbility`、`version` 等非 UI 编辑字段。导出时必须原样回填。
+  - **这里必须要补充说明**：
   - **默认值保护**：严禁在往返过程中过滤掉值为 `0`, `false` 或 `""` 的字段。
+  - **Proto 字段零省略 (Strict Proto Field Compliance)**：构建和映射过程中严禁省略 Proto 定义的字段。如果前端因为缺少组件模板而未能提供该值，后端必须要初始化一整套合规的骨架属性兜底。缺失字段会直接触发严重解析失败或不可逆向初始化（例如 shapeType 会被默认为 0=Sphere，modelVersion 丢失导致反序列化崩溃）。必须严格执行 `UnclassifiedSys`、`"V1.0"` 和 `box(100x100x100)` 这三个基础兜底以建立有效的二进制安全护城河。
 
 ## 3. 状态同步策略 (Sync Strategy)
 - **约束**：
@@ -180,4 +182,17 @@
 - **前端类型安全**: 前端 `types.ts` 中定义的 `MainModuleType` 枚举必须与 §18.2 的 18 个硬件大类保持 1:1 映射。当前存在 `IO_BOARD`, `MOTOR`, `VISUAL` 等非标准类型，需清理或注释为别名。
 - **ExportService 默认值约束**: `ExportService.ts` 中的 `moduleGroupName` 默认值 `"LibraryGroup"` 无标准依据，应改为使用模块的 `name` 字段。
 - **映射表外置要求 (§13 补充)**: `PROTO_TO_SPEC_MAP`、`INTF_TO_SPEC_MAP`、`CATEGORY_TO_TYPE_KEY`、`CATEGORY_TO_SUBSYS` 等映射表虽当前以内联常量形式存在于代码中，但中期目标是从 XML 元数据自动生成或迁移至外部配置文件，消除硬编码依赖。
+
+## 23. 版本信息管理约束 (Version Management)
+- **版本号必更新原则**: 每次代码更新（包括功能新增、缺陷修复、性能优化、配置变更等任何代码层面的修改）后，必须同步更新版本信息。
+- **版本号位置**: 
+  - `pyproject.toml`: `tool.poetry.version` 字段
+  - `package.json`: `version` 字段
+  - 或其他项目约定的版本标识文件
+- **版本号格式**: 遵循 [语义化版本](https://semver.org/lang/zh-CN/)（SemVer）规范：`主版本.次版本.修订号`（例如 `1.2.3`）
+  - 破坏性变更（Breaking Changes）→ 递增主版本号
+  - 新增功能（Backward Compatible Features）→ 递增次版本号
+  - 缺陷修复（Bug Fixes）→ 递增修订号
+- **版本提交规范**: 版本更新必须与代码变更一同提交，禁止代码修改与版本更新分离为不同提交。
+- **版本日志**: 建议同步更新 `CHANGELOG.md` 或版本历史记录，简要描述本次变更内容。
 

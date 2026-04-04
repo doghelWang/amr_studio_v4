@@ -1,0 +1,62 @@
+{
+  "version": "1.0",
+  "componentAbility": [],
+  "functionAbility": [
+    {
+      "type": "locationAbility",
+      "desc": "定位能力",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "navi",
+          "desc": "导航",
+          "tips": "",
+          "key": "navi_0",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "type": "ARRAY",
+              "desc": "",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        }
+      ]
+    },
+    {
+      "type": "sensoryRecoAbi",
+      "desc": "感知识别",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "codeRec",
+          "desc": "码识别",
+          "tips": "",
+          "key": "codeRec_0",
+          "attr": [
+            {
+              "key": "codeRecUniqueKey",
+              "type": "ARRAY",
+              "desc": "",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        }
+      ]
+    }
+  ]
+}

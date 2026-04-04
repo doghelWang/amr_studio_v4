@@ -26,13 +26,20 @@ DB_DIR = BASE_DIR / "saved_projects"
 def get_project_dir(project_id: str) -> Path:
     return DB_DIR / project_id
 
-def init_project(project_id: str, blueprint_data: dict, modules_dir_path: str, artifacts_dir: Path):
+def init_project(project_id: str, blueprint_data: dict, modules_dir_path: str, full_comp_desc: dict):
     p_dir = get_project_dir(project_id)
     p_dir.mkdir(parents=True, exist_ok=True)
     m_dir = p_dir / "modules"
     m_dir.mkdir(exist_ok=True)
+    
+    # Save Blueprint
     with open(p_dir / "blueprint_CompDesc.json", "w", encoding="utf-8") as f:
         json.dump(blueprint_data, f, ensure_ascii=False, indent=2)
+    
+    # Save Full Enriched JSON (for CSV generation and reference)
+    with open(p_dir / "CompDesc.json", "w", encoding="utf-8") as f:
+        json.dump(full_comp_desc, f, ensure_ascii=False, indent=2)
+
     src_modules = Path(modules_dir_path)
     if src_modules.exists():
         for item in src_modules.iterdir():

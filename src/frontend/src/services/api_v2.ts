@@ -93,3 +93,9 @@ export const apiLoadProject = async (name: string) => {
     const res = await axios.get(`${getBackendBase()}/api/v1/projects/load/${name}`);
     return res.data;
 };
+
+/** 获取后端版本信息 */
+export const apiFetchBackendVersion = async () => {
+  const res = await axios.get(`${getBackendBase()}/api/v1/system/version`);
+  return res.data;
+};

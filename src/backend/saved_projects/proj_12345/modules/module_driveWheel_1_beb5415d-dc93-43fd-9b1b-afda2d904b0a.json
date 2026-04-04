@@ -1,0 +1,164 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "driveWheel_1",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "driveWheel_1",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "beb5415d-dc93-43fd-9b1b-afda2d904b0a",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel"
+      },
+      "boolParse": true
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel"
+      },
+      "boolParse": true
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "MotionSys"
+      },
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "wheelAttr",
+        "desc": "基本属性",
+        "arrayBaseEle": [
+          {
+            "key": "wheelRadius",
+            "type": "DATA_DOUBLE",
+            "desc": "轮半径",
+            "unit": "mm",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 65.0
+          }
+        ]
+      },
+      {
+        "key": "linkMotorAttr",
+        "desc": "关联电机",
+        "arrayBaseEle": [
+          {
+            "key": "relateMotor",
+            "type": "DATA_FIXED_E",
+            "desc": "行走电机",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [
+              "driver/PMSMMotor"
+            ],
+            "stringValue": "dc0a50db-71ac-4809-bf04-447e200d9850"
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": []
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 400.0,
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "YAW"
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null
+        },
+        "desc": "父节点UUID"
+      }
+    ]
+  }
+}

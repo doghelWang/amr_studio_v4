@@ -1,11 +1,209 @@
 
-> amr-studio-frontend@1.0.0 dev
-> vite --host 0.0.0.0 --port 3001
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m112[22m[2m[0m ms[22m
 
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m112[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m12:11:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m168[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m12:12:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
+[2m12:12:42[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/wizard/PowerSystemStep.tsx[22m Could not Fast Refresh ("DRIVE_TOPOLOGY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:12:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
+[2m12:12:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
+[2m12:12:46[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/wizard/PowerSystemStep.tsx[22m Could not Fast Refresh ("DRIVE_TOPOLOGY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
+[2m12:12:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
+[2m12:12:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m116[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m12:17:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m106[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m12:17:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m12:17:41[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m91[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m12:20:19[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m118[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m263[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m122[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m13:16:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m113[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m141[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m140[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m91[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m92[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m101[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m89[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m90[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
 
   [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m130[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.217:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m149[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m165[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m94[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m100[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m95[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m96[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m121[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m123[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m95[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m138[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m

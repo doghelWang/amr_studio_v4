@@ -59,9 +59,14 @@ const STEP_COMPONENTS = [
 
 const getBackendUrl = () => {
   if (typeof window !== 'undefined') {
-    if (window.location.port === '3000' || window.location.port === '5173') {
-      return `http://${window.location.hostname}:8002`;
+    // If we are on a known frontend dev port, point to 8002
+    if (['3000', '3001', '5173'].includes(window.location.port)) {
+      const url = `http://${window.location.hostname}:8002`;
+      (window as any).BACKEND_URL = url;
+      return url;
     }
+    // If we are already on 8002 or something else, use origin
+    (window as any).BACKEND_URL = window.location.origin;
     return window.location.origin;
   }
   return "http://localhost:8002";
@@ -76,10 +81,19 @@ export default function App() {
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
+    const [backendStatus, setBackendStatus] = useState<any>(null);
 
-    // 初始加载：获取 XML 元数据注册表
+    // 初始加载：获取 XML 元数据注册表 + 后端状态
     useEffect(() => {
         fetchSchemas();
+        
+        // Fetch backend status info (2026-04-04)
+        axios.get(`${BACKEND_URL}/api/v1/system/version`)
+            .then(res => {
+                console.log("[DEBUG] Backend Version Info:", res.data);
+                setBackendStatus(res.data);
+            })
+            .catch(err => console.error("Failed to fetch backend status", err));
     }, [fetchSchemas]);
     const importRef = useRef<HTMLInputElement>(null);
     
@@ -246,13 +260,28 @@ export default function App() {
             
             if (res.data.status === 'success') {
                 printAudit(`Export [${currentProjectId}]`, res.data.audit);
-                const link = document.createElement('a');
-                link.href = `${BACKEND_URL}${res.data.download_url}`;
-                link.setAttribute('download', `${currentProjectId}_packed.cmodel`);
-                document.body.appendChild(link);
-                link.click();
-                link.remove();
-                messageApi.success({ content: '模型构建成功并下载！', key: 'export' });
+                
+                // 1. Download .cmodel
+                const linkModel = document.createElement('a');
+                linkModel.href = `${BACKEND_URL}${res.data.download_url}`;
+                linkModel.setAttribute('download', `${currentProjectId}_packed.cmodel`);
+                document.body.appendChild(linkModel);
+                linkModel.click();
+                linkModel.remove();
+
+                // 2. Download Module List CSV (2026-04-04 Added)
+                if (res.data.module_list_url) {
+                    setTimeout(() => {
+                        const linkCsv = document.createElement('a');
+                        linkCsv.href = `${BACKEND_URL}${res.data.module_list_url}`;
+                        linkCsv.setAttribute('download', `${currentProjectId}_module_list.csv`);
+                        document.body.appendChild(linkCsv);
+                        linkCsv.click();
+                        linkCsv.remove();
+                    }, 500); // Slight delay to avoid browser blocking multiple downloads
+                }
+
+                messageApi.success({ content: '成果物与模块清单构建成功并下载！', key: 'export' });
             } else {
                 console.error('[DEBUG] Build failed with non-success status:', res.data);
                 throw new Error(res.data.detail || 'Build script returned error');
@@ -299,6 +328,7 @@ export default function App() {
                 onNewProject={() => setShowWelcome(true)}
                 onImport={handleImportClick}
                 onExport={handleExport}
+                backendStatus={backendStatus}
             />
 
             <main className="app-main">

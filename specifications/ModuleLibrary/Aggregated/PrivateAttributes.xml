@@ -544,6 +544,9 @@
     </Group>
     <Group key="chassisAttr" desc="底盘参数">
       <Attribute key="wheelsNum" type="DATA_INT32" int32Value="1" int32Maxvalue="99" int32Minvalue="1" unit="个" desc="轮组个数" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+        <Attribute key="length" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="长度" boolMustfill="True" boolBasic="True"/>
+        <Attribute key="width" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="宽度" boolMustfill="True" boolBasic="True"/>
+        <Attribute key="height" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="高度" boolMustfill="True" boolBasic="True"/>
       <Attribute key="maxAcceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（空载）" boolMustfill="True"/>
       <Attribute key="maxDeceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（空载）" boolMustfill="True"/>
       <Attribute key="maxSpeed(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（空载）" boolMustfill="True"/>

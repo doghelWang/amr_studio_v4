@@ -105,13 +105,13 @@ export class ExportService {
             structParam: {
                 /** 安装位参数强制转换为 DATA_DOUBLE 类型以符合二进制定义 */
                 extendParams: [
-                    { key: 'locCoordX', type: 'DATA_DOUBLE', doubleValue: c.mountX },
-                    { key: 'locCoordY', type: 'DATA_DOUBLE', doubleValue: c.mountY },
-                    { key: 'locCoordZ', type: 'DATA_DOUBLE', doubleValue: c.mountZ },
-                    { key: 'locCoordROLL', type: 'DATA_DOUBLE', doubleValue: c.mountRoll },
-                    { key: 'locCoordPITCH', type: 'DATA_DOUBLE', doubleValue: c.mountPitch },
-                    { key: 'locCoordYAW', type: 'DATA_DOUBLE', doubleValue: c.mountYaw },
-                    { key: 'parentNodeUuid', type: 'DATA_STRING', stringValue: c.parentNodeUuid || "" }
+                    { key: 'locCoordX', type: 'DATA_DOUBLE', doubleValue: c.mountX, desc: 'X坐标' },
+                    { key: 'locCoordY', type: 'DATA_DOUBLE', doubleValue: c.mountY, desc: 'Y坐标' },
+                    { key: 'locCoordZ', type: 'DATA_DOUBLE', doubleValue: c.mountZ, desc: 'Z坐标' },
+                    { key: 'locCoordROLL', type: 'DATA_DOUBLE', doubleValue: c.mountRoll, desc: 'Roll旋转' },
+                    { key: 'locCoordPITCH', type: 'DATA_DOUBLE', doubleValue: c.mountPitch, desc: 'Pitch旋转' },
+                    { key: 'locCoordYAW', type: 'DATA_DOUBLE', doubleValue: c.mountYaw, desc: 'Yaw旋转' },
+                    { key: 'parentNodeUuid', type: 'DATA_COMBOX', comboType: { typeKey: c.parentNodeUuid || "" }, desc: '父节点UUID' }
                 ],
                 segmentedLimitsParams: c.rawStructParam
             },

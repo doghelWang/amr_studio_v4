@@ -1,0 +1,101 @@
+  <Module type="diffChassis">
+    <Group key="motionCenterAttr" desc="运动中心参数">
+      <Attribute key="headOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="tailOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="leftOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="rightOffset(Idle)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（空载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="headOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车头距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="tailOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离车尾距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="leftOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离左侧距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+      <Attribute key="rightOffset (Full Load)" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="距离右侧距离（满载）" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+    </Group>
+    <Group key="chassisAttr" desc="底盘参数">
+      <Attribute key="wheelsNum" type="DATA_INT32" int32Value="1" int32Maxvalue="99" int32Minvalue="1" unit="个" desc="轮组个数" boolMustfill="True" boolBasic="True" boolNoeditable="True"/>
+        <Attribute key="length" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="长度" boolMustfill="True" boolBasic="True"/>
+        <Attribute key="width" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="宽度" boolMustfill="True" boolBasic="True"/>
+        <Attribute key="height" type="DATA_DOUBLE" doubleValue="100" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="高度" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="maxAcceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed(Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（空载）" boolMustfill="True"/>
+      <Attribute key="maxAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线加速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="最大线减速度（满载）" boolMustfill="True"/>
+      <Attribute key="maxSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s" desc="最大速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Idle)" type="DATA_DOUBLE" doubleValue="500" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidMaxDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm/s2" desc="避障最大减速度（满载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Idle)" type="DATA_DOUBLE" doubleValue="10" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（空载）" boolMustfill="True"/>
+      <Attribute key="avoidRotMaxAngDec (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" unit="°/s2" desc="避障最大旋转减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Idle)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Idle)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（空载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngAcceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角加速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngDeceleration (Full Load)" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s2" desc="最大角减速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateMaxAngSpeed (Full Load)" type="DATA_DOUBLE" doubleValue="6" doubleMaxvalue="360" doubleMinvalue="1" unit="°/s" desc="最大角速度（满载）" boolMustfill="True"/>
+      <Attribute key="rotateDiameter" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="mm" desc="旋转直径" boolMustfill="True"/>
+      <Attribute key="maxClimbingAngle" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="90" doubleMinvalue="0" unit="°" desc="爬坡能力" boolHide="True"/>
+      <Attribute key="totalLoadWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="额定负载" boolMustfill="True" boolHide="True"/>
+      <Attribute key="selfWeight" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="kg" desc="自重" boolHide="True"/>
+    </Group>
+    <Group key="wheelsAttr" desc="轮组属性">
+      <Attribute key="wheelSpace" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="1" unit="mm" desc="轮间距" boolMustfill="True"/>
+      <Attribute key="locCoordNX" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心X坐标" boolHide="True"/>
+      <Attribute key="locCoordNY" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心Y坐标" boolHide="True"/>
+      <Attribute key="locCoordNZ" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="-9999" unit="mm" desc="轴中心Z坐标" boolHide="True"/>
+    </Group>
+  </Module>
+  <Module type="diffSteerWheel">
+    <Group key="wheelAttr" desc="基本属性">
+      <Attribute key="wheelRadius" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮半径" boolMustfill="True" boolBasic="True"/>
+      <Attribute key="wheelSpace" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="999" doubleMinvalue="1" unit="mm" desc="轮间距" boolMustfill="True"/>
+      <Attribute key="angleLmtPos" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="175" doubleMinvalue="0" unit="°" desc="正限位角度"/>
+      <Attribute key="angleLmtNeg" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="0" doubleMinvalue="-175" unit="°" desc="负限位角度"/>
+      <Attribute key="rotOmgLmt" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="9999" doubleMinvalue="0" unit="°/s" desc="转向能力(最大)" boolHide="True"/>
+    </Group>
+    <Group key="angleSensor" desc="转向反馈">
+      <Attribute key="angleSensorType" type="DATA_COMBOX" desc="类型">
+        <comboType typeKey="GROUP_CALI_ABS_EXTERNAL" typeDesc="绝对式编码器(外置)">
+          <typeGroups>
+            <Item key="GROUP_CALI_INC_EXTERNAL" desc="增量编码器(外置)">
+              <arrayCmobEle>
+                <Item key="gearRatio" type="DATA_DOUBLE" doubleValue="1" doubleMaxvalue="9999" doubleMinvalue="1" desc="减速比(齿轮比)" boolHide="True"/>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/incrementalEncode</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relatePosIo" type="DATA_FIXED_E" stringFix="" desc="正限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateNegIo" type="DATA_FIXED_E" stringFix="" desc="负限位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="relateZeroIo" type="DATA_FIXED_E" stringFix="" desc="零位关联io">
+                  <fixedSource>
+                    <Value>sensor/proximitySensor</Value>
+                    <Value>sensor/PT</Value>
+                  </fixedSource>
+                </Item>
+                <Item key="angleDeviationZero" type="DATA_DOUBLE" doubleValue="0" doubleMaxvalue="360" doubleMinvalue="-360" unit="°" desc="零位角度偏差" boolHide="True"/>
+                <Item key="detectModeZero" type="DATA_COMBOX" desc="零位检测模式" boolHide="True">
+                  <comboType typeKey="DETECT_MODE_NONE" typeDesc="无">
+                    <typeGroups>
+                      <Item key="DETECT_MODE_NONE" desc="无"/>
+                      <Item key="ZERO_TRIG_MODE_POINT" desc="单点检测"/>
+                      <Item key="ZERO_TRIG_MODE_POS_AREA" desc="正向区域检测"/>
+                      <Item key="ZERO_TRIG_MODE_NEG_AREA" desc="负向区域检测"/>
+                    </typeGroups>
+                  </comboType>
+                </Item>
+              </arrayCmobEle>
+            </Item>
+            <Item key="GROUP_CALI_INC_ABZ" desc="磁栅编码器(ABZ)">
+              <arrayCmobEle>
+                <Item key="relatedEncode" type="DATA_FIXED_E" stringFix="" desc="关联编码器">
+                  <fixedSource>
+                    <Value>sensor/ABZEncode</Value>
+                  </fixedSource>

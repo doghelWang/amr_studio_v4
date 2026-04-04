@@ -1,82 +1,28 @@
-# AMR Studio V4 - Robot Specification & Virtual Sandbox
+# AMR Studio V4
 
-AMR Studio V4 is a professional engineering tool for designing, verifying, and exporting Autonomous Mobile Robot (AMR) hardware configurations. It bridges the gap between high-level component selection and low-level `CModel` (Controller Model) specifications.
+AMR 机器人工业级配置与模型建模平台。
 
-## 🚀 Quick Start
+## 🚀 核心特性 (2026-04-04 升级)
+*   **工业级 CModel 导出**: 生成位级对标 `ModelSet312` 标准的二进制包，支持全量字段校验与单消息封装。
+*   **全链路数据一致性**: 自动同步底盘尺寸、补全属性描述、校准电机参数。
+*   **模块清单系统**: 支持同步导出包含子系统、类别及 6-DOF 位姿的中英文 CSV 清单。
+*   **实时状态监控**: 侧边栏集成服务版本与启动时刻追踪。
 
-### Prerequisites
-- **Node.js** (v18 or higher)
-- **Python** (3.10 or higher)
-
-### Installation
-1. **Clone the repository**:
-   ```bash
-   git clone <repository_url>
-   cd amr_studio_v4
-   ```
-
-2. **Setup Backend Environment**:
-   ```bash
-   cd src/backend
-   python3 -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   ```
-
-3. **Setup Frontend Environment**:
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-## 🛠 Running the Application
-
-### Unified Startup (Recommended)
-We provide a unified startup script that handles both frontend (Vite) and backend (FastAPI).
-
-- **On MacOS / Linux**:
-  ```bash
-  python3 start.py
-  ```
-- **On Windows**:
-  ```batch
-  start.bat
-  ```
-
-### Developer Mode (with Hot-Reload)
+## 🛠 快速开始
+推荐使用统一启动脚本：
 ```bash
-python3 start.py --dev
+python3 start.py
 ```
+该脚本会自动：
+1. 清理 8002 (Backend) 和 3001 (Frontend) 端口。
+2. 以持久化后台模式启动双端服务。
+3. 执行健康探测并报告启动状态。
 
-## 🏗 Data Architecture
-
-### 1. XML Registry (Single Source of Truth)
-All hardware specifications are governed by the **Aggregated XML Registry** located in `specifications/ModuleLibrary/Aggregated/`.
-- `PrivateAttributes.xml`: Defines hardware-specific properties.
-- `InterfaceSpecs.xml`: Defines pinouts and interface parameters.
-- `ModuleConfigs.xml`: Defines standard configurations for complex modules.
-
-### 2. Export Pipeline
-When you click **Export** in the UI:
-1. **Frontend**: Maps the UI state to a `blueprint_CompDesc.json`.
-2. **Backend**: 
-   - Resolves all pointers and references.
-   - Enriches the data using the `XmlTemplateRegistry`.
-   - Standardizes the format to match the **ModelSet312** baseline (Protobuf-compatible).
-   - Generates the final `.cmodel` (JSON) file.
-
-## 📁 Project Structure
-
-- `src/frontend`: React + Tailwind CSS dashboard.
-- `src/backend`: FastAPI server + `XmlTemplateRegistry` serialization engine.
-- `specifications`: Original and aggregated hardware libraries.
-- `scripts`: Maintenance scripts (aggregation, verification, encoding tests).
-
-## 🛡 Engineering Constraints
-This project follows strict engineering rules defined in `specifications/ENGINEERING_CONSTRAINTS.md`. Key highlights:
-- **No Hardcoding**: All metadata must be derived from the XML Registry.
-- **Protocol Compliance**: Exported JSON must use `interfaceParamsArray` for all interface data.
-- **Fidelity**: Logical grouping (e.g., `chassisAttr`, `wheelsAttr`) must match official CModel standards.
+## 📁 产物审计说明
+所有的转换细节、对比证据及全量对账报告均存放在 `audits/` 目录下：
+*   `audits/BIT_PERFECT_AUDIT/`: 位级 Tag 对标证据。
+*   `audits/EXHAUSTIVE_RECONCILIATION_20260404/`: 100% 字段级流转报告。
+*   `audits/FINAL_PIPELINE_VALIDATION_20260404/`: 技术产物详解清单。
 
 ---
-© 2026 AMR Studio Team. Proprietary and Confidential.
+*AMR Studio V4 - 让建模更精准，让协议更严苛。*

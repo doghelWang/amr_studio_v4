@@ -27,9 +27,33 @@
       "key": "sub_sys_type",
       "type": "DATA_COMBOX",
       "comboType": {
-        "typeKey": "DriverSys"
+        "typeKey": "UnclassifiedSys"
       },
       "boolParse": true
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driver"
+      },
+      "boolParse": true
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
     }
   },
   "privateAttr": {
@@ -216,8 +240,10 @@
       },
       {
         "key": "parentNodeUuid",
-        "type": "DATA_STRING",
-        "stringValue": "a7b88ea2-c5e7-437b-967f-49a9cc424c89"
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "a7b88ea2-c5e7-437b-967f-49a9cc424c89"
+        }
       }
     ]
   }
