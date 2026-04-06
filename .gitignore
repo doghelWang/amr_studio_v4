@@ -8,7 +8,8 @@ venv/
 .env
 
 # Model Artifacts (Local Only)
-backend/saved_projects/
+backend/saved_projects/*/
+!backend/saved_projects/.gitkeep
 backend/backend_runtime.log
 frontend/frontend_runtime.log
 *.cmodel
@@ -29,3 +30,22 @@ frontend/frontend_runtime.log
 frontend/node_modules/
 frontend/dist/
 .DS_Store
+/src/frontend/dist/
+/src/frontend/tsconfig.tsbuildinfo
+/tests/node_modules/
+/tests/dist/
+*.log
+__pycache__/
+*.pyc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+**/.DS_Store
+Thumbs.db

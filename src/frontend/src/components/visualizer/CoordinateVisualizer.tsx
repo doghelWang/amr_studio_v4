@@ -5,7 +5,7 @@ import { useProjectStore } from '../../store/useProjectStore';
 const { Text } = Typography;
 
 interface ViewProps {
-  type: 'iso' | 'top';
+  type: 'iso' | 'top' | 'front' | 'side';
   width: number;
   height: number;
   components: any[];
@@ -32,10 +32,12 @@ const getThemeColors = (isDark: boolean) => ({
  * Unified 3D projector - consistent projection math
  * ISO: Isometric projection
  * Top: Orthographic top-down view (X,Y plane)
+ * Front: Front view looking along -Y (X,Z plane)
+ * Side: Side view looking along +X (Y,Z plane)
  */
 const projectPoint = (
   x: number, y: number, z: number,
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   centerX: number, centerY: number,
   scale: number
 ) => {
@@ -44,17 +46,23 @@ const projectPoint = (
     const isoX = (x - y) * Math.cos(angle);
     const isoY = (x + y) * Math.sin(angle) - z;
     return { x: centerX + isoX * scale, y: centerY + isoY * scale };
-  } else {
+  } else if (type === 'top') {
     // Top view: X is right, Y is up (screen Y is inverted)
     return { x: centerX + x * scale, y: centerY - y * scale };
+  } else if (type === 'front') {
+    // Front view: looking along -Y axis, X is right, Z is down (screen Y inverted)
+    return { x: centerX + x * scale, y: centerY - z * scale };
+  } else {
+    // Side view: looking along +X axis, Y is right, Z is down (screen Y inverted)
+    return { x: centerX + y * scale, y: centerY - z * scale };
   }
 };
 
 /**
- * Render chassis as full 3D box (for ISO) or rectangle (for Top)
+ * Render chassis as full 3D box (for ISO) or rectangle (for Top/Front/Side)
  */
 const renderChassis = (
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   width: number, length: number, height: number,
   centerX: number, centerY: number, scale: number,
   colors: any
@@ -89,7 +97,7 @@ const renderChassis = (
                  fill={colors.chassis[1]} opacity={0.3} stroke={colors.chassis[1]} strokeWidth={2} />
       </g>
     );
-  } else {
+  } else if (type === 'top') {
     // Top view - draw chassis with wheel arches
     const p1 = projectPoint(cx - length/2, cy - width/2, 0, type, centerX, centerY, scale);
     const p2 = projectPoint(cx + length/2, cy + width/2, 0, type, centerX, centerY, scale);
@@ -136,14 +144,14 @@ const renderChassis = (
       <g>
         {/* Main chassis body with wheel arches */}
         <path d={archPath}
-              fill={colors.chassis[1]} opacity={0.35}
-              stroke={colors.chassis[1]} strokeWidth={2} />
+          fill={colors.chassis[1]} opacity={0.35}
+          stroke={colors.chassis[1]} strokeWidth={2} />
         {/* Center line indicator */}
         <line x1={centerPx} y1={p1.y + 10} x2={centerPx} y2={p2.y - 10}
-              stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+          stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
         {/* Center cross */}
         <line x1={p1.x + 20} y1={centerPy} x2={p2.x - 20} y2={centerPy}
-              stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+          stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
         {/* Front arrow indicator */}
         <polygon
           points={`${centerPx},${p1.y + 30} ${centerPx - 8},${p1.y + 45} ${centerPx + 8},${p1.y + 45}`}
@@ -151,14 +159,77 @@ const renderChassis = (
         <text x={centerPx + 15} y={p1.y + 45} fill={colors.axisY} fontSize={10}>前</text>
       </g>
     );
+  } else if (type === 'front') {
+    // Front view: looking along -Y, see X (horizontal) and Z (vertical)
+    // Width = chassisWidth (Y dimension), Height = chassisHeight
+    const p1 = projectPoint(cx - width/2, 0, 0, type, centerX, centerY, scale);
+    const p2 = projectPoint(cx + width/2, 0, height, type, centerX, centerY, scale);
+
+    return (
+      <g>
+        {/* Chassis body rectangle */}
+        <rect
+          x={p1.x} y={p2.y}
+          width={p2.x - p1.x} height={p1.y - p2.y}
+          fill={colors.chassis[1]} opacity={0.35}
+          stroke={colors.chassis[1]} strokeWidth={2} rx={4}
+        />
+        {/* Ground line */}
+        <line x1={p1.x - 20} y1={p1.y} x2={p2.x + 20} y2={p1.y}
+          stroke={colors.grid} strokeWidth={1} strokeDasharray="4 2" />
+        {/* Center cross indicator */}
+        <line x1={centerX} y1={p2.y + 10} x2={centerX} y2={p1.y - 10}
+          stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+        {/* Front indicator arrow (pointing up since Front is at +X) */}
+        <polygon
+          points={`${centerX - 8},${p2.y + 35} ${centerX},${p2.y + 20} ${centerX + 8},${p2.y + 35}`}
+          fill={colors.axisY} opacity={0.8} />
+        <text x={centerX + 12} y={p2.y + 35} fill={colors.axisY} fontSize={10}>前</text>
+        {/* Motion center dot (at ground level) */}
+        <circle cx={centerX} cy={p1.y} r={5} fill={colors.axisY} opacity={0.6} />
+      </g>
+    );
+  } else {
+    // Side view: looking along +X, see Y (horizontal) and Z (vertical)
+    // Width = chassisLength (X dimension), Height = chassisHeight
+    const p1 = projectPoint(0, cy - length/2, 0, type, centerX, centerY, scale);
+    const p2 = projectPoint(0, cy + length/2, height, type, centerX, centerY, scale);
+
+    return (
+      <g>
+        {/* Chassis body rectangle */}
+        <rect
+          x={p1.x} y={p2.y}
+          width={p2.x - p1.x} height={p1.y - p2.y}
+          fill={colors.chassis[1]} opacity={0.35}
+          stroke={colors.chassis[1]} strokeWidth={2} rx={4}
+        />
+        {/* Ground line */}
+        <line x1={p1.x - 20} y1={p1.y} x2={p2.x + 20} y2={p1.y}
+          stroke={colors.grid} strokeWidth={1} strokeDasharray="4 2" />
+        {/* Center line */}
+        <line x1={centerX} y1={p2.y + 10} x2={centerX} y2={p1.y - 10}
+          stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+        {/* Left/Right labels - Head is +X direction (towards top in side view) */}
+        <text x={p1.x + 5} y={p2.y + 35} fill={colors.axisX} fontSize={9}>尾</text>
+        <text x={p2.x - 25} y={p2.y + 35} fill={colors.axisX} fontSize={9}>头</text>
+        {/* Direction arrow pointing to Head (+X) */}
+        <polygon
+          points={`${p2.x - 30},${p2.y + 30} ${p2.x - 20},${p2.y + 20} ${p2.x - 40},${p2.y + 20}`}
+          fill={colors.axisX} opacity={0.8} />
+        {/* Motion center dot (at ground level, center Y) */}
+        <circle cx={centerX} cy={p1.y} r={5} fill={colors.axisY} opacity={0.6} />
+      </g>
+    );
   }
 };
+
 
 /**
  * Wheel visualization - draws as 3D cylinder-like shape
  */
 const renderWheel = (
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   x: number, y: number, z: number, yaw: number,
   centerX: number, centerY: number, scale: number,
   isActive: boolean, colors: any
@@ -203,7 +274,7 @@ const renderWheel = (
  * LiDAR visualization - as sensor head with scan indication
  */
 const renderLidar = (
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   x: number, y: number, z: number, yaw: number,
   centerX: number, centerY: number, scale: number,
   isActive: boolean, colors: any, fovRange: number = 800
@@ -298,7 +369,7 @@ const renderLidar = (
  * Camera visualization
  */
 const renderCamera = (
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   x: number, y: number, z: number, yaw: number,
   centerX: number, centerY: number, scale: number,
   isActive: boolean, colors: any
@@ -341,7 +412,7 @@ const renderCamera = (
  * Generic component marker
  */
 const renderComponentMarker = (
-  type: 'iso' | 'top',
+  type: 'iso' | 'top' | 'front' | 'side',
   x: number, y: number, z: number, category: string,
   centerX: number, centerY: number, scale: number,
   isActive: boolean, colors: any
@@ -483,7 +554,7 @@ const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, id
         <rect x={12} y={height - 30} width={80} height={18} rx={3}
               fill={isDark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.8)'} />
         <text x={18} y={height - 18} fill={colors.textPrimary} fontSize={11}>
-          {type === 'iso' ? '轴侧视图' : '俯视图'}
+          {type === 'iso' ? '轴侧视图' : type === 'top' ? '俯视图' : type === 'front' ? '正视图' : '侧视图'}
         </text>
       </g>
     </svg>

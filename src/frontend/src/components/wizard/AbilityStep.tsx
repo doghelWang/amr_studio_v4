@@ -86,10 +86,10 @@ const RecursiveAttributeEditor: React.FC<{
         );
     }
 
-    if (attr.type === 'DATA_COMBOX') {
-        const combo = attr.comboType || (attr as any).combo_type;
-        const currentGroup = combo?.typeGroups?.find((g: any) => g.key === attr.value);
-        const subElements = currentGroup?.arrayCmobEle || currentGroup?.array_cmob_ele || [];
+    if (attr.type === 'DATA_COMBOX' || (attr as any).type === 'COMBOX') {
+        const combo = attr.comboType || (attr as any).comboxParam || (attr as any).combo_type || (attr as any).combox_param;
+    const currentGroup = combo?.typeGroups?.find((g: any) => g.key === ((attr as any).value || (attr as any).comboxParam?.value)) || combo?.options?.find((o: any) => o.key === ((attr as any).value || (attr as any).comboxParam?.value));
+        const subElements = currentGroup?.arrayCmobEle || currentGroup?.arrayAttr || currentGroup?.array_cmob_ele || [];
 
         return (
             <div className="ability-field-item combox-group">
@@ -244,7 +244,7 @@ export const AbilityStep: React.FC<{ onExport?: () => void }> = () => {
                                                                 value: common.comboxParam.value,
                                                                 comboType: {
                                                                     typeKey: common.key,
-                                                                    typeGroups: common.comboxParam.options as any
+                                                                    typeGroups: common.comboxParam.options?.map((opt: any) => ({ key: opt.key, desc: opt.desc, arrayCmobEle: opt.arrayAttr?.map((a: any) => ({ key: a.key, desc: a.desc, type: a.type, value: a.value, unit: a.unit, boolParse: a.boolParse, boolHide: a.boolHide, boolMustfill: a.boolMustfill, boolNoeditable: a.boolNoeditable, boolBasic: a.boolBasic })) || [] })) || []
                                                                 }
                                                             }}
                                                             onUpdate={(val, sub, subVal) => handleAttributeUpdate(func.type, child.key, common.key, common.key, val, sub, subVal)}

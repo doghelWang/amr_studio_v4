@@ -1,0 +1,23 @@
+{
+  "name": "amr-studio-cmodel-tests",
+  "version": "1.0.0",
+  "description": "CModel bidirectional validation tests - runs independently of frontend",
+  "type": "module",
+  "scripts": {
+    "test": "npm run build && npm run test:run",
+    "build": "tsc",
+    "test:run": "node dist/cmodel_test_runner.js ../CompDesc.json",
+    "test:detailed": "node dist/cmodel_comprehensive_test.js ../CompDesc.json",
+    "test:file": "node dist/cmodel_comprehensive_test.js",
+    "test:watch": "tsc --watch & npm run test:run",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^10.0.0",
+    "typescript": "^5.2.0"
+  }
+}
