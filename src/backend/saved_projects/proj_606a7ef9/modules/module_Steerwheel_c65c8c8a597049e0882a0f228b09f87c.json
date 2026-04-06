@@ -1,0 +1,631 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "Steerwheel",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "驱动轮/ZAPI行走轮",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "c65c8c8a597049e0882a0f228b09f87c",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-12-23 15:57:13.844",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "./ModuleLibrary/3dModelRes/VerticalSteeringWheel.obj",
+      "desc": "3D模型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ChassisSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子系统",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel",
+        "typeDesc": "\u0001",
+        "typeGroups": []
+      },
+      "desc": "主类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "verticalSteerWheel",
+        "typeDesc": "\u0003",
+        "typeGroups": []
+      },
+      "desc": "子类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ZAPI",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "供应商",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "设备型号",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "ZAPI Walk",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "stringValue": "立式舵轮",
+        "desc": "模块别名",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "wheelAttr",
+        "desc": "基本属性",
+        "arrayBaseEle": [
+          {
+            "key": "wheelRadius",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 115.0,
+            "doubleMaxvalue": 999.0,
+            "doubleMinvalue": 1.0,
+            "unit": "mm",
+            "desc": "轮半径",
+            "boolMustfill": true,
+            "boolBasic": true,
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "angleLmtPos",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 120.0,
+            "doubleMaxvalue": 175.0,
+            "doubleMinvalue": 0.0,
+            "unit": "°",
+            "desc": "正限位角度",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "angleLmtNeg",
+            "type": "DATA_DOUBLE",
+            "doubleValue": -120.0,
+            "doubleMaxvalue": 0.0,
+            "doubleMinvalue": -175.0,
+            "unit": "°",
+            "desc": "负限位角度",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "rotOmgLmt",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 9999.0,
+            "doubleMinvalue": 0.0,
+            "unit": "°/s",
+            "desc": "转向能力(最大)",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      },
+      {
+        "key": "angleSensor",
+        "desc": "转向反馈",
+        "arrayBaseEle": [
+          {
+            "key": "angleSensorType",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "GROUP_CALI_ABS_INTERNAL",
+              "typeDesc": "绝对式编码器(内置)",
+              "typeGroups": [
+                {
+                  "key": "GROUP_CALI_ABS_INTERNAL",
+                  "desc": "绝对式编码器(内置)",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "GROUP_CALI_ABS_EXTERNAL",
+                  "desc": "绝对式编码器(外置)",
+                  "arrayCmobEle": [
+                    {
+                      "key": "relatedEncode",
+                      "type": "DATA_FIXED_E",
+                      "stringFix": "TOFIEncoder",
+                      "desc": "关联编码器",
+                      "fixedSource": [
+                        "sensor/absoluteValueEncode"
+                      ],
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false
+                    },
+                    {
+                      "key": "gearRatio",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 1.0,
+                      "doubleMaxvalue": 9999.0,
+                      "doubleMinvalue": 1.0,
+                      "desc": "减速比(齿轮比)",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false,
+                      "fixedSource": []
+                    }
+                  ]
+                },
+                {
+                  "key": "GROUP_CALI_HELM_IO",
+                  "desc": "增量编码器(内置)",
+                  "arrayCmobEle": [
+                    {
+                      "key": "relatePosIo",
+                      "type": "DATA_FIXED_E",
+                      "stringFix": "FIXED_RELATED_NONE",
+                      "desc": "正限位关联io",
+                      "fixedSource": [
+                        "sensor/proximitySensor",
+                        "sensor/PT"
+                      ],
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false
+                    },
+                    {
+                      "key": "relateNegIo",
+                      "type": "DATA_FIXED_E",
+                      "stringFix": "FIXED_RELATED_NONE",
+                      "desc": "负限位关联io",
+                      "fixedSource": [
+                        "sensor/proximitySensor",
+                        "sensor/PT"
+                      ],
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false
+                    },
+                    {
+                      "key": "relateAngleZero",
+                      "type": "DATA_FIXED_E",
+                      "stringFix": "FIXED_RELATED_NONE",
+                      "desc": "零位关联io",
+                      "fixedSource": [
+                        "sensor/proximitySensor",
+                        "sensor/PT"
+                      ],
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false
+                    },
+                    {
+                      "key": "angleDeviationZero",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "doubleMaxvalue": 360.0,
+                      "doubleMinvalue": -360.0,
+                      "unit": "°",
+                      "desc": "零位角度偏差",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "detectModeZero",
+                      "type": "DATA_COMBOX",
+                      "comboType": {
+                        "typeKey": "DETECT_MODE_NONE",
+                        "typeDesc": "无",
+                        "typeGroups": [
+                          {
+                            "key": "DETECT_MODE_NONE",
+                            "desc": "无",
+                            "arrayCmobEle": []
+                          },
+                          {
+                            "key": "ZERO_TRIG_MODE_POINT",
+                            "desc": "单点检测",
+                            "arrayCmobEle": []
+                          },
+                          {
+                            "key": "ZERO_TRIG_MODE_POS_AREA",
+                            "desc": "正向区域检测",
+                            "arrayCmobEle": []
+                          },
+                          {
+                            "key": "ZERO_TRIG_MODE_NEG_AREA",
+                            "desc": "负向区域检测",
+                            "arrayCmobEle": []
+                          }
+                        ]
+                      },
+                      "desc": "零位检测模式",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolNoeditable": false,
+                      "boolMustfill": false,
+                      "boolBasic": false,
+                      "fixedSource": []
+                    }
+                  ]
+                }
+              ]
+            },
+            "desc": "类型",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      },
+      {
+        "key": "linkMotorAttr",
+        "desc": "电机",
+        "arrayBaseEle": [
+          {
+            "key": "relateRotMotor",
+            "type": "DATA_FIXED_E",
+            "stringFix": "steer-motor",
+            "desc": "转向电机",
+            "fixedSource": [
+              "driver/PMSMMotor"
+            ],
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false
+          },
+          {
+            "key": "relateWalkMotor",
+            "type": "DATA_FIXED_E",
+            "stringFix": "walk-motor",
+            "desc": "行走电机",
+            "fixedSource": [
+              "driver/PMSMMotor"
+            ],
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "cf1e83d18873438f9da982b1fa878250",
+          "typeDesc": "chassis",
+          "typeGroups": [
+            {
+              "key": "cf1e83d18873438f9da982b1fa878250",
+              "desc": "chassis",
+              "arrayCmobEle": []
+            }
+          ]
+        },
+        "desc": "从属机构",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 1090.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "翻滚角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "偏航角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "俯仰角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}

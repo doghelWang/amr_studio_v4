@@ -134,7 +134,12 @@ def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...
         split_comp_desc(str(comp_desc_json), str(split_out))
         with open(split_out / "blueprint_CompDesc.json", "r", encoding="utf-8") as f: blueprint = json.load(f)
         with open(comp_desc_json, "r", encoding="utf-8") as f: full_json = json.load(f)
-        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), decode_out)
+        data_manager.init_project(project_id, blueprint, str(split_out / "modules"), full_json)
+        
+        # Also copy Ability Set if exists
+        abi_src = decode_out / "AbiSet.json"
+        if abi_src.exists():
+            shutil.copy2(abi_src, data_manager.get_project_dir(project_id) / "AbiSet.json")
         background_tasks.add_task(shutil.rmtree, str(temp_dir), ignore_errors=True)
         return {"status": "success", "project_id": project_id, "blueprint": blueprint, "full_json": full_json, "audit": audit_log}
     except Exception as e:

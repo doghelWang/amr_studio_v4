@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0",
+    "version": "V1.0",
     "functionAbility": [
         {
             "type": "locationAbility",
@@ -33,9 +33,95 @@
                                                 { "key": "QR_CODE", "desc": "二维码导航", "arrayCmobEle": [
                                                     { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
                                                     { "key": "relatedCodeReader", "desc": "关联读码器", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]},
+                                                { "key": "REFLECTOR", "desc": "激光反射板导航", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedLaser", "desc": "关联激光", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]},
+                                                { "key": "VISUAL_SLAM", "desc": "视觉SLAM导航", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedCamera", "desc": "关联相机", "type": "DATA_STRING", "value": "", "boolParse": true }
                                                 ]}
                                             ]
                                         }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "safetyAbility",
+            "desc": "安全能力",
+            "childFunction": [
+                {
+                    "type": "obstacleAvoidance",
+                    "desc": "避障",
+                    "key": "obstacleAvoidance_0",
+                    "attr": [
+                        {
+                            "key": "avoidUniqueKey",
+                            "type": "ARRAY",
+                            "arrayParam": {
+                                "groupKey": "avoidUniqueKey",
+                                "groupName": "避障单元",
+                                "attrParams": [
+                                    {
+                                        "key": "avoidType",
+                                        "desc": "避障类型",
+                                        "type": "DATA_COMBOX",
+                                        "value": "laserAvoid",
+                                        "comboType": {
+                                            "typeKey": "avoidType",
+                                            "typeGroups": [
+                                                { "key": "noAvoid", "desc": "无避障" },
+                                                { "key": "laserAvoid", "desc": "激光避障", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedLaser", "desc": "关联激光", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]},
+                                                { "key": "ultrasonicAvoid", "desc": "超声波避障", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedSensor", "desc": "关联超声波", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]},
+                                                { "key": "depthCameraAvoid", "desc": "深度相机避障", "arrayCmobEle": [
+                                                    { "key": "funName", "desc": "功能名", "type": "DATA_STRING", "value": "" },
+                                                    { "key": "relatedCamera", "desc": "关联深度相机", "type": "DATA_STRING", "value": "", "boolParse": true }
+                                                ]}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "emergencyStop",
+                    "desc": "急停",
+                    "key": "emergencyStop_0",
+                    "attr": [
+                        {
+                            "key": "emergencyStopKey",
+                            "type": "ARRAY",
+                            "arrayParam": {
+                                "groupKey": "emergencyStopKey",
+                                "groupName": "急停单元",
+                                "attrParams": [
+                                    {
+                                        "key": "relatedEmergencyStop",
+                                        "desc": "关联急停按钮",
+                                        "type": "DATA_STRING",
+                                        "value": "",
+                                        "boolParse": true
+                                    },
+                                    {
+                                        "key": "relatedBumper",
+                                        "desc": "关联防撞条",
+                                        "type": "DATA_STRING",
+                                        "value": "",
+                                        "boolParse": true
                                     }
                                 ]
                             }

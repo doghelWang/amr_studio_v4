@@ -1,211 +1,583 @@
-import React from 'react';
-import { Typography } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Typography, Segmented } from 'antd';
 import { useProjectStore } from '../../store/useProjectStore';
 
 const { Text } = Typography;
 
 interface ViewProps {
-    type: 'iso' | 'top' | 'side';
-    width: number;
-    height: number;
-    components: any[];
-    identity: any;
-    activeId?: string;
-    onSelect?: (id: string) => void;
+  type: 'iso' | 'top';
+  width: number;
+  height: number;
+  components: any[];
+  identity: any;
+  activeId?: string;
+  onSelect?: (id: string) => void;
+  theme?: string;
 }
 
-const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, identity, activeId, onSelect }) => {
-    const { chassisLength = 1200, chassisWidth = 800, chassisHeight = 400 } = identity;
-    
-    // Increased scale and improved padding
-    const maxCoord = Math.max(chassisLength, chassisWidth, 1500);
-    const scale = Math.min(width, height) / (maxCoord * 1.4); // Zoomed in more
+// Theme-aware colors
+const getThemeColors = (isDark: boolean) => ({
+  background: isDark ? '#0d1117' : '#ffffff',
+  grid: isDark ? '#30363d' : '#e5e7eb',
+  axisX: isDark ? '#f87171' : '#dc2626',
+  axisY: isDark ? '#4ade80' : '#16a34a',
+  axisZ: isDark ? '#58a6ff' : '#2563eb',
+  textPrimary: isDark ? '#f0f6fc' : '#1f2937',
+  textSecondary: isDark ? '#8b949e' : '#6b7280',
+  chassis: isDark ? ['#1f6feb', '#58a6ff'] : ['#1d4ed8', '#3b82f6'],
+  glow: isDark ? 'rgba(88, 166, 255, 0.5)' : 'rgba(59, 130, 246, 0.3)',
+});
 
-    const project = (x: number, y: number, z: number) => {
-        if (type === 'iso') {
-            const isoX = (x - y) * Math.cos(Math.PI / 6);
-            const isoY = (x + y) * Math.sin(Math.PI / 6) - z;
-            return { x: width / 2 + isoX * scale, y: height / 2 + isoY * scale };
-        } else if (type === 'top') {
-            return { x: width / 2 + x * scale, y: height / 2 + y * scale };
-        } else { // side
-            return { x: width / 2 + x * scale, y: height / 2 - z * scale };
-        }
-    };
-
-    // Helper to draw a 3D Box with better shading
-    const renderBox = (cx: number, cy: number, cz: number, l: number, w: number, h: number, color: string, opacity: number, strokeWidth: number = 1) => {
-        if (type === 'iso') {
-            const p = [
-                project(cx - l/2, cy - w/2, cz),       // 0
-                project(cx + l/2, cy - w/2, cz),       // 1
-                project(cx + l/2, cy + w/2, cz),       // 2
-                project(cx - l/2, cy + w/2, cz),       // 3
-                project(cx - l/2, cy - w/2, cz + h),   // 4
-                project(cx + l/2, cy - w/2, cz + h),   // 5
-                project(cx + l/2, cy + w/2, cz + h),   // 6
-                project(cx - l/2, cy + w/2, cz + h),   // 7
-            ];
-
-            return (
-                <g opacity={opacity}>
-                    <polygon points={`${p[0].x},${p[0].y} ${p[1].x},${p[1].y} ${p[2].x},${p[2].y} ${p[3].x},${p[3].y}`} fill={color} opacity={0.2} />
-                    <polygon points={`${p[0].x},${p[0].y} ${p[1].x},${p[1].y} ${p[5].x},${p[5].y} ${p[4].x},${p[4].y}`} fill={color} opacity={0.4} stroke={color} strokeWidth={strokeWidth} />
-                    <polygon points={`${p[1].x},${p[1].y} ${p[2].x},${p[2].y} ${p[6].x},${p[6].y} ${p[5].x},${p[5].y}`} fill={color} opacity={0.6} stroke={color} strokeWidth={strokeWidth} />
-                    <polygon points={`${p[4].x},${p[4].y} ${p[5].x},${p[5].y} ${p[6].x},${p[6].y} ${p[7].x},${p[7].y}`} fill={color} opacity={0.3} stroke={color} strokeWidth={strokeWidth} />
-                </g>
-            );
-        } else if (type === 'top') {
-            const p1 = project(cx - l/2, cy - w/2, cz);
-            const p2 = project(cx + l/2, cy + w/2, cz);
-            return <rect x={p1.x} y={p1.y} width={p2.x - p1.x} height={p2.y - p1.y} fill={color} opacity={opacity} stroke={color} strokeWidth={strokeWidth} rx={2} />;
-        } else { // side
-            const p1 = project(cx - l/2, cy, cz);
-            const p2 = project(cx + l/2, cy, cz + h);
-            return <rect x={p1.x} y={p2.y} width={p2.x - p1.x} height={p1.y - p2.y} fill={color} opacity={opacity} stroke={color} strokeWidth={strokeWidth} rx={2} />;
-        }
-    };
-
-    // Render FOV (Field of View) for sensors
-    const renderFOV = (x: number, y: number, z: number, yaw: number, range: number, angle: number, color: string) => {
-        if (type !== 'top') return null; // Only show FOV in top view for now
-        
-        const segments = 24;
-        const startRad = (-yaw - angle / 2) * Math.PI / 180; // Negative yaw for screen space rotation
-        const pts = [];
-        pts.push(project(x, y, z));
-        for (let i = 0; i <= segments; i++) {
-            const rad = startRad + (i / segments) * (angle * Math.PI / 180);
-            pts.push(project(x + Math.cos(rad) * range, y + Math.sin(rad) * range, z));
-        }
-
-        const pointsStr = pts.map(p => `${p.x},${p.y}`).join(' ');
-        return (
-            <g>
-                <polygon points={pointsStr} fill={color} opacity={0.15} stroke={color} strokeWidth={1} strokeDasharray="4 2" />
-                {/* Orientation Line */}
-                <line 
-                    x1={pts[0].x} y1={pts[0].y} 
-                    x2={project(x + Math.cos(-yaw * Math.PI / 180) * 150, y + Math.sin(-yaw * Math.PI / 180) * 150, z).x} 
-                    y2={project(x + Math.cos(-yaw * Math.PI / 180) * 150, y + Math.sin(-yaw * Math.PI / 180) * 150, z).y} 
-                    stroke={color} strokeWidth={2} 
-                />
-            </g>
-        );
-    };
-
-    return (
-        <svg width={width} height={height} style={{ background: '#0d1117', borderRadius: 12, boxShadow: 'inset 0 0 40px rgba(0,0,0,0.5)' }}>
-            <defs>
-                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="4" result="blur" />
-                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-                <linearGradient id="chassisGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#1f6feb" />
-                    <stop offset="100%" stopColor="#58a6ff" />
-                </linearGradient>
-            </defs>
-
-            {/* Brighter Grid */}
-            <g opacity={0.15}>
-                {[-2000, -1000, 0, 1000, 2000].map(v => (
-                    <React.Fragment key={v}>
-                        <line x1={project(v, -2000, 0).x} y1={project(v, -2000, 0).y} x2={project(v, 2000, 0).x} y2={project(v, 2000, 0).y} stroke="#30363d" strokeWidth={1} />
-                        <line x1={project(-2000, v, 0).x} y1={project(-2000, v, 0).y} x2={project(2000, v, 0).x} y2={project(2000, v, 0).y} stroke="#30363d" strokeWidth={1} />
-                    </React.Fragment>
-                ))}
-                <line x1={project(0, -2000, 0).x} y1={project(0, -2000, 0).y} x2={project(0, 2000, 0).x} y2={project(0, 2000, 0).y} stroke="var(--red)" strokeWidth={2} />
-                <line x1={project(-2000, 0, 0).x} y1={project(-2000, 0, 0).y} x2={project(2000, 0, 0).x} y2={project(2000, 0, 0).y} stroke="var(--green)" strokeWidth={2} />
-            </g>
-
-            {/* Chassis Detailed Model */}
-            {/* Main body */}
-            {renderBox(0, 0, 50, chassisLength, chassisWidth, chassisHeight - 50, 'url(#chassisGrad)', 0.4, 2)}
-            {/* Upper deck / Payload area */}
-            {renderBox(0, 0, chassisHeight, chassisLength * 0.8, chassisWidth * 0.8, 20, '#58a6ff', 0.6, 1)}
-
-            {/* Components & FOV */}
-            {components.map(c => {
-                const isActive = c.id === activeId;
-                const { mountX: x = 0, mountY: y = 0, mountZ: z = 0, mountYaw: yaw = 0 } = c;
-                const pos = project(x, y, z);
-                
-                const isWheel = c.type?.toLowerCase().includes('wheel') || (c.category === 'CHASSIS' && c.id !== 'chassis-root');
-                const isLidar = c.type?.toLowerCase().includes('laser') || c.type?.toLowerCase().includes('lidar');
-                const isCamera = c.type?.toLowerCase().includes('camera') || c.type?.toLowerCase().includes('tof');
-
-                return (
-                    <g key={c.id} onClick={() => onSelect?.(c.id)} style={{ cursor: 'pointer' }}>
-                        {/* FOV Layer */}
-                        {isLidar && renderFOV(x, y, z, yaw, 800, 270, '#ff7b72')}
-                        {isCamera && renderFOV(x, y, z, yaw, 600, 90, '#ffa657')}
-
-                        {/* Shape Layer */}
-                        {isWheel ? (
-                            <g transform={`rotate(${type === 'top' ? -yaw : 0}, ${pos.x}, ${pos.y})`}>
-                                {renderBox(x, y, z, 240, 60, 240, '#21262d', 1, 2)} {/* Tire */}
-                                {renderBox(x, y, z, 120, 70, 120, '#8b949e', 1, 1)} {/* Hub */}
-                                {/* Direction Indicator (Arrow) */}
-                                {type === 'top' && (
-                                    <path d={`M ${pos.x - 20} ${pos.y} L ${pos.x + 20} ${pos.y} L ${pos.x + 10} ${pos.y - 10} M ${pos.x + 20} ${pos.y} L ${pos.x + 10} ${pos.y + 10}`} stroke="var(--accent)" strokeWidth={3} fill="none" transform={`rotate(180, ${pos.x}, ${pos.y})`} />
-                                )}
-                            </g>
-                        ) : isLidar ? (
-                            <g>
-                                {renderBox(x, y, z, 100, 100, 80, '#ff7b72', 1, 2)}
-                                <circle cx={pos.x} cy={pos.y} r={isActive ? 8 : 4} fill="#fff" opacity={0.8} />
-                            </g>
-                        ) : isCamera ? (
-                            <g transform={`rotate(${type === 'top' ? -yaw : 0}, ${pos.x}, ${pos.y})`}>
-                                {renderBox(x, y, z, 80, 120, 60, '#ffa657', 1, 2)}
-                                <rect x={pos.x + 20} y={pos.y - 5} width={10} height={10} fill="#fff" opacity={0.8} />
-                            </g>
-                        ) : (
-                            <circle cx={pos.x} cy={pos.y} r={6} fill={isActive ? 'var(--accent)' : '#fff'} filter={isActive ? "url(#glow)" : ""} stroke="#000" strokeWidth={1} />
-                        )}
-
-                        {/* Label Layer */}
-                        {(isActive || isLidar || isCamera) && (
-                            <text 
-                                x={pos.x + 20} 
-                                y={pos.y - 20} 
-                                fill={isActive ? "#fff" : "rgba(255,255,255,0.7)"} 
-                                fontSize={isActive ? 13 : 11} 
-                                fontWeight="bold" 
-                                style={{ pointerEvents: 'none', paintOrder: 'stroke', stroke: '#000', strokeWidth: 2, strokeLinejoin: 'round' }}
-                            >
-                                {c.alias || c.name}
-                            </text>
-                        )}
-                    </g>
-                );
-            })}
-
-            {/* UI Overlays */}
-            <g style={{ pointerEvents: 'none' }}>
-                <rect x={15} y={height - 35} width={130} height={20} rx={4} fill="rgba(0,0,0,0.5)" />
-                <text x={25} y={height - 20} fill="#f0f6fc" fontSize={11} fontWeight="700" style={{ letterSpacing: 0.5 }}>
-                    {type.toUpperCase()} VIEW
-                </text>
-            </g>
-        </svg>
-    );
+/**
+ * Unified 3D projector - consistent projection math
+ * ISO: Isometric projection
+ * Top: Orthographic top-down view (X,Y plane)
+ */
+const projectPoint = (
+  x: number, y: number, z: number,
+  type: 'iso' | 'top',
+  centerX: number, centerY: number,
+  scale: number
+) => {
+  if (type === 'iso') {
+    const angle = Math.PI / 6; // 30 degrees
+    const isoX = (x - y) * Math.cos(angle);
+    const isoY = (x + y) * Math.sin(angle) - z;
+    return { x: centerX + isoX * scale, y: centerY + isoY * scale };
+  } else {
+    // Top view: X is right, Y is up (screen Y is inverted)
+    return { x: centerX + x * scale, y: centerY - y * scale };
+  }
 };
 
-export const CoordinateVisualizer: React.FC<{ activeId?: string; onSelect?: (id: string) => void }> = ({ activeId, onSelect }) => {
-    const { config } = useProjectStore();
-    const { components, identity } = config;
+/**
+ * Render chassis as full 3D box (for ISO) or rectangle (for Top)
+ */
+const renderChassis = (
+  type: 'iso' | 'top',
+  width: number, length: number, height: number,
+  centerX: number, centerY: number, scale: number,
+  colors: any
+) => {
+  const cx = 0, cy = 0, cz = height / 2;
+
+  if (type === 'iso') {
+    // ISO projection - draw all faces
+    const p = [
+      projectPoint(cx - length/2, cy - width/2, cz - height, type, centerX, centerY, scale),
+      projectPoint(cx + length/2, cy - width/2, cz - height, type, centerX, centerY, scale),
+      projectPoint(cx + length/2, cy + width/2, cz - height, type, centerX, centerY, scale),
+      projectPoint(cx - length/2, cy + width/2, cz - height, type, centerX, centerY, scale),
+      projectPoint(cx - length/2, cy - width/2, cz, type, centerX, centerY, scale),
+      projectPoint(cx + length/2, cy - width/2, cz, type, centerX, centerY, scale),
+      projectPoint(cx + length/2, cy + width/2, cz, type, centerX, centerY, scale),
+      projectPoint(cx - length/2, cy + width/2, cz, type, centerX, centerY, scale),
+    ];
 
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 20, height: '100%', justifyContent: 'center' }}>
-            <div style={{ flex: '1 1 700px' }}>
-                <ViewRenderer type="iso" width={700} height={500} components={components} identity={identity} activeId={activeId} onSelect={onSelect} />
-            </div>
-            <div style={{ flex: '1 1 340px', display: 'flex', flexDirection: 'column', gap: 20 }}>
-                <ViewRenderer type="top" width={340} height={240} components={components} identity={identity} activeId={activeId} onSelect={onSelect} />
-                <ViewRenderer type="side" width={340} height={240} components={components} identity={identity} activeId={activeId} onSelect={onSelect} />
-            </div>
-        </div>
+      <g>
+        {/* Bottom face (ground level) */}
+        <polygon points={`${p[0].x},${p[0].y} ${p[1].x},${p[1].y} ${p[2].x},${p[2].y} ${p[3].x},${p[3].y}`}
+                 fill={colors.chassis[0]} opacity={0.2} />
+        {/* Side faces */}
+        <polygon points={`${p[0].x},${p[0].y} ${p[1].x},${p[1].y} ${p[5].x},${p[5].y} ${p[4].x},${p[4].y}`}
+                 fill={colors.chassis[0]} opacity={0.4} stroke={colors.chassis[1]} />
+        <polygon points={`${p[1].x},${p[1].y} ${p[2].x},${p[2].y} ${p[6].x},${p[6].y} ${p[5].x},${p[5].y}`}
+                 fill={colors.chassis[0]} opacity={0.5} stroke={colors.chassis[1]} />
+        {/* Top face */}
+        <polygon points={`${p[4].x},${p[4].y} ${p[5].x},${p[5].y} ${p[6].x},${p[6].y} ${p[7].x},${p[7].y}`}
+                 fill={colors.chassis[1]} opacity={0.3} stroke={colors.chassis[1]} strokeWidth={2} />
+      </g>
     );
+  } else {
+    // Top view - draw chassis with wheel arches
+    const p1 = projectPoint(cx - length/2, cy - width/2, 0, type, centerX, centerY, scale);
+    const p2 = projectPoint(cx + length/2, cy + width/2, 0, type, centerX, centerY, scale);
+
+    // Wheel dimensions for outline
+    const wheelLen = 240; // wheel diameter
+    const wheelWidth = 60;
+    const archDepth = (wheelWidth / width) * (p2.y - p1.y) / 2; // scaled arch depth
+    const archWidth = (wheelLen / length) * (p2.x - p1.x); // scaled arch width
+
+    // Chassis body rectangle with cutouts
+    const bodyWidth = p2.x - p1.x;
+    const bodyHeight = p2.y - p1.y;
+    const centerPx = (p1.x + p2.x) / 2;
+    const centerPy = (p1.y + p2.y) / 2;
+
+    // Create path with wheel arches
+    // Layout: front-left, front-right, rear-right, rear-left arches
+    const archPath = `
+      M ${p1.x + bodyWidth * 0.15} ${p1.y}
+      L ${p1.x + bodyWidth * 0.35} ${p1.y}
+      Q ${p1.x + bodyWidth * 0.35} ${p1.y - archDepth} ${p1.x + bodyWidth * 0.35 + archWidth * 0.1} ${p1.y - archDepth}
+      L ${p1.x + bodyWidth * 0.35 + archWidth * 0.9} ${p1.y - archDepth}
+      Q ${p1.x + bodyWidth * 0.35 + archWidth} ${p1.y - archDepth} ${p1.x + bodyWidth * 0.35 + archWidth} ${p1.y}
+      L ${p1.x + bodyWidth * 0.65} ${p1.y}
+      Q ${p1.x + bodyWidth * 0.65} ${p1.y - archDepth} ${p1.x + bodyWidth * 0.65 + archWidth * 0.1} ${p1.y - archDepth}
+      L ${p1.x + bodyWidth * 0.65 + archWidth * 0.9} ${p1.y - archDepth}
+      Q ${p1.x + bodyWidth * 0.65 + archWidth} ${p1.y - archDepth} ${p1.x + bodyWidth * 0.65 + archWidth} ${p1.y}
+      L ${p2.x} ${p1.y}
+      L ${p2.x} ${p2.y}
+      L ${p1.x + bodyWidth * 0.65 + archWidth} ${p2.y}
+      Q ${p1.x + bodyWidth * 0.65 + archWidth} ${p2.y + archDepth} ${p1.x + bodyWidth * 0.65 + archWidth * 0.9} ${p2.y + archDepth}
+      L ${p1.x + bodyWidth * 0.65 + archWidth * 0.1} ${p2.y + archDepth}
+      Q ${p1.x + bodyWidth * 0.65} ${p2.y + archDepth} ${p1.x + bodyWidth * 0.65} ${p2.y}
+      L ${p1.x + bodyWidth * 0.35 + archWidth} ${p2.y}
+      Q ${p1.x + bodyWidth * 0.35 + archWidth} ${p2.y + archDepth} ${p1.x + bodyWidth * 0.35 + archWidth * 0.9} ${p2.y + archDepth}
+      L ${p1.x + bodyWidth * 0.35 + archWidth * 0.1} ${p2.y + archDepth}
+      Q ${p1.x + bodyWidth * 0.35} ${p2.y + archDepth} ${p1.x + bodyWidth * 0.35} ${p2.y}
+      L ${p1.x} ${p2.y}
+      Z
+    `;
+
+    return (
+      <g>
+        {/* Main chassis body with wheel arches */}
+        <path d={archPath}
+              fill={colors.chassis[1]} opacity={0.35}
+              stroke={colors.chassis[1]} strokeWidth={2} />
+        {/* Center line indicator */}
+        <line x1={centerPx} y1={p1.y + 10} x2={centerPx} y2={p2.y - 10}
+              stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+        {/* Center cross */}
+        <line x1={p1.x + 20} y1={centerPy} x2={p2.x - 20} y2={centerPy}
+              stroke={colors.chassis[0]} strokeWidth={1} strokeDasharray="4 4" opacity={0.5} />
+        {/* Front arrow indicator */}
+        <polygon
+          points={`${centerPx},${p1.y + 30} ${centerPx - 8},${p1.y + 45} ${centerPx + 8},${p1.y + 45}`}
+          fill={colors.axisY} opacity={0.8} />
+        <text x={centerPx + 15} y={p1.y + 45} fill={colors.axisY} fontSize={10}>前</text>
+      </g>
+    );
+  }
+};
+
+/**
+ * Wheel visualization - draws as 3D cylinder-like shape
+ */
+const renderWheel = (
+  type: 'iso' | 'top',
+  x: number, y: number, z: number, yaw: number,
+  centerX: number, centerY: number, scale: number,
+  isActive: boolean, colors: any
+) => {
+  const wheelWidth = 60;  // Width of wheel
+  const wheelLen = 240;   // Diameter of wheel
+  const pos = projectPoint(x, y, z, type, centerX, centerY, scale);
+
+  if (type === 'iso') {
+    // ISO: Draw wheel as a disk seen from an angle
+    // Wheel lies in Y-Z plane (width along Y, diameter along Z-X plane)
+    return (
+      <g transform={`rotate(${-yaw}, ${pos.x}, ${pos.y})`}>
+        {/* Tire - as an ellipse representing the wheel disk */}
+        <ellipse cx={pos.x} cy={pos.y} rx={wheelLen/2 * scale * 0.6} ry={wheelWidth/2 * scale}
+                 fill="#374151" stroke={isActive ? colors.axisZ : '#4b5563'} strokeWidth={2} />
+        {/* Hub cap */}
+        <ellipse cx={pos.x} cy={pos.y} rx={30 * scale} ry={20 * scale}
+                 fill={isActive ? colors.axisZ : '#6b7280'} />
+        {/* Mount center */}
+        <circle cx={pos.x} cy={pos.y} r={8 * scale} fill="#9ca3af" />
+      </g>
+    );
+  } else {
+    // Top view: Wheel seen from above - as an ellipse
+    return (
+      <g transform={`rotate(${-yaw}, ${pos.x}, ${pos.y})`}>
+        {/* Tire - full wheel width visible from top */}
+        <ellipse cx={pos.x} cy={pos.y} rx={wheelWidth/2 * scale} ry={wheelLen/2 * scale}
+                 fill="#374151" stroke={isActive ? colors.axisZ : '#4b5563'} strokeWidth={2} />
+        {/* Hub cap */}
+        <ellipse cx={pos.x} cy={pos.y} rx={20 * scale} ry={30 * scale}
+                 fill={isActive ? colors.axisZ : '#6b7280'} />
+        {/* Axle center dot */}
+        <circle cx={pos.x} cy={pos.y} r={6} fill="#9ca3af" />
+      </g>
+    );
+  }
+};
+
+/**
+ * LiDAR visualization - as sensor head with scan indication
+ */
+const renderLidar = (
+  type: 'iso' | 'top',
+  x: number, y: number, z: number, yaw: number,
+  centerX: number, centerY: number, scale: number,
+  isActive: boolean, colors: any, fovRange: number = 800
+) => {
+  const pos = projectPoint(x, y, z, type, centerX, centerY, scale);
+
+  if (type === 'iso') {
+    // ISO: Sensor as a box on top
+    const size = 50 * scale;
+    return (
+      <g>
+        {/* Sensor base - 增大更明显 */}
+        <rect x={pos.x - size/2} y={pos.y - size/2} width={size} height={size}
+              fill={isActive ? colors.axisZ : '#ff7b72'} opacity={0.9} rx={4} />
+        {/* Sensor border */}
+        <rect x={pos.x - size/2} y={pos.y - size/2} width={size} height={size}
+              fill="none" stroke={isActive ? colors.axisZ : '#ff7b72'} strokeWidth={3} rx={4} />
+        {/* Sensor top - spinning head representation */}
+        <ellipse cx={pos.x} cy={pos.y - size/2} rx={size * 0.7} ry={size * 0.35}
+                 fill="#374151" stroke={isActive ? colors.axisZ : '#ff7b72'} strokeWidth={2} />
+        {/* Center indicator - 更大更明显 */}
+        <circle cx={pos.x} cy={pos.y} r={10 * scale} fill="#fff" />
+        <circle cx={pos.x} cy={pos.y} r={6 * scale} fill={isActive ? colors.axisZ : '#ff7b72'} />
+        {/* Scanning beam effect (ISO view) */}
+        <line x1={pos.x} y1={pos.y - size/2}
+              x2={pos.x + 30 * scale} y2={pos.y - size * 0.8}
+              stroke="#ff7b72" strokeWidth={3} opacity={0.6} />
+      </g>
+    );
+  } else {
+    // Top view: Show FOV cone
+    const segments = 24;
+    const startRad = (-yaw - 135) * Math.PI / 180; // 270 deg FOV
+    const pts = [pos];
+
+    for (let i = 0; i <= segments; i++) {
+      const rad = startRad + (i / segments) * (270 * Math.PI / 180);
+      const dist = fovRange * scale;
+      pts.push({
+        x: centerX + (x + Math.cos(rad) * fovRange) * scale,
+        y: centerY - (y + Math.sin(rad) * fovRange) * scale
+      });
+    }
+
+    const pointsStr = pts.map(p => `${p.x},${p.y}`).join(' ');
+
+    return (
+      <g>
+        {/* FOV wedge - 增加填充透明度 */}
+        <polygon points={pointsStr} fill="#ff7b72" opacity={0.15} stroke="#ff7b72" strokeWidth={2} />
+        {/* Scan arc circles - 添加多层扫描线效果 */}
+        {[0.3, 0.6, 0.9].map((r, i) => {
+          const arcPts = [];
+          for (let j = 0; j <= segments; j++) {
+            const rad = startRad + (j / segments) * (270 * Math.PI / 180);
+            arcPts.push({
+              x: centerX + (x + Math.cos(rad) * fovRange * r) * scale,
+              y: centerY - (y + Math.sin(rad) * fovRange * r) * scale
+            });
+          }
+          const arcStr = arcPts.map((p, idx) => `${idx === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+          return (
+            <path key={i} d={arcStr} fill="none" stroke="#ff7b72"
+                  strokeWidth={1.5 - i * 0.3} opacity={0.6 - i * 0.2} />
+          );
+        })}
+        {/* Direction line - 加粗 */}
+        <line x1={pos.x} y1={pos.y}
+              x2={centerX + (x + Math.cos(-yaw * Math.PI/180) * 100) * scale}
+              y2={centerY - (y + Math.sin(-yaw * Math.PI/180) * 100) * scale}
+              stroke="#ff7b72" strokeWidth={4} />
+        {/* Direction line glow */}
+        <line x1={pos.x} y1={pos.y}
+              x2={centerX + (x + Math.cos(-yaw * Math.PI/180) * 100) * scale}
+              y2={centerY - (y + Math.sin(-yaw * Math.PI/180) * 100) * scale}
+              stroke="#ff7b72" strokeWidth={8} opacity={0.3} />
+        {/* Sensor body - 增大更明显 */}
+        <circle cx={pos.x} cy={pos.y} r={22 * scale} fill="#ff7b72" opacity={0.4} />
+        <circle cx={pos.x} cy={pos.y} r={22 * scale} fill="none" stroke="#ff7b72" strokeWidth={3} />
+        <circle cx={pos.x} cy={pos.y} r={14 * scale} fill={isActive ? colors.axisZ : '#fff'} stroke="#ff7b72" strokeWidth={2} />
+        {/* Spinning indicator */}
+        <circle cx={pos.x} cy={pos.y} r={18 * scale} fill="none" stroke="#ff7b72" strokeWidth={1.5}
+                strokeDasharray="10 5" opacity={0.8} />
+        {/* Center dot */}
+        <circle cx={pos.x} cy={pos.y} r={6 * scale} fill="#ff7b72" />
+      </g>
+    );
+  }
+};
+
+/**
+ * Camera visualization
+ */
+const renderCamera = (
+  type: 'iso' | 'top',
+  x: number, y: number, z: number, yaw: number,
+  centerX: number, centerY: number, scale: number,
+  isActive: boolean, colors: any
+) => {
+  const pos = projectPoint(x, y, z, type, centerX, centerY, scale);
+  const size = 30 * scale;
+
+  if (type === 'iso') {
+    return (
+      <g transform={`rotate(${-yaw}, ${pos.x}, ${pos.y})`}>
+        {/* Camera body */}
+        <rect x={pos.x - size/2} y={pos.y - size/2} width={size} height={size * 1.2}
+              fill="#ffa657" opacity={0.8} rx={4} />
+        {/* Lens */}
+        <rect x={pos.x + size/3} y={pos.y - size/4} width={size/3} height={size/2}
+              fill="#374151" />
+        <circle cx={pos.x + size/2} cy={pos.y} r={6} fill={isActive ? colors.axisZ : '#fff'} />
+      </g>
+    );
+  } else {
+    // Top view
+    return (
+      <g transform={`rotate(${-yaw}, ${pos.x}, ${pos.y})`}>
+        {/* FOV cone */}
+        <polygon
+          points={`${pos.x},${pos.y} ${pos.x + 80*scale},${pos.y - 45*scale} ${pos.x + 80*scale},${pos.y + 45*scale}`}
+          fill="#ffa657" opacity={0.1} />
+        {/* Camera body */}
+        <rect x={pos.x - size/2} y={pos.y - size/2} width={size} height={size}
+              fill="#ffa657" opacity={0.8} rx={4} />
+        {/* Lens */}
+        <circle cx={pos.x + size/3} cy={pos.y} r={8} fill="#374151" />
+        <circle cx={pos.x + size/3} cy={pos.y} r={4} fill={isActive ? colors.axisZ : '#fff'} />
+      </g>
+    );
+  }
+};
+
+/**
+ * Generic component marker
+ */
+const renderComponentMarker = (
+  type: 'iso' | 'top',
+  x: number, y: number, z: number, category: string,
+  centerX: number, centerY: number, scale: number,
+  isActive: boolean, colors: any
+) => {
+  const pos = projectPoint(x, y, z, type, centerX, centerY, scale);
+  const size = isActive ? 12 : 8;
+
+  const categoryColors: Record<string, string> = {
+    SENSOR: '#ff7b72',
+    DRIVER: '#ffa657',
+    MOTOR: '#4ade80',
+    BATTERY: '#a78bfa',
+    MAINCPU: colors.axisZ,
+    default: colors.textSecondary,
+  };
+
+  const color = categoryColors[category] || categoryColors.default;
+
+  return (
+    <g>
+      <circle cx={pos.x} cy={pos.y} r={size}
+              fill={isActive ? colors.axisZ : color}
+              stroke={colors.background} strokeWidth={2} />
+      {isActive && (
+        <circle cx={pos.x} cy={pos.y} r={size + 4}
+                fill="none" stroke={colors.axisZ} strokeWidth={2}
+                opacity={0.6} />
+      )}
+    </g>
+  );
+};
+
+const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, identity, activeId, onSelect, theme }) => {
+  const isDark = theme !== 'industrial';
+  const colors = getThemeColors(isDark);
+
+  const { chassisLength = 1200, chassisWidth = 800, chassisHeight = 400 } = identity;
+
+  // Calculate scale based on view type
+  const getScale = () => {
+    const maxDim = type === 'iso'
+      ? Math.max(chassisLength, chassisWidth, 2000)
+      : Math.max(chassisLength, chassisWidth, 1500);
+    return Math.min(width, height) / (maxDim * 1.2);
+  };
+  const scale = getScale();
+  const centerX = width / 2;
+  const centerY = height / 2;
+
+  // Grid
+  const gridSpacing = 500;
+  const gridRange = 2500;
+
+  return (
+    <svg width={width} height={height}
+         style={{ background: colors.background, borderRadius: 8,
+                  boxShadow: `inset 0 0 30px ${isDark ? 'rgba(0,0,0,0.3)' : 'rgba(0,0,0,0.05)'}` }}>
+      <defs>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      {/* Grid */}
+      <g opacity={isDark ? 0.1 : 0.2}>
+        {Array.from({ length: Math.ceil(gridRange * 2 / gridSpacing) + 1 }, (_, i) => {
+          const v = -gridRange + i * gridSpacing;
+          const p1h = projectPoint(v, -gridRange, 0, type, centerX, centerY, scale);
+          const p2h = projectPoint(v, gridRange, 0, type, centerX, centerY, scale);
+          const p1v = projectPoint(-gridRange, v, 0, type, centerX, centerY, scale);
+          const p2v = projectPoint(gridRange, v, 0, type, centerX, centerY, scale);
+          return (
+            <React.Fragment key={v}>
+              <line x1={p1h.x} y1={p1h.y} x2={p2h.x} y2={p2h.y}
+                    stroke={colors.grid} strokeWidth={1} />
+              <line x1={p1v.x} y1={p1v.y} x2={p2v.x} y2={p2v.y}
+                    stroke={colors.grid} strokeWidth={1} />
+            </React.Fragment>
+          );
+        })}
+        {/* Center axes */}
+        <line x1={projectPoint(0, -gridRange, 0, type, centerX, centerY, scale).x}
+              y1={projectPoint(0, -gridRange, 0, type, centerX, centerY, scale).y}
+              x2={projectPoint(0, gridRange, 0, type, centerX, centerY, scale).x}
+              y2={projectPoint(0, gridRange, 0, type, centerX, centerY, scale).y}
+              stroke={colors.axisX} strokeWidth={2} />
+        <line x1={projectPoint(-gridRange, 0, 0, type, centerX, centerY, scale).x}
+              y1={projectPoint(-gridRange, 0, 0, type, centerX, centerY, scale).y}
+              x2={projectPoint(gridRange, 0, 0, type, centerX, centerY, scale).x}
+              y2={projectPoint(gridRange, 0, 0, type, centerX, centerY, scale).y}
+              stroke={colors.axisY} strokeWidth={2} />
+      </g>
+
+      {/* Chassis */}
+      {renderChassis(type, chassisWidth, chassisLength, chassisHeight, centerX, centerY, scale, colors)}
+
+      {/* Components - sorted by Z so front objects render on top */}
+      {[...components]
+        .filter(c => c.category !== 'CHASSIS')
+        .sort((a, b) => (a.mountZ || 0) - (b.mountZ || 0))
+        .map(c => {
+        const isActive = c.id === activeId;
+        const { mountX: x = 0, mountY: y = 0, mountZ: z = 0, mountYaw: yaw = 0 } = c;
+        const pos = projectPoint(x, y, z, type, centerX, centerY, scale);
+
+        const isWheel = c.type?.toLowerCase().includes('wheel') || c.category === 'DRIVEWHEEL';
+        const isLidar = c.type?.toLowerCase().includes('laser') || c.type?.toLowerCase().includes('lidar');
+        const isCamera = c.type?.toLowerCase().includes('camera');
+
+        return (
+          <g key={c.id} onClick={() => onSelect?.(c.id)} style={{ cursor: 'pointer' }}>
+            {/* Component visualization */}
+            {isWheel ? (
+              renderWheel(type, x, y, z, yaw, centerX, centerY, scale, isActive, colors)
+            ) : isLidar ? (
+              renderLidar(type, x, y, z, yaw, centerX, centerY, scale, isActive, colors)
+            ) : isCamera ? (
+              renderCamera(type, x, y, z, yaw, centerX, centerY, scale, isActive, colors)
+            ) : (
+              renderComponentMarker(type, x, y, z, c.category, centerX, centerY, scale, isActive, colors)
+            )}
+
+            {/* Label for active component */}
+            {isActive && (
+              <text x={pos.x + 15} y={pos.y - 15}
+                    fill={colors.axisZ} fontSize={12} fontWeight="bold"
+                    style={{ pointerEvents: 'none',
+                            stroke: colors.background, strokeWidth: 3, paintOrder: 'stroke' }}>
+                {c.alias || c.name}
+              </text>
+            )}
+          </g>
+        );
+      })}
+
+      {/* View label */}
+      <g style={{ pointerEvents: 'none' }}>
+        <rect x={12} y={height - 30} width={80} height={18} rx={3}
+              fill={isDark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.8)'} />
+        <text x={18} y={height - 18} fill={colors.textPrimary} fontSize={11}>
+          {type === 'iso' ? '轴侧视图' : '俯视图'}
+        </text>
+      </g>
+    </svg>
+  );
+};
+
+interface CoordinateVisualizerProps {
+  activeId?: string;
+  onSelect?: (id: string) => void;
+  viewMode?: 'split' | 'iso';
+}
+
+export const CoordinateVisualizer: React.FC<CoordinateVisualizerProps> = ({
+  activeId, onSelect, viewMode = 'split'
+}) => {
+  const { config } = useProjectStore();
+  const { components, identity } = config;
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
+  const [activeView, setActiveView] = useState<'iso' | 'top'>('iso');
+
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'cyber';
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        setDimensions({ width, height });
+      }
+    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  if (viewMode === 'iso') {
+    return (
+      <div ref={containerRef} style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '8px 12px', display: 'flex', justifyContent: 'center' }}>
+          <Segmented
+            value={activeView}
+            onChange={(v) => setActiveView(v as typeof activeView)}
+            options={[
+              { value: 'iso', label: '轴侧' },
+              { value: 'top', label: '俯视' },
+            ]}
+            size="small"
+          />
+        </div>
+        <div style={{ flex: 1, minHeight: 0, padding: '0 12px 12px' }}>
+          <ViewRenderer
+            type={activeView}
+            width={dimensions.width - 24}
+            height={dimensions.height - 60}
+            components={components}
+            identity={identity}
+            activeId={activeId}
+            onSelect={onSelect}
+            theme={currentTheme}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // Split view mode - main ISO + top subview
+  const subHeight = Math.min(dimensions.height * 0.35, 200);
+
+  return (
+    <div ref={containerRef} style={{ width: '100%', height: '100%', padding: 12, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ flex: '1 1 auto', minHeight: 0 }}>
+        <ViewRenderer
+          type="iso"
+          width={dimensions.width - 24}
+          height={dimensions.height - subHeight - 36}
+          components={components}
+          identity={identity}
+          activeId={activeId}
+          onSelect={onSelect}
+          theme={currentTheme}
+        />
+      </div>
+      <div style={{ height: subHeight, flexShrink: 0 }}>
+        <ViewRenderer
+          type="top"
+          width={dimensions.width - 24}
+          height={subHeight}
+          components={components}
+          identity={identity}
+          activeId={activeId}
+          onSelect={onSelect}
+          theme={currentTheme}
+        />
+      </div>
+    </div>
+  );
 };

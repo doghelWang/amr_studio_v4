@@ -111,6 +111,7 @@ export interface ComponentConfig {
     parentNodeUuid: string | null;
     moduleGroupName?: string;
     moduleGroupUuid?: string;
+    srcName?: string;
 
     // Mounting pose (from structParam.extendParams)
     mountX: number;
@@ -173,6 +174,8 @@ export interface RobotIdentity {
     materialCode: string;
     alias: string;
     venderName: string;
+    selfWeight?: number;
+    totalLoadWeight?: number;
     navigationMethod: NavigationMethod;
     driveType: DriveType;
     chassisShape: 'BOX' | 'CYLINDER';

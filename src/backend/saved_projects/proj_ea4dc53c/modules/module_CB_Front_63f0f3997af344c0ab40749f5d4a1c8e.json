@@ -1,0 +1,174 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "CB_Front",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "CB_Front",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "63f0f3997af344c0ab40749f5d4a1c8e",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "主类型"
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "子类型"
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "传感器系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "SENSOR",
+      "desc": "模块型号",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": []
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "PI_1",
+        "type": "PI",
+        "path": "",
+        "desc": "PI_1",
+        "interfaceUuid": "b741d401cde54028baefd4fb2aa4fb47",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_1",
+        "interfaceUuid": "f2b68a133afc49b1b51fe789a44bf696",
+        "linkedInterfaceUuid": [
+          "80848037b1684a0a81c0bb78e738a796"
+        ]
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null,
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  }
+}

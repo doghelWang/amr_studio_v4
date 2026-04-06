@@ -23,7 +23,7 @@ const IO_TYPES = ['DI', 'DO', 'AI', 'AO'];
  */
 const getBusTheme = (type: string) => {
     const t = type?.toUpperCase() || '';
-    if (t.includes('CAN')) return { color: '#fa8c16', label: 'CAN总线', icon: <ShareAltOutlined /> };
+    if (t.includes('CAN')) return { color: 'var(--warning)', label: 'CAN总线', icon: <ShareAltOutlined /> };
     if (t.includes('ETH') || t.includes('NETWORK')) return { color: '#1890ff', label: '以太网', icon: <DeploymentUnitOutlined /> };
     if (t.includes('485') || t.includes('232') || t.includes('UART')) return { color: '#52c41a', label: '串口线路', icon: <SwapOutlined /> };
     if (t === 'DI') return { color: '#1677ff', label: '数字输入', icon: <ControlOutlined /> };
@@ -57,7 +57,7 @@ const BusTopologyPanel: React.FC<{
                             </div>
                         }
                         variant="borderless"
-                        style={{ marginBottom: 32, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-strong)' }}
+                        style={{ marginBottom: 32, background: 'var(--bg-hover)', border: '1px solid var(--border-strong)' }}
                     >
                         <div className="ports-grid" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
                             {master.interfaces
@@ -74,14 +74,14 @@ const BusTopologyPanel: React.FC<{
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
                                                 <div style={{ 
                                                     padding: '4px 12px', background: theme.color, borderRadius: 4, 
-                                                    color: '#fff', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6 
+                                                    color: 'var(--text-primary)', fontSize: 11, fontWeight: 800, display: 'flex', alignItems: 'center', gap: 6 
                                                 }}>
                                                     {theme.icon} {masterPort.key} ({masterPort.type})
                                                 </div>
                                                 <div style={{ flex: 1, height: 1, background: `linear-gradient(to right, ${theme.color}, transparent)` }} />
                                             </div>
 
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16 }}>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'flex-start' }}>
                                                 {linkedSlaves.map(item => {
                                                     // 【ISS-007 增强】级联感知：查找该从站自身下挂的 IO 设备
                                                     const subDevices = components.flatMap(c => 
@@ -95,7 +95,7 @@ const BusTopologyPanel: React.FC<{
                                                             <Card 
                                                                 size="small" 
                                                                 className="slave-node-card"
-                                                                style={{ width: 200, background: 'var(--bg-elevated)', border: `1px solid ${theme.color}33`, zIndex: 2 }}
+                                                                style={{ width: 'auto', minWidth: 180, flex: 1, background: 'var(--bg-card)', border: `1px solid ${theme.color}33`, zIndex: 2 }}
                                                             >
                                                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
                                                                     <Text strong style={{ fontSize: 10 }}>{item.comp.alias}</Text>
@@ -109,12 +109,12 @@ const BusTopologyPanel: React.FC<{
                                                                 
                                                                 {/* 级联 IO 摘要 */}
                                                                 {subDevices.length > 0 && (
-                                                                    <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                                                    <div style={{ marginTop: 8, paddingTop: 8, borderTop: '1px solid var(--border-default)' }}>
                                                                         <div style={{ fontSize: 8, color: 'var(--accent)', marginBottom: 4, fontWeight: 700 }}>
                                                                             <NodeIndexOutlined /> 已下挂 IO ({subDevices.length}):
                                                                         </div>
                                                                         {subDevices.map(sub => (
-                                                                            <div key={sub.iface.interfaceUuid} style={{ fontSize: 8, color: 'rgba(255,255,255,0.5)', display: 'flex', justifyContent: 'space-between' }}>
+                                                                            <div key={sub.iface.interfaceUuid} style={{ fontSize: 8, color: 'var(--text-muted)', display: 'flex', justifyContent: 'space-between' }}>
                                                                                 <span>• {sub.comp.alias}</span>
                                                                                 <span style={{ opacity: 0.6 }}>→ {sub.boardIface?.key}</span>
                                                                             </div>
@@ -123,7 +123,7 @@ const BusTopologyPanel: React.FC<{
                                                                 )}
                                                             </Card>
                                                             {/* 级联引导线装饰 */}
-                                                            {subDevices.length > 0 && <div style={{ position: 'absolute', bottom: -10, left: '50%', width: 2, height: 10, background: 'var(--accent)', opacity: 0.3 }} />}
+                                                            {subDevices.length > 0 && <div style={{ position: 'absolute', bottom: -10, left: '50%', width: 2, height: 8, background: 'var(--accent)', opacity: 0.3 }} />}
                                                         </div>
                                                     );
                                                 })}
@@ -131,7 +131,7 @@ const BusTopologyPanel: React.FC<{
                                                 <Select
                                                     size="small"
                                                     placeholder="+ 接入设备"
-                                                    style={{ width: 140 }}
+                                                    style={{ width: '100%', maxWidth: 160 }}
                                                     onChange={(val) => {
                                                         const [compId, ifaceUuid] = val.split(':');
                                                         linkInterface(compId, ifaceUuid, masterPort.interfaceUuid);
@@ -211,7 +211,7 @@ const IOSchematicPanel: React.FC<{
                                 key={host.id} 
                                 size="small" 
                                 title={<Space><NodeIndexOutlined /> <Text strong>{host.alias}</Text></Space>}
-                                style={{ background: '#1c2128', border: '1px solid var(--border-strong)', borderRadius: 12 }}
+                                style={{ background: 'var(--bg-card)', border: '1px solid var(--border-strong)', borderRadius: 12 }}
                             >
                                 <div className="pin-array" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8, padding: 8 }}>
                                     {host.interfaces
@@ -225,8 +225,8 @@ const IOSchematicPanel: React.FC<{
                                             return (
                                                 <Tooltip key={pin.interfaceUuid} title={isLinked ? `连接至: ${linkedComp?.alias} (${linkedIface?.key})` : '空闲引脚'}>
                                                     <div className={`io-pin ${isLinked ? 'active' : ''}`} style={{
-                                                        padding: '8px', borderRadius: 6, border: `1px solid ${isLinked ? theme.color : 'rgba(255,255,255,0.05)'}`,
-                                                        background: isLinked ? `${theme.color}11` : 'rgba(0,0,0,0.2)',
+                                                        padding: '8px', borderRadius: 6, border: `1px solid ${isLinked ? theme.color : 'var(--bg-hover)'}`,
+                                                        background: isLinked ? `${theme.color}11` : 'var(--bg-card)',
                                                         display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4, transition: 'all 0.2s'
                                                     }}>
                                                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: isLinked ? theme.color : '#444' }} />
@@ -248,7 +248,7 @@ const IOSchematicPanel: React.FC<{
                         <Title level={5} style={{ fontSize: 13, color: 'var(--text-muted)', marginBottom: 16 }}>终端设备线缆</Title>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                             {ioDevices.length === 0 ? <Empty description="暂无交互设备" /> : ioDevices.map(dev => (
-                                <Card key={dev.id} size="small" style={{ background: 'rgba(255,255,255,0.02)', borderRadius: 8 }}>
+                                <Card key={dev.id} size="small" style={{ background: 'var(--bg-hover)', borderRadius: 8 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                                         <div style={{ width: 32, height: 32, background: 'var(--accent-soft)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {dev.category === 'BUTTON' ? <ThunderboltOutlined style={{ color: 'var(--accent)' }} /> : <BulbOutlined style={{ color: 'var(--accent)' }} />}
@@ -319,7 +319,7 @@ export const WiringStep: React.FC<{ onExport?: () => void }> = () => {
     const tabItems = [
         {
             key: 'bus',
-            label: <Space><BranchesOutlined /> 通信总线拓扑 <Badge count={counts.bus} size="small" style={{ backgroundColor: '#fa8c16' }} /></Space>,
+            label: <Space><BranchesOutlined /> 通信总线拓扑 <Badge count={counts.bus} size="small" style={{ backgroundColor: 'var(--warning)' }} /></Space>,
             children: <BusTopologyPanel components={components} linkInterface={linkInterface} />,
         },
         {

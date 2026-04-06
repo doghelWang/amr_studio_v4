@@ -1,0 +1,358 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "battery",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "battery",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "8263cf18dfd5445fb9559edb78e1f0e8",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "battery",
+        "typeDesc": "能量电池"
+      },
+      "boolParse": true,
+      "desc": "主类型"
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "battery",
+        "typeDesc": "能量电池"
+      },
+      "boolParse": true,
+      "desc": "子类型"
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "EnergySys",
+        "typeDesc": "能量系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "BATTERY",
+      "desc": "模块型号",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "batteryAttr",
+        "desc": "电池属性",
+        "arrayBaseEle": [
+          {
+            "key": "capacity",
+            "type": "DATA_DOUBLE",
+            "desc": "电池容量",
+            "unit": "Ah",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "stdChargeCurrent",
+            "type": "DATA_DOUBLE",
+            "desc": "标准充电电流",
+            "unit": "A",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "maxChargeCurrent",
+            "type": "DATA_DOUBLE",
+            "desc": "最大充电电流",
+            "unit": "A",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "stdDischargeCurrent",
+            "type": "DATA_DOUBLE",
+            "desc": "标准放电电流",
+            "unit": "A",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "maxDischargeCurrent",
+            "type": "DATA_DOUBLE",
+            "desc": "最大放电电流",
+            "unit": "A",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "voltage",
+            "type": "DATA_DOUBLE",
+            "desc": "额定电压",
+            "unit": "V",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "maxPower",
+            "type": "DATA_DOUBLE",
+            "desc": "最大功率",
+            "unit": "W",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "resistance",
+            "type": "DATA_DOUBLE",
+            "desc": "内阻",
+            "unit": "mΩ",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "cycleLife",
+            "type": "DATA_INT32",
+            "desc": "循环寿命",
+            "unit": "次",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "int32Value": 0
+          },
+          {
+            "key": "chargeTempMin",
+            "type": "DATA_DOUBLE",
+            "desc": "最低充电温度",
+            "unit": "℃",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "chargeTempMax",
+            "type": "DATA_DOUBLE",
+            "desc": "最高充电温度",
+            "unit": "℃",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "dischargeTempMin",
+            "type": "DATA_DOUBLE",
+            "desc": "最低放电温度",
+            "unit": "℃",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "dischargeTempMax",
+            "type": "DATA_DOUBLE",
+            "desc": "最高放电温度",
+            "unit": "℃",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "BAT_1",
+        "type": "BAT",
+        "path": "",
+        "desc": "BAT_1",
+        "interfaceUuid": "70fb12f9f1514f7289b23b4c58d7696b",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "RS485_1",
+        "type": "RS485",
+        "path": "",
+        "desc": "RS485_1",
+        "interfaceUuid": "80709990ae524e228c9ac99e280931f7",
+        "linkedInterfaceUuid": [
+          "91bd53cb95b041ffa1faca92b5cd1f3c"
+        ]
+      },
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_1",
+        "interfaceUuid": "402d2b49eded4e0d90cffc60b05f4578",
+        "linkedInterfaceUuid": []
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null,
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  }
+}

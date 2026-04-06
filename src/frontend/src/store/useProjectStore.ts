@@ -6,7 +6,7 @@ import {
   RobotConfig, RobotIdentity, ComponentConfig,
   SmartAttribute, AttributeGroup, MainModuleType, InterfaceConfig
 } from './types';
-import { buildAttributesFromSchema } from './SchemaEngine';
+import { buildAttributesFromSchema, getValidSubType, isValidSubType } from './SchemaEngine';
 import masterRegistry from './master_registry.json';
 import abilityRegistry from './ability_registry.json';
 import {
@@ -161,8 +161,9 @@ export const useProjectStore = create<ProjectState>()(
           identity: {
             robotName: '',
             version: '1.0.0',
-            navigationMethod: '',
-            driveType: '',
+            alias: '',
+            navigationMethod: 'LASER_SLAM',
+            driveType: 'STANDARD_DIFF',
             chassisShape: 'BOX',
             chassisLength: 0,
             chassisWidth: 0,
@@ -227,7 +228,7 @@ export const useProjectStore = create<ProjectState>()(
         }),
 
         addComponent: (category, type) => {
-          if (category === 'CHASSIS') return '';
+          if ((category as any) === 'CHASSIS') return '';
 
           const id = uuidGen();
           const state = get();
@@ -238,6 +239,9 @@ export const useProjectStore = create<ProjectState>()(
           );
 
           const registryInfo = schemaInfo || (masterRegistry as any)[category]?.[type];
+          if (!schemaInfo && registryInfo) {
+            console.warn(`[DEPRECATION] Using hardcoded masterRegistry for ${category}/${type}. Migrate to schemaRegistry.`);
+          }
 
           let privateAttrs: AttributeGroup[] = (registryInfo?.privateAttributes || registryInfo?.privateAttrs || []).map((group: any) => ({
             key: group.key || 'private_group',
@@ -258,20 +262,32 @@ export const useProjectStore = create<ProjectState>()(
             } else if ((category as string) === 'DRIVEWHEEL') {
               // Drive wheel subType must match the schema directory name
               // Options: diffWheel, horizontalSteerWheel, verticalSteerWheel, diffSteerWheel, weakSteerWheel
-              subType = type || 'diffWheel';
+              // [P0-FIX-2026-04-04] Smart subType selection based on drive type
+              if (type) {
+                subType = type;  // Use explicit type if provided
+              } else {
+                // Auto-detect: STEER drive types need horizontalSteerWheel (7 attributes)
+                subType = state.config.identity.driveType?.includes('STEER')
+                  ? 'horizontalSteerWheel'
+                  : 'diffWheel';
+              }
             } else if ((category as string) === 'DRIVER') {
               subType = type || 'subDriver';
-            } else if ((category as string) === 'MOTOR') {
-              // CRITICAL FIX: type "driver" is WRONG for MOTOR category
-              // MOTOR must use motor templates (PMSMMotor, BLDCMotor, BDCMotor)
-              // not driver templates (subDriver)
-              if (type === 'driver' || type === 'subDriver') {
-                console.warn(`[FIX] MOTOR category with wrong type "${type}", forcing to PMSMMotor`);
-                subType = 'PMSMMotor';
-              } else {
-                subType = type || 'PMSMMotor';
-              }
-            }
+        } else if ((category as string) === 'MOTOR') {
+          // $C003-FIX: Schema-driven subType selection for MOTOR category
+          // Replaces hardcoded 'PMSMMotor' fallback with registry lookup
+          const validMotorTypes = ['PMSMMotor', 'BLDCMotor', 'BDCMotor'];
+
+          if (type === 'driver' || type === 'subDriver') {
+            console.warn(`[FIX] MOTOR category with wrong type "${type}", using schema-driven fallback`);
+            subType = getValidSubType('MOTOR', undefined, validMotorTypes);
+          } else {
+            // If type is provided but not in registry (e.g., null/undefined/custom), use fallback
+            subType = type && isValidSubType(type)
+              ? type
+              : getValidSubType('MOTOR', undefined, validMotorTypes);
+          }
+        }
 
             // We set standard grouped schemas entirely without loop restructuring
             privateAttrs = buildAttributesFromSchema(subType);
@@ -338,12 +354,12 @@ export const useProjectStore = create<ProjectState>()(
             alias: `${category} ${(state.config.components.filter(c => c.category === category).length + 1)}`,
             privateAttrs,
             interfaces: initialInterfaces,
-            structParam: {},
+            rawStructParam: {},
             generalAttr: {
               moduleName: { type: 'DATA_STRING', stringValue: `${category}_${id.slice(0, 4)}`, boolParse: true },
               moduleUuid: { type: 'DATA_STRING', stringValue: id, boolParse: true }
             },
-            parentNodeUuid: category !== 'CHASSIS' ? state.config.components.find(c => c.category === 'CHASSIS')?.id : undefined,
+            parentNodeUuid: state.config.components.find(c => c.category === 'CHASSIS')?.id,
             mountX: 0, mountY: 0, mountZ: 0,
             mountRoll: 0, mountPitch: 0, mountYaw: 0
           };
@@ -494,8 +510,11 @@ export const useProjectStore = create<ProjectState>()(
             identity: {
               robotName: '',
               version: '1.0.0',
-              navigationMethod: '',
-              driveType: '',
+              alias: '',
+              materialCode: '',
+              venderName: '',
+              navigationMethod: 'LASER_SLAM',
+              driveType: 'STANDARD_DIFF',
               chassisShape: 'BOX',
               chassisLength: 0,
               chassisWidth: 0,
@@ -506,9 +525,7 @@ export const useProjectStore = create<ProjectState>()(
               rightOffset: 0,
               maxSpeed: 0,
               maxAccel: 0,
-              maxDecel: 0,
-              materialCode: '',
-              venderName: 'HIKROBOT'
+              maxDecel: 0
             },
             components: [],
             abilities: abilityRegistry as any
@@ -526,7 +543,7 @@ export const useProjectStore = create<ProjectState>()(
         saveProject: async () => {
           const state = get();
           try {
-            await apiSaveProject(state.config);
+            await apiSaveProject(state.config.identity.robotName || 'Untitled', state.config);
             set({ isDirty: false });
             return true;
           } catch (e) {

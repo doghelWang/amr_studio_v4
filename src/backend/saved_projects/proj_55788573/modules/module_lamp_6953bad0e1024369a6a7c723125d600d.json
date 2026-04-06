@@ -1,0 +1,981 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "lamp",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "通用灯带",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "6953bad0e1024369a6a7c723125d600d",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-09-18 19:51:14.918",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "InteractiveSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子系统",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "light",
+        "typeDesc": "\r",
+        "typeGroups": []
+      },
+      "desc": "主类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "lamp",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "供应商",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "设备型号",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "lamp-Common",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "stringValue": "灯带",
+        "desc": "模块别名",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "lightAttr",
+        "desc": "灯光属性",
+        "arrayBaseEle": [
+          {
+            "key": "lightType",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "projectionLights",
+              "typeDesc": "投影灯",
+              "typeGroups": [
+                {
+                  "key": "projectionLights",
+                  "desc": "投影灯",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "towerLights",
+                  "desc": "塔灯",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "ballLights",
+                  "desc": "球灯",
+                  "arrayCmobEle": []
+                }
+              ]
+            },
+            "desc": "指示灯类型",
+            "boolHide": true,
+            "unit": "",
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "lightColor",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "blue",
+              "typeDesc": "蓝色",
+              "typeGroups": [
+                {
+                  "key": "blue",
+                  "desc": "蓝色",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "RYG",
+                  "desc": "三色",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "red&bule",
+                  "desc": "红蓝(一字线型)",
+                  "arrayCmobEle": []
+                }
+              ]
+            },
+            "desc": "指示灯颜色",
+            "boolHide": true,
+            "unit": "",
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "DI",
+        "busInterfaceNums": 3,
+        "busInterfaceSubType": "",
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "DI_1",
+        "type": "DI",
+        "desc": "DI_1",
+        "interfaceUuid": "0bf5f42798be480d9facc89081dcc542",
+        "linkedInterfaceUuid": [
+          "26679d071c2f479090d8186d5075d633"
+        ],
+        "interfaceAttrs": {
+          "interfaceParamsArray": [
+            {
+              "key": "MODE",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "PWM",
+                "typeDesc": "PWM",
+                "typeGroups": [
+                  {
+                    "key": "PWM",
+                    "desc": "PWM",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "NPN",
+                    "desc": "NPN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "HWTAGS",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LED",
+                "typeDesc": "LED",
+                "typeGroups": [
+                  {
+                    "key": "LED",
+                    "desc": "LED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "硬件标签属性",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "COLOR",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LAMP_COLOR_RED",
+                "typeDesc": "LAMP_COLOR_RED",
+                "typeGroups": [
+                  {
+                    "key": "LAMP_COLOR_GREEN",
+                    "desc": "LAMP_COLOR_GREEN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_RED",
+                    "desc": "LAMP_COLOR_RED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_BULE",
+                    "desc": "LAMP_COLOR_BULE",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_YELLOW",
+                    "desc": "LAMP_COLOR_YELLOW",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_WHITE",
+                    "desc": "LAMP_COLOR_WHITE",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "颜色",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true,
+              "unit": "",
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "低电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "path": "",
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "DI_2",
+        "type": "DI",
+        "desc": "DI_2",
+        "interfaceUuid": "1ed76127acbe4d8aad52fb548f61f78f",
+        "linkedInterfaceUuid": [
+          "e0379d1f04f545c6a572da87260265d5"
+        ],
+        "interfaceAttrs": {
+          "interfaceParamsArray": [
+            {
+              "key": "MODE",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "PWM",
+                "typeDesc": "PWM",
+                "typeGroups": [
+                  {
+                    "key": "PWM",
+                    "desc": "PWM",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "NPN",
+                    "desc": "NPN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "HWTAGS",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LED",
+                "typeDesc": "LED",
+                "typeGroups": [
+                  {
+                    "key": "LED",
+                    "desc": "LED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "硬件标签属性",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "COLOR",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LAMP_COLOR_GREEN",
+                "typeDesc": "LAMP_COLOR_GREEN",
+                "typeGroups": [
+                  {
+                    "key": "LAMP_COLOR_GREEN",
+                    "desc": "LAMP_COLOR_GREEN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_RED",
+                    "desc": "LAMP_COLOR_RED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_BULE",
+                    "desc": "LAMP_COLOR_BULE",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_YELLOW",
+                    "desc": "LAMP_COLOR_YELLOW",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_WHITE",
+                    "desc": "LAMP_COLOR_WHITE",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "颜色",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true,
+              "unit": "",
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "低电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "path": "",
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "DI_3",
+        "type": "DI",
+        "desc": "DI_3",
+        "interfaceUuid": "70f475f9900c4976b1f1b7adeae76092",
+        "linkedInterfaceUuid": [
+          "1d22e7022bea40568957912706d0b984"
+        ],
+        "interfaceAttrs": {
+          "interfaceParamsArray": [
+            {
+              "key": "MODE",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "PWM",
+                "typeDesc": "PWM",
+                "typeGroups": [
+                  {
+                    "key": "PWM",
+                    "desc": "PWM",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "NPN",
+                    "desc": "NPN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "模式",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "HWTAGS",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LED",
+                "typeDesc": "LED",
+                "typeGroups": [
+                  {
+                    "key": "LED",
+                    "desc": "LED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "*",
+                    "desc": "*",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "硬件标签属性",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "COLOR",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "LAMP_COLOR_YELLOW",
+                "typeDesc": "LAMP_COLOR_YELLOW",
+                "typeGroups": [
+                  {
+                    "key": "LAMP_COLOR_GREEN",
+                    "desc": "LAMP_COLOR_GREEN",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_RED",
+                    "desc": "LAMP_COLOR_RED",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_BULE",
+                    "desc": "LAMP_COLOR_BULE",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_YELLOW",
+                    "desc": "LAMP_COLOR_YELLOW",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "LAMP_COLOR_WHITE",
+                    "desc": "LAMP_COLOR_WHITE",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "颜色",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true,
+              "unit": "",
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "低电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "path": "",
+        "linkAttrs": [],
+        "boolDeprecated": false
+      }
+    ],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "b563b9927ba2440ab4dc2cf284c6f034",
+          "typeDesc": "chassis_steer",
+          "typeGroups": [
+            {
+              "key": "b563b9927ba2440ab4dc2cf284c6f034",
+              "desc": "chassis_steer",
+              "arrayCmobEle": []
+            }
+          ]
+        },
+        "desc": "从属机构",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标",
+        "boolParse": true,
+        "boolMustfill": true,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "翻滚角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "偏航角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "俯仰角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}

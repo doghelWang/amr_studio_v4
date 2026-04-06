@@ -1,209 +1,158 @@
 
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m112[22m[2m[0m ms[22m
+> amr-studio-frontend@1.0.0 dev
+> vite --host 0.0.0.0 --port 3001
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m119[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m112[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m12:11:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m168[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m12:12:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
-[2m12:12:42[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/wizard/PowerSystemStep.tsx[22m Could not Fast Refresh ("DRIVE_TOPOLOGY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
-[2m12:12:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
-[2m12:12:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerSystemStep.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/wizard/PowerTopologyPanel.tsx[22m
-[2m12:12:46[22m [36m[1m[vite][22m[39m [33mhmr invalidate [39m[2m/src/components/wizard/PowerSystemStep.tsx[22m Could not Fast Refresh ("DRIVE_TOPOLOGY" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
-[2m12:12:46[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
-[2m12:12:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m116[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m12:17:04[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m106[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m12:17:33[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
-[2m12:17:41[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Sidebar.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m91[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m12:20:19[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m118[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m263[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m122[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-[2m13:16:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m113[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m141[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m140[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m91[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m92[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m101[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m89[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m90[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m130[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m149[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m165[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m94[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m100[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m95[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m96[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m121[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m123[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m95[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
-
-  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m138[22m[2m[0m ms[22m
-
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m7:21:51 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m7:21:51 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m7:31:33 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m7:31:33 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/PowerSystemStep.tsx[22m
+[2m7:47:43 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m8:08:51 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/main.tsx[22m
+[2m8:10:25 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/layout/Header.tsx[22m
+[2m8:10:25 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+[2m8:10:25 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+[2m8:10:25 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m8:11:32 AM[22m [31m[1m[vite][22m[39m Pre-transform error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?
+[2m8:11:32 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m8:14:00 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m8:14:01 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Failed to resolve import "../store/useThemeStore" from "src/components/layout/Header.tsx". Does the file exist?[39m
+  Plugin: [35mvite:import-analysis[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/components/layout/Header.tsx[39m:4:25
+[33m  19 |  import { Tooltip, Button } from "antd";
+  20 |  import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from "@ant-design/icons";
+  21 |  import { useTheme } from "../store/useThemeStore";
+     |                            ^
+  22 |  export const Header = ({
+  23 |    currentStep,[39m
+      at TransformPluginContext._formatError (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49258:41)
+      at TransformPluginContext.error (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49253:16)
+      at normalizeUrl (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64307:23)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64439:39
+      at async Promise.all (index 6)
+      at async TransformPluginContext.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:64366:7)
+      at async PluginContainer.transform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:49099:18)
+      at async loadAndTransform (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51978:27)
+      at async viteTransformMiddleware (file:///Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:62106:24)
+[2m8:16:51 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx[22m
+[2m8:29:52 AM[22m [36m[1m[vite][22m[39m [32mpage reload [39m[2msrc/main.tsx[22m
+[2m8:52:04 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/WelcomeScreen.tsx[22m
+[2m8:57:15 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/MountingStep.tsx[22m
+[2m8:57:21 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m8:57:59 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m8:58:03 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/WiringStep.tsx[22m
+[2m9:00:45 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:01:05 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:01:38 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:01:58 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:02:24 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:09:11 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m9:10:23 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m9:10:23 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/MountingStep.tsx[22m
+[2m9:13:49 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m9:14:23 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/MountingStep.tsx[22m
+[2m9:20:19 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m9:25:08 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/WiringStep.tsx[22m
+[2m9:25:08 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+[2m9:25:08 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:25:27 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AuditStep.tsx[22m
+[2m9:30:48 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m9:30:48 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/MountingStep.tsx[22m
+[2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
+[2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/WiringStep.tsx[22m
+[2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m

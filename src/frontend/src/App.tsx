@@ -121,6 +121,18 @@ export default function App() {
         return () => window.removeEventListener('keydown', handler);
     }, [canUndo, canRedo, isDirty, config.identity.robotName]);
 
+    // Browser close/refresh protection: warn if unsaved changes exist
+    useEffect(() => {
+        const handler = (e: BeforeUnloadEvent) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = '存在未保存的更改，确定离开？';
+            }
+        };
+        window.addEventListener('beforeunload', handler);
+        return () => window.removeEventListener('beforeunload', handler);
+    }, [isDirty]);
+
     /** 辅助函数：格式化打印审计日志到控制台 */
     const printAudit = (title: string, audit: string[]) => {
         if (!audit) return;

@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Form, InputNumber, Select, Row, Col, Divider, Card, Typography, Tabs, Tooltip, Switch, Space, Tag, Input } from 'antd';
-import { BuildOutlined, ColumnWidthOutlined, HolderOutlined, ThunderboltOutlined, InfoCircleOutlined, SyncOutlined, IdcardOutlined } from '@ant-design/icons';
+import React, { useEffect, useState, useMemo } from 'react';
+import { 
+    Form, InputNumber, Select, Row, Col, Divider, Card, 
+    Typography, Tabs, Tooltip, Switch, Space, Tag, Input
+} from 'antd';
+import { 
+    BuildOutlined, ColumnWidthOutlined, HolderOutlined, 
+    ThunderboltOutlined, InfoCircleOutlined, SyncOutlined, 
+    IdcardOutlined, PartitionOutlined
+} from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { DRIVE_TYPE_LABELS } from '../../store/types';
 import { PowerSystemStep } from './PowerSystemStep';
@@ -11,41 +18,31 @@ import { Modal, message } from 'antd';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
-const { TabPane } = Tabs;
 
-export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
-    const { config, setIdentity, updateAttribute } = useProjectStore();
+export const ChassisStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
+    const { config, setIdentity, updateAttribute, updateComponent } = useProjectStore();
     const { identity } = config;
     const [syncFullLoad, setSyncFullLoad] = useState(true);
 
     const handleUpdate = (fields: any) => {
-        // Special case: Drive Type change requires confirmation because it wipes wheels/motors
         if ('driveType' in fields && fields.driveType !== identity.driveType) {
             const powerComps = config.components.filter(c => 
                 ['DRIVEWHEEL', 'DRIVER', 'MOTOR', 'ACTOR'].includes(c.category)
             );
-
             if (powerComps.length > 0) {
                 Modal.confirm({
                     title: '更换底盘驱动类型',
-                    content: `检测到当前已配置 ${powerComps.length} 个动力组件。更换驱动类型将清除现有轮组、电机及驱动器映射，以确保拓扑一致性。确定要继续吗？`,
-                    okText: '确定更换',
-                    cancelText: '取消',
-                    maskClosable: true,
-                    onOk: () => {
-                        setIdentity(fields);
-                        message.info(`已切换至 ${DRIVE_TYPE_LABELS[fields.driveType]}，请重新配置轮组`);
-                    }
+                    content: `检测到当前已配置 ${powerComps.length} 个动力组件。更换驱动类型将清除现有轮组映射。确定要继续吗？`,
+                    onOk: () => setIdentity(fields)
                 });
                 return;
             }
         }
-        
         setIdentity(fields);
     };
 
     const handleOffsetChange = (field: string, v: number | null) => {
-        if (v === null || v === undefined) return;
+        if (v === null) return;
         const len = identity.chassisLength || 1200;
         const wid = identity.chassisWidth || 800;
         const updates: any = { [field]: v };
@@ -57,17 +54,6 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
     };
 
     const chassisComponent = config.components.find(c => c.category === 'CHASSIS');
-    const privateAttrs = chassisComponent ? chassisComponent.privateAttrs : [];
-    const motionCenterGroup = privateAttrs.find(g => g.key === 'motionCenterAttr');
-    const motionCenterEles = motionCenterGroup ? motionCenterGroup.elements : [];
-
-    const getMotionCenterVal = (key: string) => {
-        const ele = motionCenterEles.find(e => (e.key || '').toLowerCase() === key.toLowerCase()) as any;
-        return ele ? (ele.value ?? ele.doubleValue ?? ele.double_value ?? 0) : 0;
-    };
-
-    const headIdle = getMotionCenterVal('headOffset(Idle)') || identity.headOffset;
-    const leftIdle = getMotionCenterVal('leftOffset(Idle)') || identity.leftOffset;
 
     const renderHeaderField = (label: string, field: string, value: string, isSelect = false, options?: any[]) => (
         <Space size={4}>
@@ -76,7 +62,7 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
                 <Select 
                     size="small" 
                     variant="borderless" 
-                    style={{ fontWeight: 600, minWidth: 120, borderBottom: '1px dashed rgba(255,255,255,0.2)' }}
+                    style={{ fontWeight: 600, minWidth: 120, borderBottom: '1px dashed var(--border-default)' }}
                     value={value}
                     options={options}
                     onChange={v => handleUpdate({ [field]: v })}
@@ -93,35 +79,14 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
         </Space>
     );
 
-    return (
-        <div className="content-grid" style={{ padding: 0 }}>
-            {/* ━━━ Global Identity Header Summary ━━━ */}
-            <div className="chassis-identity-header" style={{
-                background: 'rgba(255, 255, 255, 0.03)',
-                padding: '12px 24px',
-                borderBottom: '1px solid var(--border-default)',
-                marginBottom: 0,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-            }}>
-                <Space size={32}>
-                    {renderHeaderField('机器人名称', 'robotName', identity.robotName)}
-                    {renderHeaderField('技术标识', 'materialCode', identity.materialCode)}
-                    {renderHeaderField('底盘模型', 'driveType', identity.driveType, true, Object.entries(DRIVE_TYPE_LABELS).map(([k, v]) => ({ label: v, value: k })))}
-                </Space>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <Tag icon={<IdcardOutlined />} color="processing" style={{ margin: 0 }}>Step 2: 底盘与动力系统配置</Tag>
-                </div>
-            </div>
-
-            <Tabs defaultActiveKey="chassis" tabPosition="top" style={{ padding: '0 24px' }} className="step2-main-tabs">
-                <TabPane tab={<span><BuildOutlined /> 2-1. 尺寸与中心</span>} key="chassis">
-                    <div className="section-title" style={{ marginTop: 16 }}>
-                        <BuildOutlined /> 物理环境参数与运动中心
-                    </div>
+    const tabItems = [
+        {
+            key: 'chassis',
+            label: <span><BuildOutlined /> 2-1. 尺寸与中心</span>,
+            children: (
+                <div style={{ padding: '16px 0' }}>
                     <Row gutter={24} style={{ alignItems: 'flex-start' }}>
-                        <Col span={8} style={{ position: 'sticky', top: 0 }}>
+                        <Col xs={24} lg={8} style={{ display: 'flex', flexDirection: 'column' }}>
                             <Card className="smart-card" variant="borderless">
                                 <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <HolderOutlined /> 实时运动中心预览
@@ -142,7 +107,7 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
                             </Card>
                         </Col>
 
-                        <Col span={16}>
+                        <Col xs={24} lg={16} style={{ minHeight: 500 }}>
                             <Card className="smart-card" variant="borderless">
                                 <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <ColumnWidthOutlined /> 物理包络 & 运动中心 (Dimensions)
@@ -193,14 +158,16 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
                             </Card>
                         </Col>
                     </Row>
-                </TabPane>
-
-                <TabPane tab={<span><HolderOutlined /> 2-2. 运动性能配置</span>} key="attributes">
-                    <div className="section-title" style={{ marginTop: 16 }}>
-                        <HolderOutlined /> 底盘运动学与性能参数
-                    </div>
+                </div>
+            )
+        },
+        {
+            key: 'attributes',
+            label: <span><HolderOutlined /> 2-2. 运动性能配置</span>,
+            children: (
+                <div style={{ padding: '16px 0' }}>
                     <Row gutter={24} style={{ alignItems: 'flex-start' }}>
-                        <Col span={8} style={{ position: 'sticky', top: 0 }}>
+                        <Col xs={24} lg={8} style={{ display: 'flex', flexDirection: 'column' }}>
                             <Card className="smart-card" variant="borderless">
                                 <Title level={5} style={{ color: 'var(--accent)', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 8 }}>
                                     <HolderOutlined /> 布局预览
@@ -214,14 +181,29 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
                                     components={config.components}
                                     svgSize={200}
                                 />
+                                
+                                <Divider />
+                                <Title level={5} style={{ color: 'var(--accent)', fontSize: 14, marginBottom: 16 }}>
+                                    <ColumnWidthOutlined /> 物理质量参数 (归属底盘)
+                                </Title>
+                                <Form layout="vertical">
+                                    <Row gutter={12}>
+                                        <Col span={12}>
+                                            <Form.Item label="底盘自重"><InputNumber style={{ width: '100%' }} value={identity.selfWeight} suffix="kg" onChange={v => setIdentity({ selfWeight: v as number })} /></Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item label="额定负载"><InputNumber style={{ width: '100%' }} value={identity.totalLoadWeight} suffix="kg" onChange={v => setIdentity({ totalLoadWeight: v as number })} /></Form.Item>
+                                        </Col>
+                                    </Row>
+                                </Form>
                             </Card>
                         </Col>
 
-                        <Col span={16}>
+                        <Col xs={24} lg={16} style={{ minHeight: 500 }}>
                             <Card className="smart-card" variant="borderless">
                                 <Form layout="vertical">
                                     <Title level={5} style={{ color: 'var(--accent)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
-                                        <ThunderboltOutlined /> 基础运动参数 (Idle / 空载)
+                                        <ThunderboltOutlined /> 核心运动学指标 (Dynamics)
                                     </Title>
                                     <Row gutter={12}>
                                         <Col span={6}><Form.Item label="最大线速度"><InputNumber style={{ width: '100%' }} value={identity.maxSpeed} suffix="mm/s" onChange={v => handleUpdate({ maxSpeed: v as number })} /></Form.Item></Col>
@@ -230,68 +212,101 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = () => {
                                         <Col span={6}><Form.Item label="避障最大减速度"><InputNumber style={{ width: '100%' }} value={identity.avoidMaxDec} suffix="mm/s²" onChange={v => handleUpdate({ avoidMaxDec: v as number })} /></Form.Item></Col>
                                     </Row>
 
-
                                     <Divider orientation="left" plain>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                            <Title level={5} style={{ color: 'var(--accent)', margin: 0, display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                <SyncOutlined spin={syncFullLoad} /> 负载性能参数 (Full Load / 满载)
-                                            </Title>
+                                            <Text strong style={{ color: 'var(--accent)' }}>满载性能 (Full Load)</Text>
                                             <Switch size="small" checkedChildren="同步" unCheckedChildren="独立" checked={syncFullLoad} onChange={setSyncFullLoad} />
                                         </div>
                                     </Divider>
                                     
                                     <Row gutter={12}>
-                                        <Col span={6}><Form.Item label="最大线速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxSpeed * 0.8) : identity.maxSpeedFull} suffix="mm/s" onChange={v => !syncFullLoad && handleUpdate({ maxSpeedFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="最大线加速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxAccel * 0.4) : identity.maxAccelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxAccelFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="最大线减速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxDecel * 0.5) : identity.maxDecelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxDecelFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="避障最大减速度 (满载)"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? identity.avoidMaxDec : identity.avoidMaxDecFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ avoidMaxDecFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxSpeed * 0.8) : identity.maxSpeedFull} suffix="mm/s" onChange={v => !syncFullLoad && handleUpdate({ maxSpeedFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线加速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxAccel * 0.4) : identity.maxAccelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxAccelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxDecel * 0.5) : identity.maxDecelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxDecelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="避障减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? identity.avoidMaxDec : identity.avoidMaxDecFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ avoidMaxDecFull: v as number })} /></Form.Item></Col>
                                     </Row>
 
-                                    <Divider orientation="left" plain><small>旋转性能 (Rotation)</small></Divider>
-                                    <Row gutter={12}>
-                                        <Col span={12}><Form.Item label="最大角速度"><InputNumber style={{ width: '100%' }} value={identity.rotateMaxAngSpeed} suffix="°/s" onChange={v => handleUpdate({ rotateMaxAngSpeed: v as number })} /></Form.Item></Col>
-                                        <Col span={12}><Form.Item label="最大角加速度"><InputNumber style={{ width: '100%' }} value={identity.rotateMaxAngAcceleration} suffix="°/s²" onChange={v => handleUpdate({ rotateMaxAngAcceleration: v as number })} /></Form.Item></Col>
-                                    </Row>
-                                    
                                     {chassisComponent && (
                                         <div style={{ marginTop: 24 }}>
-                                            <Divider orientation="left" plain><small>底盘全局参数列表 (Official CModel Registry)</small></Divider>
+                                            <Divider orientation="left" plain><small>底盘本体私有属性 (Official CModel Registry)</small></Divider>
                                             <ComponentPropertyPanel 
-                                                projectId={null}
-                                                selectedUuid={chassisComponent.id} 
-                                                hideTabs={true}
-                                                excludeGroupKeys={['motionCenterAttr']}
-                                                excludeElementKeys={[
-                                                    'length', 'width', 'height', 
-                                                    'maxSpeed', 'maxAccel', 'maxDecel', 'maxRotSpeed', 'maxRotAccel',
-                                                    'moduleName', 'materialCode', 'manufacturer', 'moduleAlias', 'modelKey', 'category', 'robotName', 'driveType',
-                                                    'wheelsNum'
-                                                ]}
+                                                component={chassisComponent}
+                                                onAttributeChange={(groupId, attrKey, val, subKey) => {
+                                                    updateAttribute(chassisComponent.id, groupId, attrKey, val, subKey);
+                                                }}
                                             />
                                         </div>
                                     )}
-
-
                                 </Form>
                             </Card>
                         </Col>
                     </Row>
-                </TabPane>
-                
-                <TabPane tab={<span><ThunderboltOutlined /> 2-3. 动力拓扑管理</span>} key="power">
-                    <div className="section-title" style={{ marginTop: 16 }}>
-                        <ThunderboltOutlined /> 动力关联组件 (轮-驱-电)
+                </div>
+            )
+        },
+        {
+            key: 'power',
+            label: <span><ThunderboltOutlined /> 2-3. 动力组成</span>,
+            children: (
+                <div style={{ height: 'calc(100vh - 250px)', marginTop: 16 }}>
+                    <PowerSystemStep />
+                </div>
+            )
+        }
+    ];
+
+    return (
+        <div className="content-grid" style={{ padding: 0 }}>
+            <div className="chassis-identity-header" style={{
+                background: 'rgba(255, 255, 255, 0.03)',
+                padding: '16px 24px',
+                borderRadius: '12px',
+                marginBottom: 24,
+                border: '1px solid rgba(255, 255, 255, 0.08)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}>
+                <Space size={32}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                        <div style={{ 
+                            width: 40, height: 40, borderRadius: 10, 
+                            background: 'linear-gradient(135deg, var(--accent) 0%, #1d4ed8 100%)',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <IdcardOutlined style={{ fontSize: 20, color: 'white' }} />
+                        </div>
+                        <div>
+                            <Text strong style={{ fontSize: 16, display: 'block' }}>{identity.robotName || '未命名机器人'}</Text>
+                            <Text type="secondary" style={{ fontSize: 12 }}>{DRIVE_TYPE_LABELS[identity.driveType]}</Text>
+                        </div>
                     </div>
-                    <div style={{ height: 'calc(100vh - 250px)' }}>
-                        <PowerSystemStep />
-                    </div>
-                </TabPane>
-            </Tabs>
-            <style>{`
-                .step2-main-tabs .ant-tabs-nav::before { border-bottom: 1px solid var(--border-default); }
-                .step2-main-tabs .ant-tabs-tab-active { background: rgba(56, 139, 253, 0.05); }
-                .ant-input-number-suffix { color: var(--text-muted); font-size: 11px; }
-            `}</style>
+
+                    <Space split={<Divider type="vertical" />} size={24}>
+                        {renderHeaderField('机器人名称', 'robotName', identity.robotName)}
+                        {renderHeaderField('底盘驱动', 'driveType', identity.driveType, true, Object.entries(DRIVE_TYPE_LABELS).map(([k,v]) => ({ label: v, value: k })))}
+                        <Space size={4}>
+                            <Text type="secondary" style={{ fontSize: 12 }}>外形尺寸:</Text>
+                            <Text strong>{identity.chassisLength} × {identity.chassisWidth} × {identity.chassisHeight} mm</Text>
+                        </Space>
+                    </Space>
+                </Space>
+
+                {onExport && (
+                    <Tooltip title="导出当前底盘配置为 .cmodel 工业包">
+                        <Space className="export-hint" style={{ cursor: 'pointer', color: 'var(--accent)' }} onClick={onExport}>
+                            <SyncOutlined />
+                            <Text strong style={{ color: 'inherit' }}>工业级导出</Text>
+                        </Space>
+                    </Tooltip>
+                )}
+            </div>
+
+            <Tabs 
+                defaultActiveKey="chassis"
+                className="step-tabs"
+                items={tabItems}
+            />
         </div>
     );
 };

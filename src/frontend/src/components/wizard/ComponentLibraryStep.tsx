@@ -34,6 +34,7 @@ import {
 import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
 import { buildAttributesFromSchema } from '../../store/SchemaEngine';
 import { PowerTopologyPanel } from './PowerTopologyPanel';
+import { getBackendBase } from '../../services/api_v2';
 
 const { Title, Text } = Typography;
 
@@ -144,10 +145,8 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
 
     useEffect(() => {
         setLoadingLibrary(true);
-        const backendBase = (window.location.port === '3000' || window.location.port === '5173') 
-            ? `http://${window.location.hostname}:8002` 
-            : window.location.origin;
-        axios.get(`${backendBase}/api/v1/resources/modules`)
+        const backendBase = getBackendBase();
+        axios.get(`${backendBase}/api/v1/schemas`)
             .then(res => {
                 // Decorate data with metadata keys using ImportService
                 // BUG FIX: Backend returns 'data_xml' / 'data_json', NOT 'full_data'
@@ -233,14 +232,89 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
         return { type: 'success' as const, msg: '导航传感器配置完整 ✓' };
     }, [components, currentSubStep, config.identity.navigationMethod]);
 
-    const treeData = useMemo(() => {
+    // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 【NEW】全域硬件层级关系 - 智能过滤展示逻辑
+// 规范:
+// 1. 不显示当前步骤已添加组件列表中的模块
+// 2. 不显示底盘(CHASSIS)及其下挂组件(轮组、驱动器、电机等)
+// 3. 仅展示跨步骤共享的通用组件和未在当前步骤配置的硬件
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const filteredTreeData = useMemo(() => {
+  // 步骤1: 收集需要隐藏的组件ID
+  const hiddenIds = new Set<string>();
+
+  // 1.1 当前步骤已添加的组件 - 避免重复展示
+  filteredComponents.forEach(c => hiddenIds.add(c.id));
+
+  // 1.2 底盘及其下挂的所有子组件(递归收集)
+  const chassisRoot = components.find(c => c.category === 'CHASSIS' || c.id === 'chassis-root');
+  if (chassisRoot) {
+    // 标记底盘本身
+    hiddenIds.add(chassisRoot.id);
+
+    // 递归收集子组件 - 轮组及其挂载的驱动器/电机
+    const collectChildren = (parentId: string) => {
+      components.forEach(c => {
+        if (c.parentNodeUuid === parentId) {
+          hiddenIds.add(c.id);
+          // 继续递归收集孙组件
+          collectChildren(c.id);
+        }
+      });
+    };
+
+    collectChildren(chassisRoot.id);
+  }
+
+  // 步骤2: 构建过滤后的树结构
+  const map: Record<string, any> = {};
+  const roots: any[] = [];
+
+  // 2.1 只创建非隐藏组件的节点
+  components.forEach(c => {
+    if (hiddenIds.has(c.id)) return; // 跳过隐藏组件
+
+    map[c.id] = {
+      title: (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ fontSize: 11, color: 'var(--text-primary)' }}>{c.alias}</span>
+          <Text type="secondary" style={{ fontSize: 9, fontFamily: 'var(--font-mono)', opacity: 0.5 }}>{c.name}</Text>
+        </div>
+      ),
+      key: c.id,
+      icon: <BuildOutlined style={{ fontSize: 13, color: 'var(--accent)' }} />,
+      children: []
+    };
+  });
+
+  // 2.2 构建层级关系(只包含非隐藏的父子关系)
+  components.forEach(c => {
+    if (hiddenIds.has(c.id)) return; // 跳过隐藏组件
+
+    if (c.parentNodeUuid && map[c.parentNodeUuid]) {
+      // 父节点存在且未被隐藏，添加到子节点
+      map[c.parentNodeUuid].children.push(map[c.id]);
+    } else if (!c.parentNodeUuid) {
+      // 顶层组件(无父节点)且未被隐藏
+      roots.push(map[c.id]);
+    }
+  });
+
+  return roots;
+}, [components, filteredComponents]);
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 【DEPRECATED】旧版treeData - 保留以参考兼容
+// 已被 filteredTreeData 替代，将在下一版本移除
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const treeData = useMemo(() => {
         const map: Record<string, any> = {};
         const roots: any[] = [];
         components.forEach(c => {
             map[c.id] = {
                 title: (
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span style={{ fontSize: 11, color: '#f0f6fc' }}>{c.alias}</span>
+                        <span style={{ fontSize: 11, color: 'var(--text-primary)' }}>{c.alias}</span>
                         <Text type="secondary" style={{ fontSize: 9, fontFamily: 'var(--font-mono)', opacity: 0.5 }}>{c.name}</Text>
                     </div>
                 ),
@@ -344,9 +418,9 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                 <PartitionOutlined /> 3. 骨架装配与硬件拓扑 - {currentStepInfo.title}
             </div>
 
-            <div style={{ flex: 1, display: 'flex', gap: 0, overflow: 'hidden', background: '#1c2128', borderRadius: 12, border: '1px solid var(--border-strong)', boxShadow: '0 20px 50px rgba(0,0,0,0.4)' }}>
+            <div style={{ flex: 1, display: 'flex', gap: 0, overflow: 'hidden', background: 'var(--bg-card)', borderRadius: 12, border: '1px solid var(--border-strong)', boxShadow: '0 20px 50px rgba(0,0,0,0.4)' }}>
                 {/* ━━━ Left: Sub-Step Navigation ━━━ */}
-                <div style={{ width: 220, borderRight: '1px solid var(--border-default)', background: 'rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column' }}>
+                <div style={{ width: 220, borderRight: '1px solid var(--border-default)', background: 'var(--bg-card)', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ padding: '20px 16px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                         <Text strong style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: 1 }}>装配流程指导</Text>
                     </div>
@@ -372,10 +446,10 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
 
                 {/* ━━━ Middle: Local List & Tree ━━━ */}
                 <div style={{ width: 340, display: 'flex', flexDirection: 'column', borderRight: '1px solid var(--border-default)', background: 'rgba(0,0,0,0.1)' }}>
-                    <div style={{ padding: '20px 16px', borderBottom: '1px solid var(--border-default)', background: 'rgba(255,255,255,0.02)' }}>
+                    <div style={{ padding: '20px 16px', borderBottom: '1px solid var(--border-default)', background: 'var(--bg-hover)' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 12 }}>
                             <div>
-                                <div style={{ fontSize: 15, fontWeight: 700, color: '#f0f6fc' }}>{currentStepInfo.title}</div>
+                                <div style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{currentStepInfo.title}</div>
                                 <Text type="secondary" style={{ fontSize: 11 }}>{currentStepInfo.description}</Text>
                             </div>
                             <Space>
@@ -399,7 +473,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                 <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>已添加组件 (精简列表)</span>
                             </div>
                             {filteredComponents.length === 0 ? (
-                                <div style={{ background: 'rgba(255,255,255,0.02)', padding: '20px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center' }}>
+                                <div style={{ background: 'var(--bg-hover)', padding: '20px', borderRadius: 8, border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center' }}>
                                     <Text type="secondary" style={{ fontSize: 11, marginBottom: 16, display: 'block' }}>
                                         暂无组件，请点击上方按钮添加
                                     </Text>
@@ -434,9 +508,9 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                             }}
                                         >
                                             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                                <Badge color={activeComponentId === item.id ? 'var(--accent)' : 'rgba(255,255,255,0.2)'} />
+                                                <Badge color={activeComponentId === item.id ? 'var(--accent)' : 'var(--border-default)'} />
                                                 <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                    <span style={{ fontSize: 13, fontWeight: 600, color: activeComponentId === item.id ? 'var(--accent)' : '#f8f9fa' }}>{item.alias}</span>
+                                                    <span style={{ fontSize: 13, fontWeight: 600, color: activeComponentId === item.id ? 'var(--accent)' : 'var(--text-primary)' }}>{item.alias}</span>
                                                     <Text type="secondary" style={{ fontSize: 10, opacity: 0.5 }}>{item.name}</Text>
                                                 </div>
                                             </div>
@@ -454,7 +528,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                             <Tree 
                                 showIcon 
                                 showLine={{ showLeafIcon: false }}
-                                treeData={treeData} 
+                                treeData={filteredTreeData} 
                                 selectedKeys={activeComponentId ? [activeComponentId] : []} 
                                 onSelect={(keys) => keys[0] && setActiveComponent(keys[0] as string)} 
                                 blockNode 
@@ -475,17 +549,17 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                 </div>
 
                 {/* ━━━ Right: Multi-Tab Detail Panel ━━━ */}
-                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#0d1117' }}>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--bg-card)' }}>
                     {activeComponentId ? (
                         <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--border-default)', background: 'linear-gradient(to right, rgba(88,166,255,0.08), transparent)' }}>
+                            <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--border-default)', background: 'linear-gradient(to right, var(--accent-soft), transparent)' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <Space direction="vertical" size={2}>
                                         <Space size={6}>
                                             <Tag color="#1f6feb" style={{ border: 'none', borderRadius: 4, margin: 0, fontSize: 10 }}>{components.find(c => c.id === activeComponentId)?.category}</Tag>
-                                            <Tag style={{ background: 'rgba(255,255,255,0.05)', border: 'none', borderRadius: 4, margin: 0, fontSize: 10, color: '#8b949e' }}>{components.find(c => c.id === activeComponentId)?.type}</Tag>
+                                            <Tag style={{ background: 'var(--bg-hover)', border: 'none', borderRadius: 4, margin: 0, fontSize: 10, color: 'var(--text-muted)' }}>{components.find(c => c.id === activeComponentId)?.type}</Tag>
                                         </Space>
-                                        <Title level={4} style={{ margin: '8px 0 0 0', color: '#f0f6fc', fontWeight: 600 }}>{components.find(c => c.id === activeComponentId)?.alias}</Title>
+                                        <Title level={4} style={{ margin: '8px 0 0 0', color: 'var(--text-primary)', fontWeight: 600 }}>{components.find(c => c.id === activeComponentId)?.alias}</Title>
                                     </Space>
                                     <Space>
                                         {components.find(c => c.id === activeComponentId)?.category !== 'CHASSIS' && (
@@ -533,7 +607,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                             <div style={{ padding: 40, border: '1px dashed rgba(255,255,255,0.1)', borderRadius: '50%', marginBottom: 24, opacity: 0.3 }}>
                                 <DeploymentUnitOutlined style={{ fontSize: 60, color: 'var(--accent)' }} />
                             </div>
-                            <Title level={5} style={{ color: '#8b949e', opacity: 0.5 }}>就绪并等待参数标定</Title>
+                            <Title level={5} style={{ color: 'var(--text-muted)', opacity: 0.5 }}>就绪并等待参数标定</Title>
                             <Text type="secondary" style={{ maxWidth: 300, textAlign: 'center', opacity: 0.5 }}>系统已根据左侧进度加载过滤规则。请选中上方“已添加组件”列表中的项开始配置其安装 pose 与私有参数。</Text>
                         </div>
                     )}
@@ -563,7 +637,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                 <div style={{ padding: '10px 0' }}>
                     <div style={{ marginBottom: 20 }}>
                         <div style={{ marginBottom: 8 }}>
-                            <Text strong style={{ fontSize: 12, color: '#f0f6fc' }}>设备别名 (Alias)</Text>
+                            <Text strong style={{ fontSize: 12, color: 'var(--text-primary)' }}>设备别名 (Alias)</Text>
                             <Text type="secondary" style={{ fontSize: 11, marginLeft: 8 }}>易记的中文/名称，如：左前激光</Text>
                         </div>
                         <Input 
@@ -576,7 +650,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                     </div>
                     <div>
                         <div style={{ marginBottom: 8 }}>
-                            <Text strong style={{ fontSize: 12, color: '#f0f6fc' }}>技术标识符 (Name / ID)</Text>
+                            <Text strong style={{ fontSize: 12, color: 'var(--text-primary)' }}>技术标识符 (Name / ID)</Text>
                             <Text type="secondary" style={{ fontSize: 11, marginLeft: 8 }}>系统唯一标识，如：diffChassis</Text>
                         </div>
                         <Input 
@@ -594,7 +668,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                             }}
                         />
                     </div>
-                    <div style={{ marginTop: 24, padding: '12px', background: 'rgba(255,255,255,0.03)', borderRadius: 8 }}>
+                    <div style={{ marginTop: 24, padding: '12px', background: 'var(--bg-hover)', borderRadius: 8 }}>
                         <Tag color="cyan" style={{ border: 'none', margin: 0, fontSize: 10 }}>Hardware Model: {pendingComponent?.type}</Tag>
                     </div>
                 </div>
@@ -607,13 +681,13 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                     <span style={{ fontSize: 16, fontWeight: 600 }}>数字孪生资源库 - {currentStepInfo.title}</span>
                 </div>
             } open={isAddModalOpen} onCancel={() => setIsAddModal(false)} footer={null} width={1000} style={{ top: 40 }} className="library-modal">
-                <div style={{ marginBottom: 20, padding: '12px 16px', background: 'rgba(88,166,255,0.05)', borderRadius: 8, border: '1px solid rgba(88,166,255,0.1)', display: 'flex', gap: 12, alignItems: 'center' }}>
+                <div style={{ marginBottom: 20, padding: '12px 16px', background: 'var(--accent-soft)', borderRadius: 8, border: '1px solid rgba(88,166,255,0.1)', display: 'flex', gap: 12, alignItems: 'center' }}>
                     <InfoCircleOutlined style={{ color: 'var(--accent)' }} />
                     <Text style={{ fontSize: 12 }}>当前处于【{currentStepInfo.title}】搭建环节，已为您智能过滤资源库。设备标识已支持 Alias 与 Name 双重定义。</Text>
                 </div>
                 <Row gutter={24} align="middle" style={{ marginBottom: 24 }}>
                     <Col flex="1">
-                        <Input size="large" prefix={<SearchOutlined />} placeholder="搜索型号、描述、制造商..." style={{ borderRadius: 8, background: 'rgba(255,255,255,0.02)' }} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                        <Input size="large" prefix={<SearchOutlined />} placeholder="搜索型号、描述、制造商..." style={{ borderRadius: 8, background: 'var(--bg-hover)' }} value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                     </Col>
                     <Col>
                         <Tooltip title="关闭过滤，显示资源库中该分类下的所有模块">
@@ -751,11 +825,11 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                                     <Card hoverable variant="borderless" size="small" className="library-card" onClick={() => handlePrepareAdd(entity)}>
                                                         <div style={{ display: 'flex', flexDirection: 'column', height: '100%', padding: '4px' }}>
                                                             <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 12 }}>
-                                                                <div style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.03)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                                <div style={{ width: 44, height: 44, background: 'var(--bg-hover)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                                     <BuildOutlined style={{ fontSize: 24, color: 'var(--accent)' }} />
                                                                 </div>
                                                                 <div style={{ flex: 1, minWidth: 0 }}>
-                                                                    <div style={{ fontWeight: 600, fontSize: 14, color: '#f0f6fc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                                    <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                                                                         {entity.moduleGroupName}
                                                                     </div>
                                                                     <Text type="secondary" style={{ fontSize: 11, fontFamily: 'var(--font-mono)', opacity: 0.6 }}>{entity.file_name}</Text>
@@ -763,9 +837,9 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                                                 <PlusCircleOutlined className="add-icon" style={{ fontSize: 24, color: 'var(--accent)', opacity: 0.2 }} />
                                                             </div>
                                                             {ifaceCounts && (
-                                                                <div style={{ flex: 1, background: 'rgba(0,0,0,0.3)', padding: '8px 12px', borderRadius: 8, marginBottom: 12, border: '1px solid rgba(255,255,255,0.05)' }}>
+                                                                <div style={{ flex: 1, background: 'var(--bg-card)', padding: '8px 12px', borderRadius: 8, marginBottom: 12, border: '1px solid var(--border-default)' }}>
                                                                     <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: 0.5 }}>已声明电气接口</div>
-                                                                    <div style={{ fontSize: 11, color: '#58a6ff', fontWeight: 500 }}>{ifaceCounts}</div>
+                                                                    <div style={{ fontSize: 11, color: 'var(--accent)', fontWeight: 500 }}>{ifaceCounts}</div>
                                                                 </div>
                                                             )}
                                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -776,7 +850,7 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                                                                     })() && (
                                                                         <Tag color="var(--success)" bordered={false} style={{ fontSize: 9, margin: 0 }}>导航必需参数</Tag>
                                                                     )}
-                                                                    <Tag color="default" bordered={false} style={{ fontSize: 9, margin: 0, background: 'rgba(255,255,255,0.05)' }}>MODEL V4</Tag>
+                                                                    <Tag color="default" bordered={false} style={{ fontSize: 9, margin: 0, background: 'var(--bg-hover)' }}>MODEL V4</Tag>
                                                                     <Tag color="blue" bordered={false} style={{ fontSize: 9, margin: 0, opacity: 0.8 }}>PREMIUM</Tag>
                                                                 </Space>
                                                             </div>

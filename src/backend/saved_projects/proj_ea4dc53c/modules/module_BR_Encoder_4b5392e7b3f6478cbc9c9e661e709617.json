@@ -1,0 +1,335 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "BR_Encoder",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "BR_Encoder",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "4b5392e7b3f6478cbc9c9e661e709617",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "主类型"
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "子类型"
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "传感器系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "SENSOR",
+      "desc": "模块型号",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "encodeAttr",
+        "desc": "编码器属性",
+        "arrayBaseEle": [
+          {
+            "key": "absEncodeType",
+            "type": "DATA_COMBOX",
+            "desc": "编码器类型",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "comboType": {
+              "typeKey": "CAN_BRT_ENCODER",
+              "typeDesc": "CAN自定义(BRT)",
+              "typeGroups": [
+                {
+                  "key": "SSI_ENCODER",
+                  "desc": "SSI编码器",
+                  "arrayCmobEle": [
+                    {
+                      "key": "codeType",
+                      "type": "DATA_COMBOX",
+                      "desc": "编码格式",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "comboType": {
+                        "typeKey": "ENCODER_GRAY_CODE",
+                        "typeDesc": "格雷码编码",
+                        "typeGroups": [
+                          {
+                            "key": "ENCODER_GRAY_CODE",
+                            "desc": "格雷码编码",
+                            "arrayCmobEle": []
+                          },
+                          {
+                            "key": "ENCODER_BINARY_CODE",
+                            "desc": "二进制编码",
+                            "arrayCmobEle": []
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "key": "MOTOR_ENCODER",
+                  "desc": "电机编码器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "CANOPEN_ENCODER",
+                  "desc": "CANOPEN编码器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "CAN_BRT_ENCODER",
+                  "desc": "CAN自定义(BRT)",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          },
+          {
+            "key": "resolutionMode",
+            "type": "DATA_COMBOX",
+            "desc": "分辨率模式",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "comboType": {
+              "typeKey": "RES_NUM_MODE",
+              "typeDesc": "数值模式",
+              "typeGroups": [
+                {
+                  "key": "RES_BIT_MODE",
+                  "desc": "位数模式",
+                  "arrayCmobEle": [
+                    {
+                      "key": "sglTurnBit",
+                      "type": "DATA_INT32",
+                      "desc": "单圈位数",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 0
+                    },
+                    {
+                      "key": "mutiTurnBit",
+                      "type": "DATA_INT32",
+                      "desc": "多圈位数",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 0
+                    }
+                  ]
+                },
+                {
+                  "key": "RES_NUM_MODE",
+                  "desc": "数值模式",
+                  "arrayCmobEle": [
+                    {
+                      "key": "sglTurnCount",
+                      "type": "DATA_INT32",
+                      "desc": "单圈分辨率",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 4096
+                    },
+                    {
+                      "key": "mutiTurnCount",
+                      "type": "DATA_INT32",
+                      "desc": "多圈圈数",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 24
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "key": "isInvert",
+            "type": "DATA_BOOL",
+            "desc": "是否反向",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "boolValue": true
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "CAN_1",
+        "type": "CAN",
+        "path": "",
+        "desc": "CAN_1",
+        "interfaceUuid": "7c1539acf1264e2d8828085833d1f800",
+        "linkedInterfaceUuid": [
+          "b188441d876a42608b0144ca77abf6ca"
+        ]
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "cd5be96a48b04bb4a0369e7e6435161c",
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  }
+}

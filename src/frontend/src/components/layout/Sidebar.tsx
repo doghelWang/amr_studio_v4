@@ -113,8 +113,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     margin-top: 16px;
                 }
                 .service-status-panel {
-                    background: #1c2128;
-                    border: 1px solid #30363d;
+                    background: var(--bg-hover);
+                    border: 1px solid var(--border-default);
                     border-radius: 8px;
                     padding: 10px;
                     margin-bottom: 16px;
@@ -128,7 +128,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     margin-bottom: 0;
                 }
                 .status-title {
-                    color: #58a6ff;
+                    color: var(--accent);
                     display: flex;
                     align-items: center;
                     gap: 6px;
@@ -136,7 +136,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     font-weight: 600;
                 }
                 .status-item {
-                    color: #c9d1d9;
+                    color: var(--text-secondary);
                     padding-left: 18px;
                     line-height: 1.5;
                     white-space: nowrap;
@@ -144,7 +144,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     text-overflow: ellipsis;
                 }
                 .status-item.addr {
-                    color: #8b949e;
+                    color: var(--text-muted);
                     font-family: var(--font-mono);
                     font-size: 10px;
                 }

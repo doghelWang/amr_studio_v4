@@ -1,0 +1,437 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "Oil_pump_down",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "d858276af9264e788002afe464b86a15",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2026-04-03 15:27:21.666",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "\u0005",
+        "typeGroups": []
+      },
+      "desc": "子系统",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "\n",
+        "typeGroups": []
+      },
+      "desc": "主类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "comDo",
+        "typeDesc": "\u0014",
+        "typeGroups": []
+      },
+      "desc": "子类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "供应商",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "设备型号",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_srcname",
+        "type": "DATA_STRING",
+        "stringValue": "pump",
+        "desc": "模块原始名称",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "stringValue": "通用DO器件",
+        "desc": "模块别名",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "privateAttr": {
+    "privateAttrs": [],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "DI",
+        "busInterfaceNums": 1,
+        "busInterfaceSubType": "",
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "DI_1",
+        "type": "DI",
+        "desc": "DI_1",
+        "interfaceUuid": "564f81f04fc24ce5a70db5c38e99d9b8",
+        "linkedInterfaceUuid": [
+          "9ee8f788095148d8ae6734a5199e1f09"
+        ],
+        "interfaceAttrs": {
+          "interfaceParamsArray": [],
+          "boolDeprecated": false
+        },
+        "interfaceParams": {
+          "interfaceParamsArray": [
+            {
+              "key": "isReversed",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "0",
+                "typeGroups": [
+                  {
+                    "key": "0",
+                    "desc": "0",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "1",
+                    "desc": "1",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "是否反向",
+              "boolParse": true,
+              "boolHide": true,
+              "unit": "",
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            },
+            {
+              "key": "activeLevel",
+              "type": "DATA_COMBOX",
+              "comboType": {
+                "typeKey": "0",
+                "typeDesc": "低电平生效",
+                "typeGroups": [
+                  {
+                    "key": "1",
+                    "desc": "高电平生效",
+                    "arrayCmobEle": []
+                  },
+                  {
+                    "key": "0",
+                    "desc": "低电平生效",
+                    "arrayCmobEle": []
+                  }
+                ]
+              },
+              "desc": "有效电平",
+              "boolParse": true,
+              "unit": "",
+              "boolHide": false,
+              "boolNoeditable": false,
+              "boolMustfill": false,
+              "boolBasic": false,
+              "fixedSource": []
+            }
+          ],
+          "boolDeprecated": false
+        },
+        "path": "",
+        "linkAttrs": [],
+        "boolDeprecated": false
+      }
+    ],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "b563b9927ba2440ab4dc2cf284c6f034",
+          "typeDesc": "chassis_steer",
+          "typeGroups": [
+            {
+              "key": "b563b9927ba2440ab4dc2cf284c6f034",
+              "desc": "chassis_steer",
+              "arrayCmobEle": []
+            }
+          ]
+        },
+        "desc": "从属机构",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "翻滚角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "偏航角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "俯仰角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}

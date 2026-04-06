@@ -40,7 +40,7 @@ export const PowerTopologyCanvas: React.FC<PowerTopologyCanvasProps> = ({
 
     return (
         <div style={{ 
-            background: '#0d1117', borderRadius: 12, border: '1px solid var(--border-default)',
+            background: 'var(--bg-card)', borderRadius: 12, border: '1px solid var(--border-default)',
             padding: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%',
             boxShadow: 'inset 0 0 20px rgba(0,0,0,0.5)'
         }}>

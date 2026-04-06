@@ -76,12 +76,12 @@ export const VersionInfo: React.FC = () => {
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
         <ThunderboltOutlined style={{ color: '#4096ff', fontSize: 16 }} />
-        <span style={{ color: '#f0f6fc', fontSize: 14, fontWeight: 600 }}>
+        <span style={{ color: 'var(--text-primary)', fontSize: 14, fontWeight: 600 }}>
           系统版本信息
         </span>
       </div>
 
-      <Divider style={{ margin: '8px 0', borderColor: 'rgba(255,255,255,0.06)' }} />
+      <Divider style={{ margin: '8px 0', borderColor: 'var(--border-default)' }} />
 
       {/* Frontend Version */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
@@ -100,12 +100,12 @@ export const VersionInfo: React.FC = () => {
           <span style={{ fontWeight: 600 }}>v{VERSION_INFO.version}</span>
         </Tag>
         <Tooltip title={`Commit: ${VERSION_INFO.commitHash}`}>
-          <span style={{ color: '#8b949e', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
             <CodeOutlined />
             {shortenCommit(VERSION_INFO.commitHash)}
           </span>
         </Tooltip>
-        <span style={{ color: '#8b949e', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+        <span style={{ color: 'var(--text-muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
           <CalendarOutlined />
           {VERSION_INFO.buildDate}
         </span>
@@ -113,7 +113,7 @@ export const VersionInfo: React.FC = () => {
 
       {/* Backend Version */}
       {loading ? (
-        <div style={{ color: '#8b949e', fontSize: 12 }}>
+        <div style={{ color: 'var(--text-muted)', fontSize: 12 }}>
           正在获取后端版本信息...
         </div>
       ) : error ? (
@@ -138,17 +138,17 @@ export const VersionInfo: React.FC = () => {
             <span style={{ fontWeight: 600 }}>v{backendInfo.backendVersion}</span>
           </Tag>
           <Tooltip title={`Commit: ${backendInfo.commitHash}`}>
-            <span style={{ color: '#8b949e', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
               <CodeOutlined />
               {shortenCommit(backendInfo.commitHash)}
             </span>
           </Tooltip>
-          <span style={{ color: '#8b949e', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+          <span style={{ color: 'var(--text-muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
             <CalendarOutlined />
             {backendInfo.buildDate}
           </span>
           <Tooltip title={`服务启动时间: ${formatDate(backendInfo.serviceStartTime)}`}>
-            <span style={{ color: '#8b949e', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span style={{ color: 'var(--text-muted)', fontSize: 12, display: 'flex', alignItems: 'center', gap: 4 }}>
               <ClockCircleOutlined />
               已运行 {calculateUptime(backendInfo.serviceStartTime)}
             </span>

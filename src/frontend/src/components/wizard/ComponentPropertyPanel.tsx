@@ -23,34 +23,51 @@ const { Text } = Typography;
 const { Panel } = Collapse;
 
 interface Props {
-  projectId: string | null;
-  selectedUuid: string;
+  /** Mode 1: Direct component passing (used during import/creation) */
+  component?: any;
+  onAttributeChange?: (groupId: string, attrKey: string, value: any, subKey?: string) => void;
+  onInterfaceChange?: (ifaceUuid: string, data: any) => void;
+  onInterfaceParamChange?: (ifaceUuid: string, params: any) => void;
+  onStructuralChange?: (data: any) => void;
+
+  /** Mode 2: Backend fetch (used when editing saved projects) */
+  projectId?: string | null;
+  selectedUuid?: string;
   excludeGroupKeys?: string[];
   onlyGroupKeys?: string[];
   excludeElementKeys?: string[];
   onlyElementKeys?: string[];
   hideTabs?: boolean;
   /** Callback invoked after an attribute is updated, for cross-component sync */
-  onAttributeChange?: (sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
+  onAttributeChangeSync?: (sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => void;
 }
 
-export const ComponentPropertyPanel: React.FC<Props> = ({ 
-    projectId, 
-    selectedUuid,
+export const ComponentPropertyPanel: React.FC<Props> = (props) => {
+  const {
+    component: directComponent,
+    projectId,
+    selectedUuid: propSelectedUuid,
     excludeGroupKeys,
     onlyGroupKeys,
     excludeElementKeys,
     onlyElementKeys,
     hideTabs = false,
-    onAttributeChange
-}) => {
+    onAttributeChange,
+    onInterfaceChange,
+    onInterfaceParamChange,
+    onStructuralChange,
+    onAttributeChangeSync,
+  } = props;
+
+  // Direct mode: use component.id as selectedUuid
+  const selectedUuid = propSelectedUuid || directComponent?.id;
   const [compData, setCompData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const { config, updateAttribute, updateStructuralParam, linkInterface, updateInterfaceParams } = useProjectStore();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const selectedStoreComponent = config.components.find(c => c.id === selectedUuid);
+  const selectedStoreComponent = directComponent || config.components.find(c => c.id === selectedUuid);
   const isFixedHardware = selectedStoreComponent?.category === 'MAINCPU' || 
                          selectedStoreComponent?.category === 'CONTROL' || 
                          selectedStoreComponent?.category === 'IO_BOARD';
@@ -148,11 +165,19 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
       const isSubKey = typeKey && typeKey !== 'combo_type' && typeKey !== 'comboType';
       const parsedSubKey = isSubKey ? typeKey : undefined;
       
-      updateAttribute(selectedUuid, groupKey, eleKey, newValue, parsedSubKey);
+      // Resolve effective component UUID (direct mode or prop-based)
+      const effectiveUuid = selectedUuid;
+      if (effectiveUuid) {
+          updateAttribute(effectiveUuid, groupKey, eleKey, newValue, parsedSubKey);
+      }
 
-      // Notify parent for cross-component sync (e.g., wheel parameter sync)
+      // Notify parent for attribute editing (4-arg signature: groupKey, attrKey, value, subKey?)
       if (onAttributeChange) {
-          onAttributeChange(selectedUuid, groupKey, eleKey, newValue, parsedSubKey);
+          onAttributeChange(groupKey, eleKey, newValue, parsedSubKey);
+      }
+      // Notify parent for cross-component sync (5-arg: sourceId, groupKey, attrKey, value, subKey?)
+      if (onAttributeChangeSync && effectiveUuid) {
+          onAttributeChangeSync(effectiveUuid, groupKey, eleKey, newValue, parsedSubKey);
       }
   };
 
@@ -296,12 +321,12 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                 <span style={{ fontWeight: 500, color: isRequired ? '#ff7875' : 'inherit' }}>
                     {ele.desc || ele.key}
                     {isRequired && <span style={{ marginLeft: 4, color: '#ff4d4f' }}>*</span>}
-                    {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'rgba(255,255,255,0.05)' }}>锁定</Tag>}
+                    {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'var(--bg-hover)' }}>锁定</Tag>}
                     {isExplicitlyHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>隐藏属性</Tag>}
                     {ele.type === 'DATA_FIXED_E' && <LinkOutlined style={{ marginLeft: 6, fontSize: 10, color: '#58a6ff' }} />}
                     {tooltip && (
                         <Tooltip title={tooltip} placement="topLeft">
-                            <QuestionCircleOutlined style={{ marginLeft: 6, fontSize: 10, color: '#8b949e', cursor: 'help' }} />
+                            <QuestionCircleOutlined style={{ marginLeft: 6, fontSize: 10, color: 'var(--text-muted)', cursor: 'help' }} />
                         </Tooltip>
                     )}
                 </span>
@@ -309,7 +334,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
             </div>
             {inputNode}
             {combo && typeKey && (
-                <div style={{ marginTop: 8, borderLeft: '1px solid rgba(255,255,255,0.1)', paddingLeft: 12, marginBottom: 16 }}>
+                <div style={{ marginTop: 8, borderLeft: '1px solid var(--border-default)', paddingLeft: 12, marginBottom: 16 }}>
                     {groups
                         .filter((g: any) => g.key === typeKey)
                         .flatMap((g: any) => g.arrayCmobEle || g.array_cmob_ele || g.arrayAttr || [])
@@ -341,22 +366,22 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
       return (
           <Card 
             key={group.key} 
-            title={<span style={{ fontSize: 13, fontWeight: 600, color: '#f0f6fc' }}>{group.desc || group.key}</span>} 
+            title={<span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{group.desc || group.key}</span>} 
             size="small" 
             style={{ 
                 marginBottom: 20, 
                 borderRadius: 8, 
-                background: 'rgba(255,255,255,0.01)', 
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'var(--bg-card)', 
+                border: '1px solid var(--border-default)',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
             }}
-            headStyle={{ borderBottom: '1px solid rgba(255,255,255,0.05)', minHeight: 40 }}
+            headStyle={{ borderBottom: '1px solid var(--border-default)', minHeight: 40 }}
           >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                   {Object.entries(subGroups).map(([subGroupTitle, subElems]) => (
                       <div key={subGroupTitle}>
                           {Object.keys(subGroups).length > 1 && (
-                              <div style={{ marginBottom: 12, paddingBottom: 4, borderBottom: '1px dashed rgba(255,255,255,0.1)' }}>
+                              <div style={{ marginBottom: 12, paddingBottom: 4, borderBottom: '1px dashed var(--border-default)' }}>
                                   <Text style={{ fontSize: 12, fontWeight: 500, color: 'var(--accent)' }}>{subGroupTitle}</Text>
                               </div>
                           )}
@@ -520,7 +545,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                   <List
                       size="small"
                       dataSource={activeInterfaces}
-                      renderItem={item => {
+                      renderItem={(item: any) => {
                           const linkedUuid = (item.linkedInterfaceUuid || [])[0];
                           
                           // Find all OTHER compatible interfaces in the project
@@ -533,7 +558,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                             .filter(t => t.interface.type === item.type);
 
                           return (
-                            <List.Item style={{ padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', display: 'block' }}>
+                            <List.Item style={{ padding: '16px 0', borderBottom: '1px solid var(--border-default)', display: 'block' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
                                     <Space direction="vertical" size={0}>
                                         <Text strong style={{ color: 'var(--accent)' }}>{item.key}</Text>
@@ -541,7 +566,7 @@ export const ComponentPropertyPanel: React.FC<Props> = ({
                                     </Space>
                                     <Tag color="blue" style={{ margin: 0 }}>{item.type}</Tag>
                                 </div>
-                                <div style={{ background: 'rgba(255,255,255,0.02)', padding: '10px', borderRadius: 6, border: '1px solid rgba(255,255,255,0.05)' }}>
+                                <div style={{ background: 'var(--bg-card)', padding: '10px', borderRadius: 6, border: '1px solid var(--border-default)' }}>
                                     <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 6 }}>电气连接 / 总线 Host (Network Bus)</div>
                                     <Select 
                                         placeholder="未连接 (点击选择总线节点)"

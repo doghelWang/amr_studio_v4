@@ -1,0 +1,45 @@
+﻿模块名,所属子系统,子系统Key,模块主类别,主类别Key,子类别,子类别Key,安装位置(X/Y/Z),旋转姿态(R/P/Y)
+chassis_diff,底盘系统,ChassisSys,底盘,chassis,舵轮底盘,steerChassis,0/0/0,0/0/0
+Steerwheel_BR,底盘系统,ChassisSys,驱动轮,driveWheel,驱动轮,driveWheel,545.0/640.0/0,0/0/0
+driver_BR_left,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+motor_BR_left,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+driver_BR_right,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+motor_BR_right,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+BR_Encoder,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+Steerwheel_FL,底盘系统,ChassisSys,驱动轮,driveWheel,驱动轮,driveWheel,-545.0/-640.0/0,0/0/0
+driver_FL_right,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+motor_FL_right,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+driver_FL_left,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+motor_FL_left,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+FL_Encoder,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+MainController,控制系统,ControlSys,核心主控,mainCPU,核心主控,mainCPU,0/-215.0/100.0,0/0/90.0
+gyro,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+IO module,控制系统,ControlSys,接口扩展模块,extendedlnterface,接口扩展模块,extendedlnterface,0/0/0,0/0/0
+IO module0,控制系统,ControlSys,接口扩展模块,extendedlnterface,接口扩展模块,extendedlnterface,0/0/0,0/0/0
+laser,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,389.6800000000003/-596.55/1946.5,0/0/0
+smart camera,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/180.0
+up_limit,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+down_limit,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+CB_Back,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+CB_Front,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+CB_Back_in_pace,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+CB_Front_in_pace,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+DoorFrame_origin,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+DoorFrame_limit,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+lamp,交互系统,InteractiveSys,指示灯光,light,指示灯光,light,0/0/0,0/0/0
+screen,未分类系统,UnclassifiedSys,未知,unknown,未知,unknown,0/0/0,0/0/0
+driver_DoorFrame,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+motor_DoorFrame,驱动系统,DriverSys,驱动器,driver,驱动器,driver,0/0/0,0/0/0
+DoorFrame_Encoder,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+UpDown_Encoder,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+laser_350,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/100.0/100.0,0/0/0
+battery,能量系统,EnergySys,能量电池,battery,能量电池,battery,0/0/0,0/0/0
+button,交互系统,InteractiveSys,交互按钮,button,交互按钮,button,0/0/0,0/0/0
+incEncoder,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+BR_left_limit,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+BR_right_limit,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+comDo,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+Oil_pump_up,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+Oil_pump_down,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+Charging_relay,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0
+Oil_main_switch,传感器系统,SensorSys,感知传感器,sensor,感知传感器,sensor,0/0/0,0/0/0

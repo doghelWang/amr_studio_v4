@@ -1,407 +1,356 @@
 import {
-    ComponentConfig,
-    SmartAttribute,
-    AttributeGroup,
-    MainModuleType,
-    InterfaceConfig,
-    RobotConfig,
-    ControllerAbility
+  ComponentConfig,
+  SmartAttribute,
+  AttributeGroup,
+  MainModuleType,
+  InterfaceConfig,
+  RobotConfig,
+  ControllerAbility
 } from './types';
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
+import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
 
-/**
- * Service to handle importing .cmodel (CompDesc.json) files into the V4 store.
- * FULLY ALIGNED WITH CAMELCASE JSON (Default Protobuf Mapping).
- * IMPLEMENTS DUAL-KEY STRATEGY (Camel/Snake).
- * SUPPORT DYNAMIC SCHEMA REGISTRY.
- */
 export class ImportService {
-    private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
-        'chassis':               'CHASSIS',
-        'driveWheel':            'DRIVEWHEEL',
-        'driver':                'DRIVER',
-        'sensor':                'SENSOR',
-        'sensorProcessor':       'SENSORPROCESSOR',
-        'mainCPU':               'MAINCPU',
-        'mainCpu':               'MAINCPU',
-        'intergratedController': 'INTERGRATEDCONTROLLER',
-        'communication':         'COMMUNICATION',
-        'extendedInterface':     'IO_BOARD',   // canonical
-        'extendedlnterface':     'IO_BOARD',   // typo in source JSONs (lowercase l)
-        'ioModule':              'IO_BOARD',   // submodule type variant
-        'IOModule':              'IO_BOARD',   // uppercase variant
-        'safetyIOModule':        'IO_BOARD',   // safety IO board
-        'safetyController':      'CONTROL',
-        'weakSteerWheel':        'DRIVEWHEEL',
-        'steerWheel':            'DRIVEWHEEL',
-        'diffSteerWheel':        'DRIVEWHEEL',
-        'battery':               'BATTERY',
-        'energyController':      'ENERGYCONTROLLER',
-        'button':                'BUTTON',
-        'screen':                'SCREEN',
-        'light':                 'LIGHT',
-        'audio':                 'AUDIO',
-        'actor':                 'ACTOR',
-        'autobody':              'AUTOBODY',
+  // §C001-FIX: Schema-driven default values (replaces hardcoded magic numbers)
+  // These defaults should ideally come from Schema XML, using constants as interim step
+  private static readonly SCHEMA_DEFAULTS = {
+    chassis: {
+      length: 1200,
+      width: 800,
+      height: 0
+    },
+    offsets: {
+      idle: {
+        head: 600,
+        tail: 600,
+        left: 400,
+        right: 400
+      }
+    },
+    performance: {
+      // Full Load ratios - centralized here instead of scattered across codebase
+      fullLoadRatios: {
+        maxSpeed: 0.8,
+        maxAcceleration: 0.4,
+        maxDeceleration: 0.5,
+        avoidMaxDec: 1.0
+      }
+    }
+  };
+
+  private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
+    'chassis': 'CHASSIS',
+    'driveWheel': 'DRIVEWHEEL',
+    'driver': 'DRIVER',
+    'sensor': 'SENSOR',
+    'mainCPU': 'MAINCPU',
+    'extendedlnterface': 'IO_BOARD',
+    'extendedInterface': 'IO_BOARD',
+    'ioModule': 'IO_BOARD',
+    'diffSteerWheel': 'DRIVEWHEEL',
+    'steerWheel': 'DRIVEWHEEL',
+    'battery': 'BATTERY',
+    'button': 'BUTTON',
+    'light': 'LIGHT',
+    'actor': 'ACTOR',
+    'motor': 'MOTOR',
+  };
+
+  static parseCompDesc(json: any, schemaRegistry?: Record<string, any>): Partial<RobotConfig> {
+    console.group('%c ⚡ [ImportService] Professional AOBO Deep Discovery', 'color: #722ed1; font-weight: bold;');
+
+    const components: ComponentConfig[] = [];
+    const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
+
+    if (json[infoKey] && Array.isArray(json[infoKey])) {
+      json[infoKey].forEach((group: any) => this.processModuleGroup(group, components, null, schemaRegistry));
+    }
+
+    // ━━━ 1. Build Absolute ID Index (English SrcName is Truth) ━━━
+    const moduleNameToId = new Map<string, string>();
+    const ifaceToComp = new Map<string, string>();
+
+    components.forEach(c => {
+      const moduleName = c.generalAttr?.moduleName?.stringValue || c.generalAttr?.module_name?.string_value;
+      if (moduleName) moduleNameToId.set(moduleName, c.id);
+      c.interfaces.forEach(i => ifaceToComp.set(i.interfaceUuid, c.id));
+    });
+
+    const chassis = components.find(c => c.category === 'CHASSIS');
+    const identity: any = {
+      robotName: json.robotName || json.robot_name || 'Imported_AMR',
+      driveType: 'STANDARD_DIFF',
+      powerSlots: {}
     };
 
-    static parseCompDesc(json: any, schemaRegistry?: Record<string, any>): Partial<RobotConfig> {
-        console.log('DEBUG [ImportService]: parseCompDesc keys:', Object.keys(json));
-        const components: ComponentConfig[] = [];
-        
-        // Protocol check (Dual-Key)
-        const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
+    if (chassis) {
+      // §C001-FIX: Parse chassis shape dimensions using schema-driven defaults
+      identity.chassisLength = chassis.shape?.length ?? this.SCHEMA_DEFAULTS.chassis.length;
+      identity.chassisWidth = chassis.shape?.width ?? this.SCHEMA_DEFAULTS.chassis.width;
+      identity.chassisHeight = chassis.shape?.height ?? this.SCHEMA_DEFAULTS.chassis.height;
 
-        if (json[infoKey] && Array.isArray(json[infoKey])) {
-            json[infoKey].forEach((group: any) => {
-                this.processModuleGroup(group, components, null, schemaRegistry);
-            });
-        }
+      // §24: chassisShape must be explicitly set from moduleShape.shapeType
+      const shapeType = chassis.generalAttr?.moduleShape?.shapeType || chassis.generalAttr?.module_shape?.shape_type;
+      identity.chassisShape = (shapeType === 'ENUM_CYLINDER' ? 'CYLINDER' : 'BOX');
 
-        const identity = {
-            robotName: json.robotName || json.robot_name || 'Imported_AMR',
-            version: json.version || '1.0.0',
-            materialCode: json.materialCode || json.material_code || '',
-            alias: json.alias || '',
-            venderName: json.venderName || json.vender_name || '',
-            navigationMethod: (json.navigationMethod || json.navigation_method || 'LASER_SLAM') as any,
-            driveType: (json.driveType || json.drive_type || 'STANDARD_DIFF') as any,
-            chassisShape: (json.chassisShape || json.chassis_shape || 'BOX') as any,
-            chassisLength: json.chassisLength || json.chassis_length || 1200,
-            chassisWidth: json.chassisWidth || json.chassis_width || 800,
-            chassisHeight: json.chassisHeight || json.chassis_height || 400,
-            // ━━━ NEW OFFSET FIELDS (PROTO COMPLIANT) ━━━
-            headOffset: json.headOffset || json.head_offset || 600,
-            tailOffset: json.tailOffset || json.tail_offset || 600,
-            leftOffset: json.leftOffset || json.left_offset || 400,
-            rightOffset: json.rightOffset || json.right_offset || 400,
-        };
+      // Recursive value finder for chassis physics
+      const findVal = (key: string) => this.deepFindAttributeValue(chassis.privateAttrs, key);
 
-        const chassis = components.find(c => c.category === 'CHASSIS');
-        if (chassis && chassis.shape && chassis.shape.type === 'BOX') {
-            identity.chassisLength = chassis.shape.length || identity.chassisLength;
-            identity.chassisWidth = chassis.shape.width || identity.chassisWidth;
-            identity.chassisHeight = chassis.shape.height || identity.chassisHeight;
-        }
+      // §C001-FIX: Parse motion center offsets with schema-driven defaults
+      const defaults = this.SCHEMA_DEFAULTS.offsets.idle;
+      identity.headOffset = Number(findVal('headOffset(Idle)')) || defaults.head;
+      identity.tailOffset = Number(findVal('tailOffset(Idle)')) || defaults.tail;
+      identity.leftOffset = Number(findVal('leftOffset(Idle)')) || defaults.left;
+      identity.rightOffset = Number(findVal('rightOffset(Idle)')) || defaults.right;
 
-        return { components, identity };
+      // §FIX: Parse full load offsets (fallback to idle values if not present)
+      identity.headOffsetFull = Number(findVal('headOffset (Full Load)')) || identity.headOffset;
+      identity.tailOffsetFull = Number(findVal('tailOffset (Full Load)')) || identity.tailOffset;
+      identity.leftOffsetFull = Number(findVal('leftOffset (Full Load)')) || identity.leftOffset;
+      identity.rightOffsetFull = Number(findVal('rightOffset (Full Load)')) || identity.rightOffset;
+
+      // §C001/C002-FIX: Parse performance attributes using centralized ratio config
+      const ratios = this.SCHEMA_DEFAULTS.performance.fullLoadRatios;
+
+      identity.maxSpeed = Number(findVal('maxSpeed(Idle)')) || 0;
+      identity.maxSpeedFull = Number(findVal('maxSpeed (Full Load)')) || (identity.maxSpeed * ratios.maxSpeed);
+
+      identity.maxAccel = Number(findVal('maxAcceleration(Idle)')) || 0;
+      identity.maxAccelFull = Number(findVal('maxAcceleration (Full Load)')) || (identity.maxAccel * ratios.maxAcceleration);
+
+      identity.maxDecel = Number(findVal('maxDeceleration(Idle)')) || 0;
+      identity.maxDecelFull = Number(findVal('maxDeceleration (Full Load)')) || (identity.maxDecel * ratios.maxDeceleration);
+
+      identity.avoidMaxDec = Number(findVal('avoidMaxDec (Idle)')) || 0;
+      identity.avoidMaxDecFull = Number(findVal('avoidMaxDec (Full Load)')) || identity.avoidMaxDec;
+
+      identity.rotateMaxAngSpeed = Number(findVal('rotateMaxAngSpeed (Idle)')) || 0;
+      identity.rotateMaxAngAcceleration = Number(findVal('rotateMaxAngAcceleration (Idle)')) || 0;
+
+      identity.selfWeight = Number(findVal('selfWeight')) || 0;
+      identity.totalLoadWeight = Number(findVal('totalLoadWeight')) || 0;
     }
 
-    static parseAbilities(json: any): ControllerAbility {
-        const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
-        if (!json || !json[funcKey]) return abilityRegistry as any;
-        
-        return {
-            version: json.version || 'V1.0',
-            componentAbility: json.componentAbility || json.component_ability || [],
-            functionAbility: json[funcKey].map((func: any) => ({
-                type: func.type,
-                desc: func.desc,
-                childFunction: (func.childFunction || func.child_function || []).map((child: any) => ({
-                    key: child.key,
-                    desc: child.desc,
-                    tips: child.tips,
-                    attr: (child.attr || []).map((a: any) => this.mapCommonAttr(a))
-                }))
-            }))
-        };
-    }
+    // ━━━ 2. Precise Topology Engine ━━━
+    const wheels = components.filter(c => c.category === 'DRIVEWHEEL');
+    const steerWheels = wheels.filter(w => w.type.toLowerCase().includes('steer'));
+    if (steerWheels.length === 1) identity.driveType = 'SINGLE_STEER';
+    else if (steerWheels.length === 2) identity.driveType = 'DUAL_STEER';
+    else if (steerWheels.length >= 4) identity.driveType = 'QUAD_STEER';
+    else if (wheels.length >= 2) identity.driveType = 'STANDARD_DIFF';
 
-    private static mapCommonAttr(common: any): any {
-        return {
-            key: common.key,
-            type: common.type,
-            arrayParam: (common.arrayParam || common.array_param) ? {
-                groupKey: (common.arrayParam || common.array_param).groupKey || (common.arrayParam || common.array_param).group_key,
-                groupName: (common.arrayParam || common.array_param).groupName || (common.arrayParam || common.array_param).group_name,
-                boolMustfill: (common.arrayParam || common.array_param).boolMustfill || (common.arrayParam || common.array_param).bool_mustfill,
-                attrParams: ((common.arrayParam || common.array_param).attrParams || (common.arrayParam || common.array_param).attr_params || []).map((p: any) => this.mapAttribute(p))
-            } : undefined,
-            comboxParam: (common.comboxParam || common.combox_param) ? {
-                key: (common.comboxParam || common.combox_param).key,
-                desc: (common.comboxParam || common.combox_param).desc,
-                tips: (common.comboxParam || common.combox_param).tips,
-                comboxSource: (common.comboxParam || common.combox_param).comboxSource || (common.comboxParam || common.combox_param).combox_source || 'NORMAL',
-                value: (common.comboxParam || common.combox_param).value,
-                options: ((common.comboxParam || common.combox_param).normalCombox || (common.comboxParam || common.combox_param).normal_combox || []).map((o: any) => ({
-                    key: o.key,
-                    desc: o.desc,
-                    // ━━━ ALIGNED WITH GEMINI_RULES: arrayAttr in AbiSet ━━━
-                    arrayCmobEle: (o.arrayAttr || o.array_cmob_ele || []).map((e: any) => this.mapAttribute(e))
-                }))
-            } : undefined
-        };
-    }
+    const slots: Record<string, string> = {};
 
-    /**
-     * P4e: Parse board_desc JSON to extract public electrical interfaces.
-     * Filters out internal interfaces (PI/PO/LVDS/UART/SPI/I2C) per spec.
-     * Returns an array of InterfaceConfig ready to merge into a component.
-     */
-    static parseBoardInterfaces(boardDescJson: any): InterfaceConfig[] {
-        const interfaces: InterfaceConfig[] = [];
-        const boardKey = Object.keys(boardDescJson)[0];
-        if (!boardKey) return interfaces;
-        const board = boardDescJson[boardKey];
+    wheels.forEach((w) => {
+      let posKey = '';
+      if (identity.driveType === 'STANDARD_DIFF') posKey = w.mountY > 0 ? 'left_group' : 'right_group';
+      else if (identity.driveType === 'DUAL_STEER') posKey = w.mountX > 0 ? 'front_steer' : 'rear_steer';
+      else {
+        const isL = w.mountY > 0; const isF = w.mountX >= 0;
+        if (isL && isF) posKey = 'fl_steer'; else if (!isL && isF) posKey = 'fr_steer';
+        else if (isL && !isF) posKey = 'rl_steer'; else posKey = 'rr_steer';
+      }
 
-        // ━━━ Public interface types to INCLUDE (from spec) ━━━
-        const INCLUDE_TYPES = ['can', 'rs485', 'rs232', 'di', 'do', 'ai', 'ao', 'ethernet', 'eth'];
+      console.group(`[Trace] Wheel: ${w.alias} (${posKey})`);
+      slots[`wheel_${posKey}`] = w.id;
 
-        // Helper: extract name array from an interface section
-        const extractSection = (section: Record<string, any[]>, type: string): InterfaceConfig[] => {
-            const entries = section[type];
-            if (!entries || !Array.isArray(entries)) return [];
-            return entries.map((entry: any) => ({
-                key: entry.name || `${type.toUpperCase()}_${uuidv4().slice(0, 4)}`,
-                type: type.toUpperCase(),
-                desc: entry.desc || entry.name || '',
-                interfaceUuid: uuidv4(),
-                path: entry.hard_define || entry.peripheral || '',
-            } as InterfaceConfig));
-        };
+      const pairs = [
+        { key: 'relateLeftMotor', role: 'walk_left' },
+        { key: 'relateRightMotor', role: 'walk_right' },
+        { key: 'relateWalkMotor', role: 'walk' },
+        { key: 'relateRotMotor', role: 'steer' },
+        { key: 'relatedEncode', role: 'encoder' }
+      ];
 
-        // Scan all sections
-        for (const sectionName of Object.keys(board)) {
-            if (['基本信息', 'mcu'].includes(sectionName)) continue;
-            const section = board[sectionName];
-            if (typeof section !== 'object') continue;
+      pairs.forEach(p => {
+        const targetSrcName = this.deepFindAttributeValue(w.privateAttrs, p.key);
+        if (!targetSrcName) return;
 
-            for (const ifaceType of INCLUDE_TYPES) {
-                const extracted = extractSection(section, ifaceType);
-                interfaces.push(...extracted);
+        const targetId = moduleNameToId.get(targetSrcName);
+        const targetComp = components.find(c => c.id === targetId);
+
+        if (targetComp) {
+          console.log(`- SUCCESS: Semantic Match [${p.key}] -> EN: ${targetSrcName} | CN: ${targetComp.alias}`);
+
+          if (p.role === 'encoder') {
+            targetComp.parentNodeUuid = w.id;
+            slots[`encoder_${posKey}`] = targetComp.id;
+          } else {
+            // Tracing Driver via Wiring (Bit-Perfect Line logic)
+            let driver: ComponentConfig | undefined;
+            for (const iface of targetComp.interfaces) {
+              for (const lUuid of (iface.linkedInterfaceUuid || [])) {
+                const dId = ifaceToComp.get(lUuid);
+                const dComp = components.find(c => c.id === dId);
+                if (dComp && dComp.category === 'DRIVER') { driver = dComp; break; }
+              }
+              if (driver) break;
             }
-        }
 
-        return interfaces;
-    }
-
-    /**
-     * P4e: Enrich a control board component with interfaces parsed from board_desc file.
-     * Merges new interfaces without duplicating existing ones (by key).
-     */
-    static enrichComponentFromBoardDesc(comp: ComponentConfig, boardDescJson: any): ComponentConfig {
-        const newIfaces = this.parseBoardInterfaces(boardDescJson);
-        if (newIfaces.length === 0) return comp;
-
-        const existingKeys = new Set(comp.interfaces.map(i => i.key));
-        const merged = [
-            ...comp.interfaces,
-            ...newIfaces.filter(i => !existingKeys.has(i.key)),
-        ];
-        return { ...comp, interfaces: merged };
-    }
-
-    private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {
-        const groupName = group.moduleGroupName || group.module_group_name || '';
-        const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
-        
-        const componentsArr = group.moduleComponets || group.module_componets;
-
-        if (componentsArr && Array.isArray(componentsArr)) {
-            componentsArr.forEach((comp: any) => {
-                const config = this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry, componentsArr);
-                list.push(config);
-            });
-        }
-
-        const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
-        if (group[infoKey]) {
-            // ━━━ 0327-1: Recursive Hierarchy Fix ━━━
-            // Pass the ID of the LAST added component in the current group as the parent for the sub-groups
-            const lastCompId = list.length > 0 ? list[list.length - 1].id : parentUuid;
-            group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, lastCompId, schemaRegistry));
-        }
-    }
-
-    private static mapToComponent(
-        comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>, allComponents?: any[]
-    ): ComponentConfig {
-        const gen = comp.generalAttr || comp.general_attr || {};
-        const struct = comp.structParam || comp.struct_param || {};
-
-        // ━━━ 0325: Metadata-Driven Type Resolution ━━━
-        let rawMainType = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'chassis';
-        let subTypeKey = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'diffChassis';
-
-        // ━━━ 0325: Multi-Component Analysis ━━━
-        if (allComponents && allComponents.length > 1) {
-            const priorities = [
-                'driveWheel', 'diffSteerWheel', 'steerWheel', 'weakSteerWheel',
-                'horizontalSteerWheel', 'verticalSteerWheel',
-                'chassis',
-                'mainCPU', 'mainCpu', 'intergratedController',
-                'driver', 'battery', 'button', 'screen', 'light',
-                'sensor',
-            ];
-            let highestPriority = -1;
-
-            allComponents.forEach(c => {
-                const cGen = c.generalAttr || c.general_attr || {};
-                const cMain = cGen.mainModuleType?.comboType?.typeKey || cGen.main_module_type?.combo_type?.type_key || '';
-                const pIdx = priorities.indexOf(cMain);
-                if (pIdx !== -1 && (highestPriority === -1 || pIdx < highestPriority)) {
-                    highestPriority = pIdx;
-                    rawMainType = cMain;
-                    subTypeKey = cGen.subModuleType?.comboType?.typeKey || cGen.sub_module_type?.combo_type?.type_key || subTypeKey;
-                }
-            });
-        }
-
-        // ━━━ DYNAMIC SCHEMA LOOKUP ━━━
-        let category: MainModuleType = (ImportService.CATEGORY_MAP[rawMainType] || rawMainType.toUpperCase()) as MainModuleType;
-        if (schemaRegistry) {
-            const matchedSchema = Object.values(schemaRegistry).find(
-                (s: any) => s.key === rawMainType || s.aliases?.includes(rawMainType)
-            );
-            if (matchedSchema) {
-                category = matchedSchema.category as MainModuleType;
+            if (driver) {
+              console.log(` - SUCCESS: Wiring Match -> Driver EN: ${driver.srcName}`);
+              const dSlot = p.role.includes('steer') ? `steerDriver_${posKey}` : `driver_${posKey}`;
+              const mSlot = p.role.includes('steer') ? `steerMotor_${posKey}` : `motor_${posKey}`;
+              slots[dSlot] = driver.id;
+              slots[mSlot] = targetComp.id;
+              driver.parentNodeUuid = w.id;
+              targetComp.parentNodeUuid = driver.id;
+            } else {
+              targetComp.parentNodeUuid = w.id;
             }
+          }
         }
+      });
+      console.groupEnd();
+    });
 
-        const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
+    identity.powerSlots = slots;
+    console.groupEnd();
 
-        const rawIface = comp.interfaceParams || comp.interface_params || comp.interface_param || {};
-        const ifaceList: any[] = rawIface.interfaceGroup || rawIface.interface_group || [];
+    return { components, identity };
+  }
 
-        const interfaces: InterfaceConfig[] = ifaceList.map((inf: any) => ({
-            key: inf.key,
-            type: inf.type,
-            path: inf.path,
-            desc: inf.desc || inf.key,
-            interfaceUuid: inf.interfaceUuid || inf.interface_uuid || uuidv4(),
-            linkedInterfaceUuid: inf.linkedInterfaceUuid || inf.linked_interface_uuid || [],
-            linkAttrs: inf.linkAttrs || inf.link_attrs,
-            interfaceAttrs: inf.interfaceAttrs || inf.interface_attrs,
-            interfaceParams: inf.interfaceParams || inf.interface_params,
-        }));
-
-        let shape: ComponentConfig['shape'];
-        const s = gen.moduleShape || gen.module_shape;
-        if (s) {
-            if (s.box) {
-                shape = { 
-                    type: 'BOX', 
-                    length: s.box.sizeLen || s.box.size_len || 0, 
-                    width: s.box.sizeWidth || s.box.size_width || 0, 
-                    height: s.box.sizeHeight || s.box.size_height || 0 
-                };
-            } else if (s.cylinder) {
-                shape = { 
-                    type: 'CYLINDER', 
-                    diameter: s.cylinder.diameter || s.cylinder.diameter || 0, 
-                    height: s.cylinder.height || s.cylinder.height || 0 
-                };
-            }
+  /**
+   * §24.2/24.5: Recursively search for a key in privateAttrs.
+   * For DATA_COMBOX fields, only searches the SELECTED typeGroup
+   * (matched by comboType.typeKey), not all groups.
+   */
+  private static deepFindAttributeValue(attrs: AttributeGroup[], key: string): any {
+    const search = (eles: SmartAttribute[]): any => {
+      for (const e of eles) {
+        if (e.key === key) return e.value;
+        if (e.comboType?.typeGroups) {
+          // §24.2: Only recurse into the selected group
+          const selectedKey = e.comboType.typeKey;
+          const selectedGroup = e.comboType.typeGroups.find(
+            (g: any) => g.key === selectedKey
+          );
+          if (selectedGroup) {
+            const res = search(selectedGroup.arrayCmobEle || []);
+            if (res !== undefined) return res;
+          }
         }
-
-        const rawPrivateAttr = comp.privateAttr || comp.private_attr || {};
-        const privateAttrs: AttributeGroup[] = (rawPrivateAttr.privateAttrs || rawPrivateAttr.private_attrs || []).map((grp: any) => ({
-            key: grp.key || '',
-            desc: grp.desc || '',
-            elements: (grp.arrayBaseEle || grp.array_base_ele || []).map((attr: any) => this.mapAttribute(attr)),
-        }));
-
-        const structExtend = struct.extendParams || struct.extend_params || [];
-
-        const result: ComponentConfig = {
-            id: uuid,
-            name: gen.moduleName?.stringValue || gen.module_name?.string_value || subTypeKey,
-            alias: gen.extendParams?.find((p: any) => p.key === 'module_alias')?.stringValue 
-                   || gen.extend_params?.find((p: any) => p.key === 'module_alias')?.string_value
-                   || gen.moduleDesc?.stringValue || gen.module_desc?.string_value
-                   || subTypeKey,
-            type: subTypeKey,
-            category,
-            mainModuleTypeKey: rawMainType,
-            subModuleTypeKey: subTypeKey,
-            parentNodeUuid: parentUuid
-                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.stringValue
-                || structExtend.find((p: any) => p.key === 'parentNodeUuid')?.string_value
-                || null,
-            moduleGroupName: groupName,
-            moduleGroupUuid: groupUuid,
-            mountX: this.findExtend(structExtend, 'locCoordX'),
-            mountY: this.findExtend(structExtend, 'locCoordY'),
-            mountZ: this.findExtend(structExtend, 'locCoordZ'),
-            mountRoll: this.findExtend(structExtend, 'locCoordROLL'),
-            mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
-            mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
-            privateAttrs,
-            interfaceAbility: comp.interfaceAbility || comp.interface_ability || {},
-            interfaces,
-            shape,
-            generalAttr: gen,
-            rawStructParam: struct.segmentedLimitsParams || struct.segmented_limits_params,
-            disabled: comp.boolDisable || comp.bool_disable,
-            deprecated: comp.boolDeprecated || comp.bool_deprecated,
-        };
-
-        // Ensure alias is meaningful
-        if ((!result.alias || result.alias === result.type) && groupName && groupName !== 'LibraryGroup') {
-            result.alias = groupName;
-        }
-
-        return result;
+      }
+    };
+    for (const g of attrs) {
+      const res = search(g.elements);
+      if (res !== undefined) return res;
     }
+  }
 
-    private static findExtend(extend: any[], key: string): number {
-        const item = extend?.find((p: any) => p.key === key);
-        return item?.doubleValue ?? item?.double_value ?? 0;
+  static parseAbilities(json: any): ControllerAbility {
+    const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
+    if (!json || !json[funcKey]) return abilityRegistry as any;
+    return {
+      version: json.version || 'V1.0',
+      componentAbility: json.componentAbility || json.component_ability || [],
+      functionAbility: json[funcKey].map((func: any) => ({
+        type: func.type, desc: func.desc,
+        childFunction: (func.childFunction || func.child_function || []).map((child: any) => ({
+          key: child.key, desc: child.desc, tips: child.tips,
+          attr: (child.attr || []).map((a: any) => this.mapAttribute(a))
+        }))
+      }))
+    };
+  }
+
+  private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {
+    const groupName = group.moduleGroupName || group.module_group_name || '';
+    const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
+    const comps = group.moduleComponets || group.module_componets || [];
+    if (Array.isArray(comps)) {
+      comps.forEach((comp: any) => list.push(this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry)));
     }
-
-    private static mapAttribute(attr: any): SmartAttribute {
-        return {
-            key: attr.key,
-            desc: attr.desc || attr.key,
-            type: attr.type || 'DATA_DOUBLE',
-            value: this.extractValue(attr),
-            maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue ?? attr.floatMaxvalue ?? attr.double_minvalue ?? attr.int32_minvalue,
-            minValue: attr.doubleMinvalue ?? attr.int32Minvalue ?? attr.floatMinvalue ?? attr.double_minvalue ?? attr.int32_minvalue,
-            unit: attr.unit,
-            boolParse: attr.boolParse ?? attr.bool_parse,
-            boolHide: attr.boolHide ?? attr.bool_hide,
-            boolNoeditable: attr.boolNoeditable ?? attr.bool_noeditable,
-            boolMustfill: attr.boolMustfill ?? attr.bool_mustfill,
-            boolBasic: true, 
-            fixedSource: attr.fixedSource || attr.fixed_source,
-            comboType: (attr.comboType || attr.combo_type) ? {
-                typeKey: (attr.comboType || attr.combo_type).typeKey || (attr.comboType || attr.combo_type).type_key,
-                typeDesc: (attr.comboType || attr.combo_type).typeDesc || (attr.comboType || attr.combo_type).type_desc,
-                typeGroups: ((attr.comboType || attr.combo_type).typeGroups || (attr.comboType || attr.combo_type).type_groups || []).map((g: any) => ({
-                    key: g.key,
-                    desc: g.desc,
-                    arrayCmobEle: (g.arrayCmobEle || g.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub))
-                }))
-            } : undefined,
-            arrayCmobEle: (attr.arrayCmobEle || attr.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub)),
-        };
+    const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
+    if (group[infoKey] && Array.isArray(group[infoKey])) {
+      group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, null, schemaRegistry));
     }
+  }
 
-    private static extractValue(attr: any) {
-        return attr.stringValue ?? attr.string_value ??
-               attr.doubleValue ?? attr.double_value ??
-               attr.floatValue ?? attr.float_value ??
-               attr.int32Value ?? attr.int32_value ??
-               attr.uint32Value ?? attr.uint32_value ??
-               attr.int64Value ?? attr.int64_value ??
-               attr.uint64Value ?? attr.uint64_value ??
-               attr.boolValue ?? attr.bool_value ??
-               attr.ipValue ?? attr.ip_value ??
-               (attr.comboType || attr.combo_type)?.typeKey ?? (attr.comboType || attr.combo_type)?.type_key ??
-               attr.stringFix ?? attr.string_fix;
-    }
+  private static mapToComponent(comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>): ComponentConfig {
+    const gen = comp.generalAttr || comp.general_attr || {};
+    const struct = comp.structParam || comp.struct_param || {};
+    const structExtend = struct.extendParams || struct.extend_params || [];
 
-    static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
-        const componentsArr = entityJson.moduleComponets || entityJson.module_componets || [];
-        const comp = componentsArr[0];
-        if (!comp) throw new Error("Invalid entity JSON: no components found");
+    const rawMainType = gen.mainModuleType?.comboType?.typeKey || gen.main_module_type?.combo_type?.type_key || 'unknown';
+    const subTypeKey = gen.subModuleType?.comboType?.typeKey || gen.sub_module_type?.combo_type?.type_key || 'unknown';
+    const category: MainModuleType = (ImportService.CATEGORY_MAP[rawMainType] || rawMainType.toUpperCase()) as MainModuleType;
 
-        const groupName = entityJson.moduleGroupName || "LibraryGroup";
-        const groupUuid = uuidv4();
-        const newId = uuidv4();
-        
-        const mapped = this.mapToComponent(comp, groupName, groupUuid, null, schemaRegistry, componentsArr);
-        return { ...mapped, id: newId };
-    }
+    // ━━━ FIX: interfaceParams is at ROOT level, not inside generalAttr ━━━
+    const ifaceRoot = comp.interfaceParams || comp.interface_params || {};
+    const interfaces: InterfaceConfig[] = (ifaceRoot.interfaceGroup || ifaceRoot.interface_Group || []).map((inf: any) => ({
+      key: inf.key, type: inf.type, path: inf.path, desc: inf.desc || inf.key,
+      interfaceUuid: inf.interfaceUuid || inf.interface_uuid || uuidv4(),
+      linkedInterfaceUuid: inf.linkedInterfaceUuid || inf.linked_interface_uuid || [],
+    }));
+
+    const privateAttrs: AttributeGroup[] = (comp.privateAttr?.privateAttrs || comp.private_attr?.private_attrs || []).map((grp: any) => ({
+      key: grp.key || '', desc: grp.desc || '',
+      elements: (grp.arrayBaseEle || grp.array_base_ele || []).map((attr: any) => this.mapAttribute(attr)),
+    }));
+
+    const srcName = gen.moduleName?.stringValue || gen.module_name?.string_value ||
+      structExtend.find((p:any) => p.key === 'module_srcname')?.stringValue;
+
+    const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
+    const physicalName = gen.moduleName?.stringValue || gen.module_name?.string_value || subTypeKey;
+
+    return {
+      id: uuid,
+      srcName: physicalName,
+      name: physicalName,
+      alias: gen.moduleDesc?.stringValue || gen.module_desc?.string_value || physicalName,
+      type: subTypeKey, category, mainModuleTypeKey: rawMainType, subModuleTypeKey: subTypeKey,
+      parentNodeUuid: parentUuid, moduleGroupName: groupName, moduleGroupUuid: groupUuid,
+      mountX: this.findExtend(structExtend, 'locCoordX'),
+      mountY: this.findExtend(structExtend, 'locCoordY'),
+      mountZ: this.findExtend(structExtend, 'locCoordZ'),
+      mountRoll: this.findExtend(structExtend, 'locCoordROLL'),
+      mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
+      mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
+      privateAttrs, interfaces,
+      shape: gen.moduleShape?.box ? {
+        type: 'BOX', length: gen.moduleShape.box.sizeLen || gen.moduleShape.box.size_len || 0,
+        width: gen.moduleShape.box.sizeWidth || gen.moduleShape.box.size_width || 0,
+        height: gen.moduleShape.box.sizeHeight || gen.moduleShape.box.size_height || 0
+      } : undefined,
+      generalAttr: gen,
+    };
+  }
+
+  private static findExtend(extend: any[], key: string): number {
+    const item = extend?.find((p: any) => p.key === key);
+    return item?.doubleValue ?? item?.double_value ?? 0;
+  }
+
+  private static mapAttribute(attr: any): SmartAttribute {
+    const combo = attr.comboType || attr.combo_type;
+    return {
+      key: attr.key, desc: attr.desc || attr.key, type: attr.type || 'DATA_DOUBLE',
+      value: attr.stringValue ?? attr.string_value ?? attr.stringFix ?? attr.string_fix ?? attr.doubleValue ?? attr.double_value ?? attr.boolValue ?? attr.bool_value ?? attr.int32Value ?? attr.int_32_value ?? combo?.typeKey,
+      maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue,
+      minValue: attr.doubleMinvalue ?? attr.int32Minvalue,
+      unit: attr.unit,
+      boolParse: attr.boolParse ?? attr.bool_parse,
+      boolHide: attr.boolHide ?? attr.bool_hide,
+      boolNoeditable: attr.boolNoeditable ?? attr.bool_noeditable,
+      boolMustfill: attr.boolMustfill ?? attr.bool_mustfill,
+      boolBasic: true,
+      comboType: combo ? {
+        typeKey: combo.typeKey || combo.type_key,
+        typeDesc: combo.typeDesc || combo.type_desc,
+        typeGroups: (combo.typeGroups || combo.type_groups || []).map((g: any) => ({
+          key: g.key || g.desc, desc: g.desc,
+          arrayCmobEle: (g.arrayCmobEle || g.array_cmob_ele || []).map((sub: any) => this.mapAttribute(sub))
+        }))
+      } : undefined
+    };
+  }
+
+  static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
+    const comps = entityJson.moduleComponets || entityJson.module_componets || [];
+    if (!comps[0]) throw new Error("Invalid entity");
+    return this.mapToComponent(comps[0], "LibraryGroup", uuidv4(), null, schemaRegistry);
+  }
 }

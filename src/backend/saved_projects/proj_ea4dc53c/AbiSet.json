@@ -1,0 +1,405 @@
+{
+  "version": "1.0",
+  "componentAbility": [
+    {
+      "type": "laser",
+      "entity": [
+        "PEPPERL_FUCHS_R2000",
+        "SICK_TIM561",
+        "HOKUYO_UST20LX",
+        "SICK_LMS111",
+        "HOKUYO_UAM05",
+        "TIM510",
+        "HOKUYO_UST05LA",
+        "STS_NET_HOKUYO",
+        "KELI",
+        "SICK_NANO_SCAN3",
+        "RS16_LASER",
+        "LS16_LASER",
+        "TIM240",
+        "BLUESEA_LDS_50C",
+        "HINSON_LE50821",
+        "WANJI716",
+        "JIUWUM30E",
+        "MR_LS_01H",
+        "MR_LS_02H",
+        "SAGITAR_HELIOS_16P",
+        "MR_LS_01F_S1533",
+        "MR_LS_01W_N2525",
+        "BLUESEA_LDS_E300E",
+        "ORD_MS200",
+        "KELI_KLM",
+        "HINSON_LE50821_2",
+        "LIVOX_MID360",
+        "OL_LR1F",
+        "SICK_TIM473",
+        "MR_LS_02F_N3010",
+        "BLUESEA_LDS_E200E",
+        "MR_LS_03F_N3010",
+        "MR_LS_02W_S1525",
+        "SSTK_STL1_5",
+        "SSTK_STL1_6",
+        "SIMU_3DLASER",
+        "SIMU_LASER",
+        "GAZEBO_LASER",
+        "SIMU_LASER_OBS",
+        "MR_LS_01F_S1533_BLACK",
+        "MR_LS_01H_N2725",
+        "OMD25M-R2000-B23-V1V1D-SD-1L",
+        "OMD30M-R2000-B23-V1V1D-HD-1L",
+        "OMD30M-R2000-B23-V1V1D-1L",
+        "TIM561-2050101",
+        "UST-20LX",
+        "LMS111-10100",
+        "UAM-05LP-T301",
+        "TIM510-9950000S01",
+        "TIM510-9950000S08",
+        "UST-05LA",
+        "UST-05LN",
+        "STL1-3",
+        "NANS3-AAAZ30AN1",
+        "TIM240-2050300",
+        "LDS-50C-C30E",
+        "WLR-716",
+        "MR-LS-01H-N2725",
+        "MR-LS-01H-N2725N",
+        "MR-LS-02H-S2725",
+        "RS-LS-RS-HELIOS16P",
+        "MR-LS-01F-S1533-BLACK",
+        "MR-LS-01F-S1533-MIDDLE",
+        "LDS-E300-E",
+        "MID-360",
+        "TIM473-2050106",
+        "MR-LS-02F-N3010",
+        "WLR-718H",
+        "MR-LS-04H-N2005",
+        "STL1-6",
+        "LTME-02A-JK-YQ1",
+        "STL1-6A",
+        "STL1-6C",
+        "MICS3-CBAZ90PZ1P01"
+      ]
+    },
+    {
+      "type": "motor",
+      "entity": [
+        "yk-100SV04202-0750K-012",
+        "EC-SV08D1-050M01BB",
+        "EC-SV08D1-050M01NB",
+        "Myk-80SV04302-0750G-036",
+        "100SV04202_0750K_012",
+        "MCXL501TAF3KM",
+        "MCXL501TAFUKM"
+      ]
+    }
+  ],
+  "functionAbility": [
+    {
+      "type": "locationAbility",
+      "desc": "定位能力",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "",
+          "desc": "导航",
+          "tips": "导航",
+          "key": "",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "naviUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "key": "",
+          "desc": "导航",
+          "tips": "导航",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "naviUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "HCI",
+      "desc": "人机交互",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "",
+          "desc": "灯光",
+          "tips": "灯光",
+          "key": "",
+          "attr": [
+            {
+              "key": "ledUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "ledUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "type": "",
+          "desc": "按钮",
+          "tips": "按钮",
+          "key": "",
+          "attr": [
+            {
+              "key": "btnUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "btnUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "key": "",
+          "desc": "灯光",
+          "tips": "灯光",
+          "attr": [
+            {
+              "key": "ledUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "ledUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        },
+        {
+          "key": "",
+          "desc": "按钮",
+          "tips": "按钮",
+          "attr": [
+            {
+              "key": "btnUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "btnUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "safetyAbility",
+      "desc": "安全能力",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "",
+          "desc": "安全IO",
+          "tips": "安全IO",
+          "key": "",
+          "attr": [
+            {
+              "key": "safetyIOUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetyIOUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "type": "",
+          "desc": "避障传感器",
+          "tips": "避障传感器",
+          "key": "",
+          "attr": [
+            {
+              "key": "safetySensorUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetySensorUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "type": "",
+          "desc": "避障范围",
+          "tips": "避障范围",
+          "key": "",
+          "attr": [
+            {
+              "key": "safetyRoundUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetyRoundUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "key": "",
+          "desc": "安全IO",
+          "tips": "安全IO",
+          "attr": [
+            {
+              "key": "safetyIOUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetyIOUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        },
+        {
+          "key": "",
+          "desc": "避障传感器",
+          "tips": "避障传感器",
+          "attr": [
+            {
+              "key": "safetySensorUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetySensorUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        },
+        {
+          "key": "",
+          "desc": "避障范围",
+          "tips": "避障范围",
+          "attr": [
+            {
+              "key": "safetyRoundUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "safetyRoundUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "distMeasureAbility",
+      "desc": "透传测距",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "",
+          "desc": "测距",
+          "tips": "测距",
+          "key": "",
+          "attr": [
+            {
+              "key": "distSensorUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "distSensorUniqueKey",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "key": "",
+          "desc": "测距",
+          "tips": "测距",
+          "attr": [
+            {
+              "key": "distSensorUniqueKey",
+              "type": "COMBOX_E",
+              "desc": "distSensorUniqueKey",
+              "boolBasic": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "actorAbility",
+      "desc": "执行机构能力",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "",
+          "desc": "执行机构",
+          "tips": "执行机构",
+          "key": "",
+          "attr": [
+            {
+              "key": "moduleType",
+              "type": "COMBOX_E",
+              "desc": "moduleType",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": []
+            }
+          ],
+          "cloneEnable": false
+        },
+        {
+          "key": "",
+          "desc": "执行机构",
+          "tips": "执行机构",
+          "attr": [
+            {
+              "key": "moduleType",
+              "type": "COMBOX_E",
+              "desc": "moduleType",
+              "boolBasic": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -16,6 +16,64 @@ Object.entries(moduleSchemasGlob).forEach(([path, module]: [string, any]) => {
 });
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// Schema Registry Access
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/**
+ * Returns the list of available subType keys registered in the schema registry.
+ * Use this for dynamic type selection instead of hardcoding type lists.
+ * @returns Array of registered subType keys
+ */
+export function getAvailableSubTypes(): string[] {
+  return Object.keys(schemaRegistry);
+}
+
+/**
+ * Checks if a subType exists in the schema registry.
+ * @param subType The subType key to check
+ * @returns true if the subType is registered
+ */
+export function isValidSubType(subType: string): boolean {
+  return subType in schemaRegistry;
+}
+
+/**
+ * Gets a valid subType for a given category, falling back gracefully.
+ * Replaces hardcoded type selection with schema-driven lookup.
+ * @param category The module category (e.g., 'MOTOR')
+ * @param preferredType The preferred type if available
+ * @param fallbackTypes Ordered list of fallback types to try
+ * @returns A valid subType key from the schema registry
+ */
+export function getValidSubType(
+  category: string,
+  preferredType?: string,
+  fallbackTypes: string[] = []
+): string {
+  // First check if preferred type is valid
+  if (preferredType && isValidSubType(preferredType)) {
+    return preferredType;
+  }
+
+  // Try fallbacks in order
+  for (const fb of fallbackTypes) {
+    if (isValidSubType(fb)) {
+      return fb;
+    }
+  }
+
+  // Last resort: return any available type from registry
+  const available = getAvailableSubTypes();
+  if (available.length > 0) {
+    console.warn(`[SchemaEngine] Type "${preferredType}" not found, using first available: ${available[0]}`);
+    return available[0];
+  }
+
+  // Ultimate fallback (should never happen if registry is loaded)
+  console.error('[SchemaEngine] No types available in schema registry!');
+  return preferredType || 'unknown';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Engineering Constraints — Domain expert corrections
 // that override raw JSON schema behavior for UI
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

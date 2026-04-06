@@ -196,3 +196,53 @@
 - **版本提交规范**: 版本更新必须与代码变更一同提交，禁止代码修改与版本更新分离为不同提交。
 - **版本日志**: 建议同步更新 `CHANGELOG.md` 或版本历史记录，简要描述本次变更内容。
 
+## 24. DATA_COMBOX 嵌套属性解析规范 (Nested COMBOX Attribute Resolution)
+
+### 24.1 数据结构模型
+`DATA_COMBOX` 是 CModel 协议中的核心多态属性类型，其结构如下：
+```
+privateAttrs[].arrayBaseEle[] → {
+    key: "angleSensorType",
+    type: "DATA_COMBOX",
+    comboType: {
+        typeKey: "GROUP_CALI_ABS_EXTERNAL",    ← 当前选中的分组 Key
+        typeDesc: "绝对式编码器(外置)",           ← 选中分组的中文描述
+        typeGroups: [                           ← 所有可选分组（含非选中项）
+            { key: "GROUP_A", arrayCmobEle: [...] },
+            { key: "GROUP_B", arrayCmobEle: [...] },   ← 每个分组下有独立的子属性集
+        ]
+    }
+}
+```
+
+### 24.2 选中分组判定规则 (Selected Group Resolution)
+- **唯一真值**: `comboType.typeKey` 是当前选中分组的唯一标识。
+- **⛔ 禁止全遍历**: 在需要提取"当前生效值"的场景（如拓扑关联解析），**严禁**遍历所有 `typeGroups` 并返回第一个匹配的子属性。必须先通过 `typeKey` 定位到选中的分组，仅在该分组的 `arrayCmobEle` 中搜索目标字段。
+- **模板/Schema 场景例外**: 在渲染 UI 表单（展示所有可选项）或构建模板时，可遍历全部 `typeGroups`。
+
+### 24.3 `DATA_FIXED_E` 关联引用字段解析
+当 `arrayCmobEle` 中的子属性类型为 `DATA_FIXED_E` 时，其语义为"引用另一个模块实例"：
+- **值来源**: `stringFix` 字段存储被引用模块的 `moduleName`（英文物理名）。
+- **特殊值**: `"FIXED_RELATED_NONE"` 表示未关联（空引用），等同于 `null`。
+- **类型约束**: `fixedSource` 数组定义了允许关联的模块类型范围（格式为 `"mainType/subType"`），如 `["sensor/absoluteValueEncode"]`。
+
+### 24.4 轮组-编码器关联的标准解析路径 (Canonical Example)
+以 `diffSteerWheel` 为例，关联的绝对值编码器通过以下路径获取：
+```
+Steerwheel_BR.privateAttrs
+  → [key="angleSensor"] (角度传感参数)
+    → arrayBaseEle[key="angleSensorType"] (DATA_COMBOX)
+      → comboType.typeKey = "GROUP_CALI_ABS_EXTERNAL" (选中分组)
+      → comboType.typeGroups[key="GROUP_CALI_ABS_EXTERNAL"]
+        → arrayCmobEle[key="relatedEncode"] (DATA_FIXED_E)
+          → stringFix = "BR_Encoder"  ← 🎯 关联的绝对值编码器 moduleName
+          → fixedSource = ["sensor/absoluteValueEncode"]
+```
+- **⛔ 严禁使用名称猜测**（参见 §13 第86行）：编码器归属必须通过上述结构化路径获取，不得基于 `FL_Encoder` 与 `Steerwheel_FL` 的名称子串匹配。
+
+### 24.5 嵌套递归搜索的实现要求
+前端 `deepFindAttributeValue(attrs, key)` 在递归搜索 COMBOX 子属性时：
+1. **必须仅搜索选中分组**: 比对 `comboType.typeKey` 与 `typeGroups[].key`，仅进入匹配的分组。
+2. **`value` 的提取优先级**: 对于 `DATA_FIXED_E` 类型，有效值存储在 `stringFix` 中（非 `stringValue`）。`mapAttribute` 的 value 提取链必须包含 `stringFix` 且优先级高于 `doubleValue`。
+3. **递归深度**: COMBOX 可嵌套 COMBOX（如 `detectModeZero` 嵌套在 `angleSensorType` 内），解析器必须支持无限深度递归。
+

@@ -1,0 +1,380 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "smart camera",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "smart camera",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "3b2829d4c4654b61b784be5eb124139a",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "主类型"
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
+      },
+      "boolParse": true,
+      "desc": "子类型"
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "传感器系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "SENSOR",
+      "desc": "模块型号",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "sensorAttr",
+        "desc": "传感属性",
+        "arrayBaseEle": [
+          {
+            "key": "focalLength",
+            "type": "DATA_DOUBLE",
+            "desc": "焦距",
+            "unit": "mm",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "exposure",
+            "type": "DATA_DOUBLE",
+            "desc": "曝光时长范围",
+            "unit": "s",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "needCalib",
+            "type": "DATA_BOOL",
+            "desc": "是否需要标定",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "boolValue": false
+          }
+        ]
+      },
+      {
+        "key": "pictureAttr",
+        "desc": "图像属性",
+        "arrayBaseEle": [
+          {
+            "key": "scanRangeHorizonStart",
+            "type": "DATA_DOUBLE",
+            "desc": "水平视场角起始",
+            "unit": "°",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "scanRangeHorizonEnd",
+            "type": "DATA_DOUBLE",
+            "desc": "水平视场角终止",
+            "unit": "°",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "scanRangeVerticalStart",
+            "type": "DATA_DOUBLE",
+            "desc": "垂直视场角起始",
+            "unit": "°",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "scanRangeVerticalEnd",
+            "type": "DATA_DOUBLE",
+            "desc": "垂直视场角终止",
+            "unit": "°",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "resolutionH",
+            "type": "DATA_DOUBLE",
+            "desc": "分辨率H",
+            "unit": "PPI",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "resolutionW",
+            "type": "DATA_DOUBLE",
+            "desc": "分辨率W",
+            "unit": "PPI",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "codecMode",
+            "type": "DATA_STRING",
+            "desc": "视频编码标准",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": ""
+          },
+          {
+            "key": "frameRate",
+            "type": "DATA_DOUBLE",
+            "desc": "最大帧率",
+            "unit": "fps",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          }
+        ]
+      },
+      {
+        "key": "resultAttr",
+        "desc": "识别属性",
+        "arrayBaseEle": [
+          {
+            "key": "resultType",
+            "type": "DATA_STRING",
+            "desc": "识别结果类型",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": ""
+          },
+          {
+            "key": "resultValue",
+            "type": "DATA_STRING",
+            "desc": "识别结果",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": ""
+          },
+          {
+            "key": "scanDistence",
+            "type": "DATA_DOUBLE",
+            "desc": "有效扫描距离",
+            "unit": "mm",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          },
+          {
+            "key": "accuracy",
+            "type": "DATA_DOUBLE",
+            "desc": "识别精度",
+            "unit": "mm",
+            "boolParse": false,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "doubleValue": 0.0
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "ETH_1",
+        "type": "ETH",
+        "path": "",
+        "desc": "ETH_1",
+        "interfaceUuid": "9f33e44a134e479596d018b80316c024",
+        "linkedInterfaceUuid": [
+          "010700cc459f41eaa084ab46b4b5831a"
+        ]
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null,
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 180.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  }
+}

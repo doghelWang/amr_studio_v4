@@ -1,0 +1,528 @@
+{
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_steer",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_chassis_steer_b563b9927ba2440ab4dc2cf284c6f034.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver_BR_left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver_BR_left_2578fcd3a0dc46f6bb9291e728046619.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver_BR_right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver_BR_right_50785cd68f6b46cbb0e1a4e138311b36.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver_FL_right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver_FL_right_25530f4dbb3343f287f0116b976e8bf8.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver_FL_left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver_FL_left_806c17a8259846eab16878155559ec25.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Steerwheel_BR",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Steerwheel_BR_cd5be96a48b04bb4a0369e7e6435161c.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Steerwheel_FL",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Steerwheel_FL_7fe013e2d894442a960be8f37cf7f8e0.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "G_MainController",
+      "moduleGroupUuid": "93a53b4a408347669d6c476ab954c446",
+      "moduleSys": "ControlSys",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_MainController_1393d6e420b447efb2b74dec43fc8857.json"
+        },
+        {
+          "$ref": "modules/module_gyro_cabb453cd20e426498e00b6e9403a84d.json"
+        }
+      ],
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "IO module",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_IO module_db0ce767a9c24eda874b8845e03ecfe1.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "IO module0",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_IO module0_4d96da68ce984898882901cf44903402.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "laser",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_laser_192fdfadc8d943d8a53b1ca1cb367093.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "FL_Encoder",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_FL_Encoder_5a21bb43a5524307ab59a5d4a62095d8.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "BR_Encoder",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_BR_Encoder_4b5392e7b3f6478cbc9c9e661e709617.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "smart camera",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_smart camera_3b2829d4c4654b61b784be5eb124139a.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "up_limit",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_up_limit_a03612270bd345b49987f49764726142.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "down_limit",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_down_limit_9067b899088c4071952670666dccf6a1.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "CB_Back",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_CB_Back_062943f1b25b47a79a3e27d334301835.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "CB_Front",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_CB_Front_63f0f3997af344c0ab40749f5d4a1c8e.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "CB_Back_in_pace",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_CB_Back_in_pace_c560964776b747e3a9d07d0d55348495.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "CB_Front_in_pace",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_CB_Front_in_pace_a71becc5ebca4e678678b394f073495d.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "DoorFrame_origin",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_DoorFrame_origin_44f8c92361904e94bef151cb0220170f.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "DoorFrame_limit",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_DoorFrame_limit_ceea780c43ea4c07a6d3b6b94d04b0a3.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "lamp",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_lamp_6953bad0e1024369a6a7c723125d600d.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "screen",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_screen_2304dff692824935b83c27116dcb099a.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "driver_DoorFrame",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_driver_DoorFrame_b29206124e7949eabd2f002b850a25c4.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor_DoorFrame",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor_DoorFrame_bbe50c1b1f71431ea24cb69d19173b2c.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "DoorFrame_Encoder",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_DoorFrame_Encoder_909c99cb46734793bc14bcbf29450f02.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "UpDown_Encoder",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_UpDown_Encoder_1954ffbafe1047d08679ae1a0f724b4d.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "laser_350",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_laser_350_b8642a986400458eadc1905f2d7a7abf.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor_BR_left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor_BR_left_a6f20fb7a6044377b5560fae2c46fcae.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor_BR_right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor_BR_right_3ce4e55a955543b6a5309fc08cc8abea.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor_FL_left",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor_FL_left_a640fbe578e9421b9fb9574fca9a6efd.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "motor_FL_right",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_motor_FL_right_7a7d3ff53be149e293f0eb03de13d5d0.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "battery",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_battery_8263cf18dfd5445fb9559edb78e1f0e8.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "button",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_button_c3437b779106460f8cdc21a841413eee.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "incEncoder",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_incEncoder_c486d1d47fbf4cc1be28b335a34d6a66.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "BR_left_limit",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_BR_left_limit_40f05dd4757b46de85d55cafa943c3d9.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "BR_right_limit",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_BR_right_limit_6442697a82d94fc4a94e1e497e6fd3af.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "comDo",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_comDo_b4af4e756f0a4a7badae92baff7a7811.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Oil_pump_up",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Oil_pump_up_e6b2feec1c684a2b9998b2908c74951a.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Oil_pump_down",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Oil_pump_down_d858276af9264e788002afe464b86a15.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Charging_relay",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Charging_relay_d80631bb245b4a74b17a976a64f71b06.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    },
+    {
+      "moduleGroupName": "Oil_main_switch",
+      "moduleComponets": [
+        {
+          "$ref": "modules/module_Oil_main_switch_14c890716d4f498a97e898417275abe3.json"
+        }
+      ],
+      "moduleGroupUuid": "",
+      "moduleSys": "",
+      "moreModuleInfo": [],
+      "modelVersion": ""
+    }
+  ],
+  "moduleGroupName": "",
+  "moduleGroupUuid": "",
+  "moduleSys": "",
+  "moduleComponets": [],
+  "modelVersion": ""
+}

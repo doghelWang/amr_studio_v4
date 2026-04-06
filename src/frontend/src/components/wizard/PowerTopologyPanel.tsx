@@ -49,7 +49,7 @@ const SlotCard: React.FC<{
             }}>
                 <Badge color={color} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 12, fontWeight: 600, color: '#f0f6fc', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{comp.alias}</div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{comp.alias}</div>
                     <div style={{ fontSize: 10, color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{comp.name}</div>
                 </div>
                 <Tag color="geekblue" style={{ fontSize: 9, margin: 0, borderRadius: 4 }}>{label}</Tag>
@@ -58,8 +58,8 @@ const SlotCard: React.FC<{
     }
     return (
         <div style={{
-            background: 'rgba(255,255,255,0.02)',
-            border: '1px dashed rgba(255,255,255,0.12)',
+            background: 'var(--bg-card)',
+            border: '1px dashed var(--border-default)',
             borderRadius: 8,
             padding: '8px 12px',
             marginBottom: 6,
@@ -90,15 +90,15 @@ const WheelTopologyGroup: React.FC<{
             size="small"
             variant="borderless"
             style={{
-                background: 'rgba(255,255,255,0.02)',
-                border: hasAll ? '1px solid rgba(56,139,253,0.3)' : '1px solid rgba(255,255,255,0.06)',
+                background: 'var(--bg-card)',
+                border: hasAll ? '1px solid var(--accent-soft)' : '1px solid var(--border-default)',
                 borderRadius: 12,
             }}
         >
             {/* Wheel Group Header */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
                 <ThunderboltOutlined style={{ color: 'var(--accent)' }} />
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#f0f6fc' }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>
                     轮组 #{index + 1}
                     <Tag style={{ marginLeft: 8, fontSize: 9, borderRadius: 4 }} color="default">{posLabel}</Tag>
                 </span>

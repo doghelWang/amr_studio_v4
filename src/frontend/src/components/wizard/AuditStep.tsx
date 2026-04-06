@@ -114,6 +114,91 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         });
     }
 
+    // 3. Topology Validation Rules (§10, §11)
+    const wheels = components.filter(c => c.category === 'DRIVEWHEEL');
+    const steerWheels = wheels.filter(w => (w.type || '').toLowerCase().includes('steer'));
+    const motors = components.filter(c => c.category === 'MOTOR');
+
+    // 3a. Drive Type ↔ Wheel Count Consistency
+    const driveType = config.identity?.driveType;
+    if (driveType === 'DUAL_STEER' && steerWheels.length !== 2) {
+        issues.push({
+            severity: 'ERROR',
+            message: `驱动类型"双舵轮"需要恰好 2 个舵轮组件，当前 ${steerWheels.length} 个`,
+            nodeId: '',
+        });
+    } else if (driveType === 'QUAD_STEER' && steerWheels.length < 4) {
+        issues.push({
+            severity: 'ERROR',
+            message: `驱动类型"四舵轮"需要至少 4 个舵轮组件，当前 ${steerWheels.length} 个`,
+            nodeId: '',
+        });
+    } else if (driveType === 'STANDARD_DIFF' && wheels.length < 2) {
+        issues.push({
+            severity: 'WARNING',
+            message: `驱动类型"差速"通常需要 2 个驱动轮，当前 ${wheels.length} 个`,
+            nodeId: '',
+        });
+    }
+
+    // 3b. Motor must have Driver parent
+    motors.forEach(m => {
+        const parent = components.find(c => c.id === m.parentNodeUuid);
+        if (!parent || parent.category !== 'DRIVER') {
+            issues.push({
+                severity: 'WARNING',
+                message: `[${m.alias || m.name}] 电机未关联至驱动器 (parentNodeUuid 应指向 DRIVER)`,
+                nodeId: m.id,
+            });
+        }
+    });
+
+    // 3c. CAN Bus connectivity check
+    const canInterfaces = components.flatMap(c => 
+        c.interfaces.filter(i => i.type === 'CAN').map(i => ({ comp: c, iface: i }))
+    );
+    if (canInterfaces.length > 0) {
+        const connectedCan = canInterfaces.filter(ci => 
+            ci.iface.linkedInterfaceUuid && ci.iface.linkedInterfaceUuid.length > 0
+        );
+        if (connectedCan.length === 0) {
+            issues.push({
+                severity: 'WARNING',
+                message: '存在 CAN 接口但均未建立连接，总线拓扑不完整',
+                nodeId: '',
+            });
+        }
+    }
+
+    // 3d. IO Signal Direction Inversion Check (§11)
+    const ioInterfaces = components.flatMap(c => 
+        c.interfaces.filter(i => ['DI', 'DO'].includes(i.type)).map(i => ({ comp: c, iface: i }))
+    );
+    ioInterfaces.forEach(({ comp, iface }) => {
+        if (iface.linkedInterfaceUuid && iface.linkedInterfaceUuid.length > 0) {
+            for (const linkedUuid of iface.linkedInterfaceUuid) {
+                // Find the target interface
+                const target = components.flatMap(c => c.interfaces).find(i => i.interfaceUuid === linkedUuid);
+                if (target) {
+                    // DI must connect to DO, DO must connect to DI
+                    if (iface.type === 'DI' && target.type !== 'DO') {
+                        issues.push({
+                            severity: 'ERROR',
+                            message: `[${comp.alias || comp.name}] DI 接口 "${iface.key}" 应连接到 DO 端口，当前连接至 ${target.type}`,
+                            nodeId: comp.id,
+                        });
+                    } else if (iface.type === 'DO' && target.type !== 'DI') {
+                        issues.push({
+                            severity: 'ERROR',
+                            message: `[${comp.alias || comp.name}] DO 接口 "${iface.key}" 应连接到 DI 端口，当前连接至 ${target.type}`,
+                            nodeId: comp.id,
+                        });
+                    }
+                }
+            }
+        }
+    });
+
     return issues;
 }
 
@@ -153,43 +238,43 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
             {/* Stats Row */}
             <Row gutter={24} style={{ marginBottom: 32 }}>
                 <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${isClean ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: isClean ? '#52c41a' : '#ff4d4f' }}>
                             {config.components.length}
                         </div>
-                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>组件总数</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>组件总数</div>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${errors.length === 0 ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: errors.length === 0 ? '#52c41a' : '#ff4d4f' }}>
                             {errors.length}
                         </div>
-                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>错误</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>错误</div>
                     </div>
                 </Col>
                 <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${warnings.length === 0 ? 'success' : 'warning'}`} style={{ fontSize: 32, fontWeight: 700, color: warnings.length === 0 ? '#52c41a' : '#faad14' }}>
                             {warnings.length}
                         </div>
-                        <div className="stat-label" style={{ color: 'rgba(255,255,255,0.45)', marginTop: 8 }}>警告</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>警告</div>
                     </div>
                 </Col>
             </Row>
 
             {/* Issues */}
             {issues.length === 0 ? (
-                <div className="glass-card" style={{ textAlign: 'center', padding: '60px 40px', background: 'rgba(255,255,255,0.02)', borderRadius: 16, border: '1px solid rgba(82,196,26,0.1)' }}>
+                <div className="glass-card" style={{ textAlign: 'center', padding: '60px 40px', background: 'var(--bg-hover)', borderRadius: 16, border: '1px solid var(--success)' }}>
                     <CheckCircleOutlined style={{ fontSize: 64, color: '#52c41a', marginBottom: 24 }} />
-                    <div style={{ fontSize: 20, fontWeight: 600, color: '#f0f6fc' }}>全部检查通过</div>
-                    <div style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, marginTop: 12, marginBottom: 32 }}>本地状态验证闭环，准备好进行二进制构建。</div>
+                    <div style={{ fontSize: 20, fontWeight: 600, color: 'var(--text-primary)' }}>全部检查通过</div>
+                    <div style={{ color: 'var(--text-muted)', fontSize: 14, marginTop: 12, marginBottom: 32 }}>本地状态验证闭环，准备好进行二进制构建。</div>
                     <Space size="large">
                         <Button 
                             size="large"
                             icon={<DownloadOutlined />} 
                             onClick={handleExport}
-                            style={{ background: 'rgba(88,166,255,0.1)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 48, borderRadius: 8 }}
+                            style={{ background: 'var(--accent-soft)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 48, borderRadius: 8 }}
                         >
                             仅导出本地 JSON
                         </Button>
@@ -205,7 +290,7 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                     </Space>
                 </div>
             ) : (
-                <div className="glass-card" style={{ padding: 24, background: 'rgba(255,255,255,0.02)', borderRadius: 16 }}>
+                <div className="glass-card" style={{ padding: 24, background: 'var(--bg-hover)', borderRadius: 16 }}>
                     <div style={{ maxHeight: 400, overflowY: 'auto', marginBottom: 24 }}>
                         {issues.map((issue, i) => (
                             <div
@@ -225,19 +310,19 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                                     ? <CloseCircleOutlined style={{ color: '#ff4d4f', fontSize: 16 }} />
                                     : <WarningOutlined style={{ color: '#faad14', fontSize: 16 }} />
                                 }
-                                <span style={{ fontSize: 14, color: '#f0f6fc', flex: 1 }}>{issue.message}</span>
+                                <span style={{ fontSize: 14, color: 'var(--text-primary)', flex: 1 }}>{issue.message}</span>
                                 <Tag color={issue.severity === 'ERROR' ? 'error' : 'warning'}>
                                     {issue.severity}
                                 </Tag>
                             </div>
                         ))}
                     </div>
-                    <Divider style={{ margin: '24px 0', borderColor: 'rgba(255,255,255,0.05)' }} />
+                    <Divider style={{ margin: '24px 0', borderColor: 'var(--border-default)' }} />
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16 }}>
                         <Button 
                             icon={<DownloadOutlined />} 
                             onClick={handleExport}
-                            style={{ background: 'rgba(88,166,255,0.1)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 40, borderRadius: 6 }}
+                            style={{ background: 'var(--accent-soft)', color: 'var(--accent)', border: '1px solid var(--border-accent)', height: 40, borderRadius: 6 }}
                         >
                             仅导出本地 JSON
                         </Button>
@@ -257,5 +342,5 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
 };
 
 const Divider = ({ style, borderColor }: any) => (
-    <div style={{ ...style, borderBottom: `1px solid ${borderColor || 'rgba(255,255,255,0.1)'}` }} />
+    <div style={{ ...style, borderBottom: `1px solid ${borderColor || 'var(--border-default)'}` }} />
 );

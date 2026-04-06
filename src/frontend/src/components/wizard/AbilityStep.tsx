@@ -106,7 +106,7 @@ const RecursiveAttributeEditor: React.FC<{
                 </Select>
                 {subElements.length > 0 && (
                     <div className="ability-nested-container">
-                        <Row gutter={[16, 12]}>
+                        <Row gutter={[12, 8]}>
                             {subElements.map((sub: any) => (
                                 <Col span={12} key={sub.key}>
                                     <RecursiveAttributeEditor 
@@ -203,14 +203,14 @@ export const AbilityStep: React.FC<{ onExport?: () => void }> = () => {
                         size="small"
                         title={<Space><ThunderboltOutlined style={{ color: 'var(--accent)' }} />{func.desc}</Space>}
                         className="ability-main-card"
-                        style={{ marginBottom: 20, background: 'rgba(255,255,255,0.02)', borderRadius: 12 }}
+                        style={{ marginBottom: 20, background: 'var(--bg-hover)', borderRadius: 12 }}
                     >
                         <Collapse ghost defaultActiveKey={func.childFunction.map(c => c.key)}>
                             {func.childFunction.map((child) => (
                                 <Panel 
                                     header={<Text strong style={{ color: 'var(--text-bright)' }}>{child.desc}</Text>}
                                     key={child.key}
-                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                                    style={{ borderBottom: '1px solid var(--border-default)' }}
                                 >
                                     <div className="ability-child-fields" style={{ padding: '8px 0' }}>
                                         {child.attr.map((common) => (
@@ -267,12 +267,12 @@ export const AbilityStep: React.FC<{ onExport?: () => void }> = () => {
                 .ability-nested-container { 
                     margin-top: 12px; 
                     padding: 12px; 
-                    background: rgba(0,0,0,0.2); 
+                    background: var(--bg-hover); 
                     border-radius: 8px; 
-                    border: 1px dashed rgba(255,255,255,0.1); 
+                    border: 1px dashed var(--border-default); 
                 }
                 .mapping-select-v4 .ant-select-selection-item { font-weight: 600; color: var(--accent) !important; }
-                .ability-main-card { border: 1px solid rgba(255,255,255,0.05) !important; }
+                .ability-main-card { border: 1px solid var(--border-default) !important; }
                 .ability-main-card:hover { border-color: var(--accent) !important; }
             `}</style>
         </div>

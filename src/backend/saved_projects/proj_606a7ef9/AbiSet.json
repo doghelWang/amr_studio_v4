@@ -1,0 +1,2998 @@
+{
+  "version": "V1.0",
+  "componentAbility": [
+    {
+      "type": "laser",
+      "entity": [
+        "PEPPERL_FUCHS_R2000",
+        "SICK_TIM561",
+        "HOKUYO_UST20LX",
+        "SICK_LMS111",
+        "HOKUYO_UAM05",
+        "TIM510",
+        "HOKUYO_UST05LA",
+        "STS_NET_HOKUYO",
+        "KELI",
+        "SICK_NANO_SCAN3",
+        "RS16_LASER",
+        "LS16_LASER",
+        "TIM240",
+        "BLUESEA_LDS_50C",
+        "HINSON_LE50821",
+        "WANJI716",
+        "JIUWUM30E",
+        "MR_LS_01H",
+        "MR_LS_02H",
+        "SAGITAR_HELIOS_16P",
+        "MR_LS_01F_S1533",
+        "MR_LS_01W_N2525",
+        "BLUESEA_LDS_E300E",
+        "ORD_MS200",
+        "KELI_KLM",
+        "HINSON_LE50821_2",
+        "LIVOX_MID360",
+        "OL_LR1F",
+        "SICK_TIM473",
+        "MR_LS_02F_N3010",
+        "BLUESEA_LDS_E200E",
+        "MR_LS_03F_N3010",
+        "MR_LS_02W_S1525",
+        "SSTK_STL1_5",
+        "SSTK_STL1_6",
+        "SIMU_3DLASER",
+        "SIMU_LASER",
+        "GAZEBO_LASER",
+        "SIMU_LASER_OBS",
+        "MR_LS_01F_S1533_BLACK",
+        "MR_LS_01H_N2725",
+        "OMD25M-R2000-B23-V1V1D-SD-1L",
+        "OMD30M-R2000-B23-V1V1D-HD-1L",
+        "OMD30M-R2000-B23-V1V1D-1L",
+        "TIM561-2050101",
+        "UST-20LX",
+        "LMS111-10100",
+        "UAM-05LP-T301",
+        "TIM510-9950000S01",
+        "TIM510-9950000S08",
+        "UST-05LA",
+        "UST-05LN",
+        "STL1-3",
+        "NANS3-AAAZ30AN1",
+        "TIM240-2050300",
+        "LDS-50C-C30E",
+        "WLR-716",
+        "MR-LS-01H-N2725",
+        "MR-LS-01H-N2725N",
+        "MR-LS-02H-S2725",
+        "RS-LS-RS-HELIOS16P",
+        "MR-LS-01F-S1533-BLACK",
+        "MR-LS-01F-S1533-MIDDLE",
+        "LDS-E300-E",
+        "MID-360",
+        "TIM473-2050106",
+        "MR-LS-02F-N3010",
+        "WLR-718H",
+        "MR-LS-04H-N2005",
+        "STL1-6",
+        "LTME-02A-JK-YQ1",
+        "STL1-6A",
+        "STL1-6C",
+        "MICS3-CBAZ90PZ1P01"
+      ]
+    },
+    {
+      "type": "motor",
+      "entity": [
+        "yk-100SV04202-0750K-012",
+        "EC-SV08D1-050M01BB",
+        "EC-SV08D1-050M01NB",
+        "Myk-80SV04302-0750G-036",
+        "100SV04202_0750K_012",
+        "MCXL501TAF3KM",
+        "MCXL501TAFUKM"
+      ]
+    }
+  ],
+  "functionAbility": [
+    {
+      "type": "locationAbility",
+      "desc": "\u5b9a\u4f4d\u80fd\u529b",
+      "childFunction": [
+        {
+          "type": "navi",
+          "desc": "\u5bfc\u822a",
+          "tips": "\u5bfc\u822a",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "comboxParam": {
+                "key": "naviType",
+                "desc": "\u5bfc\u822a\u7c7b\u578b",
+                "tips": "\u5bfc\u822a\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noNavi",
+                      "desc": "\u4e0d\u9002\u7528\u5bfc\u822a",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "NAVI_SLAM",
+                      "desc": "slam\u5bfc\u822a",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedLaser",
+                              "desc": "\u5173\u8054\u6fc0\u5149",
+                              "tips": "\u5173\u8054\u6fc0\u5149",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/laser",
+                                "sensor/3DLaser"
+                              ],
+                              "copyEnable": true,
+                              "maxCount": 0,
+                              "unit": "",
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "NAVI_INERTANCE",
+                      "desc": "\u60ef\u6027\u5bfc\u822a",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedGyro",
+                              "desc": "\u5173\u8054\u9640\u87ba\u4eea",
+                              "tips": "\u5173\u8054\u9640\u87ba\u4eea",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/gyro"
+                              ],
+                              "copyEnable": true,
+                              "maxCount": 0,
+                              "unit": "",
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "NAVI_CODE",
+                      "desc": "\u4e8c\u7ef4\u7801\u5bfc\u822a",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "desc": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "tips": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/codeReader"
+                              ],
+                              "copyEnable": true,
+                              "maxCount": 0,
+                              "unit": "",
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "NAVI_VSLAM",
+                      "desc": "\u7eb9\u7406\u5bfc\u822a",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "desc": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "tips": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/codeReader"
+                              ],
+                              "copyEnable": true,
+                              "maxCount": 0,
+                              "unit": "",
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        }
+      ],
+      "tips": ""
+    },
+    {
+      "type": "sensoryRecoAbi",
+      "desc": "\u611f\u77e5\u8bc6\u522b",
+      "childFunction": [
+        {
+          "type": "codeRec",
+          "desc": "\u7801\u8bc6\u522b",
+          "tips": "\u7801\u8bc6\u522b",
+          "attr": [
+            {
+              "key": "codeRecUniqueKey",
+              "comboxParam": {
+                "key": "codeRecType",
+                "desc": "\u7801\u8bc6\u522b\u7c7b\u578b",
+                "tips": "\u7801\u8bc6\u522b\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noCodeRec",
+                      "desc": "\u65e0\u7801\u8bc6\u522b\u80fd\u529b",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "rackCodeRec",
+                      "desc": "\u4e8c\u7ef4\u7801\u8bc6\u522b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "desc": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "tips": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/codeReader"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "beaconCodeRec",
+                      "desc": "\u4fe1\u6807\u7801\u8bc6\u522b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "desc": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "tips": "\u5173\u8054\u8bfb\u7801\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/codeReader"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "objectRec",
+                      "desc": "\u5bf9\u8c61\u8bc6\u522b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedSensor",
+                              "desc": "\u5173\u8054\u4f20\u611f\u5668",
+                              "tips": "\u5173\u8054\u4f20\u611f\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/camera"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "pictureRec",
+                      "desc": "\u56fe\u50cf\u8bc6\u522b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedCamera",
+                              "desc": "\u5173\u8054\u4f20\u611f\u5668",
+                              "tips": "\u5173\u8054\u4f20\u611f\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/camera"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        },
+        {
+          "type": "ranging",
+          "desc": "\u6d4b\u8ddd",
+          "tips": "\u6d4b\u8ddd",
+          "attr": [
+            {
+              "key": "rangeUniqueKey",
+              "comboxParam": {
+                "key": "rangingType",
+                "desc": "\u6d4b\u8ddd\u7c7b\u578b",
+                "tips": "\u6d4b\u8ddd\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noRanging",
+                      "desc": "\u65e0\u6d4b\u8ddd\u80fd\u529b",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "tofRanging",
+                      "desc": "TOF\u6d4b\u8ddd",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedTof",
+                              "desc": "\u5173\u8054tof",
+                              "tips": "\u5173\u8054tof",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/TOF"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "ultraRanging",
+                      "desc": "\u8d85\u58f0\u6d4b\u8ddd",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedUltra",
+                              "desc": "\u5173\u8054\u8d85\u58f0",
+                              "tips": "\u5173\u8054\u8d85\u58f0",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/ultrasonic"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        },
+        {
+          "type": "detectAbi",
+          "desc": "\u68c0\u6d4b\u80fd\u529b",
+          "tips": "\u68c0\u6d4b\u80fd\u529b",
+          "attr": [
+            {
+              "key": "detectUniqueKey",
+              "comboxParam": {
+                "key": "detectType",
+                "desc": "\u5b58\u5728\u68c0\u6d4b\u7c7b\u578b",
+                "tips": "\u5b58\u5728\u68c0\u6d4b\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "nodetect",
+                      "desc": "\u65e0\u5b58\u5728\u68c0\u6d4b\u80fd\u529b",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "loadExist",
+                      "desc": "\u8d27\u7269\u5b58\u5728\u68c0\u6d4b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedTof",
+                              "desc": "\u5173\u8054\u4f20\u611f\u5668",
+                              "tips": "\u5173\u8054\u4f20\u611f\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/TOF"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "loadLimitDetect",
+                      "desc": "\u8d27\u7269\u8d85\u9650\u68c0\u6d4b",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedUltra",
+                              "desc": "\u5173\u8054\u8d85\u58f0",
+                              "tips": "\u5173\u8054\u8d85\u58f0",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/ultrasonic"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        }
+      ],
+      "tips": ""
+    },
+    {
+      "type": "HCI",
+      "desc": "\u4eba\u673a\u4ea4\u4e92",
+      "childFunction": [
+        {
+          "type": "led",
+          "desc": "\u706f\u5149",
+          "tips": "\u706f\u5149",
+          "attr": [
+            {
+              "key": "ledUniqueKey",
+              "comboxParam": {
+                "key": "ledType",
+                "desc": "\u706f\u5149\u7c7b\u578b",
+                "tips": "\u706f\u5149\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noLed",
+                      "desc": "\u65e0\u6307\u793a\u706f",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "LAMP_INDICATOR",
+                      "desc": "\u6307\u793a\u706f",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedLed",
+                              "desc": "\u706f",
+                              "tips": "\u5173\u8054\u706f\u5e26",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "light/lamp"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "LAMP_BUTTON",
+                      "desc": "\u6309\u94ae\u706f",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "usedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedBtnLed",
+                              "desc": "\u6309\u94ae\u706f",
+                              "tips": "\u5173\u8054\u6309\u94ae\u706f",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "light/lamp"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "hightLevelLight",
+                              "desc": "\u9ad8\u7535\u5e73\u6709\u6548",
+                              "tips": "\u662f\u5426\u6309\u94ae\u9ad8\u7535\u5e73\u4eae\u706f",
+                              "type": "BOOL_E",
+                              "boolValue": false,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "LAMP_SPOT",
+                      "desc": "\u5c04\u706f",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedLaserLed",
+                              "desc": "\u5c04\u706f\u5668\u4ef6",
+                              "tips": "\u5173\u8054\u5c04\u706f\u5668\u4ef6",
+                              "type": "FIXED_E",
+                              "stringFix": "do0",
+                              "fixedSource": [
+                                "light/warningLight"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        },
+        {
+          "type": "button",
+          "desc": "\u6309\u94ae",
+          "tips": "\u6309\u94ae",
+          "attr": [
+            {
+              "key": "btnUniqueKey",
+              "comboxParam": {
+                "key": "btnType",
+                "desc": "\u6309\u94ae\u7c7b\u578b",
+                "tips": "\u6309\u94ae\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noBtn",
+                      "desc": "\u65e0\u6309\u94ae",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_START",
+                      "desc": "\u542f\u505c\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_MANUAL",
+                      "desc": "\u624b\u81ea\u52a8\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_RESET",
+                      "desc": "\u590d\u4f4d\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_PICK",
+                      "desc": "\u53d6\u8d27\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_DROP",
+                      "desc": "\u653e\u8d27\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "BUTTON_SELF",
+                      "desc": "\u5176\u4ed6\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedBtn",
+                              "desc": "\u5173\u8054\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "key": "",
+          "cloneEnable": false
+        }
+      ],
+      "tips": ""
+    },
+    {
+      "type": "safetyAbility",
+      "desc": "\u5b89\u5168\u80fd\u529b",
+      "childFunction": [
+        {
+          "type": "safetyIO",
+          "desc": "\u5b89\u5168IO",
+          "tips": "\u5b89\u5168IO",
+          "attr": [
+            {
+              "key": "safetyIOUniqueKey",
+              "comboxParam": {
+                "key": "safeIOType",
+                "desc": "\u5b89\u5168IO\u7c7b\u578b",
+                "tips": "\u5b89\u5168IO\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noSafeIO",
+                      "desc": "\u65e0\u5b89\u5168IO",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "SAFETY_IO_EMC_STOP",
+                      "desc": "\u6025\u505c\u6309\u94ae",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedEmcBtn",
+                              "desc": "\u6025\u505c\u6309\u94ae",
+                              "tips": "\u5173\u8054\u6025\u505c\u6309\u94ae",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "button/subButton"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": [
+                        {
+                          "key": "emcMode",
+                          "desc": "\u6025\u505c\u4f5c\u7528",
+                          "tips": "\u6025\u505c\u4f5c\u7528",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "freerun",
+                                "desc": "\u76f4\u63a5freerun\u6a21\u5f0f",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "stopAndFreerun",
+                                "desc": "\u63a7\u505c\u540e\u8fdb\u5165freerun\u6a21\u5f0f",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "stopAndBlock",
+                                "desc": "\u63a7\u505c\u540e\u9501\u6b62\u6a21\u5f0f",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "key": "SAFETY_IO_COLLISION",
+                      "desc": "\u78b0\u649e\u6761",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedBumperIO",
+                              "desc": "\u78b0\u649e\u6761\u5668\u4ef6",
+                              "tips": "\u5173\u8054\u78b0\u649e\u6761\u5668\u4ef6",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/collisionPize",
+                                "sensor/collisionBaro"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": [
+                        {
+                          "key": "bumperMode",
+                          "desc": "\u78b0\u649e\u6761\u4f5c\u7528",
+                          "tips": "\u78b0\u649e\u6761\u4f5c\u7528",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "stopAGV",
+                                "desc": "\u505c\u8f66",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "stopAndEmc",
+                                "desc": "\u505c\u8f66\u4e14\u89e6\u53d1\u6025\u505c",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        }
+                      ]
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        },
+        {
+          "type": "safetySensor",
+          "desc": "\u907f\u969c\u4f20\u611f\u5668",
+          "tips": "\u907f\u969c\u4f20\u611f\u5668",
+          "attr": [
+            {
+              "key": "safetySensorUniqueKey",
+              "comboxParam": {
+                "key": "sensorType",
+                "desc": "\u4f20\u611f\u5668\u7c7b\u578b",
+                "tips": "\u4f20\u611f\u5668\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noSafeSensor",
+                      "desc": "\u65e0\u5b89\u5168\u4f20\u611f\u5668",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "SAFETY_OBS_LASER",
+                      "desc": "\u907f\u969c\u6fc0\u5149",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedSafetyLaser",
+                              "desc": "\u6fc0\u5149",
+                              "tips": "\u6fc0\u5149",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/laser",
+                                "sensor/3DLaser"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "SAFETY_OBS_TOF",
+                      "desc": "\u907f\u969cTOF",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedTOF",
+                              "desc": "\u5b89\u5168TOF",
+                              "tips": "\u5b89\u5168TOF",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/TOF"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "safeStereo",
+                      "desc": "\u907f\u969c\u53cc\u76ee",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "relatedStereo",
+                              "desc": "\u53cc\u76ee",
+                              "tips": "\u53cc\u76ee",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/stereo"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        },
+        {
+          "type": "safetyRound",
+          "desc": "\u907f\u969c\u8303\u56f4",
+          "tips": "\u907f\u969c\u8303\u56f4",
+          "attr": [
+            {
+              "key": "safetyRoundUniqueKey",
+              "comboxParam": {
+                "key": "RoundType",
+                "desc": "\u907f\u969c\u8303\u56f4\u7c7b\u578b",
+                "tips": "\u907f\u969c\u8303\u56f4\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "BOX_ROUND",
+                      "desc": "\u6846\u4f53\u907f\u969c",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "centerX",
+                              "desc": "\u6846\u4f53\u4e2d\u5fc3\u70b9X\u5750\u6807(mm)",
+                              "tips": "\u6846\u4f53\u4e2d\u5fc3\u70b9X\u5750\u6807(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "centerY",
+                              "desc": "\u6846\u4f53\u4e2d\u5fc3\u70b9Y\u5750\u6807(mm)",
+                              "tips": "\u6846\u4f53\u4e2d\u5fc3\u70b9Y\u5750\u6807(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "centerZ",
+                              "desc": "\u6846\u4f53\u4e2d\u5fc3\u70b9Z\u5750\u6807(mm)",
+                              "tips": "\u6846\u4f53\u4e2d\u5fc3\u70b9Z\u5750\u6807(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "boxLength",
+                              "desc": "\u6846\u4f53\u957f\u5ea6(mm)",
+                              "tips": "\u6846\u4f53\u957f\u5ea6(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "boxwidth",
+                              "desc": "\u6846\u4f53\u5bbd\u5ea6(mm)",
+                              "tips": "\u6846\u4f53\u5bbd\u5ea6(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "boxheight",
+                              "desc": "\u6846\u4f53\u9ad8\u5ea6(mm)",
+                              "tips": "\u6846\u4f53\u9ad8\u5ea6(mm)",
+                              "type": "INT32_E",
+                              "int32Value": 0,
+                              "int32Maxvalue": 20000,
+                              "int32Minvalue": 0,
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        }
+      ],
+      "tips": ""
+    },
+    {
+      "type": "distMeasureAbility",
+      "desc": "\u900f\u4f20\u6d4b\u8ddd",
+      "tips": "\u900f\u4f20\u6d4b\u8ddd",
+      "childFunction": [
+        {
+          "type": "distSensor",
+          "desc": "\u6d4b\u8ddd",
+          "tips": "\u6d4b\u8ddd",
+          "attr": [
+            {
+              "key": "distSensorUniqueKey",
+              "comboxParam": {
+                "key": "distType",
+                "desc": "\u6d4b\u8ddd\u4f20\u611f\u5668",
+                "tips": "\u6d4b\u8ddd\u4f20\u611f\u5668",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noDistSensor",
+                      "desc": "\u65e0\u6d4b\u8ddd\u4f20\u611f\u5668",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "DIST_TOF",
+                      "desc": "TOF\u5668\u4ef6",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedTOF",
+                              "desc": "\u6d4b\u8dddtof",
+                              "tips": "\u5173\u8054tof\u4f20\u611f\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/TOF"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "DIST_LE",
+                      "desc": "\u62c9\u7ef3\u7f16\u7801\u5668",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedPullWireEncode",
+                              "desc": "\u62c9\u7ebf\u7f16\u7801\u5668",
+                              "tips": "\u5173\u8054\u62c9\u7ebf\u7f16\u7801\u5668",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/pullWireEncode"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "DIST_ANANLOG",
+                      "desc": "\u6a21\u62df\u91cf\u6d4b\u8ddd\u5668\u4ef6",
+                      "arrayAttr": [
+                        {
+                          "attrParams": [
+                            {
+                              "key": "funName",
+                              "desc": "\u529f\u80fd\u540d",
+                              "tips": "\u529f\u80fd\u540d",
+                              "type": "STRING_E",
+                              "stringValue": "",
+                              "maxCount": 0,
+                              "unit": "",
+                              "fixedSource": [],
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            },
+                            {
+                              "key": "relatedGeneralAnalogDistance",
+                              "desc": "\u6a21\u62df\u91cf\u6d4b\u8ddd",
+                              "tips": "\u5173\u8054\u6a21\u62df\u91cf\u6d4b\u8ddd\u5668\u4ef6",
+                              "type": "FIXED_E",
+                              "stringFix": "",
+                              "fixedSource": [
+                                "sensor/generalAnalogDistance"
+                              ],
+                              "maxCount": 0,
+                              "unit": "",
+                              "copyEnable": false,
+                              "option": "REQUIRED_E"
+                            }
+                          ],
+                          "groupKey": "",
+                          "groupName": "",
+                          "option": "REQUIRED_E"
+                        }
+                      ],
+                      "comboxAttr": []
+                    }
+                  ],
+                  "defaultSelect": ""
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        }
+      ]
+    },
+    {
+      "type": "actorAbility",
+      "desc": "\u6267\u884c\u673a\u6784\u80fd\u529b",
+      "childFunction": [
+        {
+          "type": "actor",
+          "desc": "\u6267\u884c\u673a\u6784",
+          "tips": "\u6267\u884c\u673a\u6784",
+          "attr": [
+            {
+              "key": "moduleType",
+              "comboxParam": {
+                "key": "moduleType",
+                "desc": "\u6a21\u5757\u7c7b\u578b",
+                "tips": "\u6a21\u5757\u7c7b\u578b",
+                "comboxSource": "CUSTOM_E",
+                "customCombox": {
+                  "element": [
+                    {
+                      "key": "noActor",
+                      "desc": "\u65e0\u6267\u884c\u673a\u6784",
+                      "arrayAttr": [],
+                      "comboxAttr": []
+                    },
+                    {
+                      "key": "lift",
+                      "desc": "\u5347\u964d",
+                      "comboxAttr": [
+                        {
+                          "key": "driverType",
+                          "desc": "\u9a71\u52a8",
+                          "tips": "\u9a71\u52a8",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "servoDriver",
+                                "desc": "\u4f3a\u670d\u9a71\u52a8\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "servoDriver",
+                                        "desc": "\u4f3a\u670d\u7535\u673a",
+                                        "tips": "\u9009\u62e9\u4f3a\u670d\u7535\u673a",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/PMSMMotor",
+                                          "driver/BLDCMotor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "gear_ratio",
+                                        "desc": "\u9f7f\u8f6e\u6bd4",
+                                        "tips": "\u9f7f\u8f6e\u6bd4",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 233.33,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_vel",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u901f\u5ea6",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 20,
+                                        "unit": "r/s",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_acc",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 50,
+                                        "unit": "r/s2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_dec",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 50,
+                                        "unit": "r/s2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "HYD",
+                                "desc": "\u6db2\u538b\u9a71\u52a8\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "PUMP",
+                                        "desc": "\u6db2\u538b\u7535\u673a",
+                                        "tips": "\u9009\u62e9\u7535\u673a",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/BDCMotor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "NEG_VALVE",
+                                        "desc": "\u8d1f\u5411\u9600",
+                                        "tips": "\u9009\u62e9\u8d1f\u5411\u9600",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/valveCtrl"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u6b63\u5411\u9600",
+                                    "groupKey": "pos_valve_grp",
+                                    "attrParams": [
+                                      {
+                                        "key": "POS_VALVE",
+                                        "desc": "\u6b63\u5411\u9600",
+                                        "tips": "\u9009\u62e9\u6b63\u5411\u9600",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/valveCtrl"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u53cc\u5411\u622a\u6b62\u9600",
+                                    "groupKey": "cutoff_valve_grp",
+                                    "attrParams": [
+                                      {
+                                        "key": "CUTOFF_VALVE",
+                                        "desc": "\u53cc\u5411\u622a\u6b62\u9600",
+                                        "tips": "\u9009\u62e9\u53cc\u5411\u622a\u6b62\u9600",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/valveCtrl"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        },
+                        {
+                          "key": "sensor",
+                          "desc": "\u4f20\u611f",
+                          "tips": "\u4f20\u611f",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "ai_calib",
+                                "desc": "\u6a21\u62df\u91cf\u6d4b\u8ddd",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "pos_dist_limit",
+                                        "desc": "\u6b63\u5411\u7ed3\u6784\u9650\u4f4d",
+                                        "tips": "\u6b63\u5411\u7ed3\u6784\u9650\u4f4d",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.0,
+                                        "doubleMaxvalue": 9999.0,
+                                        "doubleMinvalue": 0.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "neg_dist_limit",
+                                        "desc": "\u8d1f\u5411\u7ed3\u6784\u9650\u4f4d",
+                                        "tips": "\u8d1f\u5411\u7ed3\u6784\u9650\u4f4d",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.0,
+                                        "doubleMaxvalue": 0.0,
+                                        "doubleMinvalue": -9999.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 10.0,
+                                        "doubleMaxvalue": 99.0,
+                                        "doubleMinvalue": 1.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "sens_ai_dist",
+                                        "desc": "\u6a21\u62df\u91cf\u6d4b\u8ddd\u4f20\u611f\u5668",
+                                        "tips": "\u6a21\u62df\u91cf\u6d4b\u8ddd\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/generalAnalogDistance"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "segIO",
+                                "desc": "\u591a\u6bb5IO\u975e\u7ebf\u6027\u4f3a\u670d",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zero_edge_offset",
+                                        "desc": "\u96f6\u4f4d\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "tips": "\u96f6\u4f4d\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zeroIO",
+                                        "desc": "\u96f6\u4f4d\u4f20\u611f\u5668",
+                                        "tips": "\u96f6\u4f4d\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u4e3e\u5347\u5206\u6bb51",
+                                    "attrParams": [
+                                      {
+                                        "key": "b_exist_0",
+                                        "desc": "\u5206\u6bb51\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u5206\u6bb51\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": true,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "b_io_exist_0",
+                                        "desc": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_0",
+                                        "desc": "\u5206\u6bb51\u4f20\u611f\u5668",
+                                        "tips": "\u5206\u6bb51\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_dist_0",
+                                        "desc": "\u7b2c1\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "tips": "\u7b2c1\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 60.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "raw_dist_0",
+                                        "desc": "\u7b2c1\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "tips": "\u7b2c1\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 70.0,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u4e3e\u5347\u5206\u6bb52",
+                                    "attrParams": [
+                                      {
+                                        "key": "b_exist_1",
+                                        "desc": "\u5206\u6bb52\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u5206\u6bb52\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "b_io_exist_1",
+                                        "desc": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_1",
+                                        "desc": "\u5206\u6bb52\u4f20\u611f\u5668",
+                                        "tips": "\u5206\u6bb52\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_dist_1",
+                                        "desc": "\u7b2c2\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "tips": "\u7b2c2\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 60.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "raw_dist_1",
+                                        "desc": "\u7b2c2\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "tips": "\u7b2c2\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 70.0,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u4e3e\u5347\u5206\u6bb53",
+                                    "attrParams": [
+                                      {
+                                        "key": "b_exist_2",
+                                        "desc": "\u5206\u6bb53\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u5206\u6bb53\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "b_io_exist_2",
+                                        "desc": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_2",
+                                        "desc": "\u5206\u6bb53\u4f20\u611f\u5668",
+                                        "tips": "\u5206\u6bb53\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_dist_2",
+                                        "desc": "\u7b2c3\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "tips": "\u7b2c3\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 60.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "raw_dist_2",
+                                        "desc": "\u7b2c3\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "tips": "\u7b2c3\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 70.0,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u4e3e\u5347\u5206\u6bb54",
+                                    "attrParams": [
+                                      {
+                                        "key": "b_exist_3",
+                                        "desc": "\u5206\u6bb54\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u5206\u6bb54\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "b_io_exist_3",
+                                        "desc": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_3",
+                                        "desc": "\u5206\u6bb54\u4f20\u611f\u5668",
+                                        "tips": "\u5206\u6bb54\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_dist_3",
+                                        "desc": "\u7b2c4\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "tips": "\u7b2c4\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 60.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "raw_dist_3",
+                                        "desc": "\u7b2c4\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "tips": "\u7b2c4\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 70.0,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "groupName": "\u4e3e\u5347\u5206\u6bb55",
+                                    "attrParams": [
+                                      {
+                                        "key": "b_exist_4",
+                                        "desc": "\u5206\u6bb55\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u5206\u6bb55\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "b_io_exist_4",
+                                        "desc": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "tips": "\u6821\u9a8c\u4f20\u611f\u5668\u662f\u5426\u5b58\u5728",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_4",
+                                        "desc": "\u5206\u6bb55\u4f20\u611f\u5668",
+                                        "tips": "\u5206\u6bb55\u4f20\u611f\u5668",
+                                        "type": "FIXED_E",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "seg_dist_4",
+                                        "desc": "\u7b2c5\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "tips": "\u7b2c5\u6bb5\u76f8\u5bf9\u96f6\u4f4d\u9ad8\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 60.0,
+                                        "unit": "mm",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "raw_dist_4",
+                                        "desc": "\u7b2c5\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "tips": "\u7b2c5\u6bb5\u4f3a\u670d\u76f8\u5bf9\u96f6\u4f4d\u4f4d\u7f6e",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 70.0,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        },
+                        {
+                          "key": "func_param",
+                          "desc": "\u8fd0\u884c\u53c2\u6570",
+                          "tips": "\u8fd0\u884c\u53c2\u6570",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "HYD&ai_calib",
+                                "desc": "\u6db2\u538b+\u6a21\u62df\u91cf\u5b9a\u4f4d",
+                                "arrayAttr": [],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "seg_unlinear_servo_param",
+                                "desc": "\u591a\u6bb5\u975e\u7ebf\u6027\u4f3a\u670d",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "forward_vel",
+                                        "desc": "\u524d\u8fdb\u901f\u5ea6",
+                                        "tips": "\u524d\u8fdb\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 10.0,
+                                        "unit": "r/s",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "backward_vel",
+                                        "desc": "\u540e\u9000\u901f\u5ea6",
+                                        "tips": "\u540e\u9000\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 10.0,
+                                        "unit": "r/s",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "run_acc",
+                                        "desc": "\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "tips": "\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 50.0,
+                                        "unit": "r/s^2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "run_dec",
+                                        "desc": "\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "tips": "\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 50.0,
+                                        "unit": "r/s^2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "b_delay_freerun",
+                                        "desc": "\u662f\u5426\u542f\u7528\u5ef6\u65f6FREERUN",
+                                        "tips": "\u662f\u5426\u542f\u7528\u5ef6\u65f6FREERUN",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "delay_freerun_time",
+                                        "desc": "\u8fdb\u5165FREERUN\u7684\u5ef6\u65f6\u65f6\u95f4(\u5355\u4f4dms)",
+                                        "tips": "\u8fdb\u5165FREERUN\u7684\u5ef6\u65f6\u65f6\u95f4(\u5355\u4f4dms)",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 0,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "b_zero_adj",
+                                        "desc": "\u662f\u5426\u542f\u7528\u52a8\u6001\u6821\u6b63\u8c03\u8282\u529f\u80fd",
+                                        "tips": "\u662f\u5426\u542f\u7528\u52a8\u6001\u6821\u6b63\u8c03\u8282\u529f\u80fd",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "adj_offset_thr",
+                                        "desc": "\u6821\u6b63\u503c\u662f\u5426\u751f\u6548\u7684\u96f6\u4f4d\u504f\u5dee\u503c\u8303\u56f4",
+                                        "tips": "\u6821\u6b63\u503c\u662f\u5426\u751f\u6548\u7684\u96f6\u4f4d\u504f\u5dee\u503c\u8303\u56f4",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "r",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        }
+                      ],
+                      "arrayAttr": []
+                    },
+                    {
+                      "key": "rotate",
+                      "desc": "\u65cb\u8f6c",
+                      "comboxAttr": [
+                        {
+                          "key": "driverType",
+                          "desc": "\u9a71\u52a8",
+                          "tips": "\u9a71\u52a8",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "servoDriver",
+                                "desc": "\u4f3a\u670d\u9a71\u52a8",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "servoDriver",
+                                        "desc": "\u4f3a\u670d\u7535\u673a",
+                                        "tips": "\u9009\u62e9\u4f3a\u670d\u7535\u673a",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "driver/PMSMMotor",
+                                          "driver/BLDCMotor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "gear_ratio",
+                                        "desc": "\u9f7f\u8f6e\u6bd4",
+                                        "tips": "\u9f7f\u8f6e\u6bd4",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 180.76,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_vel",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 10.0,
+                                        "unit": "\u00b0/s",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_acc",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u52a0\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 50.76,
+                                        "unit": "\u00b0/s2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dft_dec",
+                                        "desc": "\u9ed8\u8ba4\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "tips": "\u9ed8\u8ba4\u8fd0\u884c\u51cf\u901f\u5ea6",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 50.76,
+                                        "unit": "\u00b0/s2",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": "drivingForm"
+                          }
+                        },
+                        {
+                          "key": "sensor",
+                          "desc": "\u4f20\u611f",
+                          "tips": "\u4f20\u611f",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "single_zero_trig",
+                                "desc": "\u5355\u89e6\u70b9\u68c0\u6d4b\u96f6\u4f4d\u4f20\u611f\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "zeroIO",
+                                        "desc": "\u96f6\u4f4dIO",
+                                        "tips": "\u96f6\u4f4dIO",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zero_edge_offset",
+                                        "desc": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "tips": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "dual_zero_trig",
+                                "desc": "\u53cc\u89e6\u70b9\u68c0\u6d4b\u96f6\u4f4d\u4f20\u611f\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "zeroIO",
+                                        "desc": "\u96f6\u4f4dIO",
+                                        "tips": "\u96f6\u4f4dIO",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zero_edge_offset",
+                                        "desc": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "tips": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "pos_area_trig",
+                                "desc": "\u6b63\u5411\u8fb9\u6cbf\u68c0\u6d4b\u96f6\u4f4d\u4f20\u611f\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "zeroIO",
+                                        "desc": "\u96f6\u4f4dIO",
+                                        "tips": "\u96f6\u4f4dIO",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zero_edge_offset",
+                                        "desc": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "tips": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "pos_dist_limit",
+                                        "desc": "\u8f6f\u4ef6\u6b63\u5411\u7ebf\u4f4d\u503c",
+                                        "tips": "\u8f6f\u4ef6\u6b63\u5411\u7ebf\u4f4d\u503c",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 90,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "neg_dist_limit",
+                                        "desc": "\u8f6f\u4ef6\u8d1f\u5411\u7ebf\u4f4d\u503c",
+                                        "tips": "\u8f6f\u4ef6\u8d1f\u5411\u7ebf\u4f4d\u503c",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 90,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              },
+                              {
+                                "key": "neg_area_trig",
+                                "desc": "\u8d1f\u5411\u8fb9\u6cbf\u68c0\u6d4b\u96f6\u4f4d\u4f20\u611f\u5668",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "zeroIO",
+                                        "desc": "\u96f6\u4f4dIO",
+                                        "tips": "\u96f6\u4f4dIO",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "zero_edge_offset",
+                                        "desc": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "tips": "\u96f6\u4f4d\u68c0\u6d4b\u8df3\u53d8\u4e0e\u7406\u8bba\u96f6\u4f4d\u504f\u5dee",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "dist_arrive_thr",
+                                        "desc": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "tips": "\u5230\u4f4d\u4e0e\u8131\u79bb\u9608\u503c",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "pos_dist_limit",
+                                        "desc": "\u8f6f\u4ef6\u6b63\u5411\u7ebf\u4f4d\u503c",
+                                        "tips": "\u8f6f\u4ef6\u6b63\u5411\u7ebf\u4f4d\u503c",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 90,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "neg_dist_limit",
+                                        "desc": "\u8f6f\u4ef6\u8d1f\u5411\u7ebf\u4f4d\u503c",
+                                        "tips": "\u8f6f\u4ef6\u8d1f\u5411\u7ebf\u4f4d\u503c",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 90,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        },
+                        {
+                          "key": "func_param",
+                          "desc": "\u8fd0\u884c\u53c2\u6570",
+                          "tips": "\u8fd0\u884c\u53c2\u6570",
+                          "comboxSource": "CUSTOM_E",
+                          "customCombox": {
+                            "element": [
+                              {
+                                "key": "run_param",
+                                "desc": "\u8fd0\u884c\u53c2\u6570",
+                                "arrayAttr": [
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "b_delay_freerun",
+                                        "desc": "\u662f\u5426\u542f\u7528\u5ef6\u65f6FREERUN",
+                                        "tips": "\u662f\u5426\u542f\u7528\u5ef6\u65f6FREERUN",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "delay_freerun_time",
+                                        "desc": "\u8fdb\u5165FREERUN\u7684\u5ef6\u65f6\u65f6\u95f4",
+                                        "tips": "\u8fdb\u5165FREERUN\u7684\u5ef6\u65f6\u65f6\u95f4",
+                                        "type": "UINT32_E",
+                                        "uint32Value": 0,
+                                        "unit": "ms",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "b_zero_adj",
+                                        "desc": "\u662f\u5426\u542f\u7528\u52a8\u6001\u6821\u6b63\u8c03\u8282\u529f\u80fd",
+                                        "tips": "\u662f\u5426\u542f\u7528\u52a8\u6001\u6821\u6b63\u8c03\u8282\u529f\u80fd",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "adj_offset_thr",
+                                        "desc": "\u6821\u6b63\u503c\u662f\u5426\u751f\u6548\u7684\u96f6\u4f4d\u504f\u5dee\u503c\u8303\u56f4",
+                                        "tips": "\u6821\u6b63\u503c\u662f\u5426\u751f\u6548\u7684\u96f6\u4f4d\u504f\u5dee\u503c\u8303\u56f4",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  },
+                                  {
+                                    "attrParams": [
+                                      {
+                                        "key": "b_no_sync",
+                                        "desc": "\u662f\u5426\u975e\u540c\u6b65\u8f6c\u76d8",
+                                        "tips": "\u662f\u5426\u975e\u540c\u6b65\u8f6c\u76d8",
+                                        "type": "BOOL_E",
+                                        "boolValue": false,
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "limitIO",
+                                        "desc": "\u9650\u4f4dIO(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "tips": "\u9650\u4f4dIO(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "type": "FIXED_E",
+                                        "stringFix": "",
+                                        "fixedSource": [
+                                          "sensor/proximitySensor"
+                                        ],
+                                        "maxCount": 0,
+                                        "unit": "",
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "limit_angle",
+                                        "desc": "\u65cb\u8f6c\u9650\u5236\u533a\u57df\u89d2\u5ea6\u503c(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "tips": "\u65cb\u8f6c\u9650\u5236\u533a\u57df\u89d2\u5ea6\u503c(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      },
+                                      {
+                                        "key": "limit_angle_thr",
+                                        "desc": "\u65cb\u8f6c\u9650\u5236\u533a\u57df\u6700\u5927\u52a8\u4f5c\u89d2\u5ea6\u8303\u56f4(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "tips": "\u65cb\u8f6c\u9650\u5236\u533a\u57df\u6700\u5927\u52a8\u4f5c\u89d2\u5ea6\u8303\u56f4(\u975e\u540c\u6b65\u8f6c\u76d8\u4e0b\u6709\u6548)",
+                                        "type": "DOUBLE_E",
+                                        "doubleValue": 0.05,
+                                        "unit": "\u5ea6",
+                                        "maxCount": 0,
+                                        "fixedSource": [],
+                                        "copyEnable": false,
+                                        "option": "REQUIRED_E"
+                                      }
+                                    ],
+                                    "groupKey": "",
+                                    "groupName": "",
+                                    "option": "REQUIRED_E"
+                                  }
+                                ],
+                                "comboxAttr": []
+                              }
+                            ],
+                            "defaultSelect": ""
+                          }
+                        }
+                      ],
+                      "arrayAttr": []
+                    }
+                  ],
+                  "defaultSelect": "actor"
+                }
+              },
+              "cloneEnable": true,
+              "type": "COMBOX_E"
+            }
+          ],
+          "cloneEnable": true,
+          "key": ""
+        }
+      ],
+      "tips": ""
+    }
+  ]
+}

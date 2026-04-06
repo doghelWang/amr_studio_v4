@@ -7,7 +7,7 @@
 import axios from 'axios';
 
 /** 后端服务基础路径 (Auto-adaptive) */
-const getBackendBase = () => {
+export const getBackendBase = () => {
     if (typeof window !== 'undefined') {
         const { hostname, protocol, port } = window.location;
         // In dev mode (3000/3001/5173), route to backend 8002

@@ -1,0 +1,483 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "gyro",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "板载陀螺仪",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "cabb453cd20e426498e00b6e9403a84d",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0/2025-07-28 14:34:29.910",
+      "desc": "版本信息",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/3dModelRes",
+      "desc": "3D模型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "子系统",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "sensor",
+        "typeDesc": "\n",
+        "typeGroups": []
+      },
+      "desc": "主类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "gyro",
+        "typeDesc": "\u000b",
+        "typeGroups": []
+      },
+      "desc": "子类型",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "venderName": {
+      "key": "vender_name",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "HIKROBOT",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "供应商",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SPI_ON_BOARD",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "desc": "设备型号",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleIcon": {
+      "key": "module_icon",
+      "type": "DATA_STRING",
+      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
+      "desc": "模块图片",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 20,
+        "sizeWidth": 20,
+        "sizeHeight": 2,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "extendParams": [
+      {
+        "key": "material_code",
+        "type": "DATA_STRING",
+        "desc": "物料代码",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "module_alias",
+        "type": "DATA_STRING",
+        "stringValue": "陀螺仪",
+        "desc": "模块别名",
+        "boolParse": true,
+        "unit": "",
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "sensorAttr",
+        "desc": "传感属性",
+        "arrayBaseEle": [
+          {
+            "key": "yawRangeMin",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "偏航角最小值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "yawRangeMax",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "偏航角最大值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "rollRangeMin",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "翻滚角最小值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "rollRangeMax",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "翻滚角最大值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "pitchRangeMin",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "俯仰角最小值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "pitchRangeMax",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": -180.0,
+            "unit": "°",
+            "desc": "俯仰角最大值",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "angularResolution",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 180.0,
+            "doubleMinvalue": 0.0,
+            "unit": "°",
+            "desc": "角度分辨率",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "accelerationResolution",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 360.0,
+            "doubleMinvalue": 0.0,
+            "unit": "°/s",
+            "desc": "加速度分辩率",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          },
+          {
+            "key": "accelerationAccuracy",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.0,
+            "doubleMaxvalue": 360.0,
+            "doubleMinvalue": 0.0,
+            "unit": "°/s",
+            "desc": "加速度精度",
+            "boolHide": true,
+            "boolParse": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "boolBasic": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "b563b9927ba2440ab4dc2cf284c6f034",
+          "typeDesc": "chassis_steer",
+          "typeGroups": [
+            {
+              "key": "b563b9927ba2440ab4dc2cf284c6f034",
+              "desc": "chassis_steer",
+              "arrayCmobEle": []
+            }
+          ]
+        },
+        "desc": "从属机构",
+        "boolParse": true,
+        "boolHide": true,
+        "unit": "",
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "翻滚角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "偏航角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 180.0,
+        "doubleMinvalue": -180.0,
+        "unit": "°",
+        "desc": "俯仰角",
+        "boolParse": true,
+        "boolHide": true,
+        "boolMustfill": true,
+        "boolNoeditable": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}
