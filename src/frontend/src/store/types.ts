@@ -203,12 +203,16 @@ export interface RobotIdentity {
     maxSpeedFull?: number;
     maxAccelFull?: number;
     maxDecelFull?: number;
+  maxRotSpeedFull?: number;
+  maxRotAccelFull?: number;
     
     // Avoidance
     avoidMaxDec?: number;
     avoidMaxDecFull?: number;
     rotateMaxAngSpeed?: number;
+  rotateMaxAngSpeedFull?: number;
     rotateMaxAngAcceleration?: number;
+  rotateMaxAngAccelerationFull?: number;
 }
 
 // ━━━ Ability Models (Matches controller_model_abi_set.proto) ━━━

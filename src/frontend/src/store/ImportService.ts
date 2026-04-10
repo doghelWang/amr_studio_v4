@@ -114,19 +114,29 @@ export class ImportService {
       const ratios = this.SCHEMA_DEFAULTS.performance.fullLoadRatios;
 
       identity.maxSpeed = Number(findVal('maxSpeed(Idle)')) || 0;
-      identity.maxSpeedFull = Number(findVal('maxSpeed (Full Load)')) || (identity.maxSpeed * ratios.maxSpeed);
+      const maxSpeedFullFile = findVal('maxSpeed (Full Load)');
+  identity.maxSpeedFull = maxSpeedFullFile !== undefined ? Number(maxSpeedFullFile) : Math.round(identity.maxSpeed * ratios.maxSpeed);
 
       identity.maxAccel = Number(findVal('maxAcceleration(Idle)')) || 0;
-      identity.maxAccelFull = Number(findVal('maxAcceleration (Full Load)')) || (identity.maxAccel * ratios.maxAcceleration);
+      const maxAccelFullFile = findVal('maxAcceleration (Full Load)');
+  identity.maxAccelFull = maxAccelFullFile !== undefined ? Number(maxAccelFullFile) : Math.round(identity.maxAccel * ratios.maxAcceleration);
 
       identity.maxDecel = Number(findVal('maxDeceleration(Idle)')) || 0;
-      identity.maxDecelFull = Number(findVal('maxDeceleration (Full Load)')) || (identity.maxDecel * ratios.maxDeceleration);
+      const maxDecelFullFile = findVal('maxDeceleration (Full Load)');
+  identity.maxDecelFull = maxDecelFullFile !== undefined ? Number(maxDecelFullFile) : Math.round(identity.maxDecel * ratios.maxDeceleration);
 
       identity.avoidMaxDec = Number(findVal('avoidMaxDec (Idle)')) || 0;
-      identity.avoidMaxDecFull = Number(findVal('avoidMaxDec (Full Load)')) || identity.avoidMaxDec;
+      const avoidMaxDecFullFile = findVal('avoidMaxDec (Full Load)');
+  identity.avoidMaxDecFull = avoidMaxDecFullFile !== undefined ? Number(avoidMaxDecFullFile) : Math.round(identity.avoidMaxDec * ratios.avoidMaxDec);
 
       identity.rotateMaxAngSpeed = Number(findVal('rotateMaxAngSpeed (Idle)')) || 0;
       identity.rotateMaxAngAcceleration = Number(findVal('rotateMaxAngAcceleration (Idle)')) || 0;
+
+    const rotateMaxAngSpeedFullFile = findVal('rotateMaxAngSpeed (Full Load)');
+    identity.rotateMaxAngSpeedFull = rotateMaxAngSpeedFullFile !== undefined ? Number(rotateMaxAngSpeedFullFile) : Math.round(identity.rotateMaxAngSpeed * ratios.maxSpeed);
+
+    const rotateMaxAngAccelerationFullFile = findVal('rotateMaxAngAcceleration (Full Load)');
+    identity.rotateMaxAngAccelerationFull = rotateMaxAngAccelerationFullFile !== undefined ? Number(rotateMaxAngAccelerationFullFile) : Math.round(identity.rotateMaxAngAcceleration * ratios.maxAcceleration);
 
       identity.selfWeight = Number(findVal('selfWeight')) || 0;
       identity.totalLoadWeight = Number(findVal('totalLoadWeight')) || 0;

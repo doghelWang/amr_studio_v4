@@ -10,6 +10,7 @@ import {
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { DRIVE_TYPE_LABELS } from '../../store/types';
+import { DEFAULT_FULL_LOAD_RATIOS, detectSyncMode } from '../../store/PerformanceConfig';
 import { PowerSystemStep } from './PowerSystemStep';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
 import { ChassisVisualizer } from '../visualizer/ChassisVisualizer';
@@ -22,7 +23,20 @@ const { Title, Text } = Typography;
 export const ChassisStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
     const { config, setIdentity, updateAttribute, updateComponent } = useProjectStore();
     const { identity } = config;
-    const [syncFullLoad, setSyncFullLoad] = useState(true);
+    const [syncFullLoad, setSyncFullLoad] = useState(() => {
+    // §C003-FIX: Auto-detect sync mode based on file data
+    // If file has different value than calculated (0.8 ratio), use independent mode
+    const defaultSync = true;
+    if (identity.maxSpeed !== undefined && identity.maxSpeedFull !== undefined && identity.maxSpeed > 0) {
+      const actualRatio = identity.maxSpeedFull / identity.maxSpeed;
+      const expectedRatio = DEFAULT_FULL_LOAD_RATIOS.maxSpeed;
+      // If ratio differs significantly from expected, assume independent mode
+      if (Math.abs(actualRatio - expectedRatio) > 0.05) {
+        return false; // independent mode - show file value (e.g., 1000)
+      }
+    }
+    return defaultSync;
+  });
 
     const handleUpdate = (fields: any) => {
         if ('driveType' in fields && fields.driveType !== identity.driveType) {
@@ -220,10 +234,10 @@ export const ChassisStep: React.FC<{ onExport?: () => void }> = ({ onExport }) =
                                     </Divider>
                                     
                                     <Row gutter={12}>
-                                        <Col span={6}><Form.Item label="最大线速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxSpeed * 0.8) : identity.maxSpeedFull} suffix="mm/s" onChange={v => !syncFullLoad && handleUpdate({ maxSpeedFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="最大线加速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxAccel * 0.4) : identity.maxAccelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxAccelFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="最大线减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? Math.round(identity.maxDecel * 0.5) : identity.maxDecelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxDecelFull: v as number })} /></Form.Item></Col>
-                                        <Col span={6}><Form.Item label="避障减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? identity.avoidMaxDec : identity.avoidMaxDecFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ avoidMaxDecFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? (identity.maxSpeedFull ?? Math.round(identity.maxSpeed * DEFAULT_FULL_LOAD_RATIOS.maxSpeed)) : identity.maxSpeedFull} suffix="mm/s" onChange={v => !syncFullLoad && handleUpdate({ maxSpeedFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线加速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? (identity.maxAccelFull ?? Math.round(identity.maxAccel * DEFAULT_FULL_LOAD_RATIOS.maxAcceleration)) : identity.maxAccelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxAccelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="最大线减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? (identity.maxDecelFull ?? Math.round(identity.maxDecel * DEFAULT_FULL_LOAD_RATIOS.maxDeceleration)) : identity.maxDecelFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ maxDecelFull: v as number })} /></Form.Item></Col>
+                                        <Col span={6}><Form.Item label="避障减速度"><InputNumber style={{ width: '100%' }} disabled={syncFullLoad} value={syncFullLoad ? (identity.avoidMaxDecFull ?? identity.avoidMaxDec) : identity.avoidMaxDecFull} suffix="mm/s²" onChange={v => !syncFullLoad && handleUpdate({ avoidMaxDecFull: v as number })} /></Form.Item></Col>
                                     </Row>
 
                                     {chassisComponent && (

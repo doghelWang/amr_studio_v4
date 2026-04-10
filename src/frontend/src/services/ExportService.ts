@@ -10,11 +10,72 @@
 
 import { RobotConfig, ComponentConfig, SmartAttribute, AttributeGroup, InterfaceConfig, ControllerAbility } from '../store/types';
 
+// §ENV: Environment detection for development warnings
+const IS_DEV = typeof import.meta !== 'undefined' && import.meta.env?.MODE === 'development';
+
 // §IDENTITY_FIELDS: 完整字段清单 - 修改时必须同步更新
 const IDENTITY_SHAPE_FIELDS = ['chassisLength', 'chassisWidth', 'chassisHeight'];
 const IDENTITY_OFFSET_FIELDS = ['headOffset', 'tailOffset', 'leftOffset', 'rightOffset', 'headOffsetFull', 'tailOffsetFull', 'leftOffsetFull', 'rightOffsetFull'];
-const IDENTITY_PERF_FIELDS = ['maxSpeed', 'maxAccel', 'maxDecel', 'avoidMaxDec', 'maxSpeedFull', 'maxAccelFull', 'maxDecelFull', 'avoidMaxDecFull', 'rotateMaxAngSpeed', 'rotateMaxAngAcceleration'];
+const IDENTITY_PERF_FIELDS = ['maxSpeed', 'maxAccel', 'maxDecel', 'maxRotSpeed', 'maxRotAccel', 'avoidMaxDec', 'maxSpeedFull', 'maxAccelFull', 'maxDecelFull', 'maxRotSpeedFull', 'maxRotAccelFull', 'avoidMaxDecFull', 'rotateMaxAngSpeed', 'rotateMaxAngSpeedFull', 'rotateMaxAngAcceleration', 'rotateMaxAngAccelerationFull'];
 const IDENTITY_GENERAL_FIELDS = ['robotName', 'version', 'navigationMethod', 'driveType', 'chassisShape', 'selfWeight', 'totalLoadWeight'];
+
+// §FIELD_REGISTRY: 统一字段注册表 (§NO_HARDCODE compliance)
+export const ROBOT_IDENTITY_FIELD_REGISTRY = [
+  // Shape fields
+  ...IDENTITY_SHAPE_FIELDS.map(k => ({ key: k, category: 'shape', required: true })),
+  // Offset fields
+  ...IDENTITY_OFFSET_FIELDS.map(k => ({ key: k, category: 'offset', required: true })),
+  // Performance fields
+  ...IDENTITY_PERF_FIELDS.map(k => ({ key: k, category: 'performance', required: false })),
+  // General fields
+  ...IDENTITY_GENERAL_FIELDS.map(k => ({ key: k, category: 'general', required: true }))
+];
+
+// §VALIDATION_CONFIG: 字段验证规则
+interface ValidationRule {
+  key: string;
+  category: string;
+  required: boolean;
+  validator?: (value: any) => boolean;
+}
+
+/**
+ * §VALIDATE_EXPORT: 运行时字段完整性验证
+ * §NO_PARTIAL_EXPORT enforcement
+ */
+function validateExport(identity: any, warnings: string[] = []): boolean {
+  let isValid = true;
+
+  // Check all registered fields
+  for (const field of ROBOT_IDENTITY_FIELD_REGISTRY) {
+    const value = identity[field.key];
+
+    // Required field check
+    if (field.required && (value === undefined || value === null)) {
+      warnings.push(`[EXPORT_MISSING] Required field "${field.key}" (${field.category}) is missing`);
+      isValid = false;
+    }
+
+    // Type validation for specific fields
+    if (field.category === 'performance' && value !== undefined) {
+      if (typeof value !== 'number' || isNaN(value)) {
+        warnings.push(`[EXPORT_INVALID] Performance field "${field.key}" should be number, got ${typeof value}`);
+        isValid = false;
+      }
+    }
+  }
+
+  // Check for extra fields not in registry (potential schema drift)
+  const registeredKeys = new Set(ROBOT_IDENTITY_FIELD_REGISTRY.map(f => f.key));
+  const identityKeys = Object.keys(identity);
+  for (const key of identityKeys) {
+    if (!registeredKeys.has(key)) {
+      warnings.push(`[EXPORT_EXTRA] Field "${key}" not in registry (potential new field)`);
+    }
+  }
+
+  return isValid;
+}
 
 export class ExportService {
   /**
@@ -22,6 +83,22 @@ export class ExportService {
    */
   static exportToCModel(config: RobotConfig): any {
     const identity = config.identity;
+    const validationWarnings: string[] = [];
+
+    // §VALIDATION: Run before export
+    const isValid = validateExport(identity, validationWarnings);
+
+    if (!isValid) {
+      console.warn('[EXPORT_VALIDATION_FAILED] Identity export has missing required fields:', validationWarnings);
+      // In development, throw to catch issues early
+      if (IS_DEV) {
+        throw new Error(`Export validation failed:\n${validationWarnings.join('\n')}`);
+      }
+    }
+
+    if (validationWarnings.length > 0) {
+      console.log('[EXPORT_VALIDATION] Warnings:', validationWarnings);
+    }
 
     // Build identity section from field registries
     const identityExport: any = {};
