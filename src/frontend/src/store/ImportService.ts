@@ -259,10 +259,74 @@ export class ImportService {
         type: func.type, desc: func.desc,
         childFunction: (func.childFunction || func.child_function || []).map((child: any) => ({
           key: child.key, desc: child.desc, tips: child.tips,
-          attr: (child.attr || []).map((a: any) => this.mapAttribute(a))
+          attr: (child.attr || []).map((a: any) => this.transformAbiSetAttr(a))
         }))
       }))
     };
+  }
+
+  private static transformAbiSetAttr(attr: any): any {
+    const type = attr.type || attr.type_key || 'DATA_STRING';
+    const baseAttr: any = {
+      key: attr.key,
+      desc: attr.desc || attr.key,
+      tips: attr.tips,
+      type: this.normalizeAbilityType(type),
+      maxCount: attr.maxCount ?? attr.max_count ?? 0,
+      copyEnable: attr.copyEnable ?? attr.copy_enable ?? false
+    };
+
+    // FIXED_E - hardware mapping
+    if (type === 'FIXED_E' || type === 'DATA_FIXED_E') {
+      return {
+        ...baseAttr,
+        fixedSource: attr.fixedSource || [],
+        boolParse: true
+      };
+    }
+
+    // COMBOX_E - convert to comboxParam.options
+    if (type === 'COMBOX_E' || type === 'COMBOX') {
+      const comboxP = attr.comboxParam || attr.combox_param;
+      if (comboxP) {
+        const elements = comboxP.customCombox?.element || [];
+        baseAttr.comboxParam = {
+          key: comboxP.key,
+          desc: comboxP.desc,
+          value: comboxP.defaultSelect || '',
+          options: elements.map((el: any) => ({
+            key: el.key,
+            desc: el.desc,
+            arrayAttr: (el.arrayAttr || []).flatMap((aa: any) =>
+              (aa.attrParams || []).map((ap: any) => this.transformAbiSetAttr(ap))
+            )
+          }))
+        };
+      }
+      return baseAttr;
+    }
+
+    // ARRAY_E
+    if (type === 'ARRAY_E' || type === 'ARRAY') {
+      const arrayP = attr.arrayParam || attr.array_param;
+      if (arrayP) {
+        baseAttr.arrayParam = {
+          groupKey: arrayP.groupKey || attr.key,
+          groupName: arrayP.groupName || '',
+          attrParams: (arrayP.attrParams || []).map((ap: any) => this.transformAbiSetAttr(ap))
+        };
+      }
+      return baseAttr;
+    }
+
+    return baseAttr;
+  }
+
+  private static normalizeAbilityType(type: string): string {
+    const mapping: Record<string, string> = {
+      'COMBOX_E': 'COMBOX', 'ARRAY_E': 'ARRAY', 'FIXED_E': 'DATA_FIXED_E'
+    };
+    return mapping[type] || type;
   }
 
   private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {

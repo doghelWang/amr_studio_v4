@@ -17,6 +17,8 @@ import {
   apiLoadProject
 } from '../services/api_v2';
 
+import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Helper: Synchronize Identity fields to the root Chassis component
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -62,9 +64,9 @@ const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
             if (ele.key === 'maxAcceleration(Idle)') return { ...ele, value: identity.maxAccel };
             if (ele.key === 'maxDeceleration(Idle)') return { ...ele, value: identity.maxDecel };
 
-            if (ele.key === 'maxSpeed (Full Load)') return { ...ele, value: identity.maxSpeedFull ?? (identity.maxSpeed ? identity.maxSpeed * 0.8 : 600) };
-            if (ele.key === 'maxAcceleration (Full Load)') return { ...ele, value: identity.maxAccelFull ?? (identity.maxAccel ? identity.maxAccel * 0.4 : 200) };
-            if (ele.key === 'maxDeceleration (Full Load)') return { ...ele, value: identity.maxDecelFull ?? (identity.maxDecel ? identity.maxDecel * 0.5 : 200) };
+            if (ele.key === 'maxSpeed (Full Load)') return { ...ele, value: identity.maxSpeedFull ?? (identity.maxSpeed ? Math.round(identity.maxSpeed * DEFAULT_FULL_LOAD_RATIOS.maxSpeed) : identity.maxSpeed) };
+            if (ele.key === 'maxAcceleration (Full Load)') return { ...ele, value: identity.maxAccelFull ?? (identity.maxAccel ? Math.round(identity.maxAccel * DEFAULT_FULL_LOAD_RATIOS.maxAcceleration) : identity.maxAccel) };
+            if (ele.key === 'maxDeceleration (Full Load)') return { ...ele, value: identity.maxDecelFull ?? (identity.maxDecel ? Math.round(identity.maxDecel * DEFAULT_FULL_LOAD_RATIOS.maxDeceleration) : identity.maxDecel) };
 
             if (ele.key === 'avoidMaxDec (Idle)') return { ...ele, value: identity.avoidMaxDec };
             if (ele.key === 'avoidMaxDec (Full Load)') return { ...ele, value: identity.avoidMaxDecFull ?? identity.avoidMaxDec };
@@ -588,23 +590,49 @@ export const useProjectStore = create<ProjectState>()(
                     if (cf.key !== childKey) return cf;
                     return {
                       ...cf,
-                      attr: (cf.attr || []).map((a: any) => {
-                        if (a.key !== commonAttrKey) return a;
-                        if (subAttrKey && a.comboType?.typeGroups) {
-                          return {
-                            ...a,
-                            comboType: {
-                              ...a.comboType,
-                              typeGroups: a.comboType.typeGroups.map((tg: any) =>
-                                tg.key === subAttrKey
-                                  ? { ...tg, ...(subAttrValue !== undefined ? { value: subAttrValue } : {}) }
-                                  : tg
-                              )
-                            }
-                          };
-                        }
-                        return { ...a, value };
+              attr: (cf.attr || []).map((a: any) => {
+                if (a.key !== commonAttrKey) return a;
+
+                // §CRITICAL: Handle comboxParam.options (Ability registry structure)
+                if (a.comboxParam?.options) {
+                  const selectedValue = subAttrValue !== undefined ? value : (a.value || a.comboxParam.value);
+                  return {
+                    ...a,
+                    value: selectedValue,
+                    comboxParam: {
+                      ...a.comboxParam,
+                      value: selectedValue,
+                      options: a.comboxParam.options.map((opt: any) => {
+                        if (opt.key !== selectedValue) return opt;
+                        return {
+                          ...opt,
+                          arrayAttr: (opt.arrayAttr || []).map((sub: any) =>
+                            sub.key === subAttrKey
+                              ? { ...sub, value: subAttrValue }
+                              : sub
+                          )
+                        };
                       })
+                    }
+                  };
+                }
+
+                // Handle comboType.typeGroups (Component structure)
+                if (subAttrKey && a.comboType?.typeGroups) {
+                  return {
+                    ...a,
+                    comboType: {
+                      ...a.comboType,
+                      typeGroups: a.comboType.typeGroups.map((tg: any) =>
+                        tg.key === subAttrKey
+                          ? { ...tg, ...(subAttrValue !== undefined ? { value: subAttrValue } : {}) }
+                          : tg
+                      )
+                    }
+                  };
+                }
+                return { ...a, value };
+              })
                     };
                   })
                 };
