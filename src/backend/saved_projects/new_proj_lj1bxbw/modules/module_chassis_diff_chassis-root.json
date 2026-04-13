@@ -1,0 +1,235 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "desc": "模块名称",
+      "boolParse": true,
+      "stringValue": "chassis_diff"
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "通用底盘",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "stringValue": "chassis-root"
+    },
+    "moduleDscType": {
+      "key": "module_dsc_type",
+      "type": "DATA_UINT32",
+      "uint32Value": 0,
+      "desc": "模块描述类型",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "1.0.0",
+      "desc": "版本信息",
+      "boolParse": true
+    },
+    "module3dIcon": {
+      "key": "module_3d_icon",
+      "type": "DATA_STRING",
+      "stringValue": "chassis.png",
+      "desc": "3D图标",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ChassisSys",
+        "typeDesc": "底盘系统"
+      },
+      "desc": "子系统",
+      "boolParse": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "chassis",
+        "typeDesc": "底盘"
+      },
+      "desc": "主类型",
+      "boolParse": true
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "steerChassis",
+        "typeDesc": "舵轮底盘"
+      },
+      "desc": "子类型",
+      "boolParse": true
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "CHASSIS",
+      "desc": "模块型号",
+      "boolParse": true
+    },
+    "moduleSupplier": {
+      "key": "module_supplier",
+      "type": "DATA_STRING",
+      "stringValue": "Standard",
+      "desc": "供应商",
+      "boolParse": true
+    },
+    "moduleWeight": {
+      "key": "module_weight",
+      "type": "DATA_DOUBLE",
+      "doubleValue": 50.0,
+      "desc": "质量(kg)",
+      "boolParse": true
+    },
+    "modulePower": {
+      "key": "module_power",
+      "type": "DATA_DOUBLE",
+      "doubleValue": 100.0,
+      "desc": "功率(W)",
+      "boolParse": true
+    },
+    "moduleShape": {
+      "key": "module_shape",
+      "shapeType": "ENUM_BOX",
+      "desc": "底盘形状",
+      "boolParse": true,
+      "box": {
+        "sizeLen": 1200.0,
+        "sizeWidth": 800.0,
+        "sizeHeight": 100.0
+      }
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": []
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": []
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null,
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  },
+  "general_attr": {
+    "module_name": {
+      "string_value": "e2e_ui_amr_fixed"
+    },
+    "module_shape": {
+      "shape_type": "ENUM_BOX",
+      "box": {
+        "size_len": 1200,
+        "size_width": 800,
+        "size_height": 100
+      }
+    }
+  },
+  "struct_param": {
+    "extend_params": [
+      {
+        "key": "locCoordX",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordY",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordZ",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "double_value": 0
+      }
+    ]
+  }
+}

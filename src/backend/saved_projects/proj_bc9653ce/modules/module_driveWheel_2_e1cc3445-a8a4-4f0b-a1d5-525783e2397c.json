@@ -1,0 +1,279 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "driveWheel_2",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "driveWheel_2",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "e1cc3445-a8a4-4f0b-a1d5-525783e2397c",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "MotionSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driveWheel",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "boolDeprecated": false,
+    "extendParams": []
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "wheelAttr",
+        "desc": "基本属性",
+        "arrayBaseEle": [
+          {
+            "key": "wheelRadius",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 65.0,
+            "unit": "mm",
+            "desc": "轮半径",
+            "boolParse": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "boolHide": false,
+            "boolNoeditable": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      },
+      {
+        "key": "linkMotorAttr",
+        "desc": "关联电机",
+        "arrayBaseEle": [
+          {
+            "key": "relateMotor",
+            "type": "DATA_FIXED_E",
+            "stringValue": "7c3cc265-9660-44da-a7f5-964a5c851b54",
+            "desc": "行走电机",
+            "boolParse": true,
+            "boolBasic": true,
+            "fixedSource": [
+              "driver/PMSMMotor"
+            ],
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "X坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": -400.0,
+        "desc": "Y坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Z坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "ROLL",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "PITCH",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "YAW",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "",
+          "typeDesc": "",
+          "typeGroups": []
+        },
+        "desc": "父节点UUID",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}

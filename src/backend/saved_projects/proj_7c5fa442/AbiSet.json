@@ -1,0 +1,196 @@
+{
+  "version": "1.0.0",
+  "componentAbility": [],
+  "functionAbility": [
+    {
+      "type": "locationAbility",
+      "desc": "定位能力",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "navi_0",
+          "desc": "导航",
+          "tips": "",
+          "key": "navi_0",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "type": "ARRAY",
+              "desc": "",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": [],
+              "arrayParam": {
+                "groupKey": "naviUniqueKey",
+                "groupName": "导航单元",
+                "attrParams": [
+                  {
+                    "key": "naviType",
+                    "type": "DATA_COMBOX",
+                    "desc": "导航类型",
+                    "comboType": {
+                      "typeKey": "naviType",
+                      "typeGroups": [
+                        {
+                          "key": "noNavi",
+                          "desc": "不适用导航"
+                        },
+                        {
+                          "key": "LASER_SLAM",
+                          "desc": "激光SLAM导航",
+                          "arrayCmobEle": [
+                            {
+                              "key": "funName",
+                              "type": "DATA_STRING",
+                              "desc": "功能名",
+                              "stringValue": ""
+                            },
+                            {
+                              "key": "relatedLaser",
+                              "type": "DATA_STRING",
+                              "desc": "关联激光",
+                              "boolParse": true,
+                              "stringValue": "6d84c837-7f8c-456b-8bd3-6a6cc64e3fd1"
+                            }
+                          ]
+                        },
+                        {
+                          "key": "QR_CODE",
+                          "desc": "二维码导航",
+                          "arrayCmobEle": [
+                            {
+                              "key": "funName",
+                              "type": "DATA_STRING",
+                              "desc": "功能名",
+                              "stringValue": ""
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "type": "DATA_STRING",
+                              "desc": "关联读码器",
+                              "boolParse": true,
+                              "stringValue": ""
+                            }
+                          ]
+                        },
+                        {
+                          "key": "REFLECTOR",
+                          "desc": "激光反射板导航",
+                          "arrayCmobEle": [
+                            {
+                              "key": "funName",
+                              "type": "DATA_STRING",
+                              "desc": "功能名",
+                              "stringValue": ""
+                            },
+                            {
+                              "key": "relatedLaser",
+                              "type": "DATA_STRING",
+                              "desc": "关联激光",
+                              "boolParse": true,
+                              "stringValue": ""
+                            }
+                          ]
+                        },
+                        {
+                          "key": "VISUAL_SLAM",
+                          "desc": "视觉SLAM导航",
+                          "arrayCmobEle": [
+                            {
+                              "key": "funName",
+                              "type": "DATA_STRING",
+                              "desc": "功能名",
+                              "stringValue": ""
+                            },
+                            {
+                              "key": "relatedCamera",
+                              "type": "DATA_STRING",
+                              "desc": "关联相机",
+                              "boolParse": true,
+                              "stringValue": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "cloneEnable": false
+        }
+      ]
+    },
+    {
+      "type": "sensoryRecoAbi",
+      "desc": "感知识别",
+      "tips": "",
+      "childFunction": [
+        {
+          "type": "codeRec_0",
+          "desc": "码识别",
+          "tips": "",
+          "key": "codeRec_0",
+          "attr": [
+            {
+              "key": "codeRecUniqueKey",
+              "type": "ARRAY",
+              "desc": "",
+              "unit": "",
+              "boolParse": true,
+              "boolHide": false,
+              "boolBasic": true,
+              "boolMustfill": false,
+              "boolNoeditable": false,
+              "fixedSource": [],
+              "arrayParam": {
+                "groupKey": "codeRecUniqueKey",
+                "groupName": "码识别单元",
+                "attrParams": [
+                  {
+                    "key": "codeRecType",
+                    "type": "DATA_COMBOX",
+                    "desc": "码识别类型",
+                    "comboType": {
+                      "typeKey": "codeRecType",
+                      "typeGroups": [
+                        {
+                          "key": "noCodeRec",
+                          "desc": "无码识别能力"
+                        },
+                        {
+                          "key": "rackCodeRec",
+                          "desc": "二维码识别",
+                          "arrayCmobEle": [
+                            {
+                              "key": "funName",
+                              "type": "DATA_STRING",
+                              "desc": "功能名",
+                              "stringValue": ""
+                            },
+                            {
+                              "key": "relatedCodeReader",
+                              "type": "DATA_STRING",
+                              "desc": "关联读码器",
+                              "stringValue": ""
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "cloneEnable": false
+        }
+      ]
+    }
+  ]
+}

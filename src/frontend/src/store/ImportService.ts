@@ -12,32 +12,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
 
 export class ImportService {
-  // §C001-FIX: Schema-driven default values (replaces hardcoded magic numbers)
-  // These defaults should ideally come from Schema XML, using constants as interim step
-  private static readonly SCHEMA_DEFAULTS = {
-    chassis: {
-      length: 1200,
-      width: 800,
-      height: 0
-    },
-    offsets: {
-      idle: {
-        head: 600,
-        tail: 600,
-        left: 400,
-        right: 400
-      }
-    },
-    performance: {
-      // Full Load ratios - centralized here instead of scattered across codebase
-      fullLoadRatios: {
-        maxSpeed: 0.8,
-        maxAcceleration: 0.4,
-        maxDeceleration: 0.5,
-        avoidMaxDec: 1.0
-      }
-    }
-  };
+  // §SCHEMA-DRIVEN: All defaults now come from actual data or constants
+  // See PerformanceConfig.ts for Full Load ratios (business logic constants)
 
   private static readonly CATEGORY_MAP: Record<string, MainModuleType> = {
     'chassis': 'CHASSIS',
@@ -85,10 +61,10 @@ export class ImportService {
     };
 
     if (chassis) {
-      // §C001-FIX: Parse chassis shape dimensions using schema-driven defaults
-      identity.chassisLength = chassis.shape?.length ?? this.SCHEMA_DEFAULTS.chassis.length;
-      identity.chassisWidth = chassis.shape?.width ?? this.SCHEMA_DEFAULTS.chassis.width;
-      identity.chassisHeight = chassis.shape?.height ?? this.SCHEMA_DEFAULTS.chassis.height;
+      // §SCHEMA-DRIVEN-FIX: Parse from actual data, no hardcoded fallbacks
+      identity.chassisLength = chassis.shape?.length ?? 0;
+      identity.chassisWidth = chassis.shape?.width ?? 0;
+      identity.chassisHeight = chassis.shape?.height ?? 0;
 
       // §24: chassisShape must be explicitly set from moduleShape.shapeType
       const shapeType = chassis.generalAttr?.moduleShape?.shapeType || chassis.generalAttr?.module_shape?.shape_type;
@@ -97,12 +73,11 @@ export class ImportService {
       // Recursive value finder for chassis physics
       const findVal = (key: string) => this.deepFindAttributeValue(chassis.privateAttrs, key);
 
-      // §C001-FIX: Parse motion center offsets with schema-driven defaults
-      const defaults = this.SCHEMA_DEFAULTS.offsets.idle;
-      identity.headOffset = Number(findVal('headOffset(Idle)')) || defaults.head;
-      identity.tailOffset = Number(findVal('tailOffset(Idle)')) || defaults.tail;
-      identity.leftOffset = Number(findVal('leftOffset(Idle)')) || defaults.left;
-      identity.rightOffset = Number(findVal('rightOffset(Idle)')) || defaults.right;
+      // §SCHEMA-DRIVEN-FIX: Parse motion center offsets (fallback to 0 per XML Schema default)
+      identity.headOffset = Number(findVal('headOffset(Idle)')) || 0;
+      identity.tailOffset = Number(findVal('tailOffset(Idle)')) || 0;
+      identity.leftOffset = Number(findVal('leftOffset(Idle)')) || 0;
+      identity.rightOffset = Number(findVal('rightOffset(Idle)')) || 0;
 
       // §FIX: Parse full load offsets (fallback to idle values if not present)
       identity.headOffsetFull = Number(findVal('headOffset (Full Load)')) || identity.headOffset;
@@ -110,33 +85,33 @@ export class ImportService {
       identity.leftOffsetFull = Number(findVal('leftOffset (Full Load)')) || identity.leftOffset;
       identity.rightOffsetFull = Number(findVal('rightOffset (Full Load)')) || identity.rightOffset;
 
-      // §C001/C002-FIX: Parse performance attributes using centralized ratio config
-      const ratios = this.SCHEMA_DEFAULTS.performance.fullLoadRatios;
+      // §C002-FIX: Parse performance attributes using centralized ratio config (business constants)
+      const ratios = DEFAULT_FULL_LOAD_RATIOS;
 
       identity.maxSpeed = Number(findVal('maxSpeed(Idle)')) || 0;
       const maxSpeedFullFile = findVal('maxSpeed (Full Load)');
-  identity.maxSpeedFull = maxSpeedFullFile !== undefined ? Number(maxSpeedFullFile) : Math.round(identity.maxSpeed * ratios.maxSpeed);
+      identity.maxSpeedFull = maxSpeedFullFile !== undefined ? Number(maxSpeedFullFile) : Math.round(identity.maxSpeed * ratios.maxSpeed);
 
       identity.maxAccel = Number(findVal('maxAcceleration(Idle)')) || 0;
       const maxAccelFullFile = findVal('maxAcceleration (Full Load)');
-  identity.maxAccelFull = maxAccelFullFile !== undefined ? Number(maxAccelFullFile) : Math.round(identity.maxAccel * ratios.maxAcceleration);
+      identity.maxAccelFull = maxAccelFullFile !== undefined ? Number(maxAccelFullFile) : Math.round(identity.maxAccel * ratios.maxAcceleration);
 
       identity.maxDecel = Number(findVal('maxDeceleration(Idle)')) || 0;
       const maxDecelFullFile = findVal('maxDeceleration (Full Load)');
-  identity.maxDecelFull = maxDecelFullFile !== undefined ? Number(maxDecelFullFile) : Math.round(identity.maxDecel * ratios.maxDeceleration);
+      identity.maxDecelFull = maxDecelFullFile !== undefined ? Number(maxDecelFullFile) : Math.round(identity.maxDecel * ratios.maxDeceleration);
 
       identity.avoidMaxDec = Number(findVal('avoidMaxDec (Idle)')) || 0;
       const avoidMaxDecFullFile = findVal('avoidMaxDec (Full Load)');
-  identity.avoidMaxDecFull = avoidMaxDecFullFile !== undefined ? Number(avoidMaxDecFullFile) : Math.round(identity.avoidMaxDec * ratios.avoidMaxDec);
+      identity.avoidMaxDecFull = avoidMaxDecFullFile !== undefined ? Number(avoidMaxDecFullFile) : Math.round(identity.avoidMaxDec * ratios.avoidMaxDec);
 
       identity.rotateMaxAngSpeed = Number(findVal('rotateMaxAngSpeed (Idle)')) || 0;
       identity.rotateMaxAngAcceleration = Number(findVal('rotateMaxAngAcceleration (Idle)')) || 0;
 
-    const rotateMaxAngSpeedFullFile = findVal('rotateMaxAngSpeed (Full Load)');
-    identity.rotateMaxAngSpeedFull = rotateMaxAngSpeedFullFile !== undefined ? Number(rotateMaxAngSpeedFullFile) : Math.round(identity.rotateMaxAngSpeed * ratios.maxSpeed);
+      const rotateMaxAngSpeedFullFile = findVal('rotateMaxAngSpeed (Full Load)');
+      identity.rotateMaxAngSpeedFull = rotateMaxAngSpeedFullFile !== undefined ? Number(rotateMaxAngSpeedFullFile) : Math.round(identity.rotateMaxAngSpeed * ratios.maxSpeed);
 
-    const rotateMaxAngAccelerationFullFile = findVal('rotateMaxAngAcceleration (Full Load)');
-    identity.rotateMaxAngAccelerationFull = rotateMaxAngAccelerationFullFile !== undefined ? Number(rotateMaxAngAccelerationFullFile) : Math.round(identity.rotateMaxAngAcceleration * ratios.maxAcceleration);
+      const rotateMaxAngAccelerationFullFile = findVal('rotateMaxAngAcceleration (Full Load)');
+      identity.rotateMaxAngAccelerationFull = rotateMaxAngAccelerationFullFile !== undefined ? Number(rotateMaxAngAccelerationFullFile) : Math.round(identity.rotateMaxAngAcceleration * ratios.maxAcceleration);
 
       identity.selfWeight = Number(findVal('selfWeight')) || 0;
       identity.totalLoadWeight = Number(findVal('totalLoadWeight')) || 0;
@@ -259,10 +234,93 @@ export class ImportService {
         type: func.type, desc: func.desc,
         childFunction: (func.childFunction || func.child_function || []).map((child: any) => ({
           key: child.key, desc: child.desc, tips: child.tips,
-          attr: (child.attr || []).map((a: any) => this.transformAbiSetAttr(a))
+          attr: (child.attr || []).map((a: any) => {
+            const importedAttr = this.transformAbiSetAttr(a);
+            const templateAttr = this.findAbilityTemplateAttr(func.type, child.key, importedAttr.key);
+            return this.hydrateAbilityAttr(importedAttr, templateAttr);
+          })
         }))
       }))
     };
+  }
+
+  private static findAbilityTemplateAttr(funcType: string, childKey: string, attrKey: string): any {
+    const functions = (abilityRegistry as any).functionAbility || [];
+    const funcTemplate = functions.find((func: any) => func.type === funcType);
+    const childTemplate = funcTemplate?.childFunction?.find((child: any) => child.key === childKey);
+    return childTemplate?.attr?.find((attr: any) => attr.key === attrKey);
+  }
+
+  private static cloneAbilityTemplate(template: any): any {
+    return template ? JSON.parse(JSON.stringify(template)) : undefined;
+  }
+
+  private static mergeAbilitySubAttrs(templateAttrs: any[] = [], importedAttrs: any[] = []): any[] {
+    return templateAttrs.map((templateAttr: any) => {
+      const importedAttr = importedAttrs.find((attr: any) => attr.key === templateAttr.key);
+      return this.hydrateAbilityAttr(importedAttr || templateAttr, templateAttr);
+    });
+  }
+
+  private static hydrateAbilityAttr(importedAttr: any, templateAttr: any): any {
+    if (!templateAttr) {
+      return importedAttr;
+    }
+
+    const template = this.cloneAbilityTemplate(templateAttr);
+    if (!importedAttr) {
+      return template;
+    }
+
+    const hasStructuredConfig = Boolean(
+      importedAttr.arrayParam ||
+      importedAttr.comboxParam ||
+      importedAttr.fixedSource?.length ||
+      importedAttr.boolParse
+    );
+
+    if (!hasStructuredConfig) {
+      return template;
+    }
+
+    const merged: any = {
+      ...template,
+      ...importedAttr
+    };
+
+    if (template.arrayParam || importedAttr.arrayParam) {
+      merged.arrayParam = {
+        ...(template.arrayParam || {}),
+        ...(importedAttr.arrayParam || {})
+      };
+      merged.arrayParam.attrParams = this.mergeAbilitySubAttrs(
+        template.arrayParam?.attrParams || [],
+        importedAttr.arrayParam?.attrParams || []
+      );
+    }
+
+    if (template.comboxParam || importedAttr.comboxParam) {
+      merged.comboxParam = {
+        ...(template.comboxParam || {}),
+        ...(importedAttr.comboxParam || {})
+      };
+
+      const templateOptions = template.comboxParam?.options || [];
+      const importedOptions = importedAttr.comboxParam?.options || [];
+      merged.comboxParam.options = templateOptions.map((templateOption: any) => {
+        const importedOption = importedOptions.find((option: any) => option.key === templateOption.key);
+        return {
+          ...templateOption,
+          ...importedOption,
+          arrayAttr: this.mergeAbilitySubAttrs(
+            templateOption.arrayAttr || [],
+            importedOption?.arrayAttr || []
+          )
+        };
+      });
+    }
+
+    return merged;
   }
 
   private static transformAbiSetAttr(attr: any): any {
@@ -365,7 +423,7 @@ export class ImportService {
     }));
 
     const srcName = gen.moduleName?.stringValue || gen.module_name?.string_value ||
-      structExtend.find((p:any) => p.key === 'module_srcname')?.stringValue;
+    structExtend.find((p:any) => p.key === 'module_srcname')?.stringValue;
 
     const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
     const physicalName = gen.moduleName?.stringValue || gen.module_name?.string_value || subTypeKey;

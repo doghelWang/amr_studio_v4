@@ -81,9 +81,16 @@ def load_module_template(component_type: str):
     return None
 
 def map_attribute_to_cmodel(a, is_ability=False):
+    attr_type = a.get("type", "DATA_STRING")
+    if is_ability:
+        if attr_type == "DATA_FIXED_E":
+            attr_type = "FIXED_E"
+        elif attr_type == "DATA_COMBOX":
+            attr_type = "DATA_COMBOX_E"
+
     base = {
         "key": a.get("key", ""),
-        "type": a.get("type", "DATA_STRING"),
+        "type": attr_type,
         "desc": a.get("desc") or a.get("describer", ""),
         "unit": a.get("unit", ""),
         "boolParse": a.get("boolParse", True),
@@ -94,7 +101,7 @@ def map_attribute_to_cmodel(a, is_ability=False):
         "fixedSource": a.get("fixedSource", [])
     }
     val = a.get("value")
-    a_type = a.get("type")
+    a_type = attr_type
     
     if val is not None:
         if a_type == "DATA_DOUBLE": base["doubleValue"] = float(val)

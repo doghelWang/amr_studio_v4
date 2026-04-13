@@ -13,10 +13,25 @@ from pathlib import Path
 
 _BACKEND_DIR = Path(__file__).resolve().parent.parent.parent
 
-TYPE_STRING_TO_INT = {
+COMP_DESC_TYPE_STRING_TO_INT = {
     "DATA_BYTES": 0, "DATA_STRING": 1, "DATA_IP": 3, "DATA_BOOL": 4,
     "DATA_INT32": 5, "DATA_UINT32": 6, "DATA_INT64": 7, "DATA_UINT64": 8,
     "DATA_FLOAT": 9, "DATA_DOUBLE": 10, "DATA_COMBOX": 11, "DATA_FIXED_E": 12,
+}
+
+ABI_TYPE_STRING_TO_INT = {
+    "BYTES_E": 0, "STRING_E": 1, "IP_E": 3, "BOOL_E": 4,
+    "INT32_E": 5, "UINT32_E": 6, "INT64_E": 7, "UINT64_E": 8,
+    "FLOAT_E": 9, "DOUBLE_E": 10, "FIXED_E": 11, "DATA_COMBOX_E": 12,
+    # Backward-compatibility for pre-fix JSON payloads still stored on disk.
+    "DATA_FIXED_E": 11, "DATA_COMBOX": 12,
+}
+
+ABI_DESC_TYPE_STRING_TO_INT = {
+    "BYTES_E": 0, "STRING_E": 1, "IP_E": 3, "BOOL_E": 4,
+    "INT32_E": 5, "UINT32_E": 6, "INT64_E": 7, "UINT64_E": 8,
+    "FLOAT_E": 9, "DOUBLE_E": 10, "FIXED_E": 11, "DATA_COMBOX_E": 12,
+    "DATA_FIXED_E": 11, "DATA_COMBOX": 12,
 }
 
 def get_md5(file_path):
@@ -42,7 +57,7 @@ def sanitize_values(data, key=None):
         except: return data
     return data
 
-def proto_final_sync(data):
+def proto_final_sync(data, type_mapping=COMP_DESC_TYPE_STRING_TO_INT):
     if isinstance(data, dict):
         new_dict = {}
         mapping = {
@@ -108,12 +123,25 @@ def proto_final_sync(data):
         }
         for k, v in data.items():
             if k == "type" and isinstance(v, str) and v.startswith("DATA_"):
-                new_dict[k] = TYPE_STRING_TO_INT.get(v, 0)
+                new_dict[k] = type_mapping.get(v, 0)
             else:
-                new_dict[mapping.get(k, k)] = proto_final_sync(v)
+                new_key = mapping.get(k, k)
+                if new_key == "int_32_value":
+                    new_key = "int32_value"
+                elif new_key == "uint_32_value":
+                    new_key = "uint32_value"
+                elif new_key == "int_32_maxvalue":
+                    new_key = "int32_maxvalue"
+                elif new_key == "uint_32_maxvalue":
+                    new_key = "uint32_maxvalue"
+                elif new_key == "int_32_minvalue":
+                    new_key = "int32_minvalue"
+                elif new_key == "uint_32_minvalue":
+                    new_key = "uint32_minvalue"
+                new_dict[new_key] = proto_final_sync(v, type_mapping)
         return new_dict
     elif isinstance(data, list):
-        return [proto_final_sync(item) for item in data]
+        return [proto_final_sync(item, type_mapping) for item in data]
     return data
 
 def resolve_with_fidelity(blueprint, project_dir):
@@ -127,6 +155,39 @@ def resolve_with_fidelity(blueprint, project_dir):
     elif isinstance(blueprint, list):
         return [resolve_with_fidelity(i, project_dir) for i in blueprint]
     return blueprint
+
+
+def proto_sync_abi_desc(data, type_mapping=ABI_DESC_TYPE_STRING_TO_INT):
+    if isinstance(data, dict):
+        mapping = {
+            "childFunction": "child_function",
+            "comboType": "combo_type",
+            "typeGroups": "type_groups",
+            "arrayCmobEle": "array_cmob_ele",
+            "arrayAttr": "array_attr",
+            "comboxAttr": "combox_attr",
+            "comboxParam": "combox_param",
+            "arrayParam": "array_param",
+            "cloneEnable": "clone_enable",
+            "stringValue": "string_value",
+            "boolValue": "bool_value",
+            "int32Value": "int32_value",
+            "uint32Value": "uint32_value",
+            "int64Value": "int64_value",
+            "uint64Value": "uint64_value",
+            "floatValue": "float_value",
+            "doubleValue": "double_value",
+        }
+        out = {}
+        for k, v in data.items():
+            if k == "type" and isinstance(v, str):
+                out[k] = type_mapping.get(v, v)
+            else:
+                out[mapping.get(k, k)] = proto_sync_abi_desc(v, type_mapping)
+        return out
+    if isinstance(data, list):
+        return [proto_sync_abi_desc(item, type_mapping) for item in data]
+    return data
 
 def standardize_sys_tree(blueprint_root):
     original_info = blueprint_root.get("more_module_info", [])
@@ -159,7 +220,7 @@ def encode_cmodel(project_dir, output_cmodel_path):
     
     comp_json = resolve_with_fidelity(comp_json, str(p_path))
     comp_json = sanitize_values(comp_json)
-    comp_json = proto_final_sync(comp_json)
+    comp_json = proto_final_sync(comp_json, COMP_DESC_TYPE_STRING_TO_INT)
     comp_json = standardize_sys_tree(comp_json)
     
     root_obj = controller_model_comp_desc_pb2.Message_Module_Info()
@@ -177,7 +238,7 @@ def encode_cmodel(project_dir, output_cmodel_path):
     if abi_json_path.exists():
         with open(abi_json_path, "r", encoding="utf-8") as f:
             abi_data = json.load(f)
-        abi_data = proto_final_sync(abi_data)
+        abi_data = proto_final_sync(abi_data, ABI_TYPE_STRING_TO_INT)
         abi_obj = controller_model_abi_set_pb2.Controller_Ability()
         ParseDict(abi_data, abi_obj, ignore_unknown_fields=True)
         abi_model_path = p_path / "AbiSet.model"
@@ -190,12 +251,26 @@ def encode_cmodel(project_dir, output_cmodel_path):
 
     # 3. FuncDesc.model
     func_model_path = p_path / "FuncDesc.model"
+    project_func_json = p_path / "FuncDesc.json"
     res_func = _BACKEND_DIR / "resources" / "FuncDesc.model"
-    if res_func.exists():
+    if project_func_json.exists():
+        with open(project_func_json, "r", encoding="utf-8") as f:
+            func_data = json.load(f)
+        func_data = proto_sync_abi_desc(func_data)
+        func_obj = controller_model_abi_desc_pb2.Robot_Description()
+        ParseDict(func_data, func_obj, ignore_unknown_fields=True)
+        with open(func_model_path, "wb") as f:
+            f.write(func_obj.SerializeToString())
+        audit.append(f"FuncDesc.model built: {len(func_obj.SerializeToString())} bytes")
+    elif func_model_path.exists():
+        audit.append("FuncDesc.model preserved from project")
+    elif res_func.exists():
         shutil.copy(res_func, func_model_path)
+        audit.append("FuncDesc.model included")
     else:
-        with open(func_model_path, "wb") as f: f.write(b"")
-    audit.append("FuncDesc.model included")
+        with open(func_model_path, "wb") as f:
+            f.write(b"")
+        audit.append("FuncDesc.model missing; wrote empty placeholder")
 
     # 4. ModelFileDesc.json
     file_desc = {

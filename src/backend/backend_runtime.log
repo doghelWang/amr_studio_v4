@@ -782,3 +782,198 @@ INFO:     127.0.0.1:51246 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
 INFO:     127.0.0.1:51246 - "GET /api/v1/models/proj_e96bf3ec/abilities HTTP/1.1" 200 OK
 INFO:     127.0.0.1:53006 - "GET /api/v1/schemas HTTP/1.1" 200 OK
 INFO:     127.0.0.1:53008 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [91786]
+INFO:     Started server process [37444]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:62737 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51991 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51993 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51992 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51993 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51991 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51995 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:51996 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52689 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52690 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59656 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59653 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59656 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59658 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59655 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59658 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59698 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59694 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59698 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59700 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59697 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59700 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59959 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59956 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59959 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59961 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59957 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59961 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60013 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60011 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60013 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60015 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60012 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60015 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50363 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50365 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50366 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50363 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50364 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:50366 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52865 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52863 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52864 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52865 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52879 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:52863 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57151 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57251 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57256 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57256 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57319 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57251 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57323 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57256 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57319 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57355 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpe_vk22gn/decoded/CompDesc.json...
+Split complete. Extracted 44 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpe_vk22gn/split/blueprint_CompDesc.json
+INFO:     100.64.0.5:57356 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57354 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57354 - "GET /api/v1/models/proj_aa859379/abilities HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57689 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57687 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57688 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57689 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57690 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57687 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp8flpoiqg/decoded/CompDesc.json...
+Split complete. Extracted 44 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmp8flpoiqg/split/blueprint_CompDesc.json
+INFO:     100.64.0.5:57691 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     100.64.0.5:57691 - "GET /api/v1/models/proj_242e0950/abilities HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58023 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58021 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58022 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58023 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58021 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58024 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58024 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58025 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58137 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58138 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58025 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58136 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58025 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpa48h2gvk/decoded/CompDesc.json...
+Split complete. Extracted 44 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpa48h2gvk/split/blueprint_CompDesc.json
+INFO:     100.64.0.5:58143 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     100.64.0.5:58143 - "GET /api/v1/models/proj_3030fdd6/abilities HTTP/1.1" 200 OK
+INFO:     Started server process [20345]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54142 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54152 - "GET /api/health HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54162 - "POST /api/import HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54174 - "GET /api/projects/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54192 - "POST /api/v1/models/upload HTTP/1.1" 422 Unprocessable Content
+INFO:     127.0.0.1:54416 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54412 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54416 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54418 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54414 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54418 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54418 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54503 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54501 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54503 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54505 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54502 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54505 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54659 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55353 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55349 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55353 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55355 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55352 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55355 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55355 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56321 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56319 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56421 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56420 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56927 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56923 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56930 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56927 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56925 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56927 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59523 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59519 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59522 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59698 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59697 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61081 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61079 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61516 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61515 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62434 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62432 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62588 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62587 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64613 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64617 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64619 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64613 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64615 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64613 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64613 - "GET /api/v1/projects/load/Imported_AMR HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65186 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65182 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65186 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65188 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65184 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65188 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmps2_re785/decoded/CompDesc.json...
+Split complete. Extracted 44 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmps2_re785/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:65227 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65227 - "GET /api/v1/models/proj_b61776ec/abilities HTTP/1.1" 200 OK
+INFO:     Started server process [28071]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:49160 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49164 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49160 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49167 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49162 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49167 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49191 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49192 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49195 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49191 - "GET /api/v1/projects/saved-list HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49193 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49191 - "GET /api/v1/schemas HTTP/1.1" 200 OK
+Reading /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpy7ur4x2d/decoded/CompDesc.json...
+Split complete. Extracted 44 modules.
+Blueprint saved to: /var/folders/h5/8wgq3sf53_5b4rp2cr9z9vf40000gn/T/tmpy7ur4x2d/split/blueprint_CompDesc.json
+INFO:     127.0.0.1:49191 - "POST /api/v1/models/upload HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49191 - "GET /api/v1/models/proj_5f40dd56/abilities HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49235 - "GET /api/v1/system/version HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49448 - "GET /api/projects/saved-list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49458 - "GET /api/projects/saved-list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49471 - "GET /api/projects/saved-list HTTP/1.1" 404 Not Found

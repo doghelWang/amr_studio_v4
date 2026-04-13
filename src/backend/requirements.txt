@@ -3,4 +3,4 @@ uvicorn
 python-multipart
 aiofiles
 pydantic
-protobuf>=5.26.1
+protobuf>=6.32.0,<7

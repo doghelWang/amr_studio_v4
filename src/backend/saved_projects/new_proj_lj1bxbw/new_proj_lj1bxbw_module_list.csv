@@ -1,0 +1,2 @@
+﻿模块名,所属子系统,子系统Key,模块主类别,主类别Key,子类别,子类别Key,安装位置(X/Y/Z),旋转姿态(R/P/Y)
+chassis_diff,底盘系统,ChassisSys,底盘,chassis,舵轮底盘,steerChassis,0/0/0,0/0/0

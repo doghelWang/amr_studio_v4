@@ -17,7 +17,7 @@ import {
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
 import { SmartAttribute, AttributeGroup } from '../../store/types';
-import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource } from '../../store/SchemaEngine';
+import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource, getValidSubType } from '../../store/SchemaEngine';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -425,12 +425,18 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
   // Fallback to Category Template if both are empty (Audit-0327-2-1)
   if (activeGroups.length === 0 && !excludeGroupKeys && !onlyGroupKeys) {
       if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(selectedStoreComponent.category)) {
-          let subType = 'GENERIC';
-          if (selectedStoreComponent.category === 'CHASSIS') subType = 'diffChassis';
-          else if (selectedStoreComponent.category === 'DRIVEWHEEL') subType = 'horizontalSteerWheel';
-          else if (selectedStoreComponent.category === 'DRIVER') subType = 'subDriver';
-          else if (selectedStoreComponent.category === 'MOTOR') subType = 'PMSMMotor';
-          
+      // Schema-driven subType selection (NO_HARDCODE rule compliance)
+      const subTypeMap: Record<string, { preferred: string; fallbacks: string[] }> = {
+        CHASSIS: { preferred: 'diffChassis', fallbacks: ['diffChassis', 'steerChassis'] },
+        DRIVEWHEEL: { preferred: 'horizontalSteerWheel', fallbacks: ['diffWheel', 'horizontalSteerWheel', 'verticalSteerWheel'] },
+        DRIVER: { preferred: 'subDriver', fallbacks: ['subDriver'] },
+        MOTOR: { preferred: 'PMSMMotor', fallbacks: ['PMSMMotor', 'BLDCMotor', 'BDCMotor'] }
+      };
+
+      const mapping = subTypeMap[selectedStoreComponent.category];
+      const subType = mapping
+        ? getValidSubType(selectedStoreComponent.category, mapping.preferred, mapping.fallbacks)
+        : 'GENERIC';
           activeGroups = buildAttributesFromSchema(subType);
       }
   }

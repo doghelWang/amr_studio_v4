@@ -140,6 +140,12 @@ def upload_cmodel(background_tasks: BackgroundTasks, file: UploadFile = File(...
         abi_src = decode_out / "AbiSet.json"
         if abi_src.exists():
             shutil.copy2(abi_src, data_manager.get_project_dir(project_id) / "AbiSet.json")
+        func_json_src = decode_out / "FuncDesc.json"
+        if func_json_src.exists():
+            shutil.copy2(func_json_src, data_manager.get_project_dir(project_id) / "FuncDesc.json")
+        func_model_src = decode_out / "FuncDesc.model"
+        if func_model_src.exists():
+            shutil.copy2(func_model_src, data_manager.get_project_dir(project_id) / "FuncDesc.model")
         background_tasks.add_task(shutil.rmtree, str(temp_dir), ignore_errors=True)
         return {"status": "success", "project_id": project_id, "blueprint": blueprint, "full_json": full_json, "audit": audit_log}
     except Exception as e:
@@ -184,23 +190,23 @@ async def update_abilities_api(project_id: str, request: Request):
 def compile_cmodel_api(project_id: str):
     try:
         p_dir = data_manager.get_project_dir(project_id)
+        if not p_dir.exists():
+            raise HTTPException(status_code=404, detail=f"Project not found: {project_id}")
+
         fname = f"{project_id}_packed.cmodel"
         output_cmodel = str(p_dir / fname)
         
         import csv
-        enriched_path = p_dir / "CompDesc.json"
         blueprint_path = p_dir / "blueprint_CompDesc.json"
+        if not blueprint_path.exists():
+            raise HTTPException(status_code=400, detail=f"Project sandbox is missing blueprint_CompDesc.json: {project_id}")
         
         module_list_data = []
         full_data = None
-        if enriched_path.exists():
-            with open(enriched_path, "r", encoding="utf-8") as f:
-                full_data = json.load(f)
-        elif blueprint_path.exists():
-            with open(blueprint_path, "r", encoding="utf-8") as f:
-                blueprint = json.load(f)
-                from skills_v2.cmodel_encoder.encoder import resolve_with_fidelity
-                full_data = resolve_with_fidelity(blueprint, str(p_dir))
+        with open(blueprint_path, "r", encoding="utf-8") as f:
+            blueprint = json.load(f)
+            from skills_v2.cmodel_encoder.encoder import resolve_with_fidelity
+            full_data = resolve_with_fidelity(blueprint, str(p_dir))
 
         if full_data:
             from core.resource_adapter import CATEGORY_TO_SUBSYS, CATEGORY_TO_TYPE_KEY
@@ -274,6 +280,8 @@ def compile_cmodel_api(project_id: str):
             "module_list_url": f"/downloads/{project_id}/{csv_name}",
             "audit": audit_log
         }
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

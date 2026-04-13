@@ -5,26 +5,14 @@
       "type": "DATA_STRING",
       "stringValue": "FL_Encoder",
       "desc": "模块名称",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "boolParse": true
     },
     "moduleDesc": {
       "key": "module_desc",
       "type": "DATA_STRING",
-      "stringValue": "绝对式编码器",
+      "stringValue": "FL_Encoder",
       "desc": "模块描述",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "boolParse": true
     },
     "moduleUuid": {
       "key": "module_uuid",
@@ -32,187 +20,61 @@
       "stringValue": "5a21bb43a5524307ab59a5d4a62095d8",
       "desc": "模块Uuid",
       "boolParse": true,
-      "boolHide": true,
-      "unit": "",
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "boolHide": true
     },
     "versionInfo": {
       "key": "version_info",
       "type": "DATA_STRING",
-      "stringValue": "V1.0/2026-03-30 09:59:45.919",
+      "stringValue": "V1.0",
       "desc": "版本信息",
       "boolParse": true,
-      "boolNoeditable": true,
-      "unit": "",
-      "boolHide": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
-    },
-    "module3dIcon": {
-      "key": "module_3d_icon",
-      "type": "DATA_STRING",
-      "stringValue": "/ModuleLibrary/3dModelRes",
-      "desc": "3D模型",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
-    },
-    "subSysType": {
-      "key": "sub_sys_type",
-      "type": "DATA_COMBOX",
-      "comboType": {
-        "typeKey": "SensorSys",
-        "typeDesc": "",
-        "typeGroups": []
-      },
-      "desc": "子系统",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "boolNoeditable": true
     },
     "mainModuleType": {
       "key": "main_module_type",
       "type": "DATA_COMBOX",
       "comboType": {
         "typeKey": "sensor",
-        "typeDesc": "\n",
-        "typeGroups": []
+        "typeDesc": "感知传感器"
       },
-      "desc": "主类型",
       "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "desc": "主类型"
     },
     "subModuleType": {
       "key": "sub_module_type",
       "type": "DATA_COMBOX",
       "comboType": {
-        "typeKey": "absoluteValueEncode",
-        "typeDesc": "\t",
-        "typeGroups": []
+        "typeKey": "sensor",
+        "typeDesc": "感知传感器"
       },
-      "desc": "子类型",
       "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
-    },
-    "venderName": {
-      "key": "vender_name",
-      "type": "DATA_COMBOX",
-      "comboType": {
-        "typeKey": "HIKROBOT",
-        "typeDesc": "",
-        "typeGroups": []
-      },
-      "desc": "供应商",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
-    },
-    "moduleDscType": {
-      "key": "module_dsc_type",
-      "type": "DATA_COMBOX",
-      "comboType": {
-        "typeKey": "HIKROBOT",
-        "typeDesc": "",
-        "typeGroups": []
-      },
-      "desc": "设备型号",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
-    },
-    "moduleIcon": {
-      "key": "module_icon",
-      "type": "DATA_STRING",
-      "stringValue": "/ModuleLibrary/PictureRes/1/cube.png",
-      "desc": "模块图片",
-      "boolParse": true,
-      "unit": "",
-      "boolHide": false,
-      "boolNoeditable": false,
-      "boolMustfill": false,
-      "boolBasic": false,
-      "fixedSource": []
+      "desc": "子类型"
     },
     "moduleShape": {
       "shapeType": "ENUM_BOX",
       "box": {
         "sizeLen": 100,
         "sizeWidth": 100,
-        "sizeHeight": 100,
-        "boolDeprecated": false
-      },
-      "boolDeprecated": false
-    },
-    "extendParams": [
-      {
-        "key": "material_code",
-        "type": "DATA_STRING",
-        "desc": "物料代码",
-        "boolParse": true,
-        "boolHide": true,
-        "unit": "",
-        "boolNoeditable": false,
-        "boolMustfill": false,
-        "boolBasic": false,
-        "fixedSource": []
-      },
-      {
-        "key": "module_srcname",
-        "type": "DATA_STRING",
-        "stringValue": "AoBo_ENCODE",
-        "desc": "模块原始名称",
-        "boolParse": true,
-        "unit": "",
-        "boolHide": false,
-        "boolNoeditable": false,
-        "boolMustfill": false,
-        "boolBasic": false,
-        "fixedSource": []
-      },
-      {
-        "key": "module_alias",
-        "type": "DATA_STRING",
-        "desc": "模块别名",
-        "boolParse": true,
-        "boolHide": true,
-        "unit": "",
-        "boolNoeditable": false,
-        "boolMustfill": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "sizeHeight": 100
       }
-    ],
-    "boolDeprecated": false
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "SensorSys",
+        "typeDesc": "传感器系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "SENSOR",
+      "desc": "模块型号",
+      "boolParse": true
+    }
   },
   "privateAttr": {
     "privateAttrs": [
@@ -223,6 +85,14 @@
           {
             "key": "absEncodeType",
             "type": "DATA_COMBOX",
+            "desc": "编码器类型",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
             "comboType": {
               "typeKey": "CAN_BRT_ENCODER",
               "typeDesc": "CAN自定义(BRT)",
@@ -234,6 +104,14 @@
                     {
                       "key": "codeType",
                       "type": "DATA_COMBOX",
+                      "desc": "编码格式",
+                      "unit": "",
+                      "boolParse": false,
+                      "boolHide": false,
+                      "boolBasic": true,
+                      "boolMustfill": false,
+                      "boolNoeditable": false,
+                      "fixedSource": [],
                       "comboType": {
                         "typeKey": "ENCODER_GRAY_CODE",
                         "typeDesc": "格雷码编码",
@@ -249,15 +127,7 @@
                             "arrayCmobEle": []
                           }
                         ]
-                      },
-                      "desc": "编码格式",
-                      "unit": "",
-                      "boolParse": false,
-                      "boolHide": false,
-                      "boolNoeditable": false,
-                      "boolMustfill": false,
-                      "boolBasic": false,
-                      "fixedSource": []
+                      }
                     }
                   ]
                 },
@@ -277,19 +147,19 @@
                   "arrayCmobEle": []
                 }
               ]
-            },
-            "desc": "编码器类型",
-            "unit": "",
-            "boolParse": false,
-            "boolHide": false,
-            "boolNoeditable": false,
-            "boolMustfill": false,
-            "boolBasic": false,
-            "fixedSource": []
+            }
           },
           {
             "key": "resolutionMode",
             "type": "DATA_COMBOX",
+            "desc": "分辨率模式",
+            "unit": "",
+            "boolParse": false,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
             "comboType": {
               "typeKey": "RES_NUM_MODE",
               "typeDesc": "数值模式",
@@ -301,32 +171,28 @@
                     {
                       "key": "sglTurnBit",
                       "type": "DATA_INT32",
-                      "int32Value": 0,
-                      "int32Maxvalue": 99999,
-                      "int32Minvalue": 0,
                       "desc": "单圈位数",
                       "unit": "",
                       "boolParse": false,
                       "boolHide": false,
-                      "boolNoeditable": false,
+                      "boolBasic": true,
                       "boolMustfill": false,
-                      "boolBasic": false,
-                      "fixedSource": []
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 0
                     },
                     {
                       "key": "mutiTurnBit",
                       "type": "DATA_INT32",
-                      "int32Value": 0,
-                      "int32Maxvalue": 99999,
-                      "int32Minvalue": 0,
                       "desc": "多圈位数",
                       "unit": "",
                       "boolParse": false,
                       "boolHide": false,
-                      "boolNoeditable": false,
+                      "boolBasic": true,
                       "boolMustfill": false,
-                      "boolBasic": false,
-                      "fixedSource": []
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 0
                     }
                   ]
                 },
@@ -337,315 +203,67 @@
                     {
                       "key": "sglTurnCount",
                       "type": "DATA_INT32",
-                      "int32Value": 4096,
-                      "int32Maxvalue": 99999,
-                      "int32Minvalue": 0,
                       "desc": "单圈分辨率",
                       "unit": "",
                       "boolParse": false,
                       "boolHide": false,
-                      "boolNoeditable": false,
+                      "boolBasic": true,
                       "boolMustfill": false,
-                      "boolBasic": false,
-                      "fixedSource": []
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 4096
                     },
                     {
                       "key": "mutiTurnCount",
                       "type": "DATA_INT32",
-                      "int32Value": 24,
-                      "int32Maxvalue": 99999,
-                      "int32Minvalue": 0,
                       "desc": "多圈圈数",
                       "unit": "",
                       "boolParse": false,
                       "boolHide": false,
-                      "boolNoeditable": false,
+                      "boolBasic": true,
                       "boolMustfill": false,
-                      "boolBasic": false,
-                      "fixedSource": []
+                      "boolNoeditable": false,
+                      "fixedSource": [],
+                      "int32Value": 24
                     }
                   ]
                 }
               ]
-            },
-            "desc": "分辨率模式",
-            "unit": "",
-            "boolParse": false,
-            "boolHide": false,
-            "boolNoeditable": false,
-            "boolMustfill": false,
-            "boolBasic": false,
-            "fixedSource": []
+            }
           },
           {
             "key": "isInvert",
             "type": "DATA_BOOL",
-            "boolValue": true,
             "desc": "是否反向",
-            "boolMustfill": true,
             "unit": "",
             "boolParse": false,
             "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
             "boolNoeditable": false,
-            "boolBasic": false,
-            "fixedSource": []
+            "fixedSource": [],
+            "boolValue": true
           }
-        ],
-        "boolDeprecated": false
+        ]
       }
-    ],
-    "boolDeprecated": false
+    ]
   },
   "interfaceAbility": {
-    "busInterfaceAbility": [
-      {
-        "busInterfaceType": "CAN",
-        "busInterfaceNums": 1,
-        "busInterfaceSubType": "",
-        "boolDeprecated": false
-      }
-    ],
-    "boolDeprecated": false
+    "busInterfaceAbility": []
   },
   "interfaceParams": {
     "interfaceGroup": [
       {
         "key": "CAN_1",
         "type": "CAN",
+        "path": "",
         "desc": "CAN_1",
         "interfaceUuid": "1f62fe6b74924967a78de2f22e474667",
         "linkedInterfaceUuid": [
           "b188441d876a42608b0144ca77abf6ca"
-        ],
-        "interfaceAttrs": {
-          "interfaceParamsArray": [
-            {
-              "key": "MODE",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "*",
-                "typeDesc": "*",
-                "typeGroups": [
-                  {
-                    "key": "*",
-                    "desc": "*",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "模式",
-              "boolParse": true,
-              "unit": "",
-              "boolHide": false,
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "SWTAGS",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "*",
-                "typeDesc": "*",
-                "typeGroups": [
-                  {
-                    "key": "*",
-                    "desc": "*",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "软件标签属性",
-              "boolParse": true,
-              "unit": "",
-              "boolHide": false,
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "BUSTAGS",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "*",
-                "typeDesc": "*",
-                "typeGroups": [
-                  {
-                    "key": "*",
-                    "desc": "*",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "BUS",
-                    "desc": "BUS",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "总线标签属性",
-              "boolParse": true,
-              "unit": "",
-              "boolHide": false,
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            }
-          ],
-          "boolDeprecated": false
-        },
-        "interfaceParams": {
-          "interfaceParamsArray": [
-            {
-              "key": "resistor",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "RESISTOR_HAVE",
-                "typeDesc": "是",
-                "typeGroups": [
-                  {
-                    "key": "RESISTOR_HAVE",
-                    "desc": "是",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "RESISTOR_NO",
-                    "desc": "否",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "带终端电阻",
-              "boolParse": true,
-              "boolHide": true,
-              "unit": "",
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "baudrate",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "1M",
-                "typeDesc": "1M",
-                "typeGroups": [
-                  {
-                    "key": "1M",
-                    "desc": "1M",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "500K",
-                    "desc": "500K",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "250K",
-                    "desc": "250K",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "125K",
-                    "desc": "125K",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "100K",
-                    "desc": "100K",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "波特率",
-              "boolParse": true,
-              "boolNoeditable": true,
-              "unit": "",
-              "boolHide": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "protocol",
-              "type": "DATA_COMBOX",
-              "comboType": {
-                "typeKey": "PROTOCOL_UCAN",
-                "typeDesc": "PROTOCOL_UCAN",
-                "typeGroups": [
-                  {
-                    "key": "PROTOCOL_EXT_CAN",
-                    "desc": "PROTOCOL_EXT_CAN",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "PROTOCOL_CANOPEN",
-                    "desc": "PROTOCOL_CANOPEN",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "PROTOCOL_UCAN",
-                    "desc": "PROTOCOL_UCAN",
-                    "arrayCmobEle": []
-                  },
-                  {
-                    "key": "PROTOCOL_STD_CAN",
-                    "desc": "PROTOCOL_STD_CAN",
-                    "arrayCmobEle": []
-                  }
-                ]
-              },
-              "desc": "协议",
-              "boolParse": true,
-              "unit": "",
-              "boolHide": false,
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "dialValue",
-              "type": "DATA_STRING",
-              "stringValue": "",
-              "desc": "拨码值",
-              "boolParse": true,
-              "boolHide": true,
-              "unit": "",
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            },
-            {
-              "key": "nodeId",
-              "type": "DATA_INT32",
-              "int32Value": 6,
-              "int32Maxvalue": 127,
-              "int32Minvalue": 1,
-              "desc": "节点Id",
-              "boolParse": true,
-              "unit": "",
-              "boolHide": false,
-              "boolNoeditable": false,
-              "boolMustfill": false,
-              "boolBasic": false,
-              "fixedSource": []
-            }
-          ],
-          "boolDeprecated": false
-        },
-        "path": "",
-        "linkAttrs": [],
-        "boolDeprecated": false
+        ]
       }
-    ],
-    "nodePosX": 0.0,
-    "nodePosY": 0.0,
-    "boolDeprecated": false
+    ]
   },
   "structParam": {
     "extendParams": [
@@ -653,24 +271,10 @@
         "key": "parentNodeUuid",
         "type": "DATA_COMBOX",
         "comboType": {
-          "typeKey": "b563b9927ba2440ab4dc2cf284c6f034",
-          "typeDesc": "chassis_steer",
-          "typeGroups": [
-            {
-              "key": "b563b9927ba2440ab4dc2cf284c6f034",
-              "desc": "chassis_steer",
-              "arrayCmobEle": []
-            }
-          ]
+          "typeKey": "7fe013e2d894442a960be8f37cf7f8e0",
+          "typeDesc": ""
         },
-        "desc": "从属机构",
-        "boolParse": true,
-        "unit": "",
-        "boolHide": false,
-        "boolNoeditable": false,
-        "boolMustfill": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "从属机构"
       },
       {
         "key": "locCoordX",
@@ -679,13 +283,7 @@
         "doubleMaxvalue": 9999.0,
         "doubleMinvalue": -9999.0,
         "unit": "mm",
-        "desc": "X坐标",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "X坐标"
       },
       {
         "key": "locCoordY",
@@ -694,13 +292,7 @@
         "doubleMaxvalue": 9999.0,
         "doubleMinvalue": -9999.0,
         "unit": "mm",
-        "desc": "Y坐标",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "Y坐标"
       },
       {
         "key": "locCoordZ",
@@ -709,63 +301,35 @@
         "doubleMaxvalue": 9999.0,
         "doubleMinvalue": -9999.0,
         "unit": "mm",
-        "desc": "Z坐标",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "Z坐标"
       },
       {
         "key": "locCoordROLL",
         "type": "DATA_DOUBLE",
         "doubleValue": 0.0,
-        "doubleMaxvalue": 180.0,
-        "doubleMinvalue": -180.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
         "unit": "°",
-        "desc": "翻滚角",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
-      },
-      {
-        "key": "locCoordYAW",
-        "type": "DATA_DOUBLE",
-        "doubleValue": 0.0,
-        "doubleMaxvalue": 180.0,
-        "doubleMinvalue": -180.0,
-        "unit": "°",
-        "desc": "偏航角",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "ROLL"
       },
       {
         "key": "locCoordPITCH",
         "type": "DATA_DOUBLE",
         "doubleValue": 0.0,
-        "doubleMaxvalue": 180.0,
-        "doubleMinvalue": -180.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
         "unit": "°",
-        "desc": "俯仰角",
-        "boolParse": true,
-        "boolHide": true,
-        "boolMustfill": true,
-        "boolNoeditable": false,
-        "boolBasic": false,
-        "fixedSource": []
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
       }
-    ],
-    "segmentedLimitsParams": [],
-    "boolDeprecated": false
-  },
-  "boolDeprecated": false,
-  "boolDisable": false
+    ]
+  }
 }

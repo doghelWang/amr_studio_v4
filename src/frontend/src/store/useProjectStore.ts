@@ -19,6 +19,68 @@ import {
 
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
 
+const createDefaultIdentity = (): RobotIdentity => ({
+  robotName: '',
+  version: '1.0.0',
+  alias: '',
+  materialCode: '',
+  venderName: '',
+  navigationMethod: 'LASER_SLAM',
+  driveType: 'STANDARD_DIFF',
+  chassisShape: 'BOX',
+  chassisLength: 1200,
+  chassisWidth: 800,
+  chassisHeight: 100,
+  headOffset: 600,
+  tailOffset: 600,
+  leftOffset: 400,
+  rightOffset: 400,
+  maxSpeed: 600,
+  maxAccel: 200,
+  maxDecel: 200,
+  avoidMaxDec: 200,
+  selfWeight: 0,
+  totalLoadWeight: 0
+});
+
+const createDefaultChassis = (identity: RobotIdentity): ComponentConfig => ({
+  id: 'chassis-root',
+  name: identity.robotName || 'chassis',
+  alias: `底盘 (${identity.robotName || 'Robot Chassis'})`,
+  type: identity.driveType?.includes('STEER') ? 'steerChassis' : 'diffChassis',
+  category: 'CHASSIS',
+  subModuleTypeKey: identity.driveType?.includes('STEER') ? 'steerChassis' : 'diffChassis',
+  parentNodeUuid: null,
+  mountX: 0,
+  mountY: 0,
+  mountZ: 0,
+  mountRoll: 0,
+  mountPitch: 0,
+  mountYaw: 0,
+  privateAttrs: [],
+  interfaces: [],
+  rawStructParam: {},
+  generalAttr: {
+    moduleName: { type: 'DATA_STRING', stringValue: identity.robotName || 'chassis', boolParse: true },
+    moduleUuid: { type: 'DATA_STRING', stringValue: 'chassis-root', boolParse: true }
+  },
+  shape: {
+    type: 'BOX',
+    length: identity.chassisLength,
+    width: identity.chassisWidth,
+    height: identity.chassisHeight
+  }
+});
+
+const createDefaultProjectConfig = (): RobotConfig => {
+  const identity = createDefaultIdentity();
+  return syncChassisAttributes({
+    identity,
+    components: [createDefaultChassis(identity)],
+    abilities: abilityRegistry as any
+  });
+};
+
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Helper: Synchronize Identity fields to the root Chassis component
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -101,6 +163,139 @@ const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
   return { ...config, components };
 };
 
+const updateNestedAbilityOption = (
+  option: any,
+  subAttrKey: string,
+  subAttrValue: any
+) => {
+  const subAttributes = option.arrayCmobEle || option.arrayAttr || [];
+  const updatedSubAttributes = subAttributes.map((sub: any) =>
+    sub.key === subAttrKey ? { ...sub, value: subAttrValue } : sub
+  );
+
+  return {
+    ...option,
+    ...(option.arrayCmobEle ? { arrayCmobEle: updatedSubAttributes } : {}),
+    ...(option.arrayAttr ? { arrayAttr: updatedSubAttributes } : {})
+  };
+};
+
+const updateAbilityLeafAttribute = (
+  attribute: any,
+  value: any,
+  subAttrKey?: string,
+  subAttrValue?: any
+) => {
+  const selectedValue = subAttrValue !== undefined ? value : value;
+
+  if (attribute.comboxParam?.options) {
+    return {
+      ...attribute,
+      value: selectedValue,
+      comboxParam: {
+        ...attribute.comboxParam,
+        value: selectedValue,
+        options: attribute.comboxParam.options.map((option: any) => {
+          if (option.key !== selectedValue || subAttrKey === undefined) return option;
+          return updateNestedAbilityOption(option, subAttrKey, subAttrValue);
+        })
+      }
+    };
+  }
+
+  if (attribute.comboType?.typeGroups) {
+    return {
+      ...attribute,
+      value: selectedValue,
+      comboType: {
+        ...attribute.comboType,
+        typeGroups: attribute.comboType.typeGroups.map((group: any) => {
+          if (group.key !== selectedValue || subAttrKey === undefined) return group;
+          return updateNestedAbilityOption(group, subAttrKey, subAttrValue);
+        })
+      }
+    };
+  }
+
+  return { ...attribute, value };
+};
+
+const updateAbilityCommonAttribute = (
+  commonAttr: any,
+  attrKey: string,
+  value: any,
+  subAttrKey?: string,
+  subAttrValue?: any
+) => {
+  if (commonAttr.type === 'ARRAY' && commonAttr.arrayParam?.attrParams) {
+    return {
+      ...commonAttr,
+      arrayParam: {
+        ...commonAttr.arrayParam,
+        attrParams: commonAttr.arrayParam.attrParams.map((attr: any) =>
+          attr.key === attrKey
+            ? updateAbilityLeafAttribute(attr, value, subAttrKey, subAttrValue)
+            : attr
+        )
+      }
+    };
+  }
+
+  if (commonAttr.key === attrKey) {
+    return updateAbilityLeafAttribute(commonAttr, value, subAttrKey, subAttrValue);
+  }
+
+  return commonAttr;
+};
+
+const updateNestedAttributeValue = (
+  attribute: any,
+  attrKey: string,
+  value: any,
+  subKey?: string
+): any => {
+  if (attribute.key === attrKey) {
+    if (subKey && attribute.comboType?.typeGroups) {
+      return {
+        ...attribute,
+        comboType: {
+          ...attribute.comboType,
+          typeGroups: attribute.comboType.typeGroups.map((group: any) =>
+            group.key === subKey ? { ...group, value } : group
+          )
+        }
+      };
+    }
+    return { ...attribute, value };
+  }
+
+  if (attribute.comboType?.typeGroups) {
+    return {
+      ...attribute,
+      comboType: {
+        ...attribute.comboType,
+        typeGroups: attribute.comboType.typeGroups.map((group: any) => ({
+          ...group,
+          arrayCmobEle: (group.arrayCmobEle || []).map((subAttr: any) =>
+            updateNestedAttributeValue(subAttr, attrKey, value, subKey)
+          )
+        }))
+      }
+    };
+  }
+
+  if (attribute.arrayCmobEle) {
+    return {
+      ...attribute,
+      arrayCmobEle: attribute.arrayCmobEle.map((subAttr: any) =>
+        updateNestedAttributeValue(subAttr, attrKey, value, subKey)
+      )
+    };
+  }
+
+  return attribute;
+};
+
 interface ProjectState {
   projectId: string | null;
   setProjectId: (id: string | null) => void;
@@ -159,30 +354,7 @@ export const useProjectStore = create<ProjectState>()(
       (set, get) => ({
         projectId: null,
         setProjectId: (id) => set({ projectId: id }),
-        config: {
-          identity: {
-            robotName: '',
-            version: '1.0.0',
-            alias: '',
-            navigationMethod: 'LASER_SLAM',
-            driveType: 'STANDARD_DIFF',
-            chassisShape: 'BOX',
-            chassisLength: 0,
-            chassisWidth: 0,
-            chassisHeight: 0,
-            headOffset: 0,
-            tailOffset: 0,
-            leftOffset: 0,
-            rightOffset: 0,
-            maxSpeed: 0,
-            maxAccel: 0,
-            maxDecel: 0,
-            materialCode: '',
-            venderName: 'HIKROBOT'
-          },
-          components: [],
-          abilities: abilityRegistry as any
-        },
+        config: createDefaultProjectConfig(),
         activeComponentId: null,
         isDirty: false,
         schemaRegistry: {},
@@ -264,48 +436,22 @@ export const useProjectStore = create<ProjectState>()(
             } else if ((category as string) === 'DRIVEWHEEL') {
               // Drive wheel subType must match the schema directory name
               // Options: diffWheel, horizontalSteerWheel, verticalSteerWheel, diffSteerWheel, weakSteerWheel
-              // [P0-FIX-2026-04-04] Smart subType selection based on drive type
               if (type) {
-                subType = type;  // Use explicit type if provided
+                subType = type;
               } else {
-                // Auto-detect: STEER drive types need horizontalSteerWheel (7 attributes)
                 subType = state.config.identity.driveType?.includes('STEER')
                   ? 'horizontalSteerWheel'
                   : 'diffWheel';
               }
             } else if ((category as string) === 'DRIVER') {
               subType = type || 'subDriver';
-        } else if ((category as string) === 'MOTOR') {
-          // $C003-FIX: Schema-driven subType selection for MOTOR category
-          // Replaces hardcoded 'PMSMMotor' fallback with registry lookup
-          const validMotorTypes = ['PMSMMotor', 'BLDCMotor', 'BDCMotor'];
+            } else if ((category as string) === 'MOTOR') {
+              subType = type || getValidSubType('MOTOR', 'PMSMMotor', ['PMSMMotor', 'BLDCMotor', 'BDCMotor']);
+            }
 
-          if (type === 'driver' || type === 'subDriver') {
-            console.warn(`[FIX] MOTOR category with wrong type "${type}", using schema-driven fallback`);
-            subType = getValidSubType('MOTOR', undefined, validMotorTypes);
-          } else {
-            // If type is provided but not in registry (e.g., null/undefined/custom), use fallback
-            subType = type && isValidSubType(type)
-              ? type
-              : getValidSubType('MOTOR', undefined, validMotorTypes);
-          }
-        }
-
-            // We set standard grouped schemas entirely without loop restructuring
             privateAttrs = buildAttributesFromSchema(subType);
           }
 
-          // Auto-fill defaults for mandatory chipPlatform and softwareSpec if missing
-          for (const group of privateAttrs) {
-            for (const attr of group.elements) {
-              if (attr.key === 'chipPlatform' && !attr.value) {
-                attr.value = 'N/A';
-              }
-              if (attr.key === 'softwareSpec' && !attr.value) {
-                attr.value = 'NONE';
-              }
-            }
-          }
 
           let initialInterfaces = (registryInfo?.interfaces || []).map((inf: any) => ({
             key: inf.key || inf.name,
@@ -392,13 +538,28 @@ export const useProjectStore = create<ProjectState>()(
           isDirty: true
         })),
 
-        removeComponent: (id) => set((state) => ({
-          config: {
-            ...state.config,
-            components: state.config.components.filter(c => c.id !== id && c.parentNodeUuid !== id)
-          },
-          isDirty: true
-        })),
+        removeComponent: (id) => set((state) => {
+          const toRemove = new Set<string>([id]);
+          let changed = true;
+
+          while (changed) {
+            changed = false;
+            state.config.components.forEach(component => {
+              if (component.parentNodeUuid && toRemove.has(component.parentNodeUuid) && !toRemove.has(component.id)) {
+                toRemove.add(component.id);
+                changed = true;
+              }
+            });
+          }
+
+          return {
+            config: {
+              ...state.config,
+              components: state.config.components.filter(component => !toRemove.has(component.id))
+            },
+            isDirty: true
+          };
+        }),
 
         setActiveComponent: (id) => set({ activeComponentId: id }),
 
@@ -447,21 +608,7 @@ export const useProjectStore = create<ProjectState>()(
                   if (g.key !== groupKey) return g;
                   return {
                     ...g,
-                    elements: g.elements.map(e => {
-                      if (e.key !== attrKey) return e;
-                      if (subKey && e.comboType?.typeGroups) {
-                        return {
-                          ...e,
-                          comboType: {
-                            ...e.comboType,
-                            typeGroups: e.comboType.typeGroups.map((tg: any) =>
-                              tg.key === subKey ? { ...tg, value } : tg
-                            )
-                          }
-                        };
-                      }
-                      return { ...e, value };
-                    })
+                    elements: g.elements.map(e => updateNestedAttributeValue(e, attrKey, value, subKey))
                   };
                 })
               };
@@ -508,30 +655,7 @@ export const useProjectStore = create<ProjectState>()(
         })),
 
         resetProject: () => set({
-          config: {
-            identity: {
-              robotName: '',
-              version: '1.0.0',
-              alias: '',
-              materialCode: '',
-              venderName: '',
-              navigationMethod: 'LASER_SLAM',
-              driveType: 'STANDARD_DIFF',
-              chassisShape: 'BOX',
-              chassisLength: 0,
-              chassisWidth: 0,
-              chassisHeight: 0,
-              headOffset: 0,
-              tailOffset: 0,
-              leftOffset: 0,
-              rightOffset: 0,
-              maxSpeed: 0,
-              maxAccel: 0,
-              maxDecel: 0
-            },
-            components: [],
-            abilities: abilityRegistry as any
-          },
+          config: createDefaultProjectConfig(),
           isDirty: false,
           activeComponentId: null
         }),
@@ -588,51 +712,13 @@ export const useProjectStore = create<ProjectState>()(
                   ...f,
                   childFunction: (f.childFunction || []).map((cf: any) => {
                     if (cf.key !== childKey) return cf;
-                    return {
+                  return {
                       ...cf,
-              attr: (cf.attr || []).map((a: any) => {
-                if (a.key !== commonAttrKey) return a;
-
-                // §CRITICAL: Handle comboxParam.options (Ability registry structure)
-                if (a.comboxParam?.options) {
-                  const selectedValue = subAttrValue !== undefined ? value : (a.value || a.comboxParam.value);
-                  return {
-                    ...a,
-                    value: selectedValue,
-                    comboxParam: {
-                      ...a.comboxParam,
-                      value: selectedValue,
-                      options: a.comboxParam.options.map((opt: any) => {
-                        if (opt.key !== selectedValue) return opt;
-                        return {
-                          ...opt,
-                          arrayAttr: (opt.arrayAttr || []).map((sub: any) =>
-                            sub.key === subAttrKey
-                              ? { ...sub, value: subAttrValue }
-                              : sub
-                          )
-                        };
-                      })
-                    }
-                  };
-                }
-
-                // Handle comboType.typeGroups (Component structure)
-                if (subAttrKey && a.comboType?.typeGroups) {
-                  return {
-                    ...a,
-                    comboType: {
-                      ...a.comboType,
-                      typeGroups: a.comboType.typeGroups.map((tg: any) =>
-                        tg.key === subAttrKey
-                          ? { ...tg, ...(subAttrValue !== undefined ? { value: subAttrValue } : {}) }
-                          : tg
+                      attr: (cf.attr || []).map((a: any) =>
+                        a.key === commonAttrKey
+                          ? updateAbilityCommonAttribute(a, attrKey, value, subAttrKey, subAttrValue)
+                          : a
                       )
-                    }
-                  };
-                }
-                return { ...a, value };
-              })
                     };
                   })
                 };

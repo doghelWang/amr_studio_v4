@@ -1,0 +1,171 @@
+{
+  "moduleGroupName": "123124",
+  "modelVersion": "",
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_diff",
+      "moduleGroupUuid": "chassis-root",
+      "module_componets": [
+        {
+          "$ref": "modules/module_chassis_diff_chassis-root.json"
+        }
+      ],
+      "moreModuleInfo": [
+        {
+          "moduleGroupName": "DRIVEWHEEL_01",
+          "moduleGroupUuid": "c1320be6-7d75-407a-afe1-ad7f95bab0a6",
+          "module_componets": [
+            {
+              "$ref": "modules/module_DRIVEWHEEL_01_c1320be6-7d75-407a-afe1-ad7f95bab0a6.json"
+            }
+          ],
+          "moreModuleInfo": [
+            {
+              "moduleGroupName": "DRIVER_01",
+              "moduleGroupUuid": "53fef00e-3284-4e62-a95b-1114bb984ea3",
+              "module_componets": [
+                {
+                  "$ref": "modules/module_DRIVER_01_53fef00e-3284-4e62-a95b-1114bb984ea3.json"
+                }
+              ],
+              "moreModuleInfo": [
+                {
+                  "moduleGroupName": "MOTOR_01",
+                  "moduleGroupUuid": "dbd1d4e9-4ec7-4d84-9700-50873acb2364",
+                  "module_componets": [
+                    {
+                      "$ref": "modules/module_MOTOR_01_dbd1d4e9-4ec7-4d84-9700-50873acb2364.json"
+                    }
+                  ],
+                  "moreModuleInfo": []
+                }
+              ]
+            },
+            {
+              "moduleGroupName": "SENSOR_01",
+              "moduleGroupUuid": "b02f54a3-01a8-463f-8aeb-aba77b5f6c51",
+              "module_componets": [
+                {
+                  "$ref": "modules/module_SENSOR_01_b02f54a3-01a8-463f-8aeb-aba77b5f6c51.json"
+                }
+              ],
+              "moreModuleInfo": []
+            }
+          ]
+        },
+        {
+          "moduleGroupName": "DRIVEWHEEL_02",
+          "moduleGroupUuid": "c095799c-9411-40a0-8dbf-3bceb9cb2331",
+          "module_componets": [
+            {
+              "$ref": "modules/module_DRIVEWHEEL_02_c095799c-9411-40a0-8dbf-3bceb9cb2331.json"
+            }
+          ],
+          "moreModuleInfo": [
+            {
+              "moduleGroupName": "DRIVER_d6bf",
+              "moduleGroupUuid": "d6bf97dc-eae9-44e1-ae6e-aadd21afdc4a",
+              "module_componets": [
+                {
+                  "$ref": "modules/module_DRIVER_d6bf_d6bf97dc-eae9-44e1-ae6e-aadd21afdc4a.json"
+                }
+              ],
+              "moreModuleInfo": [
+                {
+                  "moduleGroupName": "MOTOR_a32d",
+                  "moduleGroupUuid": "a32d65e6-8db7-44ca-a600-698e6ab47895",
+                  "module_componets": [
+                    {
+                      "$ref": "modules/module_MOTOR_a32d_a32d65e6-8db7-44ca-a600-698e6ab47895.json"
+                    }
+                  ],
+                  "moreModuleInfo": []
+                }
+              ]
+            },
+            {
+              "moduleGroupName": "SENSOR_5d8d",
+              "moduleGroupUuid": "5d8df723-f7ce-4faa-b0fc-4b69470cfda1",
+              "module_componets": [
+                {
+                  "$ref": "modules/module_SENSOR_5d8d_5d8df723-f7ce-4faa-b0fc-4b69470cfda1.json"
+                }
+              ],
+              "moreModuleInfo": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "moduleGroupName": "LS-MR-LS-05H-N4017",
+      "moduleGroupUuid": "21ba8444-1877-48bc-b3bb-f83e925d5763",
+      "module_componets": [
+        {
+          "$ref": "modules/module_LS-MR-LS-05H-N4017_21ba8444-1877-48bc-b3bb-f83e925d5763.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "STEREO-MV-EB435i",
+      "moduleGroupUuid": "bdea67d2-4183-409a-a053-edde346142ed",
+      "module_componets": [
+        {
+          "$ref": "modules/module_STEREO-MV-EB435i_bdea67d2-4183-409a-a053-edde346142ed.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "BAT-U-MR-LFP-480024-F1-C-Aa0",
+      "moduleGroupUuid": "2b1da429-1a3f-4bbe-a244-82c6673ab028",
+      "module_componets": [
+        {
+          "$ref": "modules/module_BAT-U-MR-LFP-480024-F1-C-Aa0_2b1da429-1a3f-4bbe-a244-82c6673ab028.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "IO-lnterface board",
+      "moduleGroupUuid": "13f69b53-86cd-4a0c-a53d-5bca7b73f876",
+      "module_componets": [
+        {
+          "$ref": "modules/module_IO-lnterface board_13f69b53-86cd-4a0c-a53d-5bca7b73f876.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "MCPU-RA-MC-R318BN",
+      "moduleGroupUuid": "fc711ca7-99ea-4717-b269-e4a4e5f0aa8d",
+      "module_componets": [
+        {
+          "$ref": "modules/module_MCPU-RA-MC-R318BN_fc711ca7-99ea-4717-b269-e4a4e5f0aa8d.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "BTN-NoEmergency",
+      "moduleGroupUuid": "b9970531-e1c1-4779-af49-dea2a5a2a5fb",
+      "module_componets": [
+        {
+          "$ref": "modules/module_BTN-NoEmergency_b9970531-e1c1-4779-af49-dea2a5a2a5fb.json"
+        }
+      ],
+      "moreModuleInfo": []
+    },
+    {
+      "moduleGroupName": "BTN-Cable-Mizu2F-to-Switch-70mm-RD-BK",
+      "moduleGroupUuid": "66607bac-bfdd-472e-a27a-1214e34cb95f",
+      "module_componets": [
+        {
+          "$ref": "modules/module_BTN-Cable-Mizu2F-to-Switch-70mm-RD-BK_66607bac-bfdd-472e-a27a-1214e34cb95f.json"
+        }
+      ],
+      "moreModuleInfo": []
+    }
+  ]
+}

@@ -32,11 +32,26 @@ import {
     OmniWheelDiagram 
 } from './WheelTypeDiagrams';
 import { DRIVE_TYPE_LABELS, ComponentConfig } from '../../store/types';
-import { buildAttributesFromSchema } from '../../store/SchemaEngine';
+import { buildAttributesFromSchema, isValidSubType, getValidSubType } from '../../store/SchemaEngine';
 import { PowerTopologyPanel } from './PowerTopologyPanel';
 import { getBackendBase } from '../../services/api_v2';
 
 const { Title, Text } = Typography;
+
+const normalizeLibraryCategory = (entity: any, rawTypeKey: string): string => {
+    if (entity.category) return String(entity.category).toUpperCase();
+
+    const rawLower = (rawTypeKey || '').toLowerCase();
+    if (
+        rawLower === 'extendedlnterface' || rawLower === 'extendedinterface' ||
+        rawLower === 'iomodule' || rawLower === 'safetyiomodule'
+    ) {
+        return 'IO_BOARD';
+    }
+    if (rawLower === 'safetycontroller') return 'CONTROL';
+    if (rawLower === 'powercontroller') return 'ENERGYCONTROLLER';
+    return String(rawTypeKey || '').toUpperCase();
+};
 
 // Category-based attribute templates for manual component creation
 // Implements today_report.md remaining item #1: auto-inject attrs by category
@@ -154,8 +169,8 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
                 const decorated: any = {};
                 Object.keys(res.data).forEach(sys => {
                     decorated[sys] = res.data[sys].map((entity: any) => {
-                        // ── Normalise: pick the richer source and expose as full_data ──
-                        const richData = entity.data_xml || entity.data_json || null;
+                        // ── Normalise: prefer the richer JSON payload; XML preview is sparse ──
+                        const richData = entity.data_json || entity.data_xml || null;
                         const entityNorm = { ...entity, full_data: richData };
                         try {
                             const mapped = ImportService.mapEntityToComponent(richData || entity);
@@ -350,11 +365,18 @@ const treeData = useMemo(() => {
     const handleManualAdd = () => {
         if (!manualCategory) return;
 
-        let targetSubType = 'GENERIC';
-        if (manualCategory.toUpperCase() === 'MOTOR') targetSubType = 'PMSMMotor';
-        else if (manualCategory.toUpperCase() === 'DRIVER') targetSubType = 'subDriver';
-        else if (manualCategory.toUpperCase() === 'DRIVEWHEEL') targetSubType = 'horizontalSteerWheel';
-        else if (manualCategory.toUpperCase() === 'CHASSIS') targetSubType = 'diffChassis';
+    // Schema-driven subType selection (NO_HARDCODE rule compliance)
+    const subTypeMap: Record<string, { preferred: string; fallbacks: string[] }> = {
+      MOTOR: { preferred: 'PMSMMotor', fallbacks: ['PMSMMotor', 'BLDCMotor', 'BDCMotor'] },
+      DRIVER: { preferred: 'subDriver', fallbacks: ['subDriver'] },
+      DRIVEWHEEL: { preferred: 'horizontalSteerWheel', fallbacks: ['diffWheel', 'horizontalSteerWheel', 'verticalSteerWheel'] },
+      CHASSIS: { preferred: 'diffChassis', fallbacks: ['diffChassis', 'steerChassis'] }
+    };
+
+    const mapping = subTypeMap[manualCategory.toUpperCase()];
+    const targetSubType = mapping
+      ? getValidSubType(manualCategory.toUpperCase(), mapping.preferred, mapping.fallbacks)
+      : 'GENERIC';
 
         const injectedAttrs = buildAttributesFromSchema(targetSubType);
 
@@ -710,8 +732,8 @@ const treeData = useMemo(() => {
                 </Row>
                 <div style={{ height: 'calc(80vh - 220px)', overflowY: 'auto', paddingRight: 8 }}>
                     {loadingLibrary ? <div style={{ textAlign: 'center', padding: 100 }}><Spin tip="索引数字孪生资源库中..." /></div> : (
-                        Object.keys(libraryData).filter(sys => currentStepInfo.systems.includes(sys)).map(sys => {
-                            const filtered = libraryData[sys].filter(e => {
+                        Object.entries(libraryData).map(([sys, entities]) => {
+                            const filtered = entities.filter(e => {
                                 const full = e.full_data || {};
                                 const comp = (full.moduleComponets || full.module_componets || full.moduleComponents || full.module_components || [])[0];
                                 
@@ -733,26 +755,13 @@ const treeData = useMemo(() => {
                                 }
 
                                 const rawTypeKey = getModuleType(e);
+                                const normalizedType = normalizeLibraryCategory(e, rawTypeKey);
                                 const rawLower = rawTypeKey.toLowerCase();
                                 const fileName = (e.file_name || '').toLowerCase();
                                 const groupName = (e.moduleGroupName || '').toLowerCase();
                                 const searchStr = rawLower + ' ' + fileName + ' ' + groupName;
-
-                                // ━━━ Normalize IO-board typeKeys into IO_BOARD ━━━
-                                // Source JSONs use 'extendedlnterface' (lowercase l - typo), 'extendedInterface', 'ioModule'
-                                let normalizedType: string;
-                                if (
-                                    rawLower === 'extendedlnterface' || rawLower === 'extendedinterface' ||
-                                    rawLower === 'iomodule' || rawLower === 'safetyiomodule'
-                                ) {
-                                    normalizedType = 'IO_BOARD';
-                                } else if (rawLower === 'safetycontroller') {
-                                    normalizedType = 'CONTROL';
-                                } else if (rawLower === 'powercontroller') {
-                                    normalizedType = 'ENERGYCONTROLLER';
-                                } else {
-                                    normalizedType = rawTypeKey.toUpperCase();
-                                }
+                                const categoryMatch = currentStepInfo.categories.includes(normalizedType);
+                                if (!categoryMatch && !showAllModules) return false;
 
                                 const excludeKws: string[] = (currentStepInfo as any).excludeKeywords || [];
                                 const encoderKws: string[] = (currentStepInfo as any).encoderKeywords || [];
@@ -767,7 +776,11 @@ const treeData = useMemo(() => {
                                 const isDriveWheelModule = normalizedType === 'DRIVEWHEEL' || e.category === 'DRIVEWHEEL';
                                 if (!showAllModules && isDriveWheelModule) {
                                     const driveTarget = config.identity.driveType;
-                                    const subKey = comp?.subModuleTypeKey || '';
+                                    const gen = comp?.generalAttr || comp?.general_attr || {};
+                                    const subKey = comp?.subModuleTypeKey ||
+                                        gen.subModuleType?.comboType?.typeKey ||
+                                        gen.sub_module_type?.combo_type?.type_key ||
+                                        e.subModuleTypeKey || '';
                                     const lowerSub = subKey.toLowerCase();
 
                                     if (driveTarget === 'STANDARD_DIFF') {
@@ -845,7 +858,7 @@ const treeData = useMemo(() => {
                                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                                 <Space size={4}>
                                                                     {(() => {
-                                                                        const eType = getModuleType(entity).toUpperCase();
+                                                                        const eType = normalizeLibraryCategory(entity, getModuleType(entity));
                                                                         return currentStepInfo.categories.includes('LASER') && (config.identity.navigationMethod === 'LASER_SLAM' || config.identity.navigationMethod === 'REFLECTOR') && (eType === 'LASER' || entity.file_name.toLowerCase().includes('laser'));
                                                                     })() && (
                                                                         <Tag color="var(--success)" bordered={false} style={{ fontSize: 9, margin: 0 }}>导航必需参数</Tag>

@@ -1,0 +1,420 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "IO-lnterface board",
+      "desc": "模块名称",
+      "boolParse": true
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "IO-lnterface board",
+      "desc": "模块描述",
+      "boolParse": true
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "13f69b53-86cd-4a0c-a53d-5bca7b73f876",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "extendedlnterface",
+        "typeDesc": "接口扩展模块"
+      },
+      "boolParse": true,
+      "desc": "主类型"
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "extendedlnterface",
+        "typeDesc": "接口扩展模块"
+      },
+      "boolParse": true,
+      "desc": "子类型"
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100
+      }
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ControlSys",
+        "typeDesc": "控制系统"
+      },
+      "boolParse": true,
+      "desc": "子系统"
+    },
+    "moduleType": {
+      "key": "module_type",
+      "type": "DATA_STRING",
+      "stringValue": "IO_BOARD",
+      "desc": "模块型号",
+      "boolParse": true
+    }
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "boardAttr",
+        "desc": "控制板属性",
+        "arrayBaseEle": [
+          {
+            "key": "chipPlatform",
+            "type": "DATA_STRING",
+            "desc": "芯片平台",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "R106"
+          },
+          {
+            "key": "softwareSpec",
+            "type": "DATA_STRING",
+            "desc": "软件规格",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "RA-EI/I-A-18A00BH5"
+          },
+          {
+            "key": "offsetAddress",
+            "type": "DATA_STRING",
+            "desc": "偏移地址拨码",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolMustfill": true,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "stringValue": "0"
+          },
+          {
+            "key": "bipolar",
+            "type": "DATA_COMBOX",
+            "desc": "双极晶体管类型",
+            "unit": "",
+            "boolParse": true,
+            "boolHide": false,
+            "boolBasic": true,
+            "boolMustfill": false,
+            "boolNoeditable": false,
+            "fixedSource": [],
+            "comboType": {
+              "typeKey": "PNP",
+              "typeDesc": "PNP",
+              "typeGroups": [
+                {
+                  "key": "PNP",
+                  "desc": "PNP",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "NPN",
+                  "desc": "NPN",
+                  "arrayCmobEle": []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": []
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "PI_1",
+        "type": "PI",
+        "path": "",
+        "desc": "PI_1",
+        "interfaceUuid": "ba5625cd-d807-4702-a0fc-4b27769e452e",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "CAN_1",
+        "type": "CAN",
+        "path": "",
+        "desc": "CAN_1",
+        "interfaceUuid": "ea59f62f-a902-46ec-a875-0ccdf41cb78a",
+        "linkedInterfaceUuid": [
+          "0d29ca22-e1cb-48a4-9408-c98b4a2df46f"
+        ]
+      },
+      {
+        "key": "DI_1",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_1",
+        "interfaceUuid": "6704ad69-81d0-48d9-875d-8d68168d778b",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_2",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_2",
+        "interfaceUuid": "ec96aab0-b843-4895-bfa8-83e4777037c2",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_3",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_3",
+        "interfaceUuid": "76f2d5fe-044d-4c01-9fdd-34a111c89220",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_4",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_4",
+        "interfaceUuid": "13a915c3-6b26-454a-8933-51ea76653cce",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_5",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_5",
+        "interfaceUuid": "98a74107-7aa7-43e4-8aed-04eecfe21ed0",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_6",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_6",
+        "interfaceUuid": "58eb48bf-dfdb-4d26-9e08-7dafab0bc7a3",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_7",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_7",
+        "interfaceUuid": "8e80b98d-69f1-4f2c-bccd-117fb5ec18d0",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DI_8",
+        "type": "DI",
+        "path": "",
+        "desc": "DI_8",
+        "interfaceUuid": "e60da128-a3e2-46f9-9cf3-ab1e277eee06",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_1",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_1",
+        "interfaceUuid": "673d69db-9551-4e21-a56a-c1abed3127e0",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_2",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_2",
+        "interfaceUuid": "86fe2ff0-53bf-4ca0-9d99-294f945f4054",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_3",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_3",
+        "interfaceUuid": "29341946-ce09-477e-ac38-ab9fec168d85",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_4",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_4",
+        "interfaceUuid": "518fb39e-0825-4640-b81e-d772303c72ae",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_5",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_5",
+        "interfaceUuid": "4cab8acf-bab0-4fef-8463-813f5b0f4053",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_6",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_6",
+        "interfaceUuid": "1ff1dffc-51ad-4f52-9160-439c9a03bb82",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_7",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_7",
+        "interfaceUuid": "d9be7fc2-a432-46ab-b8c9-8378454e250f",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_8",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_8",
+        "interfaceUuid": "263f32cd-fdd2-45f6-b8a1-386a21b4afe9",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_9",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_9",
+        "interfaceUuid": "1fbe228c-3694-4c55-a487-cc614e9593a5",
+        "linkedInterfaceUuid": []
+      },
+      {
+        "key": "DO_10",
+        "type": "DO",
+        "path": "",
+        "desc": "DO_10",
+        "interfaceUuid": "0b8c1482-8c95-4d71-80a3-7e509a0e6cf9",
+        "linkedInterfaceUuid": []
+      }
+    ]
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": null,
+          "typeDesc": ""
+        },
+        "desc": "从属机构"
+      },
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "X坐标"
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Y坐标"
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 9999.0,
+        "doubleMinvalue": -9999.0,
+        "unit": "mm",
+        "desc": "Z坐标"
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "ROLL"
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "PITCH"
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "doubleMaxvalue": 360.0,
+        "doubleMinvalue": -360.0,
+        "unit": "°",
+        "desc": "YAW"
+      }
+    ]
+  },
+  "struct_param": {
+    "extend_params": [
+      {
+        "key": "locCoordX",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordY",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordZ",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordROLL",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordPITCH",
+        "double_value": 0
+      },
+      {
+        "key": "locCoordYAW",
+        "double_value": 0
+      }
+    ]
+  }
+}

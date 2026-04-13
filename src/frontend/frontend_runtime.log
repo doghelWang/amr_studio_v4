@@ -156,3 +156,132 @@
 [2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/ChassisStep.tsx[22m
 [2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/WiringStep.tsx[22m
 [2m9:34:52 AM[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m124[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://100.64.0.2:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.217:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+[2m10:41:23[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+[2m10:41:39[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+[2m12:21:51[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+[2m12:22:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/AbilityStep.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m235[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://100.64.0.2:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://100.64.0.1:[1m3001[22m/[39m
+[2m08:37:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m08:37:42[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m08:37:42[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts[39m:334:10
+[33m  
+  [33mExpected ";" but found "funcKey"[33m
+  332|      return mapping[type] || type;
+  333|    }
+  334|      const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
+     |            ^
+  335|      if (!json || !json[funcKey]) return abilityRegistry as any;
+  336|      return {
+  [39m
+      at failureErrorWithLog (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:1472:15)
+      at /Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:755:50
+      at responseCallbacks.<computed> (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:622:9)
+      at handleIncomingPacket (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:677:12)
+      at Socket.readFromStdout (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:600:7)
+      at Socket.emit (node:events:519:28)
+      at addChunk (node:internal/streams/readable:561:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+      at Readable.push (node:internal/streams/readable:392:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m08:37:42[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m08:46:00[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m08:46:58[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m08:47:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/wizard/RecursiveAttributeEditor.tsx[22m
+[2m08:58:37[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m08:58:37[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m08:58:37[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts[39m:334:10
+[33m  
+  [33mExpected ";" but found "funcKey"[33m
+  332|      return mapping[type] || type;
+  333|    }
+  334|      const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
+     |            ^
+  335|      if (!json || !json[funcKey]) return abilityRegistry as any;
+  336|      return {
+  [39m
+      at failureErrorWithLog (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:1472:15)
+      at /Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:755:50
+      at responseCallbacks.<computed> (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:622:9)
+      at handleIncomingPacket (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:677:12)
+      at Socket.readFromStdout (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:600:7)
+      at Socket.emit (node:events:519:28)
+      at addChunk (node:internal/streams/readable:561:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+      at Readable.push (node:internal/streams/readable:392:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m08:58:37[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m08:59:42[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m08:59:42[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m08:59:42[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36m/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts[39m:334:10
+[33m  
+  [33mExpected ";" but found "funcKey"[33m
+  332|      return mapping[type] || type;
+  333|    }
+  334|      const funcKey = json.functionAbility ? "functionAbility" : "function_ability";
+     |            ^
+  335|      if (!json || !json[funcKey]) return abilityRegistry as any;
+  336|      return {
+  [39m
+      at failureErrorWithLog (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:1472:15)
+      at /Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:755:50
+      at responseCallbacks.<computed> (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:622:9)
+      at handleIncomingPacket (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:677:12)
+      at Socket.readFromStdout (/Users/wangfeifei/code/amr_studio_v4/src/frontend/node_modules/esbuild/lib/main.js:600:7)
+      at Socket.emit (node:events:519:28)
+      at addChunk (node:internal/streams/readable:561:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+      at Readable.push (node:internal/streams/readable:392:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m08:59:42[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m09:02:11[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/AbilityStep.tsx, /src/components/wizard/IdentityStep.tsx, /src/components/wizard/MountingStep.tsx, /src/components/wizard/ComponentLibraryStep.tsx, /src/components/wizard/AuditStep.tsx, /src/components/wizard/ChassisStep.tsx, /src/components/wizard/WiringStep.tsx, /src/components/visualizer/CoordinateVisualizer.tsx, /src/components/wizard/PowerTopologyPanel.tsx, /src/components/wizard/ComponentPropertyPanel.tsx, /src/components/wizard/PowerSystemStep.tsx[22m
+[2m09:02:11[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m09:02:11[22m [31m[1m[vite][22m[39m Pre-transform error: Transform failed with 1 error:
+/Users/wangfeifei/code/amr_studio_v4/src/frontend/src/store/ImportService.ts:334:10: ERROR: Expected ";" but found "funcKey"
+[2m09:10:07[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m09:10:45[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m09:16:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m09:19:31[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m09:21:44[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+[2m09:22:21[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/components/wizard/ComponentLibraryStep.tsx[22m
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m160[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.147:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://100.64.0.2:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://192.168.100.242:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://198.18.0.1:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://100.64.0.1:[1m3001[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://169.254.42.242:[1m3001[22m/[39m

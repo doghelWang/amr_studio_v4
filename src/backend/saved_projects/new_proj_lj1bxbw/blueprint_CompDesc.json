@@ -1,0 +1,16 @@
+{
+  "moduleGroupName": "e2e_ui_amr_fixed",
+  "modelVersion": "",
+  "moreModuleInfo": [
+    {
+      "moduleGroupName": "chassis_diff",
+      "moduleGroupUuid": "chassis-root",
+      "module_componets": [
+        {
+          "$ref": "modules/module_chassis_diff_chassis-root.json"
+        }
+      ],
+      "moreModuleInfo": []
+    }
+  ]
+}

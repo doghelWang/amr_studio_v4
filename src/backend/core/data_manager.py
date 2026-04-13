@@ -85,7 +85,11 @@ def deep_update(d, u, path="root"):
                         continue
             
             # Normal recursion
-            deep_update(d.get(k, {}), v, curr_path)
+            existing = d.get(k)
+            if not isinstance(existing, collections.abc.Mapping):
+                existing = {}
+                d[k] = existing
+            deep_update(existing, v, curr_path)
             
         # 3. Handle Leaf values
         else:

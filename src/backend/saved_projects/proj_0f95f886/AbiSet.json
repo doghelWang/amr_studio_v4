@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "functionAbility": [
+    {
+      "type": "locationAbility",
+      "desc": "\u5b9a\u4f4d\u80fd\u529b",
+      "childFunction": [
+        {
+          "type": "navi",
+          "desc": "\u5bfc\u822a",
+          "key": "navi_0",
+          "attr": [
+            {
+              "key": "naviUniqueKey",
+              "type": "COMBOX_E",
+              "cloneEnable": false
+            }
+          ],
+          "tips": "",
+          "cloneEnable": false
+        }
+      ],
+      "tips": ""
+    },
+    {
+      "type": "sensoryRecoAbi",
+      "desc": "\u611f\u77e5\u8bc6\u522b",
+      "childFunction": [
+        {
+          "type": "codeRec",
+          "desc": "\u7801\u8bc6\u522b",
+          "key": "codeRec_0",
+          "attr": [
+            {
+              "key": "codeRecUniqueKey",
+              "type": "COMBOX_E",
+              "cloneEnable": false
+            }
+          ],
+          "tips": "",
+          "cloneEnable": false
+        }
+      ],
+      "tips": ""
+    }
+  ],
+  "componentAbility": []
+}

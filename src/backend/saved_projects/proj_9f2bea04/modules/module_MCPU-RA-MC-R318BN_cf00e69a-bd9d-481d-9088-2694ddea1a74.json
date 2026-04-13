@@ -1,0 +1,715 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "MCPU-RA-MC-R318BN",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "MCPU-RA-MC-R318BN",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "cf00e69a-bd9d-481d-9088-2694ddea1a74",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "ControlSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "mainCPU",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "mainCPU",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "boolDeprecated": false,
+    "extendParams": []
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "boardAttr",
+        "desc": "控制板属性",
+        "arrayBaseEle": [
+          {
+            "key": "chipPlatform",
+            "type": "DATA_STRING",
+            "stringValue": "R318",
+            "desc": "芯片平台",
+            "boolParse": true,
+            "boolHide": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "softwareSpec",
+            "type": "DATA_STRING",
+            "stringValue": "RA-MC-R318BN",
+            "desc": "软件规格",
+            "boolParse": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "isWithGyro",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "yes",
+              "typeDesc": "是",
+              "typeGroups": [
+                {
+                  "key": "no",
+                  "desc": "否",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "yes",
+                  "desc": "是",
+                  "arrayCmobEle": [
+                    {
+                      "key": "GyroX",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载陀螺仪X坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "GyroY",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载陀螺仪Y坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "GyroZ",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载陀螺仪Z坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "GyroRoll",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载陀螺仪翻滚角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "GyroPitch",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载陀螺仪俯仰角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "GyroYaw",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载陀螺仪偏航角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    }
+                  ]
+                }
+              ]
+            },
+            "desc": "是否有板载陀螺仪",
+            "boolParse": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          },
+          {
+            "key": "isWithUpCamera",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "no",
+              "typeDesc": "否",
+              "typeGroups": [
+                {
+                  "key": "no",
+                  "desc": "否",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "yes",
+                  "desc": "是",
+                  "arrayCmobEle": [
+                    {
+                      "key": "UpCameraX",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载上读码头X坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "UpCameraY",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载上读码头Y坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "UpCameraZ",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载上读码头Z坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "UpCameraRoll",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载上读码头翻滚角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "UpCameraPitch",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载上读码头俯仰角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "UpCameraYaw",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载上读码头偏航角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    }
+                  ]
+                }
+              ]
+            },
+            "desc": "是否有板载上读码头",
+            "boolParse": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          },
+          {
+            "key": "isWithDownCamera",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "no",
+              "typeDesc": "否",
+              "typeGroups": [
+                {
+                  "key": "no",
+                  "desc": "否",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "yes",
+                  "desc": "是",
+                  "arrayCmobEle": [
+                    {
+                      "key": "DownCameraX",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载下读码头X坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "DownCameraY",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载下读码头Y坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "DownCameraZ",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "mm",
+                      "desc": "板载下读码头Z坐标(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "DownCameraRoll",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载下读码头翻滚角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "DownCameraPitch",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载下读码头俯仰角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    },
+                    {
+                      "key": "DownCameraYaw",
+                      "type": "DATA_DOUBLE",
+                      "doubleValue": 0.0,
+                      "unit": "°",
+                      "desc": "板载下读码头偏航角(相对主板)",
+                      "boolParse": true,
+                      "boolHide": true,
+                      "boolMustfill": true,
+                      "boolBasic": true,
+                      "boolNoeditable": false,
+                      "fixedSource": []
+                    }
+                  ]
+                }
+              ]
+            },
+            "desc": "是否有板载下读码头",
+            "boolParse": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [
+      {
+        "busInterfaceType": "CAN",
+        "busInterfaceNums": 3,
+        "busInterfaceSubType": "",
+        "boolDeprecated": false
+      },
+      {
+        "busInterfaceType": "SERIAL",
+        "busInterfaceNums": 4,
+        "busInterfaceSubType": "",
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [
+      {
+        "key": "CAN_1",
+        "type": "CAN",
+        "desc": "CAN_1",
+        "interfaceUuid": "0d29ca22-e1cb-48a4-9408-c98b4a2df46f",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "CAN_2",
+        "type": "CAN",
+        "desc": "CAN_2",
+        "interfaceUuid": "3ec1d9f4-577e-4d63-b85d-ff84737ee4f4",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "CAN_3",
+        "type": "CAN",
+        "desc": "CAN_3",
+        "interfaceUuid": "8442add7-2e7c-4cf5-b8bc-575cc1927000",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "uart0",
+        "type": "SERIAL",
+        "desc": "uart0",
+        "interfaceUuid": "1bcc5c26-7140-495f-ae97-b05e6ad07a60",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "uart1",
+        "type": "SERIAL",
+        "desc": "uart1",
+        "interfaceUuid": "ad910426-5856-4774-9652-93a04ca4ea08",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "RS485_1",
+        "type": "SERIAL",
+        "desc": "RS485_1",
+        "interfaceUuid": "ce33ea92-1e3c-4af8-b4f4-f5c81bb27a08",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "RS485_2",
+        "type": "SERIAL",
+        "desc": "RS485_2",
+        "interfaceUuid": "ea9eb552-23de-4d7d-a162-543032342cb1",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "ETH_1",
+        "type": "ETH",
+        "desc": "以太网口 1",
+        "interfaceUuid": "e723436e-4f18-4378-b4d0-7c1b8423edb6",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "ETH_2",
+        "type": "ETH",
+        "desc": "以太网口 2",
+        "interfaceUuid": "9df042a6-d06c-4cd8-b510-57d6a8e6f374",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "ETH_3",
+        "type": "ETH",
+        "desc": "以太网口 3",
+        "interfaceUuid": "10fcdbf1-4dfe-4b77-a05e-97cf15fe7714",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      },
+      {
+        "key": "ETH_4",
+        "type": "ETH",
+        "desc": "以太网口 4",
+        "interfaceUuid": "85a96e00-9f6e-418e-9892-22f09200eb52",
+        "path": "",
+        "linkedInterfaceUuid": [],
+        "linkAttrs": [],
+        "boolDeprecated": false
+      }
+    ],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "X坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Y坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Z坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "ROLL",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "PITCH",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "YAW",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "",
+          "typeDesc": "",
+          "typeGroups": []
+        },
+        "desc": "父节点UUID",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}

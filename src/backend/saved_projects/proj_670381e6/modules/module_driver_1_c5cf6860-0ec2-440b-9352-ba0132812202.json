@@ -1,0 +1,390 @@
+{
+  "generalAttr": {
+    "moduleName": {
+      "key": "module_name",
+      "type": "DATA_STRING",
+      "stringValue": "driver_1",
+      "desc": "模块名称",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleDesc": {
+      "key": "module_desc",
+      "type": "DATA_STRING",
+      "stringValue": "driver_1",
+      "desc": "模块描述",
+      "boolParse": true,
+      "unit": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleUuid": {
+      "key": "module_uuid",
+      "type": "DATA_STRING",
+      "stringValue": "c5cf6860-0ec2-440b-9352-ba0132812202",
+      "desc": "模块Uuid",
+      "boolParse": true,
+      "boolHide": true,
+      "unit": "",
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "versionInfo": {
+      "key": "version_info",
+      "type": "DATA_STRING",
+      "stringValue": "V1.0",
+      "desc": "版本信息",
+      "boolParse": true,
+      "boolNoeditable": true,
+      "unit": "",
+      "boolHide": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subSysType": {
+      "key": "sub_sys_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "DriverSys",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "mainModuleType": {
+      "key": "main_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driver",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "subModuleType": {
+      "key": "sub_module_type",
+      "type": "DATA_COMBOX",
+      "comboType": {
+        "typeKey": "driver",
+        "typeDesc": "",
+        "typeGroups": []
+      },
+      "boolParse": true,
+      "unit": "",
+      "desc": "",
+      "boolHide": false,
+      "boolNoeditable": false,
+      "boolMustfill": false,
+      "boolBasic": false,
+      "fixedSource": []
+    },
+    "moduleShape": {
+      "shapeType": "ENUM_BOX",
+      "box": {
+        "sizeLen": 100,
+        "sizeWidth": 100,
+        "sizeHeight": 100,
+        "boolDeprecated": false
+      },
+      "boolDeprecated": false
+    },
+    "boolDeprecated": false,
+    "extendParams": []
+  },
+  "privateAttr": {
+    "privateAttrs": [
+      {
+        "key": "boardAttr",
+        "desc": "控制板属性",
+        "arrayBaseEle": [
+          {
+            "key": "chipPlatform",
+            "type": "DATA_STRING",
+            "stringValue": "R131",
+            "desc": "芯片平台",
+            "boolParse": true,
+            "boolHide": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "softwareSpec",
+            "type": "DATA_STRING",
+            "stringValue": "NONE",
+            "desc": "软件规格",
+            "boolParse": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "inputVoltage",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 24.0,
+            "unit": "V",
+            "desc": "输入电压",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          },
+          {
+            "key": "inputCurrent",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 0.5,
+            "unit": "A",
+            "desc": "输入电流",
+            "boolParse": true,
+            "boolHide": true,
+            "boolBasic": true,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          },
+          {
+            "key": "overloadCapacity",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 1.5,
+            "unit": "倍",
+            "desc": "过载能力",
+            "boolParse": true,
+            "boolHide": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "overloadTime",
+            "type": "DATA_DOUBLE",
+            "doubleValue": 3.0,
+            "unit": "S",
+            "desc": "过载时长",
+            "boolParse": true,
+            "boolHide": true,
+            "boolMustfill": true,
+            "boolBasic": true,
+            "boolNoeditable": false,
+            "fixedSource": []
+          },
+          {
+            "key": "type",
+            "type": "DATA_COMBOX",
+            "comboType": {
+              "typeKey": "MOTOR_SERVO_TYPE_AUTO",
+              "typeDesc": "伺服自动获取",
+              "typeGroups": [
+                {
+                  "key": "HYD_DRIVER_TYPE",
+                  "desc": "液压驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_AUTO",
+                  "desc": "伺服自动获取",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_STANDARD",
+                  "desc": "标准CANOPEN驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_ELMO",
+                  "desc": "ELMO驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_HIK",
+                  "desc": "自研驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_SENCHUANG",
+                  "desc": "森创驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_CURTIS",
+                  "desc": "柯蒂斯驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_ZAPI",
+                  "desc": "zapi驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_KINCO",
+                  "desc": "步科驱动器",
+                  "arrayCmobEle": []
+                },
+                {
+                  "key": "MOTOR_SERVO_TYPE_SIHENG",
+                  "desc": "四宏(横)电机",
+                  "arrayCmobEle": []
+                }
+              ]
+            },
+            "desc": "驱动类型",
+            "boolParse": true,
+            "boolBasic": true,
+            "unit": "",
+            "boolHide": false,
+            "boolNoeditable": false,
+            "boolMustfill": false,
+            "fixedSource": []
+          }
+        ],
+        "boolDeprecated": false
+      }
+    ],
+    "boolDeprecated": false
+  },
+  "interfaceAbility": {
+    "busInterfaceAbility": [],
+    "boolDeprecated": false
+  },
+  "interfaceParams": {
+    "interfaceGroup": [],
+    "nodePosX": 0.0,
+    "nodePosY": 0.0,
+    "boolDeprecated": false
+  },
+  "structParam": {
+    "extendParams": [
+      {
+        "key": "locCoordX",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "X坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordY",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Y坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordZ",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "Z坐标",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordROLL",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "ROLL",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordPITCH",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "PITCH",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "locCoordYAW",
+        "type": "DATA_DOUBLE",
+        "doubleValue": 0.0,
+        "desc": "YAW",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      },
+      {
+        "key": "parentNodeUuid",
+        "type": "DATA_COMBOX",
+        "comboType": {
+          "typeKey": "beb5415d-dc93-43fd-9b1b-afda2d904b0a",
+          "typeDesc": "",
+          "typeGroups": []
+        },
+        "desc": "父节点UUID",
+        "unit": "",
+        "boolParse": false,
+        "boolHide": false,
+        "boolNoeditable": false,
+        "boolMustfill": false,
+        "boolBasic": false,
+        "fixedSource": []
+      }
+    ],
+    "segmentedLimitsParams": [],
+    "boolDeprecated": false
+  },
+  "boolDeprecated": false,
+  "boolDisable": false
+}
