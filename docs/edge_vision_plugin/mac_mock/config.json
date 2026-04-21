@@ -1,0 +1,60 @@
+{
+  "runtime": {
+    "default_timeout_seconds": 5,
+    "soft_timeout_seconds": 4.5,
+    "heartbeat_interval_seconds": 1,
+    "poll_interval_seconds": 0.2,
+    "simulate_host_callback": true
+  },
+  "resource_contract": {
+    "cpu": {
+      "max_cores": 1,
+      "affinity_enabled": false,
+      "affinity_cores": [],
+      "nice": 10,
+      "thread_limits": {
+        "omp": 1,
+        "openblas": 1,
+        "mkl": 1,
+        "opencv": 1
+      }
+    },
+    "memory": {
+      "limit_mb": 1024,
+      "high_watermark_mb": 900
+    },
+    "io": {
+      "max_inflight_frames": 5,
+      "max_frame_bytes": 8388608
+    }
+  },
+  "task": {
+    "task_id": "task_mock_001",
+    "object_id": "target_a",
+    "object_type": "box",
+    "multi_frame_count": 5
+  },
+  "scenarios": {
+    "success": {
+      "work_duration_seconds": 3,
+      "result": {
+        "x": 123.4,
+        "y": 52.1,
+        "z": 18.7,
+        "yaw": 91.2,
+        "confidence": 0.93,
+        "message": "ok"
+      }
+    },
+    "fail": {
+      "fail_after_seconds": 2,
+      "error_code": "E3001",
+      "message": "simulated algorithm failure"
+    },
+    "timeout": {
+      "work_duration_seconds": 8,
+      "error_code": "E4001",
+      "message": "worker exceeded the timeout budget"
+    }
+  }
+}
