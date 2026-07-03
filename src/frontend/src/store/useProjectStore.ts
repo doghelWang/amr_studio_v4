@@ -77,7 +77,8 @@ const createDefaultProjectConfig = (): RobotConfig => {
   return syncChassisAttributes({
     identity,
     components: [createDefaultChassis(identity)],
-    abilities: abilityRegistry as any
+    abilities: abilityRegistry as any,
+    functions: { version: 'V1.0', function: [] }
   });
 };
 
