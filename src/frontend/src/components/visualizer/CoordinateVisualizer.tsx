@@ -446,7 +446,7 @@ const renderComponentMarker = (
 };
 
 const ViewRenderer: React.FC<ViewProps> = ({ type, width, height, components, identity, activeId, onSelect, theme }) => {
-  const isDark = theme !== 'industrial';
+  const isDark = theme !== 'light' && theme !== 'industrial';
   const colors = getThemeColors(isDark);
 
   const { chassisLength = 1200, chassisWidth = 800, chassisHeight = 400 } = identity;
@@ -576,7 +576,7 @@ export const CoordinateVisualizer: React.FC<CoordinateVisualizerProps> = ({
   const [dimensions, setDimensions] = useState({ width: 800, height: 500 });
   const [activeView, setActiveView] = useState<'iso' | 'top'>('iso');
 
-  const currentTheme = document.documentElement.getAttribute('data-theme') || 'cyber';
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
 
   useEffect(() => {
     const updateDimensions = () => {

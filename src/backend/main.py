@@ -175,6 +175,12 @@ async def update_component_api(project_id: str, module_uuid: str, request: Reque
 def get_abilities_api(project_id: str):
     return data_manager.get_ability(project_id) or {}
 
+
+@app.get("/api/v1/models/{project_id}/functions")
+def get_functions_api(project_id: str):
+    return data_manager.get_function(project_id) or {}
+
+
 @app.patch("/api/v1/models/{project_id}/abilities")
 async def update_abilities_api(project_id: str, request: Request):
     try:

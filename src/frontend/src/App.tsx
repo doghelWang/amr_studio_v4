@@ -11,7 +11,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { message } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
-    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined,
+    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined, SettingOutlined,
 } from '@ant-design/icons';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
@@ -23,6 +23,7 @@ import axios from 'axios';
 
 import { 
     apiFetchAbilities, 
+    apiFetchFunctions,
     apiUpdateAbilities, 
     apiUpdateComponent,
     apiFetchComponentDetails,
@@ -33,6 +34,7 @@ import { IdentityStep } from './components/wizard/IdentityStep';
 import { ChassisStep } from './components/wizard/ChassisStep';
 import { ComponentLibraryStep } from './components/wizard/ComponentLibraryStep';
 import { MountingStep } from './components/wizard/MountingStep';
+import { ElectricalInterfaceMatrixStep } from './components/wizard/ElectricalInterfaceMatrixStep';
 import { WiringStep } from './components/wizard/WiringStep';
 import { AbilityStep } from './components/wizard/AbilityStep';
 import { AuditStep } from './components/wizard/AuditStep';
@@ -47,14 +49,15 @@ const STEPS = [
     { key: 'chassis',    label: '底盘与动力', icon: <BuildOutlined />,        desc: '尺寸 & 动力' },
     { key: 'components', label: '电气装配',  icon: <AppstoreOutlined />,     desc: '核心 & 感知' },
     { key: 'mounting',   label: '安装坐标',  icon: <AimOutlined />,          desc: '6-DOF 位姿' },
-    { key: 'wiring',     label: '接口连线',  icon: <ApiOutlined />,          desc: '通信连接' },
-    { key: 'abilities',  label: '功能映射',  icon: <ThunderboltOutlined />,  desc: '能力配置' },
+    { key: 'interfaces', label: '接口参数',  icon: <SettingOutlined />,      desc: '电气接口矩阵' },
+    { key: 'wiring',     label: '电气拓扑',  icon: <ApiOutlined />,          desc: '总线接口连线' },
+    { key: 'abilities',  label: '能力过程',  icon: <ThunderboltOutlined />,  desc: '功能算法映射' },
     { key: 'audit',      label: '审计导出',  icon: <AuditOutlined />,        desc: '校验 & 导出' },
 ];
 
 const STEP_COMPONENTS = [
     IdentityStep, ChassisStep, ComponentLibraryStep,
-    MountingStep, WiringStep, AbilityStep, AuditStep,
+    MountingStep, ElectricalInterfaceMatrixStep, WiringStep, AbilityStep, AuditStep,
 ];
 
 const getBackendUrl = () => {
@@ -162,9 +165,20 @@ export default function App() {
                 printAudit(`Import [${pId}]`, res.data.audit);
                 const abilitiesRaw = await apiFetchAbilities(pId);
                 const abilities = ImportService.parseAbilities(abilitiesRaw);
+                let functionsRaw = null;
+                try {
+                    functionsRaw = await apiFetchFunctions(pId);
+                } catch (e) {
+                    console.error('Failed to fetch functions:', e);
+                }
                 const { schemaRegistry } = useProjectStore.getState();
                 const parsed = ImportService.parseCompDesc(res.data.full_json, schemaRegistry);
-                const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
+                const fullConfig: any = { 
+                    identity: parsed.identity, 
+                    components: parsed.components, 
+                    abilities,
+                    functions: functionsRaw || { version: 'V1.0', function: [] }
+                };
                 setProjectId(pId);
                 loadProject(fullConfig);
                 messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });

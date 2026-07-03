@@ -120,10 +120,14 @@ export interface RobotIdentity {
     maxSpeedFull?: number;
     maxAccelFull?: number;
     maxDecelFull?: number;
+    maxRotSpeedFull?: number;
+    maxRotAccelFull?: number;
     avoidMaxDec?: number;
     avoidMaxDecFull?: number;
     rotateMaxAngSpeed?: number;
+    rotateMaxAngSpeedFull?: number;
     rotateMaxAngAcceleration?: number;
+    rotateMaxAngAccelerationFull?: number;
 }
 export interface AbilityAttribute extends SmartAttribute {
     tips?: string;
@@ -177,6 +181,7 @@ export interface RobotConfig {
     identity: RobotIdentity;
     components: ComponentConfig[];
     abilities: ControllerAbility;
+    functions?: any;
 }
 export interface ProjectMeta {
     projectId: string;
@@ -192,4 +197,22 @@ export interface ValidationIssue {
     message: string;
     nodeId?: string;
 }
+export type ElectricalConnectionKind = 'communication_bus' | 'io_signal' | 'power' | 'onboard' | 'audio_video' | 'unknown';
+export interface ElectricalConnection {
+    id: string;
+    kind: ElectricalConnectionKind;
+    interfaceType: string;
+    sourceComponentId: string;
+    sourceComponentName: string;
+    sourceInterfaceUuid: string;
+    sourceInterfaceKey: string;
+    targetComponentId: string;
+    targetComponentName: string;
+    targetInterfaceUuid: string;
+    targetInterfaceKey: string;
+    direction: 'source_to_target' | 'target_to_source' | 'bidirectional' | 'unknown';
+    diagnostics: string[];
+}
+export declare const getInterfaceKind: (type: string) => ElectricalConnectionKind;
+export declare const buildConnections: (components: ComponentConfig[]) => ElectricalConnection[];
 //# sourceMappingURL=types.d.ts.map
