@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
-export type ThemeMode = 'cyber' | 'industrial';
+export type ThemeMode = 'dark' | 'light';
 
 interface ThemeContextType {
   theme: ThemeMode;
@@ -13,14 +13,16 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<ThemeMode>(() => {
     if (typeof window !== 'undefined') {
-      return (localStorage.getItem('amr-theme') as ThemeMode) || 'cyber';
+      const savedTheme = localStorage.getItem('amr-theme');
+      if (savedTheme === 'industrial' || savedTheme === 'light') return 'light';
+      if (savedTheme === 'cyber' || savedTheme === 'dark') return 'dark';
     }
-    return 'cyber';
+    return 'dark';
   });
 
   useEffect(() => {
-    // Apply theme class to document
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.style.colorScheme = theme;
     localStorage.setItem('amr-theme', theme);
   }, [theme]);
 
@@ -29,7 +31,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   };
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'cyber' ? 'industrial' : 'cyber');
+    setThemeState(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
   return (

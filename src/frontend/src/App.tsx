@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { message } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
-    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined,
+    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined, SettingOutlined,
 } from '@ant-design/icons';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
@@ -21,9 +21,10 @@ import { ImportService } from './store/ImportService';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import axios from 'axios';
 
-import { 
-    apiFetchAbilities, 
-    apiUpdateAbilities, 
+import {
+    apiFetchAbilities,
+    apiFetchFunctions,
+    apiUpdateAbilities,
     apiUpdateComponent,
     apiFetchComponentDetails,
     apiInitSandbox
@@ -33,6 +34,7 @@ import { IdentityStep } from './components/wizard/IdentityStep';
 import { ChassisStep } from './components/wizard/ChassisStep';
 import { ComponentLibraryStep } from './components/wizard/ComponentLibraryStep';
 import { MountingStep } from './components/wizard/MountingStep';
+import { ElectricalInterfaceMatrixStep } from './components/wizard/ElectricalInterfaceMatrixStep';
 import { WiringStep } from './components/wizard/WiringStep';
 import { AbilityStep } from './components/wizard/AbilityStep';
 import { AuditStep } from './components/wizard/AuditStep';
@@ -48,20 +50,21 @@ const STEPS = [
     { key: 'chassis',    label: '底盘与动力', icon: <BuildOutlined />,        desc: '尺寸 & 动力' },
     { key: 'components', label: '电气装配',  icon: <AppstoreOutlined />,     desc: '核心 & 感知' },
     { key: 'mounting',   label: '安装坐标',  icon: <AimOutlined />,          desc: '6-DOF 位姿' },
-    { key: 'wiring',     label: '接口连线',  icon: <ApiOutlined />,          desc: '通信连接' },
-    { key: 'abilities',  label: '功能映射',  icon: <ThunderboltOutlined />,  desc: '能力配置' },
+    { key: 'interfaces', label: '接口参数',  icon: <SettingOutlined />,      desc: '电气接口矩阵' },
+    { key: 'wiring',     label: '电气拓扑',  icon: <ApiOutlined />,          desc: '总线接口连线' },
+    { key: 'abilities',  label: '能力过程',  icon: <ThunderboltOutlined />,  desc: '功能算法映射' },
     { key: 'audit',      label: '审计导出',  icon: <AuditOutlined />,        desc: '校验 & 导出' },
 ];
 
 const STEP_COMPONENTS = [
     IdentityStep, ChassisStep, ComponentLibraryStep,
-    MountingStep, WiringStep, AbilityStep, AuditStep,
+    MountingStep, ElectricalInterfaceMatrixStep, WiringStep, AbilityStep, AuditStep,
 ];
 
 export default function App() {
-    const { 
+    const {
         config, isDirty, loadProject, resetProject, projectId, setProjectId, fetchSchemas,
-        saveProject, listSavedProjects, loadProjectByName 
+        saveProject, listSavedProjects, loadProjectByName
     } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
@@ -96,7 +99,7 @@ export default function App() {
         return subscribeBackendBaseChange(handleBackendChange);
     }, [fetchSchemas, handleBackendChange, refreshBackendStatus]);
     const importRef = useRef<HTMLInputElement>(null);
-    
+
     // 欢迎屏幕控制：首屏加载或主动切换时显示
     const [showWelcome, setShowWelcome] = useState(true);
 
@@ -106,11 +109,11 @@ export default function App() {
     useEffect(() => {
         const handler = (e: KeyboardEvent) => {
             const mod = e.metaKey || e.ctrlKey;
-            
+
             // Undo/Redo
             if (mod && e.key === 'z' && !e.shiftKey && canUndo) { e.preventDefault(); undo(); }
             if (mod && e.shiftKey && e.key === 'z' && canRedo) { e.preventDefault(); redo(); }
-            
+
             // Save: Ctrl+S
             if (mod && e.key === 's') {
                 e.preventDefault();
@@ -141,7 +144,7 @@ export default function App() {
         console.groupEnd();
     };
 
-    /** 
+    /**
      * 处理配置导入：
      * 1. 上传文件到后端解压。
      * 2. 获取解析后的 JSON。
@@ -163,16 +166,27 @@ export default function App() {
                 printAudit(`Import [${pId}]`, res.data.audit);
                 const abilitiesRaw = await apiFetchAbilities(pId);
                 const abilities = ImportService.parseAbilities(abilitiesRaw);
+                let functionsRaw = null;
+                try {
+                    functionsRaw = await apiFetchFunctions(pId);
+                } catch (e) {
+                    console.error('Failed to fetch functions:', e);
+                }
                 const { schemaRegistry } = useProjectStore.getState();
                 const parsed = ImportService.parseCompDesc(res.data.full_json, schemaRegistry);
-                const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
+                const fullConfig: any = {
+                    identity: parsed.identity,
+                    components: parsed.components,
+                    abilities,
+                    functions: functionsRaw || { version: 'V1.0', function: [] }
+                };
                 setProjectId(pId);
                 loadProject(fullConfig);
                 messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
             }
-        } catch (err) { 
+        } catch (err) {
             console.error('Import Error:', err);
-            messageApi.error({ content: '导入失败', key: 'import' }); 
+            messageApi.error({ content: '导入失败', key: 'import' });
         } finally {
             if (!(e instanceof File) && e.target) e.target.value = '';
         }
@@ -182,7 +196,7 @@ export default function App() {
         resetProject();
         // [FIX] Generate a local projectId so handleExport doesn't fail with "请先导入"
         const newId = `new_proj_${Math.random().toString(36).substring(2, 9)}`;
-        setProjectId(newId); 
+        setProjectId(newId);
         setStep(0);
         setShowWelcome(false);
     };
@@ -216,7 +230,7 @@ export default function App() {
 
     const handleExport = async () => {
         let currentProjectId = projectId;
-        
+
         if (!currentProjectId) {
             const name = config.identity.robotName || 'Draft';
             const safeName = name.replace(/[^a-z0-9]/gi, '_').toLowerCase();
@@ -235,19 +249,19 @@ export default function App() {
             console.log('[DEBUG] 1. Init Sandbox Response:', initRes);
 
             messageApi.loading({ content: '正在同步配置...', key: 'export', duration: 0 });
-            
+
             // Sync Abilities
             if (config.abilities?.functionAbility?.length > 0) {
                 const mappedAbilities = ExportService.exportAbilities(config.abilities);
                 const abiRes = await apiUpdateAbilities(currentProjectId, mappedAbilities);
                 console.error('2. Ability Sync Response:', abiRes);
             }
-            
+
             // Sync Chassis
             const chassis = config.components.find(c => c.category === 'CHASSIS');
             if (chassis) {
                 const chassisUpdate = {
-                    general_attr: { 
+                    general_attr: {
                         module_name: { string_value: config.identity.robotName },
                         module_shape: { shape_type: 'ENUM_BOX', box: { size_len: config.identity.chassisLength, size_width: config.identity.chassisWidth, size_height: config.identity.chassisHeight } }
                     }
@@ -271,10 +285,10 @@ export default function App() {
             const activeBackend = getBackendBase();
             const res = await axios.post(`${activeBackend}/api/v1/models/${currentProjectId}/compile`);
             console.log('[DEBUG] 6. Final Compile Response:', res.data);
-            
+
             if (res.data.status === 'success') {
                 printAudit(`Export [${currentProjectId}]`, res.data.audit);
-                
+
                 // 1. Download .cmodel
                 const linkModel = document.createElement('a');
                 linkModel.href = `${activeBackend}${res.data.download_url}`;
@@ -300,14 +314,14 @@ export default function App() {
                 console.error('[DEBUG] Build failed with non-success status:', res.data);
                 throw new Error(res.data.detail || 'Build script returned error');
             }
-        } catch (err: any) { 
+        } catch (err: any) {
             console.error('%c ❌ Build Error Details:', 'color: #ff4d4f; font-weight: bold;');
             console.error('Status:', err.response?.status);
             console.error('Server Data:', err.response?.data);
             console.error('Full Error Object:', err);
-            
+
             const serverMsg = err.response?.data?.detail || err.message || 'Unknown error';
-            messageApi.error({ content: `构建失败: ${serverMsg}`, key: 'export' }); 
+            messageApi.error({ content: `构建失败: ${serverMsg}`, key: 'export' });
         } finally {
             console.groupEnd();
         }
@@ -336,9 +350,9 @@ export default function App() {
     return (
         <div className="app-layout">
             {contextHolder}
-            
+
             {/* 侧边导航 */}
-            <Sidebar 
+            <Sidebar
                 steps={STEPS}
                 currentStep={currentStep}
                 onStepChange={setStep}
@@ -352,7 +366,7 @@ export default function App() {
 
             <main className="app-main">
                 {/* 顶部工具栏 */}
-                <Header 
+                <Header
                     currentStep={currentStep}
                     stepLabel={currentStepInfo.label}
                     stepDesc={currentStepInfo.desc}
@@ -372,11 +386,11 @@ export default function App() {
                 </div>
 
                 {/* 隐藏的导入 Input */}
-                <input 
+                <input
                     id="cmodel-import-input"
-                    type="file" 
-                    ref={importRef} 
-                    style={{ display: 'none' }} 
+                    type="file"
+                    ref={importRef}
+                    style={{ display: 'none' }}
                     accept=".cmodel,.json"
                     onChange={(e) => handleImport(e)}
                 />
@@ -384,4 +398,3 @@ export default function App() {
         </div>
     );
 }
-

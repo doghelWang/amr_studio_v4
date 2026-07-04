@@ -1,12 +1,12 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Row, Col, Tag, Button, Space, Typography } from 'antd';
-import { 
-    AuditOutlined, CheckCircleOutlined, WarningOutlined, 
-    CloseCircleOutlined, SafetyCertificateOutlined, 
-    DownloadOutlined, ExportOutlined 
+import {
+    AuditOutlined, CheckCircleOutlined, WarningOutlined,
+    CloseCircleOutlined, SafetyCertificateOutlined,
+    DownloadOutlined, ExportOutlined
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
-import type { RobotConfig, ComponentConfig, ValidationIssue } from '../../store/types';
+import { RobotConfig, ComponentConfig, ValidationIssue, buildConnections } from '../../store/types';
 
 const { Text } = Typography;
 
@@ -17,6 +17,65 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
     if (components.length === 0) {
         issues.push({ severity: 'WARNING', message: '未添加任何组件', nodeId: '' });
     }
+
+    // Dynamic Connection Diagnostics
+    const connections = buildConnections(components);
+    connections.forEach(conn => {
+        if (conn.diagnostics && conn.diagnostics.length > 0) {
+            conn.diagnostics.forEach(diag => {
+                issues.push({
+                    severity: 'ERROR',
+                    message: `[电气连接 ${conn.sourceComponentName}.${conn.sourceInterfaceKey} ↔ ${conn.targetComponentName}.${conn.targetInterfaceKey}] ${diag}`,
+                    nodeId: conn.id
+                });
+            });
+        }
+    });
+
+    // Check for BAT interface on Battery components
+    const batteries = components.filter(c => c.category === 'BATTERY');
+    batteries.forEach(b => {
+        const hasBat = (b.interfaces || []).some(i => i.type.toUpperCase() === 'BAT');
+        if (!hasBat) {
+            issues.push({
+                severity: 'ERROR',
+                message: `[${b.alias || b.name}] 电池模块丢失了 BAT 接口类型`,
+                nodeId: b.id
+            });
+        }
+    });
+
+    // Check for screen/subScreen module integrity
+    components.forEach(c => {
+        if ((c.type === 'screen' || c.type === 'subScreen') && !c.subModuleTypeKey) {
+            issues.push({
+                severity: 'ERROR',
+                message: `[${c.alias || c.name}] 屏幕模块类别丢失 (${c.type})`,
+                nodeId: c.id
+            });
+        }
+    });
+
+    // Check venderName.typeKey and moduleDscType.typeKey to prevent guess-filling
+    components.forEach(c => {
+        const venderNameKey = c.generalAttr?.venderName?.typeKey || c.generalAttr?.vender_name?.type_key;
+        if (venderNameKey === undefined || venderNameKey === '') {
+            issues.push({
+                severity: 'WARNING',
+                message: `[${c.alias || c.name}] 供应商类型 (venderName.typeKey) 为空，请在装配中确认`,
+                nodeId: c.id
+            });
+        }
+
+        const moduleDscTypeKey = c.generalAttr?.moduleDscType?.typeKey || c.generalAttr?.module_dsc_type?.type_key;
+        if (moduleDscTypeKey === undefined || moduleDscTypeKey === '') {
+            issues.push({
+                severity: 'WARNING',
+                message: `[${c.alias || c.name}] 描述类型 (moduleDscType.typeKey) 为空，请在装配中确认`,
+                nodeId: c.id
+            });
+        }
+    });
 
     // 1. Component Audits
     for (const comp of components) {
@@ -92,7 +151,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                 });
             }
         }
-        
+
         // Recurse into COMBOX/ARRAY
         if (attr.type === 'DATA_COMBOX' || attr.type === 'COMBOX') {
             const combo = attr.comboType || attr.comboxParam;
@@ -100,7 +159,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
             const activeGroup = groups.find((g: any) => g.key === attr.value);
             activeGroup?.arrayCmobEle?.forEach((sub: any) => checkAbilityAttr(sub, `${path} > ${activeGroup.desc || activeGroup.key}`));
         }
-        
+
         if (attr.type === 'ARRAY' && attr.arrayParam) {
             attr.arrayParam.attrParams?.forEach((sub: any) => checkAbilityAttr(sub, path));
         }
@@ -154,11 +213,11 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
     });
 
     // 3c. CAN Bus connectivity check
-    const canInterfaces = components.flatMap(c => 
+    const canInterfaces = components.flatMap(c =>
         c.interfaces.filter(i => i.type === 'CAN').map(i => ({ comp: c, iface: i }))
     );
     if (canInterfaces.length > 0) {
-        const connectedCan = canInterfaces.filter(ci => 
+        const connectedCan = canInterfaces.filter(ci =>
             ci.iface.linkedInterfaceUuid && ci.iface.linkedInterfaceUuid.length > 0
         );
         if (connectedCan.length === 0) {
@@ -171,7 +230,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
     }
 
     // 3d. IO Signal Direction Inversion Check (§11)
-    const ioInterfaces = components.flatMap(c => 
+    const ioInterfaces = components.flatMap(c =>
         c.interfaces.filter(i => ['DI', 'DO'].includes(i.type)).map(i => ({ comp: c, iface: i }))
     );
     ioInterfaces.forEach(({ comp, iface }) => {
@@ -204,16 +263,34 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
 export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
     const { config } = useProjectStore();
-    
+
     // Derived state via useMemo
     const issues = useMemo(() => runAudit(config), [config]);
+
+    const stats = useMemo(() => {
+        const totalComponents = config.components.length;
+        const totalInterfaces = config.components.reduce((acc, c) => acc + (c.interfaces || []).length, 0);
+        const connections = buildConnections(config.components);
+        const totalConnections = connections.length;
+        const functionAbilityCount = config.abilities?.functionAbility?.length || 0;
+        const componentAbilityCount = config.abilities?.componentAbility?.length || 0;
+        const functionCount = config.functions?.function?.length || 0;
+        return {
+            totalComponents,
+            totalInterfaces,
+            totalConnections,
+            functionAbilityCount,
+            componentAbilityCount,
+            functionCount
+        };
+    }, [config]);
 
     const handleExport = () => {
         const dataStr = JSON.stringify(config, null, 4);
         const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-        
+
         const exportFileDefaultName = `${config.identity.robotName || 'amr'}_${new Date().toISOString().slice(0, 10)}.json`;
-        
+
         const linkElement = document.createElement('a');
         linkElement.setAttribute('href', dataUri);
         linkElement.setAttribute('download', exportFileDefaultName);
@@ -236,32 +313,160 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
             </div>
 
             {/* Stats Row */}
-            <Row gutter={24} style={{ marginBottom: 32 }}>
-                <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
-                        <div className={`stat-value ${isClean ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: isClean ? '#52c41a' : '#ff4d4f' }}>
-                            {config.components.length}
+            <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
+                            {stats.totalComponents}
                         </div>
-                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>组件总数</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>组件总数</div>
                     </div>
                 </Col>
-                <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
-                        <div className={`stat-value ${errors.length === 0 ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: errors.length === 0 ? '#52c41a' : '#ff4d4f' }}>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
+                            {stats.totalInterfaces}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>接口总数</div>
+                    </div>
+                </Col>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
+                            {stats.totalConnections}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>连接总数</div>
+                    </div>
+                </Col>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: errors.length === 0 ? '#52c41a' : '#ff4d4f' }}>
                             {errors.length}
                         </div>
-                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>错误</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>错误</div>
                     </div>
                 </Col>
-                <Col span={8}>
-                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
-                        <div className={`stat-value ${warnings.length === 0 ? 'success' : 'warning'}`} style={{ fontSize: 32, fontWeight: 700, color: warnings.length === 0 ? '#52c41a' : '#faad14' }}>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: warnings.length === 0 ? '#52c41a' : '#faad14' }}>
                             {warnings.length}
                         </div>
-                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>警告</div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>警告</div>
+                    </div>
+                </Col>
+                <Col span={4}>
+                    <div className="glass-card stat-card" style={{ padding: '16px 8px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)' }}>
+                            {stats.functionAbilityCount + stats.componentAbilityCount}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 4, fontSize: 12 }}>能力总数</div>
                     </div>
                 </Col>
             </Row>
+
+            {/* Function & Ability Summary Section */}
+            <div style={{ marginBottom: 32 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 16, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <SafetyCertificateOutlined style={{ color: 'var(--accent)' }} />
+                    功能与能力摘要
+                </h3>
+                <Row gutter={24}>
+                    {/* Left side: Abilities (Hardware and function abilities) */}
+                    <Col span={12}>
+                        <div className="glass-card" style={{ padding: 20, background: 'var(--bg-hover)', borderRadius: 12, height: '100%' }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12, borderBottom: '1px solid var(--border-default)', paddingBottom: 8 }}>
+                                硬件与算法能力 (Abilities)
+                            </div>
+
+                            {/* Component Abilities */}
+                            <div style={{ marginBottom: 16 }}>
+                                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>硬件实体能力</div>
+                                {(!config.abilities?.componentAbility || config.abilities.componentAbility.length === 0) ? (
+                                    <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>无组件硬件能力定义</div>
+                                ) : (
+                                    config.abilities.componentAbility.map((ca: any, idx: number) => (
+                                        <div key={idx} style={{ marginBottom: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 6, border: '1px solid var(--border-default)' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                                <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-primary)' }}>{ca.type}</span>
+                                                <Tag color="cyan" style={{ margin: 0, fontSize: 10 }}>{ca.entity?.length || 0} 个实体</Tag>
+                                            </div>
+                                            {ca.entity && ca.entity.length > 0 && (
+                                                <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
+                                                    {ca.entity.join(', ')}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+
+                            {/* Function Abilities */}
+                            <div>
+                                <div style={{ fontSize: 12, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500 }}>功能计算能力</div>
+                                {(!config.abilities?.functionAbility || config.abilities.functionAbility.length === 0) ? (
+                                    <div style={{ fontSize: 12, color: 'var(--text-muted)', fontStyle: 'italic' }}>无功能计算能力定义</div>
+                                ) : (
+                                    config.abilities.functionAbility.map((fa: any, idx: number) => (
+                                        <div key={idx} style={{ marginBottom: 8, padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 6, border: '1px solid var(--border-default)' }}>
+                                            <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-primary)', marginBottom: 6 }}>{fa.desc || fa.type}</div>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                                                {(fa.childFunction || []).map((child: any, cIdx: number) => (
+                                                    <Tag key={cIdx} color="blue" style={{ fontSize: 10 }}>{child.desc || child.type}</Tag>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    </Col>
+
+                    {/* Right side: Function Processes (FuncDesc) */}
+                    <Col span={12}>
+                        <div className="glass-card" style={{ padding: 20, background: 'var(--bg-hover)', borderRadius: 12, height: '100%' }}>
+                            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12, borderBottom: '1px solid var(--border-default)', paddingBottom: 8 }}>
+                                功能业务过程 (FuncDesc)
+                            </div>
+                            {(!config.functions?.function || config.functions.function.length === 0) ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '80%', color: 'var(--text-muted)', minHeight: 180 }}>
+                                    <span style={{ fontSize: 12, fontStyle: 'italic' }}>未配置任何功能业务过程</span>
+                                    <span style={{ fontSize: 10, marginTop: 4 }}>导入的 cmodel 无 FuncDesc 结构</span>
+                                </div>
+                            ) : (
+                                config.functions.function.map((func: any, idx: number) => (
+                                    <div key={idx} style={{ marginBottom: 10, padding: '8px 12px', background: 'rgba(255,255,255,0.02)', borderRadius: 6, border: '1px solid var(--border-default)' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+                                            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>{func.desc || func.type}</span>
+                                            <Tag color="purple" style={{ margin: 0, fontSize: 9 }}>{func.type}</Tag>
+                                        </div>
+                                        {(func.childFunction || []).map((child: any, cIdx: number) => {
+                                            const activeAttrs: string[] = [];
+                                            (child.attr || []).forEach((attr: any) => {
+                                                if (attr.comboxParam) {
+                                                    const cb = attr.comboxParam;
+                                                    if (cb.key && !['noNavi', 'noLed', 'noBtn', 'noSafeIO', 'noSafeSensor'].includes(cb.key)) {
+                                                        activeAttrs.push(`${cb.desc || cb.key}`);
+                                                    }
+                                                }
+                                            });
+                                            return (
+                                                <div key={cIdx} style={{ fontSize: 11, color: 'var(--text-secondary)', paddingLeft: 8, borderLeft: '2px solid var(--accent)', marginTop: 6 }}>
+                                                    <div style={{ fontWeight: 500 }}>{child.desc || child.type}</div>
+                                                    {activeAttrs.length > 0 && (
+                                                        <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 2 }}>
+                                                            当前激活: {activeAttrs.join(', ')}
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </Col>
+                </Row>
+            </div>
 
             {/* Issues */}
             {issues.length === 0 ? (
@@ -270,16 +475,16 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                     <div style={{ fontSize: 20, fontWeight: 600, color: 'var(--text-primary)' }}>全部检查通过</div>
                     <div style={{ color: 'var(--text-muted)', fontSize: 14, marginTop: 12, marginBottom: 32 }}>本地状态验证闭环，准备好进行二进制构建。</div>
                     <Space size="large">
-                        <Button 
+                        <Button
                             size="large"
-                            icon={<DownloadOutlined />} 
+                            icon={<DownloadOutlined />}
                             onClick={handleExport}
                             style={{ background: 'var(--accent-soft)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 48, borderRadius: 8 }}
                         >
                             仅导出本地 JSON
                         </Button>
-                        <Button 
-                            type="primary" 
+                        <Button
+                            type="primary"
                             size="large"
                             icon={<ExportOutlined />}
                             onClick={onExport}
@@ -319,15 +524,15 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                     </div>
                     <Divider style={{ margin: '24px 0', borderColor: 'var(--border-default)' }} />
                     <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 16 }}>
-                        <Button 
-                            icon={<DownloadOutlined />} 
+                        <Button
+                            icon={<DownloadOutlined />}
                             onClick={handleExport}
                             style={{ background: 'var(--accent-soft)', color: 'var(--accent)', border: '1px solid var(--border-accent)', height: 40, borderRadius: 6 }}
                         >
                             仅导出本地 JSON
                         </Button>
-                        <Button 
-                            type="primary" 
+                        <Button
+                            type="primary"
                             icon={<ExportOutlined />}
                             onClick={onExport}
                             style={{ height: 40, padding: '0 24px', borderRadius: 6 }}

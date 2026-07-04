@@ -375,7 +375,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                 border: '1px solid var(--border-default)',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
             }}
-            headStyle={{ borderBottom: '1px solid var(--border-default)', minHeight: 40 }}
+            styles={{ header: { borderBottom: '1px solid var(--border-default)', minHeight: 40 } }}
           >
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                   {Object.entries(subGroups).map(([subGroupTitle, subElems]) => (
