@@ -427,6 +427,8 @@ export class ImportService {
 
     const uuid = gen.moduleUuid?.stringValue || gen.module_uuid?.string_value || uuidv4();
     const physicalName = gen.moduleName?.stringValue || gen.module_name?.string_value || subTypeKey;
+    const moduleShape = gen.moduleShape || gen.module_shape || {};
+    const shapeBox = moduleShape.box;
 
     return {
       id: uuid,
@@ -442,10 +444,10 @@ export class ImportService {
       mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
       mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
       privateAttrs, interfaces,
-      shape: gen.moduleShape?.box ? {
-        type: 'BOX', length: gen.moduleShape.box.sizeLen || gen.moduleShape.box.size_len || 0,
-        width: gen.moduleShape.box.sizeWidth || gen.moduleShape.box.size_width || 0,
-        height: gen.moduleShape.box.sizeHeight || gen.moduleShape.box.size_height || 0
+      shape: shapeBox ? {
+        type: 'BOX', length: shapeBox.sizeLen || shapeBox.size_len || 0,
+        width: shapeBox.sizeWidth || shapeBox.size_width || 0,
+        height: shapeBox.sizeHeight || shapeBox.size_height || 0
       } : undefined,
       generalAttr: gen,
     };
@@ -481,7 +483,8 @@ export class ImportService {
   }
 
   static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
-    const comps = entityJson.moduleComponets || entityJson.module_componets || [];
+    const target = entityJson.full_data || entityJson.fullData || entityJson;
+    const comps = target.moduleComponets || target.module_componets || [];
     if (!comps[0]) throw new Error("Invalid entity");
     return this.mapToComponent(comps[0], "LibraryGroup", uuidv4(), null, schemaRegistry);
   }
