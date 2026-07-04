@@ -6,9 +6,9 @@ import {
     GlobalOutlined,
     ClockCircleOutlined,
     InfoCircleOutlined,
-    ApiOutlined
 } from '@ant-design/icons';
 import { VERSION_INFO } from '../../version';
+import { BackendSwitcher } from '../BackendSwitcher';
 
 interface SidebarProps {
     steps: any[];
@@ -18,6 +18,8 @@ interface SidebarProps {
     onImport: () => void;
     onExport: () => void;
     backendStatus?: any;
+    backendBase: string;
+    onRefreshBackend: () => void;
 }
 
 /**
@@ -35,7 +37,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     onNewProject,
     onImport,
     onExport,
-    backendStatus
+    backendStatus,
+    backendBase,
+    onRefreshBackend
 }) => {
     const formatDate = (isoStr?: string) => {
         if (!isoStr) return '--:--:--';
@@ -79,19 +83,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         <div className="status-item">v{VERSION_INFO.version} | {formatDate(VERSION_INFO.startTime)}</div>
                         <div className="status-item addr">{window.location.origin}</div>
                     </div>
-                    <div className="status-group">
-                        <div className="status-title">
-                            <ApiOutlined /> <span>Backend</span>
-                        </div>
-                        {backendStatus ? (
-                            <>
-                                <div className="status-item">v{backendStatus.backendVersion} | {formatDate(backendStatus.serviceStartTime)}</div>
-                                <div className="status-item addr">{(window as any).BACKEND_URL || "http://localhost:8002"}</div>
-                            </>
-                        ) : (
-                            <div className="status-item offline">Offline / Connecting...</div>
-                        )}
-                    </div>
+                    <BackendSwitcher
+                        backendBase={backendBase}
+                        backendStatus={backendStatus}
+                        onRefresh={onRefreshBackend}
+                    />
                 </div>
 
                 <div className="sidebar-actions">

@@ -5,47 +5,39 @@
  */
 
 import axios from 'axios';
+import { getBackendBase } from './backendConfig';
 
-/** 后端服务基础路径 (Auto-adaptive) */
-export const getBackendBase = () => {
-    const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
-    if (envBackendUrl) {
-        return envBackendUrl;
-    }
-    if (typeof window !== 'undefined') {
-        const { hostname, protocol, port } = window.location;
-        // In dev mode (3000/3001/5173), route to backend 8002
-        if (['3000', '3001', '5173'].includes(port)) {
-            return `${protocol}//${hostname}:8002`;
-        }
-        return window.location.origin;
-    }
-    return 'http://localhost:8002';
-};
+export { getBackendBase } from './backendConfig';
 
-const API_BASE = `${getBackendBase()}/api/v1/models`;
+const getModelApiBase = () => `${getBackendBase()}/api/v1/models`;
 
 /** 获取单组件的二进制展开详情 (用于数据一致性校验) */
 export const apiFetchComponentDetails = async (projectId: string, uuid: string) => {
-    const res = await axios.get(`${API_BASE}/${projectId}/components/${uuid}`);
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/components/${uuid}`);
     return res.data;
 };
 
 /** 更新特定组件的前端配置到后端沙箱 */
 export const apiUpdateComponent = async (projectId: string, uuid: string, payload: any) => {
-    const res = await axios.patch(`${API_BASE}/${projectId}/components/${uuid}`, payload);
+    const res = await axios.patch(`${getModelApiBase()}/${projectId}/components/${uuid}`, payload);
     return res.data;
 };
 
 /** 获取项目的全量 Abilities (算法能力) 配置 */
 export const apiFetchAbilities = async (projectId: string) => {
-    const res = await axios.get(`${API_BASE}/${projectId}/abilities`);
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/abilities`);
+    return res.data;
+};
+
+/** 获取项目的全量 Functions (功能过程) 配置 */
+export const apiFetchFunctions = async (projectId: string) => {
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/functions`);
     return res.data;
 };
 
 /** 同步前端 Abilities 修改到后端 */
 export const apiUpdateAbilities = async (projectId: string, payload: any) => {
-    const res = await axios.patch(`${API_BASE}/${projectId}/abilities`, payload);
+    const res = await axios.patch(`${getModelApiBase()}/${projectId}/abilities`, payload);
     return res.data;
 };
 
@@ -57,7 +49,7 @@ export const apiInitSandbox = async (projectId: string, config: any) => {
 
 /** 触发 CModel 编译并处理下载流 */
 export const apiCompileAndDownload = async (projectId: string) => {
-    const res = await axios.post(`${API_BASE}/${projectId}/compile`, {}, { responseType: 'blob' });
+    const res = await axios.post(`${getModelApiBase()}/${projectId}/compile`, {}, { responseType: 'blob' });
     const url = window.URL.createObjectURL(new Blob([res.data]));
     const link = document.createElement('a');
     link.href = url;

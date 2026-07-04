@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Typography, Button, Space, Divider, Tag, List, Badge, Spin, Skeleton } from 'antd';
 import {  PlusCircleOutlined, ImportOutlined, RobotOutlined,  ArrowRightOutlined, HistoryOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { BackendSwitcher } from './BackendSwitcher';
 
 const { Title, Text } = Typography;
 
@@ -9,9 +10,20 @@ interface Props {
   onImport: (file: File) => void;
   onLoadSaved: (name: string) => void;
   listSavedProjects: () => Promise<any[]>;
+  backendBase: string;
+  backendStatus?: any;
+  onRefreshBackend: () => void;
 }
 
-export const WelcomeScreen: React.FC<Props> = ({ onCreateNew, onImport, onLoadSaved, listSavedProjects }) => {
+export const WelcomeScreen: React.FC<Props> = ({
+  onCreateNew,
+  onImport,
+  onLoadSaved,
+  listSavedProjects,
+  backendBase,
+  backendStatus,
+  onRefreshBackend,
+}) => {
   const importRef = useRef<HTMLInputElement>(null);
   const [savedProjects, setSavedProjects] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -29,7 +41,7 @@ export const WelcomeScreen: React.FC<Props> = ({ onCreateNew, onImport, onLoadSa
       }
     };
     fetchSaved();
-  }, [listSavedProjects]);
+  }, [listSavedProjects, backendBase]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -56,6 +68,17 @@ export const WelcomeScreen: React.FC<Props> = ({ onCreateNew, onImport, onLoadSa
         background: 'radial-gradient(circle, var(--accent-soft) 0%, transparent 70%)',
         pointerEvents: 'none',
       }} />
+
+      <div style={{
+        position: 'absolute',
+        top: 24,
+        right: 24,
+        zIndex: 2,
+        width: 420,
+        maxWidth: 'calc(100% - 48px)',
+      }}>
+        <BackendSwitcher backendBase={backendBase} backendStatus={backendStatus} onRefresh={onRefreshBackend} compact />
+      </div>
 
       {/* ── Logo ── */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>

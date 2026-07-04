@@ -7,7 +7,7 @@
  * 4. 控制欢迎页 (Welcome Screen) 与主操作区之间的切换。
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { message } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
@@ -40,6 +40,7 @@ import { AuditStep } from './components/wizard/AuditStep';
 // 导入布局组件
 import { Sidebar } from './components/layout/Sidebar';
 import { Header } from './components/layout/Header';
+import { getBackendBase, subscribeBackendBaseChange } from './services/backendConfig';
 
 /** 配置向导定义：定义每一步的 Key、标签、图标与描述 */
 const STEPS = [
@@ -57,29 +58,6 @@ const STEP_COMPONENTS = [
     MountingStep, WiringStep, AbilityStep, AuditStep,
 ];
 
-const getBackendUrl = () => {
-  const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
-  if (envBackendUrl) {
-    if (typeof window !== 'undefined') {
-      (window as any).BACKEND_URL = envBackendUrl;
-    }
-    return envBackendUrl;
-  }
-  if (typeof window !== 'undefined') {
-    // If we are on a known frontend dev port, point to 8002
-    if (['3000', '3001', '5173'].includes(window.location.port)) {
-      const url = `http://${window.location.hostname}:8002`;
-      (window as any).BACKEND_URL = url;
-      return url;
-    }
-    // If we are already on 8002 or something else, use origin
-    (window as any).BACKEND_URL = window.location.origin;
-    return window.location.origin;
-  }
-  return "http://localhost:8002";
-};
-const BACKEND_URL = getBackendUrl();
-
 export default function App() {
     const { 
         config, isDirty, loadProject, resetProject, projectId, setProjectId, fetchSchemas,
@@ -89,19 +67,34 @@ export default function App() {
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
     const [backendStatus, setBackendStatus] = useState<any>(null);
+    const [backendBase, setBackendBaseState] = useState(getBackendBase());
+
+    const refreshBackendStatus = useCallback(async () => {
+        const activeBackend = getBackendBase();
+        setBackendBaseState(activeBackend);
+        try {
+            const res = await axios.get(`${activeBackend}/api/v1/system/version`);
+            console.log("[DEBUG] Backend Version Info:", res.data);
+            setBackendStatus(res.data);
+        } catch (err) {
+            console.error("Failed to fetch backend status", err);
+            setBackendStatus(null);
+        }
+    }, []);
+
+    const handleBackendChange = useCallback((url: string) => {
+        setBackendBaseState(url);
+        setBackendStatus(null);
+        fetchSchemas();
+        refreshBackendStatus();
+    }, [fetchSchemas, refreshBackendStatus]);
 
     // 初始加载：获取 XML 元数据注册表 + 后端状态
     useEffect(() => {
         fetchSchemas();
-        
-        // Fetch backend status info (2026-04-04)
-        axios.get(`${BACKEND_URL}/api/v1/system/version`)
-            .then(res => {
-                console.log("[DEBUG] Backend Version Info:", res.data);
-                setBackendStatus(res.data);
-            })
-            .catch(err => console.error("Failed to fetch backend status", err));
-    }, [fetchSchemas]);
+        refreshBackendStatus();
+        return subscribeBackendBaseChange(handleBackendChange);
+    }, [fetchSchemas, handleBackendChange, refreshBackendStatus]);
     const importRef = useRef<HTMLInputElement>(null);
     
     // 欢迎屏幕控制：首屏加载或主动切换时显示
@@ -163,7 +156,8 @@ export default function App() {
             messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
             const formData = new FormData();
             formData.append('file', file);
-            const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
+            const activeBackend = getBackendBase();
+            const res = await axios.post(`${activeBackend}/api/v1/models/upload`, formData);
             if (res.data.status === 'success') {
                 const pId = res.data.project_id;
                 printAudit(`Import [${pId}]`, res.data.audit);
@@ -274,7 +268,8 @@ export default function App() {
             // Trigger Binary Build
             messageApi.loading({ content: '云端构建 CModel 中...', key: 'export', duration: 0 });
             console.log(`[DEBUG] 5. Requesting compile for: ${currentProjectId}`);
-            const res = await axios.post(`${BACKEND_URL}/api/v1/models/${currentProjectId}/compile`);
+            const activeBackend = getBackendBase();
+            const res = await axios.post(`${activeBackend}/api/v1/models/${currentProjectId}/compile`);
             console.log('[DEBUG] 6. Final Compile Response:', res.data);
             
             if (res.data.status === 'success') {
@@ -282,7 +277,7 @@ export default function App() {
                 
                 // 1. Download .cmodel
                 const linkModel = document.createElement('a');
-                linkModel.href = `${BACKEND_URL}${res.data.download_url}`;
+                linkModel.href = `${activeBackend}${res.data.download_url}`;
                 linkModel.setAttribute('download', `${currentProjectId}_packed.cmodel`);
                 document.body.appendChild(linkModel);
                 linkModel.click();
@@ -292,7 +287,7 @@ export default function App() {
                 if (res.data.module_list_url) {
                     setTimeout(() => {
                         const linkCsv = document.createElement('a');
-                        linkCsv.href = `${BACKEND_URL}${res.data.module_list_url}`;
+                        linkCsv.href = `${activeBackend}${res.data.module_list_url}`;
                         linkCsv.setAttribute('download', `${currentProjectId}_module_list.csv`);
                         document.body.appendChild(linkCsv);
                         linkCsv.click();
@@ -330,6 +325,9 @@ export default function App() {
                     onImport={handleImport}
                     onLoadSaved={handleLoadSaved}
                     listSavedProjects={listSavedProjects}
+                    backendBase={backendBase}
+                    backendStatus={backendStatus}
+                    onRefreshBackend={refreshBackendStatus}
                 />
             </div>
         );
@@ -348,6 +346,8 @@ export default function App() {
                 onImport={handleImportClick}
                 onExport={handleExport}
                 backendStatus={backendStatus}
+                backendBase={backendBase}
+                onRefreshBackend={refreshBackendStatus}
             />
 
             <main className="app-main">
