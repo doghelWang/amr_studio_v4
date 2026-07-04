@@ -8,6 +8,10 @@ import axios from 'axios';
 
 /** 后端服务基础路径 (Auto-adaptive) */
 export const getBackendBase = () => {
+    const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
+    if (envBackendUrl) {
+        return envBackendUrl;
+    }
     if (typeof window !== 'undefined') {
         const { hostname, protocol, port } = window.location;
         // In dev mode (3000/3001/5173), route to backend 8002

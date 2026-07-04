@@ -3,6 +3,10 @@ import axios from 'axios';
 
 // Backend base URL (auto-adaptive, same as api_v2.ts)
 const getBackendBase = () => {
+  const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (envBackendUrl) {
+    return envBackendUrl;
+  }
   if (typeof window !== 'undefined') {
     const { hostname, protocol, port } = window.location;
     // In dev mode (3000/3001/5173), route to backend 8002

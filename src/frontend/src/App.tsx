@@ -58,6 +58,13 @@ const STEP_COMPONENTS = [
 ];
 
 const getBackendUrl = () => {
+  const envBackendUrl = import.meta.env.VITE_BACKEND_URL;
+  if (envBackendUrl) {
+    if (typeof window !== 'undefined') {
+      (window as any).BACKEND_URL = envBackendUrl;
+    }
+    return envBackendUrl;
+  }
   if (typeof window !== 'undefined') {
     // If we are on a known frontend dev port, point to 8002
     if (['3000', '3001', '5173'].includes(window.location.port)) {
