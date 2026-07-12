@@ -10,6 +10,7 @@ import {
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+import { parseFunctionProcesses } from './domain/functions';
 
 export class ImportService {
   // §SCHEMA-DRIVEN: All defaults now come from actual data or constants
@@ -40,7 +41,7 @@ export class ImportService {
     const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
 
     if (json[infoKey] && Array.isArray(json[infoKey])) {
-      json[infoKey].forEach((group: any) => this.processModuleGroup(group, components, null, schemaRegistry));
+      json[infoKey].forEach((group: any, index: number) => this.processModuleGroup(group, components, null, schemaRegistry, index));
     }
 
     // ━━━ 1. Build Absolute ID Index (English SrcName is Truth) ━━━
@@ -193,7 +194,16 @@ export class ImportService {
     identity.powerSlots = slots;
     console.groupEnd();
 
-    return { components, identity };
+    return {
+      components,
+      identity,
+      rawCompDescMeta: {
+        moduleGroupName: json.moduleGroupName || json.module_group_name || '',
+        moduleGroupUuid: json.moduleGroupUuid || json.module_group_uuid || '',
+        moduleSys: json.moduleSys || json.module_sys || '',
+        modelVersion: json.modelVersion || json.model_version || '',
+      }
+    } as any;
   }
 
   /**
@@ -242,6 +252,10 @@ export class ImportService {
         }))
       }))
     };
+  }
+
+  static parseFuncDesc(json: any) {
+    return parseFunctionProcesses(json);
   }
 
   private static findAbilityTemplateAttr(funcType: string, childKey: string, attrKey: string): any {
@@ -387,20 +401,20 @@ export class ImportService {
     return mapping[type] || type;
   }
 
-  private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {
+  private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>, groupIndex = 0) {
     const groupName = group.moduleGroupName || group.module_group_name || '';
     const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
     const comps = group.moduleComponets || group.module_componets || [];
     if (Array.isArray(comps)) {
-      comps.forEach((comp: any) => list.push(this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry)));
+      comps.forEach((comp: any, componentIndex: number) => list.push(this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry, group, groupIndex, componentIndex)));
     }
     const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
     if (group[infoKey] && Array.isArray(group[infoKey])) {
-      group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, null, schemaRegistry));
+      group[infoKey].forEach((sub: any, childIndex: number) => this.processModuleGroup(sub, list, null, schemaRegistry, groupIndex + childIndex / 1000));
     }
   }
 
-  private static mapToComponent(comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>): ComponentConfig {
+  private static mapToComponent(comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>, rawGroup?: any, rawModuleGroupIndex?: number, rawComponentIndex?: number): ComponentConfig {
     const gen = comp.generalAttr || comp.general_attr || {};
     const struct = comp.structParam || comp.struct_param || {};
     const structExtend = struct.extendParams || struct.extend_params || [];
@@ -448,6 +462,15 @@ export class ImportService {
         height: gen.moduleShape.box.sizeHeight || gen.moduleShape.box.size_height || 0
       } : undefined,
       generalAttr: gen,
+      rawCmodelComponent: comp,
+      rawModuleGroup: rawGroup ? {
+        moduleGroupName: rawGroup.moduleGroupName || rawGroup.module_group_name || '',
+        moduleGroupUuid: rawGroup.moduleGroupUuid || rawGroup.module_group_uuid || '',
+        moduleSys: rawGroup.moduleSys || rawGroup.module_sys || '',
+        modelVersion: rawGroup.modelVersion || rawGroup.model_version || '',
+      } : undefined,
+      rawModuleGroupIndex,
+      rawComponentIndex,
     };
   }
 
@@ -481,8 +504,19 @@ export class ImportService {
   }
 
   static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
+    if (!entityJson || typeof entityJson !== 'object') {
+      throw new Error("Invalid entity: empty payload");
+    }
+
+    const directComponent = entityJson.generalAttr || entityJson.general_attr ? entityJson : null;
     const comps = entityJson.moduleComponets || entityJson.module_componets || [];
-    if (!comps[0]) throw new Error("Invalid entity");
-    return this.mapToComponent(comps[0], "LibraryGroup", uuidv4(), null, schemaRegistry);
+    const firstComponent = directComponent || comps[0];
+
+    if (!firstComponent) {
+      const groupName = entityJson.moduleGroupName || entityJson.module_group_name || 'unknown';
+      throw new Error(`Invalid entity: no module component in ${groupName}`);
+    }
+
+    return this.mapToComponent(firstComponent, "LibraryGroup", uuidv4(), null, schemaRegistry);
   }
 }

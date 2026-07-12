@@ -1,0 +1,1339 @@
+﻿file,projectId,type,desc,path
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,locationAbility,定位能力,locationAbility
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,navi,导航,locationAbility/navi
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,HCI,人机交互,HCI
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,led,灯光,HCI/led
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,button,按钮,HCI/button
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,safetyAbility,安全能力,safetyAbility
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,safetyIO,安全IO,safetyAbility/safetyIO
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,safetyRound,避障范围,safetyAbility/safetyRound
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,distMeasureAbility,透传测距,distMeasureAbility
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,distSensor,测距,distMeasureAbility/distSensor
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,actorAbility,执行机构能力,actorAbility
+proj_990c9e2f_packed.cmodel,proj_d38b2ed4,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,led,灯光,HCI/led
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,button,按钮,HCI/button
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (4).cmodel,proj_4c7e555d,actor,执行机构,actorAbility/actor
+proj_12345_packed_1.cmodel,proj_fc1fde9b,locationAbility,定位能力,locationAbility
+proj_12345_packed_1.cmodel,proj_fc1fde9b,navi,导航,locationAbility/navi
+proj_12345_packed_1.cmodel,proj_fc1fde9b,HCI,人机交互,HCI
+proj_12345_packed_1.cmodel,proj_fc1fde9b,led,灯光,HCI/led
+proj_12345_packed_1.cmodel,proj_fc1fde9b,button,按钮,HCI/button
+proj_12345_packed_1.cmodel,proj_fc1fde9b,safetyAbility,安全能力,safetyAbility
+proj_12345_packed_1.cmodel,proj_fc1fde9b,safetyIO,安全IO,safetyAbility/safetyIO
+proj_12345_packed_1.cmodel,proj_fc1fde9b,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_12345_packed_1.cmodel,proj_fc1fde9b,safetyRound,避障范围,safetyAbility/safetyRound
+proj_12345_packed_1.cmodel,proj_fc1fde9b,distMeasureAbility,透传测距,distMeasureAbility
+proj_12345_packed_1.cmodel,proj_fc1fde9b,distSensor,测距,distMeasureAbility/distSensor
+proj_12345_packed_1.cmodel,proj_fc1fde9b,actorAbility,执行机构能力,actorAbility
+proj_12345_packed_1.cmodel,proj_fc1fde9b,actor,执行机构,actorAbility/actor
+proj_500d130d_packed.cmodel,proj_b1829d90,locationAbility,定位能力,locationAbility
+proj_500d130d_packed.cmodel,proj_b1829d90,navi,导航,locationAbility/navi
+proj_500d130d_packed.cmodel,proj_b1829d90,HCI,人机交互,HCI
+proj_500d130d_packed.cmodel,proj_b1829d90,led,灯光,HCI/led
+proj_500d130d_packed.cmodel,proj_b1829d90,button,按钮,HCI/button
+proj_500d130d_packed.cmodel,proj_b1829d90,safetyAbility,安全能力,safetyAbility
+proj_500d130d_packed.cmodel,proj_b1829d90,safetyIO,安全IO,safetyAbility/safetyIO
+proj_500d130d_packed.cmodel,proj_b1829d90,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_500d130d_packed.cmodel,proj_b1829d90,safetyRound,避障范围,safetyAbility/safetyRound
+proj_500d130d_packed.cmodel,proj_b1829d90,distMeasureAbility,透传测距,distMeasureAbility
+proj_500d130d_packed.cmodel,proj_b1829d90,distSensor,测距,distMeasureAbility/distSensor
+proj_500d130d_packed.cmodel,proj_b1829d90,actorAbility,执行机构能力,actorAbility
+proj_500d130d_packed.cmodel,proj_b1829d90,actor,执行机构,actorAbility/actor
+proj_1234_packed (5).cmodel,proj_b48c21d7,locationAbility,定位能力,locationAbility
+proj_1234_packed (5).cmodel,proj_b48c21d7,navi,导航,locationAbility/navi
+proj_1234_packed (5).cmodel,proj_b48c21d7,HCI,人机交互,HCI
+proj_1234_packed (5).cmodel,proj_b48c21d7,led,灯光,HCI/led
+proj_1234_packed (5).cmodel,proj_b48c21d7,button,按钮,HCI/button
+proj_1234_packed (5).cmodel,proj_b48c21d7,safetyAbility,安全能力,safetyAbility
+proj_1234_packed (5).cmodel,proj_b48c21d7,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_packed (5).cmodel,proj_b48c21d7,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_packed (5).cmodel,proj_b48c21d7,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_packed (5).cmodel,proj_b48c21d7,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_packed (5).cmodel,proj_b48c21d7,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_packed (5).cmodel,proj_b48c21d7,actorAbility,执行机构能力,actorAbility
+proj_1234_packed (5).cmodel,proj_b48c21d7,actor,执行机构,actorAbility/actor
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,locationAbility,定位能力,locationAbility
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,navi,导航,locationAbility/navi
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,HCI,人机交互,HCI
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,led,灯光,HCI/led
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,button,按钮,HCI/button
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,safetyAbility,安全能力,safetyAbility
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,safetyIO,安全IO,safetyAbility/safetyIO
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,safetyRound,避障范围,safetyAbility/safetyRound
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,distMeasureAbility,透传测距,distMeasureAbility
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,distSensor,测距,distMeasureAbility/distSensor
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,actorAbility,执行机构能力,actorAbility
+proj_2c6f8136_packed.cmodel,proj_3e8c4011,actor,执行机构,actorAbility/actor
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,locationAbility,定位能力,locationAbility
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,navi,导航,locationAbility/navi
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,HCI,人机交互,HCI
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,led,灯光,HCI/led
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,button,按钮,HCI/button
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,safetyAbility,安全能力,safetyAbility
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,safetyIO,安全IO,safetyAbility/safetyIO
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,safetyRound,避障范围,safetyAbility/safetyRound
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,distMeasureAbility,透传测距,distMeasureAbility
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,distSensor,测距,distMeasureAbility/distSensor
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,actorAbility,执行机构能力,actorAbility
+proj_38a0e8f7_packed.cmodel,proj_e0ab2a79,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,led,灯光,HCI/led
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,button,按钮,HCI/button
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (5).cmodel,proj_bf137112,actor,执行机构,actorAbility/actor
+proj_7f617f18_packed.cmodel,proj_16a6f619,locationAbility,定位能力,locationAbility
+proj_7f617f18_packed.cmodel,proj_16a6f619,navi,导航,locationAbility/navi
+proj_7f617f18_packed.cmodel,proj_16a6f619,HCI,人机交互,HCI
+proj_7f617f18_packed.cmodel,proj_16a6f619,led,灯光,HCI/led
+proj_7f617f18_packed.cmodel,proj_16a6f619,button,按钮,HCI/button
+proj_7f617f18_packed.cmodel,proj_16a6f619,safetyAbility,安全能力,safetyAbility
+proj_7f617f18_packed.cmodel,proj_16a6f619,safetyIO,安全IO,safetyAbility/safetyIO
+proj_7f617f18_packed.cmodel,proj_16a6f619,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_7f617f18_packed.cmodel,proj_16a6f619,safetyRound,避障范围,safetyAbility/safetyRound
+proj_7f617f18_packed.cmodel,proj_16a6f619,distMeasureAbility,透传测距,distMeasureAbility
+proj_7f617f18_packed.cmodel,proj_16a6f619,distSensor,测距,distMeasureAbility/distSensor
+proj_7f617f18_packed.cmodel,proj_16a6f619,actorAbility,执行机构能力,actorAbility
+proj_7f617f18_packed.cmodel,proj_16a6f619,actor,执行机构,actorAbility/actor
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,locationAbility,定位能力,locationAbility
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,navi,导航,locationAbility/navi
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,HCI,人机交互,HCI
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,led,灯光,HCI/led
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,button,按钮,HCI/button
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,safetyAbility,安全能力,safetyAbility
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,distMeasureAbility,透传测距,distMeasureAbility
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,distSensor,测距,distMeasureAbility/distSensor
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,actorAbility,执行机构能力,actorAbility
+proj_1d29c4df_packed.cmodel,proj_9c4f4a56,actor,执行机构,actorAbility/actor
+proj_8b800f1b_packed.cmodel,proj_673863ac,locationAbility,定位能力,locationAbility
+proj_8b800f1b_packed.cmodel,proj_673863ac,navi,导航,locationAbility/navi
+proj_8b800f1b_packed.cmodel,proj_673863ac,HCI,人机交互,HCI
+proj_8b800f1b_packed.cmodel,proj_673863ac,led,灯光,HCI/led
+proj_8b800f1b_packed.cmodel,proj_673863ac,button,按钮,HCI/button
+proj_8b800f1b_packed.cmodel,proj_673863ac,safetyAbility,安全能力,safetyAbility
+proj_8b800f1b_packed.cmodel,proj_673863ac,safetyIO,安全IO,safetyAbility/safetyIO
+proj_8b800f1b_packed.cmodel,proj_673863ac,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_8b800f1b_packed.cmodel,proj_673863ac,safetyRound,避障范围,safetyAbility/safetyRound
+proj_8b800f1b_packed.cmodel,proj_673863ac,distMeasureAbility,透传测距,distMeasureAbility
+proj_8b800f1b_packed.cmodel,proj_673863ac,distSensor,测距,distMeasureAbility/distSensor
+proj_8b800f1b_packed.cmodel,proj_673863ac,actorAbility,执行机构能力,actorAbility
+proj_8b800f1b_packed.cmodel,proj_673863ac,actor,执行机构,actorAbility/actor
+proj_57fd760b_packed.cmodel,proj_dfa7c138,locationAbility,定位能力,locationAbility
+proj_57fd760b_packed.cmodel,proj_dfa7c138,navi,导航,locationAbility/navi
+proj_57fd760b_packed.cmodel,proj_dfa7c138,HCI,人机交互,HCI
+proj_57fd760b_packed.cmodel,proj_dfa7c138,led,灯光,HCI/led
+proj_57fd760b_packed.cmodel,proj_dfa7c138,button,按钮,HCI/button
+proj_57fd760b_packed.cmodel,proj_dfa7c138,safetyAbility,安全能力,safetyAbility
+proj_57fd760b_packed.cmodel,proj_dfa7c138,safetyIO,安全IO,safetyAbility/safetyIO
+proj_57fd760b_packed.cmodel,proj_dfa7c138,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_57fd760b_packed.cmodel,proj_dfa7c138,safetyRound,避障范围,safetyAbility/safetyRound
+proj_57fd760b_packed.cmodel,proj_dfa7c138,distMeasureAbility,透传测距,distMeasureAbility
+proj_57fd760b_packed.cmodel,proj_dfa7c138,distSensor,测距,distMeasureAbility/distSensor
+proj_57fd760b_packed.cmodel,proj_dfa7c138,actorAbility,执行机构能力,actorAbility
+proj_57fd760b_packed.cmodel,proj_dfa7c138,actor,执行机构,actorAbility/actor
+proj_1234_packed (7).cmodel,proj_ddb7aa40,locationAbility,定位能力,locationAbility
+proj_1234_packed (7).cmodel,proj_ddb7aa40,navi,导航,locationAbility/navi
+proj_1234_packed (7).cmodel,proj_ddb7aa40,HCI,人机交互,HCI
+proj_1234_packed (7).cmodel,proj_ddb7aa40,led,灯光,HCI/led
+proj_1234_packed (7).cmodel,proj_ddb7aa40,button,按钮,HCI/button
+proj_1234_packed (7).cmodel,proj_ddb7aa40,safetyAbility,安全能力,safetyAbility
+proj_1234_packed (7).cmodel,proj_ddb7aa40,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_packed (7).cmodel,proj_ddb7aa40,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_packed (7).cmodel,proj_ddb7aa40,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_packed (7).cmodel,proj_ddb7aa40,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_packed (7).cmodel,proj_ddb7aa40,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_packed (7).cmodel,proj_ddb7aa40,actorAbility,执行机构能力,actorAbility
+proj_1234_packed (7).cmodel,proj_ddb7aa40,actor,执行机构,actorAbility/actor
+proj_c578be69_packed.cmodel,proj_47c5ae79,locationAbility,定位能力,locationAbility
+proj_c578be69_packed.cmodel,proj_47c5ae79,navi,导航,locationAbility/navi
+proj_c578be69_packed.cmodel,proj_47c5ae79,HCI,人机交互,HCI
+proj_c578be69_packed.cmodel,proj_47c5ae79,led,灯光,HCI/led
+proj_c578be69_packed.cmodel,proj_47c5ae79,button,按钮,HCI/button
+proj_c578be69_packed.cmodel,proj_47c5ae79,safetyAbility,安全能力,safetyAbility
+proj_c578be69_packed.cmodel,proj_47c5ae79,safetyIO,安全IO,safetyAbility/safetyIO
+proj_c578be69_packed.cmodel,proj_47c5ae79,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_c578be69_packed.cmodel,proj_47c5ae79,safetyRound,避障范围,safetyAbility/safetyRound
+proj_c578be69_packed.cmodel,proj_47c5ae79,distMeasureAbility,透传测距,distMeasureAbility
+proj_c578be69_packed.cmodel,proj_47c5ae79,distSensor,测距,distMeasureAbility/distSensor
+proj_c578be69_packed.cmodel,proj_47c5ae79,actorAbility,执行机构能力,actorAbility
+proj_c578be69_packed.cmodel,proj_47c5ae79,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,led,灯光,HCI/led
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,button,按钮,HCI/button
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (7).cmodel,proj_3253975f,actor,执行机构,actorAbility/actor
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,locationAbility,定位能力,locationAbility
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,navi,导航,locationAbility/navi
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,HCI,人机交互,HCI
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,led,灯光,HCI/led
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,button,按钮,HCI/button
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,safetyAbility,安全能力,safetyAbility
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,safetyIO,安全IO,safetyAbility/safetyIO
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,safetyRound,避障范围,safetyAbility/safetyRound
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,distMeasureAbility,透传测距,distMeasureAbility
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,distSensor,测距,distMeasureAbility/distSensor
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,actorAbility,执行机构能力,actorAbility
+proj_070ce3fc_packed.cmodel,proj_2f1b9c29,actor,执行机构,actorAbility/actor
+proj_12345_packed (3).cmodel,proj_ea218cad,locationAbility,定位能力,locationAbility
+proj_12345_packed (3).cmodel,proj_ea218cad,navi,导航,locationAbility/navi
+proj_12345_packed (3).cmodel,proj_ea218cad,HCI,人机交互,HCI
+proj_12345_packed (3).cmodel,proj_ea218cad,led,灯光,HCI/led
+proj_12345_packed (3).cmodel,proj_ea218cad,button,按钮,HCI/button
+proj_12345_packed (3).cmodel,proj_ea218cad,safetyAbility,安全能力,safetyAbility
+proj_12345_packed (3).cmodel,proj_ea218cad,safetyIO,安全IO,safetyAbility/safetyIO
+proj_12345_packed (3).cmodel,proj_ea218cad,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_12345_packed (3).cmodel,proj_ea218cad,safetyRound,避障范围,safetyAbility/safetyRound
+proj_12345_packed (3).cmodel,proj_ea218cad,distMeasureAbility,透传测距,distMeasureAbility
+proj_12345_packed (3).cmodel,proj_ea218cad,distSensor,测距,distMeasureAbility/distSensor
+proj_12345_packed (3).cmodel,proj_ea218cad,actorAbility,执行机构能力,actorAbility
+proj_12345_packed (3).cmodel,proj_ea218cad,actor,执行机构,actorAbility/actor
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,locationAbility,定位能力,locationAbility
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,navi,导航,locationAbility/navi
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,HCI,人机交互,HCI
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,led,灯光,HCI/led
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,button,按钮,HCI/button
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,safetyAbility,安全能力,safetyAbility
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,safetyIO,安全IO,safetyAbility/safetyIO
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,safetyRound,避障范围,safetyAbility/safetyRound
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,distMeasureAbility,透传测距,distMeasureAbility
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,distSensor,测距,distMeasureAbility/distSensor
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,actorAbility,执行机构能力,actorAbility
+proj_ea4dc53c_packed.cmodel,proj_bb01f4a9,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,led,灯光,HCI/led
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,button,按钮,HCI/button
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (6).cmodel,proj_0f0a8833,actor,执行机构,actorAbility/actor
+proj_12345_packed (2).cmodel,proj_e72171dc,locationAbility,定位能力,locationAbility
+proj_12345_packed (2).cmodel,proj_e72171dc,navi,导航,locationAbility/navi
+proj_12345_packed (2).cmodel,proj_e72171dc,HCI,人机交互,HCI
+proj_12345_packed (2).cmodel,proj_e72171dc,led,灯光,HCI/led
+proj_12345_packed (2).cmodel,proj_e72171dc,button,按钮,HCI/button
+proj_12345_packed (2).cmodel,proj_e72171dc,safetyAbility,安全能力,safetyAbility
+proj_12345_packed (2).cmodel,proj_e72171dc,safetyIO,安全IO,safetyAbility/safetyIO
+proj_12345_packed (2).cmodel,proj_e72171dc,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_12345_packed (2).cmodel,proj_e72171dc,safetyRound,避障范围,safetyAbility/safetyRound
+proj_12345_packed (2).cmodel,proj_e72171dc,distMeasureAbility,透传测距,distMeasureAbility
+proj_12345_packed (2).cmodel,proj_e72171dc,distSensor,测距,distMeasureAbility/distSensor
+proj_12345_packed (2).cmodel,proj_e72171dc,actorAbility,执行机构能力,actorAbility
+proj_12345_packed (2).cmodel,proj_e72171dc,actor,执行机构,actorAbility/actor
+1234.cmodel,proj_0801b2d7,locationAbility,定位能力,locationAbility
+1234.cmodel,proj_0801b2d7,navi,导航,locationAbility/navi
+1234.cmodel,proj_0801b2d7,HCI,人机交互,HCI
+1234.cmodel,proj_0801b2d7,led,灯光,HCI/led
+1234.cmodel,proj_0801b2d7,button,按钮,HCI/button
+1234.cmodel,proj_0801b2d7,safetyAbility,安全能力,safetyAbility
+1234.cmodel,proj_0801b2d7,safetyIO,安全IO,safetyAbility/safetyIO
+1234.cmodel,proj_0801b2d7,safetySensor,避障传感器,safetyAbility/safetySensor
+1234.cmodel,proj_0801b2d7,safetyRound,避障范围,safetyAbility/safetyRound
+1234.cmodel,proj_0801b2d7,distMeasureAbility,透传测距,distMeasureAbility
+1234.cmodel,proj_0801b2d7,distSensor,测距,distMeasureAbility/distSensor
+1234.cmodel,proj_0801b2d7,actorAbility,执行机构能力,actorAbility
+1234.cmodel,proj_0801b2d7,actor,执行机构,actorAbility/actor
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,locationAbility,定位能力,locationAbility
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,navi,导航,locationAbility/navi
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,HCI,人机交互,HCI
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,led,灯光,HCI/led
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,button,按钮,HCI/button
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,safetyAbility,安全能力,safetyAbility
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,distSensor,测距,distMeasureAbility/distSensor
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,actorAbility,执行机构能力,actorAbility
+new_proj_2osj9dz_packed.cmodel,proj_5cc5e9ea,actor,执行机构,actorAbility/actor
+proj_12345_packed_12.cmodel,proj_0a7ac659,locationAbility,定位能力,locationAbility
+proj_12345_packed_12.cmodel,proj_0a7ac659,navi,导航,locationAbility/navi
+proj_12345_packed_12.cmodel,proj_0a7ac659,HCI,人机交互,HCI
+proj_12345_packed_12.cmodel,proj_0a7ac659,led,灯光,HCI/led
+proj_12345_packed_12.cmodel,proj_0a7ac659,button,按钮,HCI/button
+proj_12345_packed_12.cmodel,proj_0a7ac659,safetyAbility,安全能力,safetyAbility
+proj_12345_packed_12.cmodel,proj_0a7ac659,safetyIO,安全IO,safetyAbility/safetyIO
+proj_12345_packed_12.cmodel,proj_0a7ac659,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_12345_packed_12.cmodel,proj_0a7ac659,safetyRound,避障范围,safetyAbility/safetyRound
+proj_12345_packed_12.cmodel,proj_0a7ac659,distMeasureAbility,透传测距,distMeasureAbility
+proj_12345_packed_12.cmodel,proj_0a7ac659,distSensor,测距,distMeasureAbility/distSensor
+proj_12345_packed_12.cmodel,proj_0a7ac659,actorAbility,执行机构能力,actorAbility
+proj_12345_packed_12.cmodel,proj_0a7ac659,actor,执行机构,actorAbility/actor
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,locationAbility,定位能力,locationAbility
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,navi,导航,locationAbility/navi
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,HCI,人机交互,HCI
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,led,灯光,HCI/led
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,button,按钮,HCI/button
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,safetyAbility,安全能力,safetyAbility
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,safetyIO,安全IO,safetyAbility/safetyIO
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,safetyRound,避障范围,safetyAbility/safetyRound
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,distMeasureAbility,透传测距,distMeasureAbility
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,distSensor,测距,distMeasureAbility/distSensor
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,actorAbility,执行机构能力,actorAbility
+proj_579b8c68_packed.cmodel,proj_e66ffdd0,actor,执行机构,actorAbility/actor
+测试车模型(1).cmodel,proj_cc72559b,locationAbility,定位能力,locationAbility
+测试车模型(1).cmodel,proj_cc72559b,navi,导航,locationAbility/navi
+测试车模型(1).cmodel,proj_cc72559b,sensoryRecoAbi,感知识别,sensoryRecoAbi
+测试车模型(1).cmodel,proj_cc72559b,codeRec,码识别,sensoryRecoAbi/codeRec
+测试车模型(1).cmodel,proj_cc72559b,ranging,测距,sensoryRecoAbi/ranging
+测试车模型(1).cmodel,proj_cc72559b,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+测试车模型(1).cmodel,proj_cc72559b,HCI,人机交互,HCI
+测试车模型(1).cmodel,proj_cc72559b,led,灯光,HCI/led
+测试车模型(1).cmodel,proj_cc72559b,button,按钮,HCI/button
+测试车模型(1).cmodel,proj_cc72559b,safetyAbility,安全能力,safetyAbility
+测试车模型(1).cmodel,proj_cc72559b,safetyIO,安全IO,safetyAbility/safetyIO
+测试车模型(1).cmodel,proj_cc72559b,safetySensor,避障传感器,safetyAbility/safetySensor
+测试车模型(1).cmodel,proj_cc72559b,safetyRound,避障范围,safetyAbility/safetyRound
+测试车模型(1).cmodel,proj_cc72559b,distMeasureAbility,透传测距,distMeasureAbility
+测试车模型(1).cmodel,proj_cc72559b,distSensor,测距,distMeasureAbility/distSensor
+测试车模型(1).cmodel,proj_cc72559b,actorAbility,执行机构能力,actorAbility
+测试车模型(1).cmodel,proj_cc72559b,actor,执行机构,actorAbility/actor
+proj_1cad053c_packed.cmodel,proj_7893ef2f,locationAbility,定位能力,locationAbility
+proj_1cad053c_packed.cmodel,proj_7893ef2f,navi,导航,locationAbility/navi
+proj_1cad053c_packed.cmodel,proj_7893ef2f,HCI,人机交互,HCI
+proj_1cad053c_packed.cmodel,proj_7893ef2f,led,灯光,HCI/led
+proj_1cad053c_packed.cmodel,proj_7893ef2f,button,按钮,HCI/button
+proj_1cad053c_packed.cmodel,proj_7893ef2f,safetyAbility,安全能力,safetyAbility
+proj_1cad053c_packed.cmodel,proj_7893ef2f,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1cad053c_packed.cmodel,proj_7893ef2f,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1cad053c_packed.cmodel,proj_7893ef2f,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1cad053c_packed.cmodel,proj_7893ef2f,distMeasureAbility,透传测距,distMeasureAbility
+proj_1cad053c_packed.cmodel,proj_7893ef2f,distSensor,测距,distMeasureAbility/distSensor
+proj_1cad053c_packed.cmodel,proj_7893ef2f,actorAbility,执行机构能力,actorAbility
+proj_1cad053c_packed.cmodel,proj_7893ef2f,actor,执行机构,actorAbility/actor
+proj_5f40dd56_packed.cmodel,proj_194eead5,locationAbility,定位能力,locationAbility
+proj_5f40dd56_packed.cmodel,proj_194eead5,navi,导航,locationAbility/navi
+proj_5f40dd56_packed.cmodel,proj_194eead5,HCI,人机交互,HCI
+proj_5f40dd56_packed.cmodel,proj_194eead5,led,灯光,HCI/led
+proj_5f40dd56_packed.cmodel,proj_194eead5,button,按钮,HCI/button
+proj_5f40dd56_packed.cmodel,proj_194eead5,safetyAbility,安全能力,safetyAbility
+proj_5f40dd56_packed.cmodel,proj_194eead5,safetyIO,安全IO,safetyAbility/safetyIO
+proj_5f40dd56_packed.cmodel,proj_194eead5,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_5f40dd56_packed.cmodel,proj_194eead5,safetyRound,避障范围,safetyAbility/safetyRound
+proj_5f40dd56_packed.cmodel,proj_194eead5,distMeasureAbility,透传测距,distMeasureAbility
+proj_5f40dd56_packed.cmodel,proj_194eead5,distSensor,测距,distMeasureAbility/distSensor
+proj_5f40dd56_packed.cmodel,proj_194eead5,actorAbility,执行机构能力,actorAbility
+proj_5f40dd56_packed.cmodel,proj_194eead5,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,led,灯光,HCI/led
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,button,按钮,HCI/button
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (3).cmodel,proj_57116c3e,actor,执行机构,actorAbility/actor
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,locationAbility,定位能力,locationAbility
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,navi,导航,locationAbility/navi
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,HCI,人机交互,HCI
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,led,灯光,HCI/led
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,button,按钮,HCI/button
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,safetyAbility,安全能力,safetyAbility
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,safetyIO,安全IO,safetyAbility/safetyIO
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,safetyRound,避障范围,safetyAbility/safetyRound
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,distMeasureAbility,透传测距,distMeasureAbility
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,distSensor,测距,distMeasureAbility/distSensor
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,actorAbility,执行机构能力,actorAbility
+proj_89190f0a_packed.cmodel,proj_d9a6bc36,actor,执行机构,actorAbility/actor
+proj_17307d02_packed.cmodel,proj_0569bd62,locationAbility,定位能力,locationAbility
+proj_17307d02_packed.cmodel,proj_0569bd62,navi,导航,locationAbility/navi
+proj_17307d02_packed.cmodel,proj_0569bd62,HCI,人机交互,HCI
+proj_17307d02_packed.cmodel,proj_0569bd62,led,灯光,HCI/led
+proj_17307d02_packed.cmodel,proj_0569bd62,button,按钮,HCI/button
+proj_17307d02_packed.cmodel,proj_0569bd62,safetyAbility,安全能力,safetyAbility
+proj_17307d02_packed.cmodel,proj_0569bd62,safetyIO,安全IO,safetyAbility/safetyIO
+proj_17307d02_packed.cmodel,proj_0569bd62,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_17307d02_packed.cmodel,proj_0569bd62,safetyRound,避障范围,safetyAbility/safetyRound
+proj_17307d02_packed.cmodel,proj_0569bd62,distMeasureAbility,透传测距,distMeasureAbility
+proj_17307d02_packed.cmodel,proj_0569bd62,distSensor,测距,distMeasureAbility/distSensor
+proj_17307d02_packed.cmodel,proj_0569bd62,actorAbility,执行机构能力,actorAbility
+proj_17307d02_packed.cmodel,proj_0569bd62,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,led,灯光,HCI/led
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,button,按钮,HCI/button
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (10).cmodel,proj_1c263c1e,actor,执行机构,actorAbility/actor
+proj_8397240b_packed.cmodel,proj_9a36064b,locationAbility,定位能力,locationAbility
+proj_8397240b_packed.cmodel,proj_9a36064b,navi,导航,locationAbility/navi
+proj_8397240b_packed.cmodel,proj_9a36064b,HCI,人机交互,HCI
+proj_8397240b_packed.cmodel,proj_9a36064b,led,灯光,HCI/led
+proj_8397240b_packed.cmodel,proj_9a36064b,button,按钮,HCI/button
+proj_8397240b_packed.cmodel,proj_9a36064b,safetyAbility,安全能力,safetyAbility
+proj_8397240b_packed.cmodel,proj_9a36064b,safetyIO,安全IO,safetyAbility/safetyIO
+proj_8397240b_packed.cmodel,proj_9a36064b,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_8397240b_packed.cmodel,proj_9a36064b,safetyRound,避障范围,safetyAbility/safetyRound
+proj_8397240b_packed.cmodel,proj_9a36064b,distMeasureAbility,透传测距,distMeasureAbility
+proj_8397240b_packed.cmodel,proj_9a36064b,distSensor,测距,distMeasureAbility/distSensor
+proj_8397240b_packed.cmodel,proj_9a36064b,actorAbility,执行机构能力,actorAbility
+proj_8397240b_packed.cmodel,proj_9a36064b,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,led,灯光,HCI/led
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,button,按钮,HCI/button
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (2).cmodel,proj_941a22b8,actor,执行机构,actorAbility/actor
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,locationAbility,定位能力,locationAbility
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,navi,导航,locationAbility/navi
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,HCI,人机交互,HCI
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,led,灯光,HCI/led
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,button,按钮,HCI/button
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,safetyAbility,安全能力,safetyAbility
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,actorAbility,执行机构能力,actorAbility
+proj_1234_packed (11).cmodel,proj_a5c9b4d5,actor,执行机构,actorAbility/actor
+proj_32164c60_packed.cmodel,proj_a5e40608,locationAbility,定位能力,locationAbility
+proj_32164c60_packed.cmodel,proj_a5e40608,navi,导航,locationAbility/navi
+proj_32164c60_packed.cmodel,proj_a5e40608,HCI,人机交互,HCI
+proj_32164c60_packed.cmodel,proj_a5e40608,led,灯光,HCI/led
+proj_32164c60_packed.cmodel,proj_a5e40608,button,按钮,HCI/button
+proj_32164c60_packed.cmodel,proj_a5e40608,safetyAbility,安全能力,safetyAbility
+proj_32164c60_packed.cmodel,proj_a5e40608,safetyIO,安全IO,safetyAbility/safetyIO
+proj_32164c60_packed.cmodel,proj_a5e40608,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_32164c60_packed.cmodel,proj_a5e40608,safetyRound,避障范围,safetyAbility/safetyRound
+proj_32164c60_packed.cmodel,proj_a5e40608,distMeasureAbility,透传测距,distMeasureAbility
+proj_32164c60_packed.cmodel,proj_a5e40608,distSensor,测距,distMeasureAbility/distSensor
+proj_32164c60_packed.cmodel,proj_a5e40608,actorAbility,执行机构能力,actorAbility
+proj_32164c60_packed.cmodel,proj_a5e40608,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,led,灯光,HCI/led
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,button,按钮,HCI/button
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (11).cmodel,proj_0875db20,actor,执行机构,actorAbility/actor
+proj_12345_packed (6).cmodel,proj_a3108c8c,locationAbility,定位能力,locationAbility
+proj_12345_packed (6).cmodel,proj_a3108c8c,navi,导航,locationAbility/navi
+proj_12345_packed (6).cmodel,proj_a3108c8c,HCI,人机交互,HCI
+proj_12345_packed (6).cmodel,proj_a3108c8c,led,灯光,HCI/led
+proj_12345_packed (6).cmodel,proj_a3108c8c,button,按钮,HCI/button
+proj_12345_packed (6).cmodel,proj_a3108c8c,safetyAbility,安全能力,safetyAbility
+proj_12345_packed (6).cmodel,proj_a3108c8c,safetyIO,安全IO,safetyAbility/safetyIO
+proj_12345_packed (6).cmodel,proj_a3108c8c,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_12345_packed (6).cmodel,proj_a3108c8c,safetyRound,避障范围,safetyAbility/safetyRound
+proj_12345_packed (6).cmodel,proj_a3108c8c,distMeasureAbility,透传测距,distMeasureAbility
+proj_12345_packed (6).cmodel,proj_a3108c8c,distSensor,测距,distMeasureAbility/distSensor
+proj_12345_packed (6).cmodel,proj_a3108c8c,actorAbility,执行机构能力,actorAbility
+proj_12345_packed (6).cmodel,proj_a3108c8c,actor,执行机构,actorAbility/actor
+AOBO.cmodel555.cmodel,proj_2b4abde3,locationAbility,定位能力,locationAbility
+AOBO.cmodel555.cmodel,proj_2b4abde3,navi,导航,locationAbility/navi
+AOBO.cmodel555.cmodel,proj_2b4abde3,HCI,人机交互,HCI
+AOBO.cmodel555.cmodel,proj_2b4abde3,led,灯光,HCI/led
+AOBO.cmodel555.cmodel,proj_2b4abde3,button,按钮,HCI/button
+AOBO.cmodel555.cmodel,proj_2b4abde3,safetyAbility,安全能力,safetyAbility
+AOBO.cmodel555.cmodel,proj_2b4abde3,safetyIO,安全IO,safetyAbility/safetyIO
+AOBO.cmodel555.cmodel,proj_2b4abde3,safetySensor,避障传感器,safetyAbility/safetySensor
+AOBO.cmodel555.cmodel,proj_2b4abde3,safetyRound,避障范围,safetyAbility/safetyRound
+AOBO.cmodel555.cmodel,proj_2b4abde3,distMeasureAbility,透传测距,distMeasureAbility
+AOBO.cmodel555.cmodel,proj_2b4abde3,distSensor,测距,distMeasureAbility/distSensor
+AOBO.cmodel555.cmodel,proj_2b4abde3,actorAbility,执行机构能力,actorAbility
+AOBO.cmodel555.cmodel,proj_2b4abde3,actor,执行机构,actorAbility/actor
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,locationAbility,定位能力,locationAbility
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,navi,导航,locationAbility/navi
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,HCI,人机交互,HCI
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,led,灯光,HCI/led
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,button,按钮,HCI/button
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,safetyAbility,安全能力,safetyAbility
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,safetyIO,安全IO,safetyAbility/safetyIO
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,safetyRound,避障范围,safetyAbility/safetyRound
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,distMeasureAbility,透传测距,distMeasureAbility
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,distSensor,测距,distMeasureAbility/distSensor
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,actorAbility,执行机构能力,actorAbility
+proj_4bd913ce_packed.cmodel,proj_e6b5b393,actor,执行机构,actorAbility/actor
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,locationAbility,定位能力,locationAbility
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,navi,导航,locationAbility/navi
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,HCI,人机交互,HCI
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,led,灯光,HCI/led
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,button,按钮,HCI/button
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,safetyAbility,安全能力,safetyAbility
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,safetyIO,安全IO,safetyAbility/safetyIO
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,safetyRound,避障范围,safetyAbility/safetyRound
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,distMeasureAbility,透传测距,distMeasureAbility
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,distSensor,测距,distMeasureAbility/distSensor
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,actorAbility,执行机构能力,actorAbility
+proj_df3aa7ef_packed.cmodel,proj_c26fbf5f,actor,执行机构,actorAbility/actor
+proj_9bec45be_packed.cmodel,proj_d4648d5a,locationAbility,定位能力,locationAbility
+proj_9bec45be_packed.cmodel,proj_d4648d5a,navi,导航,locationAbility/navi
+proj_9bec45be_packed.cmodel,proj_d4648d5a,HCI,人机交互,HCI
+proj_9bec45be_packed.cmodel,proj_d4648d5a,led,灯光,HCI/led
+proj_9bec45be_packed.cmodel,proj_d4648d5a,button,按钮,HCI/button
+proj_9bec45be_packed.cmodel,proj_d4648d5a,safetyAbility,安全能力,safetyAbility
+proj_9bec45be_packed.cmodel,proj_d4648d5a,safetyIO,安全IO,safetyAbility/safetyIO
+proj_9bec45be_packed.cmodel,proj_d4648d5a,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_9bec45be_packed.cmodel,proj_d4648d5a,safetyRound,避障范围,safetyAbility/safetyRound
+proj_9bec45be_packed.cmodel,proj_d4648d5a,distMeasureAbility,透传测距,distMeasureAbility
+proj_9bec45be_packed.cmodel,proj_d4648d5a,distSensor,测距,distMeasureAbility/distSensor
+proj_9bec45be_packed.cmodel,proj_d4648d5a,actorAbility,执行机构能力,actorAbility
+proj_9bec45be_packed.cmodel,proj_d4648d5a,actor,执行机构,actorAbility/actor
+0323.cmodel,proj_f2896fda,locationAbility,定位能力,locationAbility
+0323.cmodel,proj_f2896fda,navi,导航,locationAbility/navi
+0323.cmodel,proj_f2896fda,HCI,人机交互,HCI
+0323.cmodel,proj_f2896fda,led,灯光,HCI/led
+0323.cmodel,proj_f2896fda,button,按钮,HCI/button
+0323.cmodel,proj_f2896fda,safetyAbility,安全能力,safetyAbility
+0323.cmodel,proj_f2896fda,safetyIO,安全IO,safetyAbility/safetyIO
+0323.cmodel,proj_f2896fda,safetySensor,避障传感器,safetyAbility/safetySensor
+0323.cmodel,proj_f2896fda,safetyRound,避障范围,safetyAbility/safetyRound
+0323.cmodel,proj_f2896fda,distMeasureAbility,透传测距,distMeasureAbility
+0323.cmodel,proj_f2896fda,distSensor,测距,distMeasureAbility/distSensor
+0323.cmodel,proj_f2896fda,actorAbility,执行机构能力,actorAbility
+0323.cmodel,proj_f2896fda,actor,执行机构,actorAbility/actor
+proj_89190f0a_packed (1).cmodel,proj_373951e8,locationAbility,定位能力,locationAbility
+proj_89190f0a_packed (1).cmodel,proj_373951e8,navi,导航,locationAbility/navi
+proj_89190f0a_packed (1).cmodel,proj_373951e8,HCI,人机交互,HCI
+proj_89190f0a_packed (1).cmodel,proj_373951e8,led,灯光,HCI/led
+proj_89190f0a_packed (1).cmodel,proj_373951e8,button,按钮,HCI/button
+proj_89190f0a_packed (1).cmodel,proj_373951e8,safetyAbility,安全能力,safetyAbility
+proj_89190f0a_packed (1).cmodel,proj_373951e8,safetyIO,安全IO,safetyAbility/safetyIO
+proj_89190f0a_packed (1).cmodel,proj_373951e8,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_89190f0a_packed (1).cmodel,proj_373951e8,safetyRound,避障范围,safetyAbility/safetyRound
+proj_89190f0a_packed (1).cmodel,proj_373951e8,distMeasureAbility,透传测距,distMeasureAbility
+proj_89190f0a_packed (1).cmodel,proj_373951e8,distSensor,测距,distMeasureAbility/distSensor
+proj_89190f0a_packed (1).cmodel,proj_373951e8,actorAbility,执行机构能力,actorAbility
+proj_89190f0a_packed (1).cmodel,proj_373951e8,actor,执行机构,actorAbility/actor
+proj_f957aada_packed1.cmodel,proj_3da91a06,locationAbility,定位能力,locationAbility
+proj_f957aada_packed1.cmodel,proj_3da91a06,navi,导航,locationAbility/navi
+proj_f957aada_packed1.cmodel,proj_3da91a06,HCI,人机交互,HCI
+proj_f957aada_packed1.cmodel,proj_3da91a06,led,灯光,HCI/led
+proj_f957aada_packed1.cmodel,proj_3da91a06,button,按钮,HCI/button
+proj_f957aada_packed1.cmodel,proj_3da91a06,safetyAbility,安全能力,safetyAbility
+proj_f957aada_packed1.cmodel,proj_3da91a06,safetyIO,安全IO,safetyAbility/safetyIO
+proj_f957aada_packed1.cmodel,proj_3da91a06,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_f957aada_packed1.cmodel,proj_3da91a06,safetyRound,避障范围,safetyAbility/safetyRound
+proj_f957aada_packed1.cmodel,proj_3da91a06,distMeasureAbility,透传测距,distMeasureAbility
+proj_f957aada_packed1.cmodel,proj_3da91a06,distSensor,测距,distMeasureAbility/distSensor
+proj_f957aada_packed1.cmodel,proj_3da91a06,actorAbility,执行机构能力,actorAbility
+proj_f957aada_packed1.cmodel,proj_3da91a06,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,led,灯光,HCI/led
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,button,按钮,HCI/button
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (9).cmodel,proj_1643f37b,actor,执行机构,actorAbility/actor
+proj_ee75f199_packed.cmodel,proj_44fffbfa,locationAbility,定位能力,locationAbility
+proj_ee75f199_packed.cmodel,proj_44fffbfa,navi,导航,locationAbility/navi
+proj_ee75f199_packed.cmodel,proj_44fffbfa,HCI,人机交互,HCI
+proj_ee75f199_packed.cmodel,proj_44fffbfa,led,灯光,HCI/led
+proj_ee75f199_packed.cmodel,proj_44fffbfa,button,按钮,HCI/button
+proj_ee75f199_packed.cmodel,proj_44fffbfa,safetyAbility,安全能力,safetyAbility
+proj_ee75f199_packed.cmodel,proj_44fffbfa,safetyIO,安全IO,safetyAbility/safetyIO
+proj_ee75f199_packed.cmodel,proj_44fffbfa,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_ee75f199_packed.cmodel,proj_44fffbfa,safetyRound,避障范围,safetyAbility/safetyRound
+proj_ee75f199_packed.cmodel,proj_44fffbfa,distMeasureAbility,透传测距,distMeasureAbility
+proj_ee75f199_packed.cmodel,proj_44fffbfa,distSensor,测距,distMeasureAbility/distSensor
+proj_ee75f199_packed.cmodel,proj_44fffbfa,actorAbility,执行机构能力,actorAbility
+proj_ee75f199_packed.cmodel,proj_44fffbfa,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,led,灯光,HCI/led
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,button,按钮,HCI/button
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (8).cmodel,proj_696dab70,actor,执行机构,actorAbility/actor
+proj_016267c0_packed.cmodel,proj_15b9d2f0,locationAbility,定位能力,locationAbility
+proj_016267c0_packed.cmodel,proj_15b9d2f0,navi,导航,locationAbility/navi
+proj_016267c0_packed.cmodel,proj_15b9d2f0,HCI,人机交互,HCI
+proj_016267c0_packed.cmodel,proj_15b9d2f0,led,灯光,HCI/led
+proj_016267c0_packed.cmodel,proj_15b9d2f0,button,按钮,HCI/button
+proj_016267c0_packed.cmodel,proj_15b9d2f0,safetyAbility,安全能力,safetyAbility
+proj_016267c0_packed.cmodel,proj_15b9d2f0,safetyIO,安全IO,safetyAbility/safetyIO
+proj_016267c0_packed.cmodel,proj_15b9d2f0,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_016267c0_packed.cmodel,proj_15b9d2f0,safetyRound,避障范围,safetyAbility/safetyRound
+proj_016267c0_packed.cmodel,proj_15b9d2f0,distMeasureAbility,透传测距,distMeasureAbility
+proj_016267c0_packed.cmodel,proj_15b9d2f0,distSensor,测距,distMeasureAbility/distSensor
+proj_016267c0_packed.cmodel,proj_15b9d2f0,actorAbility,执行机构能力,actorAbility
+proj_016267c0_packed.cmodel,proj_15b9d2f0,actor,执行机构,actorAbility/actor
+proj_1234_packed (12).cmodel,proj_71a97901,locationAbility,定位能力,locationAbility
+proj_1234_packed (12).cmodel,proj_71a97901,navi,导航,locationAbility/navi
+proj_1234_packed (12).cmodel,proj_71a97901,HCI,人机交互,HCI
+proj_1234_packed (12).cmodel,proj_71a97901,led,灯光,HCI/led
+proj_1234_packed (12).cmodel,proj_71a97901,button,按钮,HCI/button
+proj_1234_packed (12).cmodel,proj_71a97901,safetyAbility,安全能力,safetyAbility
+proj_1234_packed (12).cmodel,proj_71a97901,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_packed (12).cmodel,proj_71a97901,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_packed (12).cmodel,proj_71a97901,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_packed (12).cmodel,proj_71a97901,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_packed (12).cmodel,proj_71a97901,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_packed (12).cmodel,proj_71a97901,actorAbility,执行机构能力,actorAbility
+proj_1234_packed (12).cmodel,proj_71a97901,actor,执行机构,actorAbility/actor
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,locationAbility,定位能力,locationAbility
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,navi,导航,locationAbility/navi
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,HCI,人机交互,HCI
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,led,灯光,HCI/led
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,button,按钮,HCI/button
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,safetyAbility,安全能力,safetyAbility
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,distSensor,测距,distMeasureAbility/distSensor
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,actorAbility,执行机构能力,actorAbility
+new_proj_khwcs9e_packed (1).cmodel,proj_4b583acb,actor,执行机构,actorAbility/actor
+proj_f957aada_packed.cmodel,proj_7ed4e41a,locationAbility,定位能力,locationAbility
+proj_f957aada_packed.cmodel,proj_7ed4e41a,navi,导航,locationAbility/navi
+proj_f957aada_packed.cmodel,proj_7ed4e41a,HCI,人机交互,HCI
+proj_f957aada_packed.cmodel,proj_7ed4e41a,led,灯光,HCI/led
+proj_f957aada_packed.cmodel,proj_7ed4e41a,button,按钮,HCI/button
+proj_f957aada_packed.cmodel,proj_7ed4e41a,safetyAbility,安全能力,safetyAbility
+proj_f957aada_packed.cmodel,proj_7ed4e41a,safetyIO,安全IO,safetyAbility/safetyIO
+proj_f957aada_packed.cmodel,proj_7ed4e41a,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_f957aada_packed.cmodel,proj_7ed4e41a,safetyRound,避障范围,safetyAbility/safetyRound
+proj_f957aada_packed.cmodel,proj_7ed4e41a,distMeasureAbility,透传测距,distMeasureAbility
+proj_f957aada_packed.cmodel,proj_7ed4e41a,distSensor,测距,distMeasureAbility/distSensor
+proj_f957aada_packed.cmodel,proj_7ed4e41a,actorAbility,执行机构能力,actorAbility
+proj_f957aada_packed.cmodel,proj_7ed4e41a,actor,执行机构,actorAbility/actor
+proj_edc87f80_packed.cmodel,proj_478156e2,locationAbility,定位能力,locationAbility
+proj_edc87f80_packed.cmodel,proj_478156e2,navi,导航,locationAbility/navi
+proj_edc87f80_packed.cmodel,proj_478156e2,HCI,人机交互,HCI
+proj_edc87f80_packed.cmodel,proj_478156e2,led,灯光,HCI/led
+proj_edc87f80_packed.cmodel,proj_478156e2,button,按钮,HCI/button
+proj_edc87f80_packed.cmodel,proj_478156e2,safetyAbility,安全能力,safetyAbility
+proj_edc87f80_packed.cmodel,proj_478156e2,safetyIO,安全IO,safetyAbility/safetyIO
+proj_edc87f80_packed.cmodel,proj_478156e2,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_edc87f80_packed.cmodel,proj_478156e2,safetyRound,避障范围,safetyAbility/safetyRound
+proj_edc87f80_packed.cmodel,proj_478156e2,distMeasureAbility,透传测距,distMeasureAbility
+proj_edc87f80_packed.cmodel,proj_478156e2,distSensor,测距,distMeasureAbility/distSensor
+proj_edc87f80_packed.cmodel,proj_478156e2,actorAbility,执行机构能力,actorAbility
+proj_edc87f80_packed.cmodel,proj_478156e2,actor,执行机构,actorAbility/actor
+ModelSetError.cmodel,proj_d0cb8960,locationAbility,定位能力,locationAbility
+ModelSetError.cmodel,proj_d0cb8960,navi,导航,locationAbility/navi
+ModelSetError.cmodel,proj_d0cb8960,sensoryRecoAbi,感知识别,sensoryRecoAbi
+ModelSetError.cmodel,proj_d0cb8960,codeRec,码识别,sensoryRecoAbi/codeRec
+ModelSetError.cmodel,proj_d0cb8960,ranging,测距,sensoryRecoAbi/ranging
+ModelSetError.cmodel,proj_d0cb8960,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+ModelSetError.cmodel,proj_d0cb8960,HCI,人机交互,HCI
+ModelSetError.cmodel,proj_d0cb8960,led,灯光,HCI/led
+ModelSetError.cmodel,proj_d0cb8960,button,按钮,HCI/button
+ModelSetError.cmodel,proj_d0cb8960,safetyAbility,安全能力,safetyAbility
+ModelSetError.cmodel,proj_d0cb8960,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSetError.cmodel,proj_d0cb8960,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSetError.cmodel,proj_d0cb8960,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSetError.cmodel,proj_d0cb8960,distMeasureAbility,透传测距,distMeasureAbility
+ModelSetError.cmodel,proj_d0cb8960,distSensor,测距,distMeasureAbility/distSensor
+ModelSetError.cmodel,proj_d0cb8960,actorAbility,执行机构能力,actorAbility
+ModelSetError.cmodel,proj_d0cb8960,actor,执行机构,actorAbility/actor
+ModelSet---ok(1).cmodel,proj_85050f26,locationAbility,定位能力,locationAbility
+ModelSet---ok(1).cmodel,proj_85050f26,navi,导航,locationAbility/navi
+ModelSet---ok(1).cmodel,proj_85050f26,HCI,人机交互,HCI
+ModelSet---ok(1).cmodel,proj_85050f26,led,灯光,HCI/led
+ModelSet---ok(1).cmodel,proj_85050f26,button,按钮,HCI/button
+ModelSet---ok(1).cmodel,proj_85050f26,safetyAbility,安全能力,safetyAbility
+ModelSet---ok(1).cmodel,proj_85050f26,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet---ok(1).cmodel,proj_85050f26,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet---ok(1).cmodel,proj_85050f26,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet---ok(1).cmodel,proj_85050f26,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet---ok(1).cmodel,proj_85050f26,distSensor,测距,distMeasureAbility/distSensor
+ModelSet---ok(1).cmodel,proj_85050f26,actorAbility,执行机构能力,actorAbility
+ModelSet---ok(1).cmodel,proj_85050f26,actor,执行机构,actorAbility/actor
+ModelSet0511.cmodel,proj_50266737,locationAbility,定位能力,locationAbility
+ModelSet0511.cmodel,proj_50266737,navi,导航,locationAbility/navi
+ModelSet0511.cmodel,proj_50266737,HCI,人机交互,HCI
+ModelSet0511.cmodel,proj_50266737,led,灯光,HCI/led
+ModelSet0511.cmodel,proj_50266737,button,按钮,HCI/button
+ModelSet0511.cmodel,proj_50266737,safetyAbility,安全能力,safetyAbility
+ModelSet0511.cmodel,proj_50266737,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet0511.cmodel,proj_50266737,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet0511.cmodel,proj_50266737,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet0511.cmodel,proj_50266737,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet0511.cmodel,proj_50266737,distSensor,测距,distMeasureAbility/distSensor
+ModelSet0511.cmodel,proj_50266737,actorAbility,执行机构能力,actorAbility
+ModelSet0511.cmodel,proj_50266737,actor,执行机构,actorAbility/actor
+磁吸车组态建模.cmodel,proj_38c117d0,locationAbility,定位能力,locationAbility
+磁吸车组态建模.cmodel,proj_38c117d0,navi,导航,locationAbility/navi
+磁吸车组态建模.cmodel,proj_38c117d0,HCI,人机交互,HCI
+磁吸车组态建模.cmodel,proj_38c117d0,led,灯光,HCI/led
+磁吸车组态建模.cmodel,proj_38c117d0,button,按钮,HCI/button
+磁吸车组态建模.cmodel,proj_38c117d0,safetyAbility,安全能力,safetyAbility
+磁吸车组态建模.cmodel,proj_38c117d0,safetyIO,安全IO,safetyAbility/safetyIO
+磁吸车组态建模.cmodel,proj_38c117d0,safetySensor,避障传感器,safetyAbility/safetySensor
+磁吸车组态建模.cmodel,proj_38c117d0,safetyRound,避障范围,safetyAbility/safetyRound
+磁吸车组态建模.cmodel,proj_38c117d0,distMeasureAbility,透传测距,distMeasureAbility
+磁吸车组态建模.cmodel,proj_38c117d0,distSensor,测距,distMeasureAbility/distSensor
+磁吸车组态建模.cmodel,proj_38c117d0,actorAbility,执行机构能力,actorAbility
+磁吸车组态建模.cmodel,proj_38c117d0,actor,执行机构,actorAbility/actor
+5.12_src.cmodel,proj_30fc75fe,locationAbility,定位能力,locationAbility
+5.12_src.cmodel,proj_30fc75fe,navi,导航,locationAbility/navi
+5.12_src.cmodel,proj_30fc75fe,sensoryRecoAbi,感知识别,sensoryRecoAbi
+5.12_src.cmodel,proj_30fc75fe,codeRec,码识别,sensoryRecoAbi/codeRec
+5.12_src.cmodel,proj_30fc75fe,ranging,测距,sensoryRecoAbi/ranging
+5.12_src.cmodel,proj_30fc75fe,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+5.12_src.cmodel,proj_30fc75fe,HCI,人机交互,HCI
+5.12_src.cmodel,proj_30fc75fe,led,灯光,HCI/led
+5.12_src.cmodel,proj_30fc75fe,button,按钮,HCI/button
+5.12_src.cmodel,proj_30fc75fe,safetyAbility,安全能力,safetyAbility
+5.12_src.cmodel,proj_30fc75fe,safetyIO,安全IO,safetyAbility/safetyIO
+5.12_src.cmodel,proj_30fc75fe,safetySensor,避障传感器,safetyAbility/safetySensor
+5.12_src.cmodel,proj_30fc75fe,safetyRound,避障范围,safetyAbility/safetyRound
+5.12_src.cmodel,proj_30fc75fe,actorAbility,执行机构能力,actorAbility
+5.12_src.cmodel,proj_30fc75fe,actor,执行机构,actorAbility/actor
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,locationAbility,定位能力,locationAbility
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,navi,导航,locationAbility/navi
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,HCI,人机交互,HCI
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,led,灯光,HCI/led
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,button,按钮,HCI/button
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,safetyAbility,安全能力,safetyAbility
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,distSensor,测距,distMeasureAbility/distSensor
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,actorAbility,执行机构能力,actorAbility
+ModelSet-lift-ok.cmodel,proj_b9f7d1d0,actor,执行机构,actorAbility/actor
+校验模型.cmodel,proj_9bbc7fb3,locationAbility,定位能力,locationAbility
+校验模型.cmodel,proj_9bbc7fb3,navi,导航,locationAbility/navi
+校验模型.cmodel,proj_9bbc7fb3,HCI,人机交互,HCI
+校验模型.cmodel,proj_9bbc7fb3,led,灯光,HCI/led
+校验模型.cmodel,proj_9bbc7fb3,button,按钮,HCI/button
+校验模型.cmodel,proj_9bbc7fb3,safetyAbility,安全能力,safetyAbility
+校验模型.cmodel,proj_9bbc7fb3,safetyIO,安全IO,safetyAbility/safetyIO
+校验模型.cmodel,proj_9bbc7fb3,safetySensor,避障传感器,safetyAbility/safetySensor
+校验模型.cmodel,proj_9bbc7fb3,safetyRound,避障范围,safetyAbility/safetyRound
+校验模型.cmodel,proj_9bbc7fb3,distMeasureAbility,透传测距,distMeasureAbility
+校验模型.cmodel,proj_9bbc7fb3,distSensor,测距,distMeasureAbility/distSensor
+校验模型.cmodel,proj_9bbc7fb3,actorAbility,执行机构能力,actorAbility
+校验模型.cmodel,proj_9bbc7fb3,actor,执行机构,actorAbility/actor
+ModelSet---ok.cmodel,proj_6ef49fdc,locationAbility,定位能力,locationAbility
+ModelSet---ok.cmodel,proj_6ef49fdc,navi,导航,locationAbility/navi
+ModelSet---ok.cmodel,proj_6ef49fdc,HCI,人机交互,HCI
+ModelSet---ok.cmodel,proj_6ef49fdc,led,灯光,HCI/led
+ModelSet---ok.cmodel,proj_6ef49fdc,button,按钮,HCI/button
+ModelSet---ok.cmodel,proj_6ef49fdc,safetyAbility,安全能力,safetyAbility
+ModelSet---ok.cmodel,proj_6ef49fdc,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet---ok.cmodel,proj_6ef49fdc,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet---ok.cmodel,proj_6ef49fdc,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet---ok.cmodel,proj_6ef49fdc,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet---ok.cmodel,proj_6ef49fdc,distSensor,测距,distMeasureAbility/distSensor
+ModelSet---ok.cmodel,proj_6ef49fdc,actorAbility,执行机构能力,actorAbility
+ModelSet---ok.cmodel,proj_6ef49fdc,actor,执行机构,actorAbility/actor
+5_11_ModelSet.cmodel,proj_c4a3c4a7,locationAbility,定位能力,locationAbility
+5_11_ModelSet.cmodel,proj_c4a3c4a7,navi,导航,locationAbility/navi
+5_11_ModelSet.cmodel,proj_c4a3c4a7,HCI,人机交互,HCI
+5_11_ModelSet.cmodel,proj_c4a3c4a7,led,灯光,HCI/led
+5_11_ModelSet.cmodel,proj_c4a3c4a7,button,按钮,HCI/button
+5_11_ModelSet.cmodel,proj_c4a3c4a7,safetyAbility,安全能力,safetyAbility
+5_11_ModelSet.cmodel,proj_c4a3c4a7,safetyIO,安全IO,safetyAbility/safetyIO
+5_11_ModelSet.cmodel,proj_c4a3c4a7,safetySensor,避障传感器,safetyAbility/safetySensor
+5_11_ModelSet.cmodel,proj_c4a3c4a7,safetyRound,避障范围,safetyAbility/safetyRound
+5_11_ModelSet.cmodel,proj_c4a3c4a7,distMeasureAbility,透传测距,distMeasureAbility
+5_11_ModelSet.cmodel,proj_c4a3c4a7,distSensor,测距,distMeasureAbility/distSensor
+5_11_ModelSet.cmodel,proj_c4a3c4a7,actorAbility,执行机构能力,actorAbility
+5_11_ModelSet.cmodel,proj_c4a3c4a7,actor,执行机构,actorAbility/actor
+ModelSet1.cmodel,proj_50384670,locationAbility,定位能力,locationAbility
+ModelSet1.cmodel,proj_50384670,navi,导航,locationAbility/navi
+ModelSet1.cmodel,proj_50384670,HCI,人机交互,HCI
+ModelSet1.cmodel,proj_50384670,led,灯光,HCI/led
+ModelSet1.cmodel,proj_50384670,button,按钮,HCI/button
+ModelSet1.cmodel,proj_50384670,safetyAbility,安全能力,safetyAbility
+ModelSet1.cmodel,proj_50384670,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet1.cmodel,proj_50384670,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet1.cmodel,proj_50384670,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet1.cmodel,proj_50384670,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet1.cmodel,proj_50384670,distSensor,测距,distMeasureAbility/distSensor
+ModelSet1.cmodel,proj_50384670,actorAbility,执行机构能力,actorAbility
+ModelSet1.cmodel,proj_50384670,actor,执行机构,actorAbility/actor
+ModelSet3.cmodel,proj_8d7c0a2a,locationAbility,定位能力,locationAbility
+ModelSet3.cmodel,proj_8d7c0a2a,navi,导航,locationAbility/navi
+ModelSet3.cmodel,proj_8d7c0a2a,sensoryRecoAbi,感知识别,sensoryRecoAbi
+ModelSet3.cmodel,proj_8d7c0a2a,codeRec,码识别,sensoryRecoAbi/codeRec
+ModelSet3.cmodel,proj_8d7c0a2a,ranging,测距,sensoryRecoAbi/ranging
+ModelSet3.cmodel,proj_8d7c0a2a,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+ModelSet3.cmodel,proj_8d7c0a2a,HCI,人机交互,HCI
+ModelSet3.cmodel,proj_8d7c0a2a,led,灯光,HCI/led
+ModelSet3.cmodel,proj_8d7c0a2a,button,按钮,HCI/button
+ModelSet3.cmodel,proj_8d7c0a2a,safetyAbility,安全能力,safetyAbility
+ModelSet3.cmodel,proj_8d7c0a2a,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet3.cmodel,proj_8d7c0a2a,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet3.cmodel,proj_8d7c0a2a,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet3.cmodel,proj_8d7c0a2a,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet3.cmodel,proj_8d7c0a2a,distSensor,测距,distMeasureAbility/distSensor
+ModelSet3.cmodel,proj_8d7c0a2a,actorAbility,执行机构能力,actorAbility
+ModelSet3.cmodel,proj_8d7c0a2a,actor,执行机构,actorAbility/actor
+7米四舵轮_260418.cmodel,proj_35a0b82a,locationAbility,定位能力,locationAbility
+7米四舵轮_260418.cmodel,proj_35a0b82a,navi,导航,locationAbility/navi
+7米四舵轮_260418.cmodel,proj_35a0b82a,HCI,人机交互,HCI
+7米四舵轮_260418.cmodel,proj_35a0b82a,led,灯光,HCI/led
+7米四舵轮_260418.cmodel,proj_35a0b82a,button,按钮,HCI/button
+7米四舵轮_260418.cmodel,proj_35a0b82a,safetyAbility,安全能力,safetyAbility
+7米四舵轮_260418.cmodel,proj_35a0b82a,safetyIO,安全IO,safetyAbility/safetyIO
+7米四舵轮_260418.cmodel,proj_35a0b82a,safetySensor,避障传感器,safetyAbility/safetySensor
+7米四舵轮_260418.cmodel,proj_35a0b82a,safetyRound,避障范围,safetyAbility/safetyRound
+7米四舵轮_260418.cmodel,proj_35a0b82a,distMeasureAbility,透传测距,distMeasureAbility
+7米四舵轮_260418.cmodel,proj_35a0b82a,distSensor,测距,distMeasureAbility/distSensor
+7米四舵轮_260418.cmodel,proj_35a0b82a,actorAbility,执行机构能力,actorAbility
+7米四舵轮_260418.cmodel,proj_35a0b82a,actor,执行机构,actorAbility/actor
+AoBo1.cmodel,proj_f6585928,locationAbility,定位能力,locationAbility
+AoBo1.cmodel,proj_f6585928,navi,导航,locationAbility/navi
+AoBo1.cmodel,proj_f6585928,HCI,人机交互,HCI
+AoBo1.cmodel,proj_f6585928,led,灯光,HCI/led
+AoBo1.cmodel,proj_f6585928,button,按钮,HCI/button
+AoBo1.cmodel,proj_f6585928,safetyAbility,安全能力,safetyAbility
+AoBo1.cmodel,proj_f6585928,safetyIO,安全IO,safetyAbility/safetyIO
+AoBo1.cmodel,proj_f6585928,safetySensor,避障传感器,safetyAbility/safetySensor
+AoBo1.cmodel,proj_f6585928,safetyRound,避障范围,safetyAbility/safetyRound
+AoBo1.cmodel,proj_f6585928,distMeasureAbility,透传测距,distMeasureAbility
+AoBo1.cmodel,proj_f6585928,distSensor,测距,distMeasureAbility/distSensor
+AoBo1.cmodel,proj_f6585928,actorAbility,执行机构能力,actorAbility
+AoBo1.cmodel,proj_f6585928,actor,执行机构,actorAbility/actor
+AoBo3.cmodel,proj_f446a19c,locationAbility,定位能力,locationAbility
+AoBo3.cmodel,proj_f446a19c,navi,导航,locationAbility/navi
+AoBo3.cmodel,proj_f446a19c,HCI,人机交互,HCI
+AoBo3.cmodel,proj_f446a19c,led,灯光,HCI/led
+AoBo3.cmodel,proj_f446a19c,button,按钮,HCI/button
+AoBo3.cmodel,proj_f446a19c,safetyAbility,安全能力,safetyAbility
+AoBo3.cmodel,proj_f446a19c,safetyIO,安全IO,safetyAbility/safetyIO
+AoBo3.cmodel,proj_f446a19c,safetySensor,避障传感器,safetyAbility/safetySensor
+AoBo3.cmodel,proj_f446a19c,safetyRound,避障范围,safetyAbility/safetyRound
+AoBo3.cmodel,proj_f446a19c,distMeasureAbility,透传测距,distMeasureAbility
+AoBo3.cmodel,proj_f446a19c,distSensor,测距,distMeasureAbility/distSensor
+AoBo3.cmodel,proj_f446a19c,actorAbility,执行机构能力,actorAbility
+AoBo3.cmodel,proj_f446a19c,actor,执行机构,actorAbility/actor
+BackupTemp.cmodel,proj_bdc08b3d,locationAbility,定位能力,locationAbility
+BackupTemp.cmodel,proj_bdc08b3d,navi,导航,locationAbility/navi
+BackupTemp.cmodel,proj_bdc08b3d,HCI,人机交互,HCI
+BackupTemp.cmodel,proj_bdc08b3d,led,灯光,HCI/led
+BackupTemp.cmodel,proj_bdc08b3d,button,按钮,HCI/button
+BackupTemp.cmodel,proj_bdc08b3d,safetyAbility,安全能力,safetyAbility
+BackupTemp.cmodel,proj_bdc08b3d,safetyIO,安全IO,safetyAbility/safetyIO
+BackupTemp.cmodel,proj_bdc08b3d,safetySensor,避障传感器,safetyAbility/safetySensor
+BackupTemp.cmodel,proj_bdc08b3d,safetyRound,避障范围,safetyAbility/safetyRound
+BackupTemp.cmodel,proj_bdc08b3d,distMeasureAbility,透传测距,distMeasureAbility
+BackupTemp.cmodel,proj_bdc08b3d,distSensor,测距,distMeasureAbility/distSensor
+BackupTemp.cmodel,proj_bdc08b3d,actorAbility,执行机构能力,actorAbility
+BackupTemp.cmodel,proj_bdc08b3d,actor,执行机构,actorAbility/actor
+zshy_AMR20260430.cmodel,proj_50f298eb,locationAbility,定位能力,locationAbility
+zshy_AMR20260430.cmodel,proj_50f298eb,navi,导航,locationAbility/navi
+zshy_AMR20260430.cmodel,proj_50f298eb,HCI,人机交互,HCI
+zshy_AMR20260430.cmodel,proj_50f298eb,led,灯光,HCI/led
+zshy_AMR20260430.cmodel,proj_50f298eb,button,按钮,HCI/button
+zshy_AMR20260430.cmodel,proj_50f298eb,safetyAbility,安全能力,safetyAbility
+zshy_AMR20260430.cmodel,proj_50f298eb,safetyIO,安全IO,safetyAbility/safetyIO
+zshy_AMR20260430.cmodel,proj_50f298eb,safetySensor,避障传感器,safetyAbility/safetySensor
+zshy_AMR20260430.cmodel,proj_50f298eb,safetyRound,避障范围,safetyAbility/safetyRound
+zshy_AMR20260430.cmodel,proj_50f298eb,distMeasureAbility,透传测距,distMeasureAbility
+zshy_AMR20260430.cmodel,proj_50f298eb,distSensor,测距,distMeasureAbility/distSensor
+zshy_AMR20260430.cmodel,proj_50f298eb,actorAbility,执行机构能力,actorAbility
+zshy_AMR20260430.cmodel,proj_50f298eb,actor,执行机构,actorAbility/actor
+新ModelSet.cmodel,proj_9d5f243d,locationAbility,定位能力,locationAbility
+新ModelSet.cmodel,proj_9d5f243d,navi,导航,locationAbility/navi
+新ModelSet.cmodel,proj_9d5f243d,HCI,人机交互,HCI
+新ModelSet.cmodel,proj_9d5f243d,led,灯光,HCI/led
+新ModelSet.cmodel,proj_9d5f243d,button,按钮,HCI/button
+新ModelSet.cmodel,proj_9d5f243d,safetyAbility,安全能力,safetyAbility
+新ModelSet.cmodel,proj_9d5f243d,safetyIO,安全IO,safetyAbility/safetyIO
+新ModelSet.cmodel,proj_9d5f243d,safetySensor,避障传感器,safetyAbility/safetySensor
+新ModelSet.cmodel,proj_9d5f243d,safetyRound,避障范围,safetyAbility/safetyRound
+新ModelSet.cmodel,proj_9d5f243d,distMeasureAbility,透传测距,distMeasureAbility
+新ModelSet.cmodel,proj_9d5f243d,distSensor,测距,distMeasureAbility/distSensor
+新ModelSet.cmodel,proj_9d5f243d,actorAbility,执行机构能力,actorAbility
+新ModelSet.cmodel,proj_9d5f243d,actor,执行机构,actorAbility/actor
+ModelSet.cmodel,proj_f97f954c,locationAbility,定位能力,locationAbility
+ModelSet.cmodel,proj_f97f954c,navi,导航,locationAbility/navi
+ModelSet.cmodel,proj_f97f954c,HCI,人机交互,HCI
+ModelSet.cmodel,proj_f97f954c,led,灯光,HCI/led
+ModelSet.cmodel,proj_f97f954c,button,按钮,HCI/button
+ModelSet.cmodel,proj_f97f954c,safetyAbility,安全能力,safetyAbility
+ModelSet.cmodel,proj_f97f954c,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet.cmodel,proj_f97f954c,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet.cmodel,proj_f97f954c,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet.cmodel,proj_f97f954c,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet.cmodel,proj_f97f954c,distSensor,测距,distMeasureAbility/distSensor
+ModelSet.cmodel,proj_f97f954c,actorAbility,执行机构能力,actorAbility
+ModelSet.cmodel,proj_f97f954c,actor,执行机构,actorAbility/actor
+ModelSet39.cmodel,proj_2edbbaf6,locationAbility,定位能力,locationAbility
+ModelSet39.cmodel,proj_2edbbaf6,navi,导航,locationAbility/navi
+ModelSet39.cmodel,proj_2edbbaf6,HCI,人机交互,HCI
+ModelSet39.cmodel,proj_2edbbaf6,led,灯光,HCI/led
+ModelSet39.cmodel,proj_2edbbaf6,button,按钮,HCI/button
+ModelSet39.cmodel,proj_2edbbaf6,safetyAbility,安全能力,safetyAbility
+ModelSet39.cmodel,proj_2edbbaf6,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet39.cmodel,proj_2edbbaf6,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet39.cmodel,proj_2edbbaf6,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet39.cmodel,proj_2edbbaf6,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet39.cmodel,proj_2edbbaf6,distSensor,测距,distMeasureAbility/distSensor
+ModelSet39.cmodel,proj_2edbbaf6,actorAbility,执行机构能力,actorAbility
+ModelSet39.cmodel,proj_2edbbaf6,actor,执行机构,actorAbility/actor
+0311新ModelSet.cmodel,proj_2860f72d,locationAbility,定位能力,locationAbility
+0311新ModelSet.cmodel,proj_2860f72d,navi,导航,locationAbility/navi
+0311新ModelSet.cmodel,proj_2860f72d,sensoryRecoAbi,感知识别,sensoryRecoAbi
+0311新ModelSet.cmodel,proj_2860f72d,codeRec,码识别,sensoryRecoAbi/codeRec
+0311新ModelSet.cmodel,proj_2860f72d,ranging,测距,sensoryRecoAbi/ranging
+0311新ModelSet.cmodel,proj_2860f72d,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+0311新ModelSet.cmodel,proj_2860f72d,HCI,人机交互,HCI
+0311新ModelSet.cmodel,proj_2860f72d,led,灯光,HCI/led
+0311新ModelSet.cmodel,proj_2860f72d,button,按钮,HCI/button
+0311新ModelSet.cmodel,proj_2860f72d,safetyAbility,安全能力,safetyAbility
+0311新ModelSet.cmodel,proj_2860f72d,safetyIO,安全IO,safetyAbility/safetyIO
+0311新ModelSet.cmodel,proj_2860f72d,safetySensor,避障传感器,safetyAbility/safetySensor
+0311新ModelSet.cmodel,proj_2860f72d,safetyRound,避障范围,safetyAbility/safetyRound
+0311新ModelSet.cmodel,proj_2860f72d,distMeasureAbility,透传测距,distMeasureAbility
+0311新ModelSet.cmodel,proj_2860f72d,distSensor,测距,distMeasureAbility/distSensor
+0311新ModelSet.cmodel,proj_2860f72d,actorAbility,执行机构能力,actorAbility
+0311新ModelSet.cmodel,proj_2860f72d,actor,执行机构,actorAbility/actor
+ModelSet(4).cmodel,proj_81cb2239,locationAbility,定位能力,locationAbility
+ModelSet(4).cmodel,proj_81cb2239,navi,导航,locationAbility/navi
+ModelSet(4).cmodel,proj_81cb2239,HCI,人机交互,HCI
+ModelSet(4).cmodel,proj_81cb2239,led,灯光,HCI/led
+ModelSet(4).cmodel,proj_81cb2239,button,按钮,HCI/button
+ModelSet(4).cmodel,proj_81cb2239,safetyAbility,安全能力,safetyAbility
+ModelSet(4).cmodel,proj_81cb2239,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet(4).cmodel,proj_81cb2239,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet(4).cmodel,proj_81cb2239,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet(4).cmodel,proj_81cb2239,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet(4).cmodel,proj_81cb2239,distSensor,测距,distMeasureAbility/distSensor
+ModelSet(4).cmodel,proj_81cb2239,actorAbility,执行机构能力,actorAbility
+ModelSet(4).cmodel,proj_81cb2239,actor,执行机构,actorAbility/actor
+20260316.cmodel,proj_ffb3b53d,locationAbility,定位能力,locationAbility
+20260316.cmodel,proj_ffb3b53d,navi,导航,locationAbility/navi
+20260316.cmodel,proj_ffb3b53d,sensoryRecoAbi,感知识别,sensoryRecoAbi
+20260316.cmodel,proj_ffb3b53d,codeRec,码识别,sensoryRecoAbi/codeRec
+20260316.cmodel,proj_ffb3b53d,ranging,测距,sensoryRecoAbi/ranging
+20260316.cmodel,proj_ffb3b53d,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+20260316.cmodel,proj_ffb3b53d,HCI,人机交互,HCI
+20260316.cmodel,proj_ffb3b53d,led,灯光,HCI/led
+20260316.cmodel,proj_ffb3b53d,button,按钮,HCI/button
+20260316.cmodel,proj_ffb3b53d,safetyAbility,安全能力,safetyAbility
+20260316.cmodel,proj_ffb3b53d,safetyIO,安全IO,safetyAbility/safetyIO
+20260316.cmodel,proj_ffb3b53d,safetySensor,避障传感器,safetyAbility/safetySensor
+20260316.cmodel,proj_ffb3b53d,safetyRound,避障范围,safetyAbility/safetyRound
+20260316.cmodel,proj_ffb3b53d,distMeasureAbility,透传测距,distMeasureAbility
+20260316.cmodel,proj_ffb3b53d,distSensor,测距,distMeasureAbility/distSensor
+20260316.cmodel,proj_ffb3b53d,actorAbility,执行机构能力,actorAbility
+20260316.cmodel,proj_ffb3b53d,actor,执行机构,actorAbility/actor
+ModelSet_new_3_27.cmodel,proj_54fab3a2,locationAbility,定位能力,locationAbility
+ModelSet_new_3_27.cmodel,proj_54fab3a2,navi,导航,locationAbility/navi
+ModelSet_new_3_27.cmodel,proj_54fab3a2,HCI,人机交互,HCI
+ModelSet_new_3_27.cmodel,proj_54fab3a2,led,灯光,HCI/led
+ModelSet_new_3_27.cmodel,proj_54fab3a2,button,按钮,HCI/button
+ModelSet_new_3_27.cmodel,proj_54fab3a2,safetyAbility,安全能力,safetyAbility
+ModelSet_new_3_27.cmodel,proj_54fab3a2,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet_new_3_27.cmodel,proj_54fab3a2,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet_new_3_27.cmodel,proj_54fab3a2,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet_new_3_27.cmodel,proj_54fab3a2,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet_new_3_27.cmodel,proj_54fab3a2,distSensor,测距,distMeasureAbility/distSensor
+ModelSet_new_3_27.cmodel,proj_54fab3a2,actorAbility,执行机构能力,actorAbility
+ModelSet_new_3_27.cmodel,proj_54fab3a2,actor,执行机构,actorAbility/actor
+0308新款307302440.cmodel,proj_a0067ce5,locationAbility,定位能力,locationAbility
+0308新款307302440.cmodel,proj_a0067ce5,navi,导航,locationAbility/navi
+0308新款307302440.cmodel,proj_a0067ce5,sensoryRecoAbi,感知识别,sensoryRecoAbi
+0308新款307302440.cmodel,proj_a0067ce5,codeRec,码识别,sensoryRecoAbi/codeRec
+0308新款307302440.cmodel,proj_a0067ce5,ranging,测距,sensoryRecoAbi/ranging
+0308新款307302440.cmodel,proj_a0067ce5,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+0308新款307302440.cmodel,proj_a0067ce5,HCI,人机交互,HCI
+0308新款307302440.cmodel,proj_a0067ce5,led,灯光,HCI/led
+0308新款307302440.cmodel,proj_a0067ce5,button,按钮,HCI/button
+0308新款307302440.cmodel,proj_a0067ce5,safetyAbility,安全能力,safetyAbility
+0308新款307302440.cmodel,proj_a0067ce5,safetyIO,安全IO,safetyAbility/safetyIO
+0308新款307302440.cmodel,proj_a0067ce5,safetySensor,避障传感器,safetyAbility/safetySensor
+0308新款307302440.cmodel,proj_a0067ce5,safetyRound,避障范围,safetyAbility/safetyRound
+0308新款307302440.cmodel,proj_a0067ce5,distMeasureAbility,透传测距,distMeasureAbility
+0308新款307302440.cmodel,proj_a0067ce5,distSensor,测距,distMeasureAbility/distSensor
+0308新款307302440.cmodel,proj_a0067ce5,actorAbility,执行机构能力,actorAbility
+0308新款307302440.cmodel,proj_a0067ce5,actor,执行机构,actorAbility/actor
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,locationAbility,定位能力,locationAbility
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,navi,导航,locationAbility/navi
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,HCI,人机交互,HCI
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,led,灯光,HCI/led
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,button,按钮,HCI/button
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,safetyAbility,安全能力,safetyAbility
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,safetyIO,安全IO,safetyAbility/safetyIO
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,safetySensor,避障传感器,safetyAbility/safetySensor
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,safetyRound,避障范围,safetyAbility/safetyRound
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,distMeasureAbility,透传测距,distMeasureAbility
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,distSensor,测距,distMeasureAbility/distSensor
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,actorAbility,执行机构能力,actorAbility
+0309 第一款车模型ModelSet.cmodel,proj_0d1cc4d4,actor,执行机构,actorAbility/actor
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,locationAbility,定位能力,locationAbility
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,navi,导航,locationAbility/navi
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,sensoryRecoAbi,感知识别,sensoryRecoAbi
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,codeRec,码识别,sensoryRecoAbi/codeRec
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,ranging,测距,sensoryRecoAbi/ranging
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,HCI,人机交互,HCI
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,led,灯光,HCI/led
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,button,按钮,HCI/button
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,safetyAbility,安全能力,safetyAbility
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,safetyIO,安全IO,safetyAbility/safetyIO
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,safetySensor,避障传感器,safetyAbility/safetySensor
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,safetyRound,避障范围,safetyAbility/safetyRound
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,distMeasureAbility,透传测距,distMeasureAbility
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,distSensor,测距,distMeasureAbility/distSensor
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,actorAbility,执行机构能力,actorAbility
+传感器校验中报错 ModelSet.cmodel,proj_16e32544,actor,执行机构,actorAbility/actor
+0311ModelSet.cmodel,proj_dd79992f,locationAbility,定位能力,locationAbility
+0311ModelSet.cmodel,proj_dd79992f,navi,导航,locationAbility/navi
+0311ModelSet.cmodel,proj_dd79992f,HCI,人机交互,HCI
+0311ModelSet.cmodel,proj_dd79992f,led,灯光,HCI/led
+0311ModelSet.cmodel,proj_dd79992f,button,按钮,HCI/button
+0311ModelSet.cmodel,proj_dd79992f,safetyAbility,安全能力,safetyAbility
+0311ModelSet.cmodel,proj_dd79992f,safetyIO,安全IO,safetyAbility/safetyIO
+0311ModelSet.cmodel,proj_dd79992f,safetySensor,避障传感器,safetyAbility/safetySensor
+0311ModelSet.cmodel,proj_dd79992f,safetyRound,避障范围,safetyAbility/safetyRound
+0311ModelSet.cmodel,proj_dd79992f,distMeasureAbility,透传测距,distMeasureAbility
+0311ModelSet.cmodel,proj_dd79992f,distSensor,测距,distMeasureAbility/distSensor
+0311ModelSet.cmodel,proj_dd79992f,actorAbility,执行机构能力,actorAbility
+0311ModelSet.cmodel,proj_dd79992f,actor,执行机构,actorAbility/actor
+清畅3T（1.2版本）.cmodel,proj_076b039a,locationAbility,定位能力,locationAbility
+清畅3T（1.2版本）.cmodel,proj_076b039a,navi,导航,locationAbility/navi
+清畅3T（1.2版本）.cmodel,proj_076b039a,sensoryRecoAbi,感知识别,sensoryRecoAbi
+清畅3T（1.2版本）.cmodel,proj_076b039a,codeRec,码识别,sensoryRecoAbi/codeRec
+清畅3T（1.2版本）.cmodel,proj_076b039a,ranging,测距,sensoryRecoAbi/ranging
+清畅3T（1.2版本）.cmodel,proj_076b039a,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+清畅3T（1.2版本）.cmodel,proj_076b039a,HCI,人机交互,HCI
+清畅3T（1.2版本）.cmodel,proj_076b039a,led,灯光,HCI/led
+清畅3T（1.2版本）.cmodel,proj_076b039a,button,按钮,HCI/button
+清畅3T（1.2版本）.cmodel,proj_076b039a,safetyAbility,安全能力,safetyAbility
+清畅3T（1.2版本）.cmodel,proj_076b039a,safetyIO,安全IO,safetyAbility/safetyIO
+清畅3T（1.2版本）.cmodel,proj_076b039a,safetySensor,避障传感器,safetyAbility/safetySensor
+清畅3T（1.2版本）.cmodel,proj_076b039a,safetyRound,避障范围,safetyAbility/safetyRound
+清畅3T（1.2版本）.cmodel,proj_076b039a,distMeasureAbility,透传测距,distMeasureAbility
+清畅3T（1.2版本）.cmodel,proj_076b039a,distSensor,测距,distMeasureAbility/distSensor
+清畅3T（1.2版本）.cmodel,proj_076b039a,actorAbility,执行机构能力,actorAbility
+清畅3T（1.2版本）.cmodel,proj_076b039a,actor,执行机构,actorAbility/actor
+最终ModelSet.cmodel,proj_482c6d87,locationAbility,定位能力,locationAbility
+最终ModelSet.cmodel,proj_482c6d87,navi,导航,locationAbility/navi
+最终ModelSet.cmodel,proj_482c6d87,HCI,人机交互,HCI
+最终ModelSet.cmodel,proj_482c6d87,led,灯光,HCI/led
+最终ModelSet.cmodel,proj_482c6d87,button,按钮,HCI/button
+最终ModelSet.cmodel,proj_482c6d87,safetyAbility,安全能力,safetyAbility
+最终ModelSet.cmodel,proj_482c6d87,safetyIO,安全IO,safetyAbility/safetyIO
+最终ModelSet.cmodel,proj_482c6d87,safetySensor,避障传感器,safetyAbility/safetySensor
+最终ModelSet.cmodel,proj_482c6d87,safetyRound,避障范围,safetyAbility/safetyRound
+最终ModelSet.cmodel,proj_482c6d87,distMeasureAbility,透传测距,distMeasureAbility
+最终ModelSet.cmodel,proj_482c6d87,distSensor,测距,distMeasureAbility/distSensor
+最终ModelSet.cmodel,proj_482c6d87,actorAbility,执行机构能力,actorAbility
+最终ModelSet.cmodel,proj_482c6d87,actor,执行机构,actorAbility/actor
+ModelSet(5).cmodel,proj_becd64b6,locationAbility,定位能力,locationAbility
+ModelSet(5).cmodel,proj_becd64b6,navi,导航,locationAbility/navi
+ModelSet(5).cmodel,proj_becd64b6,HCI,人机交互,HCI
+ModelSet(5).cmodel,proj_becd64b6,led,灯光,HCI/led
+ModelSet(5).cmodel,proj_becd64b6,button,按钮,HCI/button
+ModelSet(5).cmodel,proj_becd64b6,safetyAbility,安全能力,safetyAbility
+ModelSet(5).cmodel,proj_becd64b6,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet(5).cmodel,proj_becd64b6,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet(5).cmodel,proj_becd64b6,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet(5).cmodel,proj_becd64b6,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet(5).cmodel,proj_becd64b6,distSensor,测距,distMeasureAbility/distSensor
+ModelSet(5).cmodel,proj_becd64b6,actorAbility,执行机构能力,actorAbility
+ModelSet(5).cmodel,proj_becd64b6,actor,执行机构,actorAbility/actor
+ModelSet(1).cmodel,proj_2f473547,locationAbility,定位能力,locationAbility
+ModelSet(1).cmodel,proj_2f473547,navi,导航,locationAbility/navi
+ModelSet(1).cmodel,proj_2f473547,sensoryRecoAbi,感知识别,sensoryRecoAbi
+ModelSet(1).cmodel,proj_2f473547,codeRec,码识别,sensoryRecoAbi/codeRec
+ModelSet(1).cmodel,proj_2f473547,ranging,测距,sensoryRecoAbi/ranging
+ModelSet(1).cmodel,proj_2f473547,detectAbi,检测能力,sensoryRecoAbi/detectAbi
+ModelSet(1).cmodel,proj_2f473547,HCI,人机交互,HCI
+ModelSet(1).cmodel,proj_2f473547,led,灯光,HCI/led
+ModelSet(1).cmodel,proj_2f473547,button,按钮,HCI/button
+ModelSet(1).cmodel,proj_2f473547,safetyAbility,安全能力,safetyAbility
+ModelSet(1).cmodel,proj_2f473547,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet(1).cmodel,proj_2f473547,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet(1).cmodel,proj_2f473547,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet(1).cmodel,proj_2f473547,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet(1).cmodel,proj_2f473547,distSensor,测距,distMeasureAbility/distSensor
+ModelSet(1).cmodel,proj_2f473547,actorAbility,执行机构能力,actorAbility
+ModelSet(1).cmodel,proj_2f473547,actor,执行机构,actorAbility/actor
+ModelSet39(1).cmodel,proj_d39f8944,locationAbility,定位能力,locationAbility
+ModelSet39(1).cmodel,proj_d39f8944,navi,导航,locationAbility/navi
+ModelSet39(1).cmodel,proj_d39f8944,HCI,人机交互,HCI
+ModelSet39(1).cmodel,proj_d39f8944,led,灯光,HCI/led
+ModelSet39(1).cmodel,proj_d39f8944,button,按钮,HCI/button
+ModelSet39(1).cmodel,proj_d39f8944,safetyAbility,安全能力,safetyAbility
+ModelSet39(1).cmodel,proj_d39f8944,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet39(1).cmodel,proj_d39f8944,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet39(1).cmodel,proj_d39f8944,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet39(1).cmodel,proj_d39f8944,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet39(1).cmodel,proj_d39f8944,distSensor,测距,distMeasureAbility/distSensor
+ModelSet39(1).cmodel,proj_d39f8944,actorAbility,执行机构能力,actorAbility
+ModelSet39(1).cmodel,proj_d39f8944,actor,执行机构,actorAbility/actor
+ModelSet312.cmodel,proj_d74220c4,locationAbility,定位能力,locationAbility
+ModelSet312.cmodel,proj_d74220c4,navi,导航,locationAbility/navi
+ModelSet312.cmodel,proj_d74220c4,HCI,人机交互,HCI
+ModelSet312.cmodel,proj_d74220c4,led,灯光,HCI/led
+ModelSet312.cmodel,proj_d74220c4,button,按钮,HCI/button
+ModelSet312.cmodel,proj_d74220c4,safetyAbility,安全能力,safetyAbility
+ModelSet312.cmodel,proj_d74220c4,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet312.cmodel,proj_d74220c4,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet312.cmodel,proj_d74220c4,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet312.cmodel,proj_d74220c4,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet312.cmodel,proj_d74220c4,distSensor,测距,distMeasureAbility/distSensor
+ModelSet312.cmodel,proj_d74220c4,actorAbility,执行机构能力,actorAbility
+ModelSet312.cmodel,proj_d74220c4,actor,执行机构,actorAbility/actor
+ModelSet.cmodel,proj_0153cf51,locationAbility,定位能力,locationAbility
+ModelSet.cmodel,proj_0153cf51,navi,导航,locationAbility/navi
+ModelSet.cmodel,proj_0153cf51,HCI,人机交互,HCI
+ModelSet.cmodel,proj_0153cf51,led,灯光,HCI/led
+ModelSet.cmodel,proj_0153cf51,button,按钮,HCI/button
+ModelSet.cmodel,proj_0153cf51,safetyAbility,安全能力,safetyAbility
+ModelSet.cmodel,proj_0153cf51,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet.cmodel,proj_0153cf51,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet.cmodel,proj_0153cf51,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet.cmodel,proj_0153cf51,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet.cmodel,proj_0153cf51,distSensor,测距,distMeasureAbility/distSensor
+ModelSet.cmodel,proj_0153cf51,actorAbility,执行机构能力,actorAbility
+ModelSet.cmodel,proj_0153cf51,actor,执行机构,actorAbility/actor
+20260612.cmodel,proj_b1112db8,locationAbility,定位能力,locationAbility
+20260612.cmodel,proj_b1112db8,navi,导航,locationAbility/navi
+20260612.cmodel,proj_b1112db8,HCI,人机交互,HCI
+20260612.cmodel,proj_b1112db8,led,灯光,HCI/led
+20260612.cmodel,proj_b1112db8,button,按钮,HCI/button
+20260612.cmodel,proj_b1112db8,safetyAbility,安全能力,safetyAbility
+20260612.cmodel,proj_b1112db8,safetyIO,安全IO,safetyAbility/safetyIO
+20260612.cmodel,proj_b1112db8,safetySensor,避障传感器,safetyAbility/safetySensor
+20260612.cmodel,proj_b1112db8,safetyRound,避障范围,safetyAbility/safetyRound
+20260612.cmodel,proj_b1112db8,distMeasureAbility,透传测距,distMeasureAbility
+20260612.cmodel,proj_b1112db8,distSensor,测距,distMeasureAbility/distSensor
+20260612.cmodel,proj_b1112db8,actorAbility,执行机构能力,actorAbility
+20260612.cmodel,proj_b1112db8,actor,执行机构,actorAbility/actor
+ModelSet.cmodel,proj_cecf0520,locationAbility,定位能力,locationAbility
+ModelSet.cmodel,proj_cecf0520,navi,导航,locationAbility/navi
+ModelSet.cmodel,proj_cecf0520,HCI,人机交互,HCI
+ModelSet.cmodel,proj_cecf0520,led,灯光,HCI/led
+ModelSet.cmodel,proj_cecf0520,button,按钮,HCI/button
+ModelSet.cmodel,proj_cecf0520,safetyAbility,安全能力,safetyAbility
+ModelSet.cmodel,proj_cecf0520,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet.cmodel,proj_cecf0520,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet.cmodel,proj_cecf0520,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet.cmodel,proj_cecf0520,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet.cmodel,proj_cecf0520,distSensor,测距,distMeasureAbility/distSensor
+ModelSet.cmodel,proj_cecf0520,actorAbility,执行机构能力,actorAbility
+ModelSet.cmodel,proj_cecf0520,actor,执行机构,actorAbility/actor
+proj_1234_fixed.cmodel,proj_998423b1,locationAbility,定位能力,locationAbility
+proj_1234_fixed.cmodel,proj_998423b1,navi,导航,locationAbility/navi
+proj_1234_fixed.cmodel,proj_998423b1,HCI,人机交互,HCI
+proj_1234_fixed.cmodel,proj_998423b1,led,灯光,HCI/led
+proj_1234_fixed.cmodel,proj_998423b1,button,按钮,HCI/button
+proj_1234_fixed.cmodel,proj_998423b1,safetyAbility,安全能力,safetyAbility
+proj_1234_fixed.cmodel,proj_998423b1,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_fixed.cmodel,proj_998423b1,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_fixed.cmodel,proj_998423b1,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_fixed.cmodel,proj_998423b1,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_fixed.cmodel,proj_998423b1,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_fixed.cmodel,proj_998423b1,actorAbility,执行机构能力,actorAbility
+proj_1234_fixed.cmodel,proj_998423b1,actor,执行机构,actorAbility/actor
+proj_1234.cmodel,proj_f85dbbdb,locationAbility,定位能力,locationAbility
+proj_1234.cmodel,proj_f85dbbdb,navi,导航,locationAbility/navi
+proj_1234.cmodel,proj_f85dbbdb,HCI,人机交互,HCI
+proj_1234.cmodel,proj_f85dbbdb,led,灯光,HCI/led
+proj_1234.cmodel,proj_f85dbbdb,button,按钮,HCI/button
+proj_1234.cmodel,proj_f85dbbdb,safetyAbility,安全能力,safetyAbility
+proj_1234.cmodel,proj_f85dbbdb,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234.cmodel,proj_f85dbbdb,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234.cmodel,proj_f85dbbdb,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234.cmodel,proj_f85dbbdb,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234.cmodel,proj_f85dbbdb,distSensor,测距,distMeasureAbility/distSensor
+proj_1234.cmodel,proj_f85dbbdb,actorAbility,执行机构能力,actorAbility
+proj_1234.cmodel,proj_f85dbbdb,actor,执行机构,actorAbility/actor
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,locationAbility,定位能力,locationAbility
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,navi,导航,locationAbility/navi
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,HCI,人机交互,HCI
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,led,灯光,HCI/led
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,button,按钮,HCI/button
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,safetyAbility,安全能力,safetyAbility
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,safetyIO,安全IO,safetyAbility/safetyIO
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,safetyRound,避障范围,safetyAbility/safetyRound
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,distMeasureAbility,透传测距,distMeasureAbility
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,distSensor,测距,distMeasureAbility/distSensor
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,actorAbility,执行机构能力,actorAbility
+proj_1234_packed (8)_调整.cmodel,proj_67f1d75b,actor,执行机构,actorAbility/actor
+ModelSet39_reconstructed.cmodel,proj_150bb98b,locationAbility,定位能力,locationAbility
+ModelSet39_reconstructed.cmodel,proj_150bb98b,navi,导航,locationAbility/navi
+ModelSet39_reconstructed.cmodel,proj_150bb98b,HCI,人机交互,HCI
+ModelSet39_reconstructed.cmodel,proj_150bb98b,led,灯光,HCI/led
+ModelSet39_reconstructed.cmodel,proj_150bb98b,button,按钮,HCI/button
+ModelSet39_reconstructed.cmodel,proj_150bb98b,safetyAbility,安全能力,safetyAbility
+ModelSet39_reconstructed.cmodel,proj_150bb98b,safetyIO,安全IO,safetyAbility/safetyIO
+ModelSet39_reconstructed.cmodel,proj_150bb98b,safetySensor,避障传感器,safetyAbility/safetySensor
+ModelSet39_reconstructed.cmodel,proj_150bb98b,safetyRound,避障范围,safetyAbility/safetyRound
+ModelSet39_reconstructed.cmodel,proj_150bb98b,distMeasureAbility,透传测距,distMeasureAbility
+ModelSet39_reconstructed.cmodel,proj_150bb98b,distSensor,测距,distMeasureAbility/distSensor
+ModelSet39_reconstructed.cmodel,proj_150bb98b,actorAbility,执行机构能力,actorAbility
+ModelSet39_reconstructed.cmodel,proj_150bb98b,actor,执行机构,actorAbility/actor
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,locationAbility,定位能力,locationAbility
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,navi,导航,locationAbility/navi
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,HCI,人机交互,HCI
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,led,灯光,HCI/led
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,button,按钮,HCI/button
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,safetyAbility,安全能力,safetyAbility
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,distSensor,测距,distMeasureAbility/distSensor
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,actorAbility,执行机构能力,actorAbility
+new_proj_qupxzl9_packed.cmodel,proj_ffa59d5f,actor,执行机构,actorAbility/actor
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,locationAbility,定位能力,locationAbility
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,navi,导航,locationAbility/navi
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,HCI,人机交互,HCI
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,led,灯光,HCI/led
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,button,按钮,HCI/button
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,safetyAbility,安全能力,safetyAbility
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,safetyIO,安全IO,safetyAbility/safetyIO
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,safetyRound,避障范围,safetyAbility/safetyRound
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,distMeasureAbility,透传测距,distMeasureAbility
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,distSensor,测距,distMeasureAbility/distSensor
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,actorAbility,执行机构能力,actorAbility
+proj_6a41f0b3_packed.cmodel,proj_51e51f61,actor,执行机构,actorAbility/actor
+proj_7c5fa442_packed.cmodel,proj_373bb399,locationAbility,定位能力,locationAbility
+proj_7c5fa442_packed.cmodel,proj_373bb399,navi,导航,locationAbility/navi
+proj_7c5fa442_packed.cmodel,proj_373bb399,HCI,人机交互,HCI
+proj_7c5fa442_packed.cmodel,proj_373bb399,led,灯光,HCI/led
+proj_7c5fa442_packed.cmodel,proj_373bb399,button,按钮,HCI/button
+proj_7c5fa442_packed.cmodel,proj_373bb399,safetyAbility,安全能力,safetyAbility
+proj_7c5fa442_packed.cmodel,proj_373bb399,safetyIO,安全IO,safetyAbility/safetyIO
+proj_7c5fa442_packed.cmodel,proj_373bb399,safetySensor,避障传感器,safetyAbility/safetySensor
+proj_7c5fa442_packed.cmodel,proj_373bb399,safetyRound,避障范围,safetyAbility/safetyRound
+proj_7c5fa442_packed.cmodel,proj_373bb399,distMeasureAbility,透传测距,distMeasureAbility
+proj_7c5fa442_packed.cmodel,proj_373bb399,distSensor,测距,distMeasureAbility/distSensor
+proj_7c5fa442_packed.cmodel,proj_373bb399,actorAbility,执行机构能力,actorAbility
+proj_7c5fa442_packed.cmodel,proj_373bb399,actor,执行机构,actorAbility/actor
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,locationAbility,定位能力,locationAbility
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,navi,导航,locationAbility/navi
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,HCI,人机交互,HCI
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,led,灯光,HCI/led
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,button,按钮,HCI/button
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,safetyAbility,安全能力,safetyAbility
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,distSensor,测距,distMeasureAbility/distSensor
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,actorAbility,执行机构能力,actorAbility
+new_proj_0qp5k0e_packed.cmodel,proj_9a1a1a43,actor,执行机构,actorAbility/actor
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,locationAbility,定位能力,locationAbility
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,navi,导航,locationAbility/navi
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,HCI,人机交互,HCI
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,led,灯光,HCI/led
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,button,按钮,HCI/button
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,safetyAbility,安全能力,safetyAbility
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,safetyIO,安全IO,safetyAbility/safetyIO
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,safetySensor,避障传感器,safetyAbility/safetySensor
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,safetyRound,避障范围,safetyAbility/safetyRound
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,distMeasureAbility,透传测距,distMeasureAbility
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,distSensor,测距,distMeasureAbility/distSensor
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,actorAbility,执行机构能力,actorAbility
+new_proj_lj1bxbw_packed.cmodel,proj_6ad40f1a,actor,执行机构,actorAbility/actor
+12345_audit.cmodel,proj_61f762ca,locationAbility,定位能力,locationAbility
+12345_audit.cmodel,proj_61f762ca,navi,导航,locationAbility/navi
+12345_audit.cmodel,proj_61f762ca,HCI,人机交互,HCI
+12345_audit.cmodel,proj_61f762ca,led,灯光,HCI/led
+12345_audit.cmodel,proj_61f762ca,button,按钮,HCI/button
+12345_audit.cmodel,proj_61f762ca,safetyAbility,安全能力,safetyAbility
+12345_audit.cmodel,proj_61f762ca,safetyIO,安全IO,safetyAbility/safetyIO
+12345_audit.cmodel,proj_61f762ca,safetySensor,避障传感器,safetyAbility/safetySensor
+12345_audit.cmodel,proj_61f762ca,safetyRound,避障范围,safetyAbility/safetyRound
+12345_audit.cmodel,proj_61f762ca,distMeasureAbility,透传测距,distMeasureAbility
+12345_audit.cmodel,proj_61f762ca,distSensor,测距,distMeasureAbility/distSensor
+12345_audit.cmodel,proj_61f762ca,actorAbility,执行机构能力,actorAbility
+12345_audit.cmodel,proj_61f762ca,actor,执行机构,actorAbility/actor
+12345_audit.cmodel,proj_b9cb8b0e,locationAbility,定位能力,locationAbility
+12345_audit.cmodel,proj_b9cb8b0e,navi,导航,locationAbility/navi
+12345_audit.cmodel,proj_b9cb8b0e,HCI,人机交互,HCI
+12345_audit.cmodel,proj_b9cb8b0e,led,灯光,HCI/led
+12345_audit.cmodel,proj_b9cb8b0e,button,按钮,HCI/button
+12345_audit.cmodel,proj_b9cb8b0e,safetyAbility,安全能力,safetyAbility
+12345_audit.cmodel,proj_b9cb8b0e,safetyIO,安全IO,safetyAbility/safetyIO
+12345_audit.cmodel,proj_b9cb8b0e,safetySensor,避障传感器,safetyAbility/safetySensor
+12345_audit.cmodel,proj_b9cb8b0e,safetyRound,避障范围,safetyAbility/safetyRound
+12345_audit.cmodel,proj_b9cb8b0e,distMeasureAbility,透传测距,distMeasureAbility
+12345_audit.cmodel,proj_b9cb8b0e,distSensor,测距,distMeasureAbility/distSensor
+12345_audit.cmodel,proj_b9cb8b0e,actorAbility,执行机构能力,actorAbility
+12345_audit.cmodel,proj_b9cb8b0e,actor,执行机构,actorAbility/actor
+12345_audit.cmodel,proj_13362126,locationAbility,定位能力,locationAbility
+12345_audit.cmodel,proj_13362126,navi,导航,locationAbility/navi
+12345_audit.cmodel,proj_13362126,HCI,人机交互,HCI
+12345_audit.cmodel,proj_13362126,led,灯光,HCI/led
+12345_audit.cmodel,proj_13362126,button,按钮,HCI/button
+12345_audit.cmodel,proj_13362126,safetyAbility,安全能力,safetyAbility
+12345_audit.cmodel,proj_13362126,safetyIO,安全IO,safetyAbility/safetyIO
+12345_audit.cmodel,proj_13362126,safetySensor,避障传感器,safetyAbility/safetySensor
+12345_audit.cmodel,proj_13362126,safetyRound,避障范围,safetyAbility/safetyRound
+12345_audit.cmodel,proj_13362126,distMeasureAbility,透传测距,distMeasureAbility
+12345_audit.cmodel,proj_13362126,distSensor,测距,distMeasureAbility/distSensor
+12345_audit.cmodel,proj_13362126,actorAbility,执行机构能力,actorAbility
+12345_audit.cmodel,proj_13362126,actor,执行机构,actorAbility/actor

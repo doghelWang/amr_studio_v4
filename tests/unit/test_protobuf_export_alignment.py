@@ -39,6 +39,32 @@ class ProtobufExportAlignmentTests(unittest.TestCase):
         self.assertEqual(msg.int32_maxvalue, 9)
         self.assertEqual(msg.int32_minvalue, 1)
 
+    def test_proto_sync_merges_camel_and_snake_case_collisions_without_data_loss(self):
+        raw = {
+            "generalAttr": {
+                "moduleName": {"stringValue": "chassis_diff"},
+                "moduleUuid": {"stringValue": "chassis-root"},
+                "mainModuleType": {"comboType": {"typeKey": "chassis", "typeDesc": "底盘"}},
+                "subSysType": {"comboType": {"typeKey": "ChassisSys", "typeDesc": "底盘系统"}},
+                "subModuleType": {"comboType": {"typeKey": "steerChassis", "typeDesc": "舵轮底盘"}},
+                "moduleShape": {"shapeType": "ENUM_BOX", "box": {"sizeLen": 1200, "sizeWidth": 800, "sizeHeight": 400}},
+            },
+            "general_attr": {
+                "module_name": {"string_value": "robot01"},
+                "module_shape": {"shape_type": "ENUM_BOX", "box": {"size_len": 1200, "size_width": 800, "size_height": 400}},
+            },
+        }
+
+        synced = proto_final_sync(raw, COMP_DESC_TYPE_STRING_TO_INT)
+        general_attr = synced["general_attr"]
+
+        self.assertEqual(general_attr["module_name"]["string_value"], "chassis_diff")
+        self.assertEqual(general_attr["module_uuid"]["string_value"], "chassis-root")
+        self.assertEqual(general_attr["main_module_type"]["combo_type"]["type_key"], "chassis")
+        self.assertEqual(general_attr["sub_sys_type"]["combo_type"]["type_key"], "ChassisSys")
+        self.assertEqual(general_attr["sub_module_type"]["combo_type"]["type_key"], "steerChassis")
+        self.assertEqual(general_attr["module_shape"]["box"]["size_len"], 1200)
+
     def test_ability_exporter_uses_abi_native_type_names(self):
         fixed_attr = map_attribute_to_cmodel(
             {"key": "laser", "type": "DATA_FIXED_E", "value": "sensor/laser"},

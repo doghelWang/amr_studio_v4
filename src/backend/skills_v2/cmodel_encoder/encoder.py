@@ -57,6 +57,26 @@ def sanitize_values(data, key=None):
         except: return data
     return data
 
+
+def _is_empty_proto_value(value):
+    return value is None or value == "" or value == [] or value == {}
+
+
+def _merge_normalized_value(existing, incoming):
+    if isinstance(existing, dict) and isinstance(incoming, dict):
+        merged = dict(existing)
+        for key, value in incoming.items():
+            if key in merged:
+                merged[key] = _merge_normalized_value(merged[key], value)
+            else:
+                merged[key] = value
+        return merged
+
+    if _is_empty_proto_value(existing) and not _is_empty_proto_value(incoming):
+        return incoming
+    return existing
+
+
 def proto_final_sync(data, type_mapping=COMP_DESC_TYPE_STRING_TO_INT):
     if isinstance(data, dict):
         new_dict = {}
@@ -138,7 +158,11 @@ def proto_final_sync(data, type_mapping=COMP_DESC_TYPE_STRING_TO_INT):
                     new_key = "int32_minvalue"
                 elif new_key == "uint_32_minvalue":
                     new_key = "uint32_minvalue"
-                new_dict[new_key] = proto_final_sync(v, type_mapping)
+                synced_value = proto_final_sync(v, type_mapping)
+                if new_key in new_dict:
+                    new_dict[new_key] = _merge_normalized_value(new_dict[new_key], synced_value)
+                else:
+                    new_dict[new_key] = synced_value
         return new_dict
     elif isinstance(data, list):
         return [proto_final_sync(item, type_mapping) for item in data]

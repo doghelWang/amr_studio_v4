@@ -1,9 +1,27 @@
-from backend.core.model_parser import ModelParser, PureProtoDecoder, collapse_parsed_protobuf
+import sys
+from pathlib import Path
+
+BACKEND_DIR = Path(__file__).resolve().parents[2] / "src" / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from core.model_parser import ModelParser
 import zipfile
 import json
 import os
 
 def test():
+    from core import model_parser
+
+    if not hasattr(model_parser, "PureProtoDecoder") or not hasattr(model_parser, "collapse_parsed_protobuf"):
+        raise RuntimeError(
+            "Legacy generic protobuf decoder is no longer exported by core.model_parser; "
+            "use ModelParser for official protobuf parsing."
+        )
+
+    PureProtoDecoder = model_parser.PureProtoDecoder
+    collapse_parsed_protobuf = model_parser.collapse_parsed_protobuf
+
     zip_path = '/Users/wangfeifei/code/amr_studio_v4/docs/ModelSet312.cmodel'
     with zipfile.ZipFile(zip_path, 'r') as zf:
         comp_data = zf.read('CompDesc.model')

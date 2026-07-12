@@ -39,6 +39,12 @@ export const apiFetchAbilities = async (projectId: string) => {
     return res.data;
 };
 
+/** 获取项目的 FuncDesc 功能过程配置 */
+export const apiFetchFunctions = async (projectId: string) => {
+    const res = await axios.get(`${API_BASE}/${projectId}/functions`);
+    return res.data;
+};
+
 /** 同步前端 Abilities 修改到后端 */
 export const apiUpdateAbilities = async (projectId: string, payload: any) => {
     const res = await axios.patch(`${API_BASE}/${projectId}/abilities`, payload);

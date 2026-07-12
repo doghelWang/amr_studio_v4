@@ -141,6 +141,10 @@ export interface ComponentConfig {
 
     // Raw generalAttr preserved for lossless round-trip
     generalAttr?: any;
+    rawCmodelComponent?: any;
+    rawModuleGroup?: any;
+    rawModuleGroupIndex?: number;
+    rawComponentIndex?: number;
     // Raw structParam segments (e.g. segmented_limits_params)
     rawStructParam?: any;
 
@@ -267,11 +271,74 @@ export interface ControllerAbility {
     componentAbility?: any[]; // To preserve radar/motor entity lists
 }
 
+// ━━━ Electrical Connection Domain Model ━━━
+export type FieldSource =
+    | 'imported_cmodel'
+    | 'module_library'
+    | 'user_input'
+    | 'backend_registry'
+    | 'unknown';
+
+export type ElectricalConnectionKind =
+    | 'communication_bus'
+    | 'io_signal'
+    | 'power'
+    | 'onboard'
+    | 'audio_video'
+    | 'unknown';
+
+export interface ElectricalConnection {
+    id: string;
+    kind: ElectricalConnectionKind;
+    interfaceType: string;
+    sourceComponentId: string;
+    sourceComponentName: string;
+    sourceInterfaceUuid: string;
+    sourceInterfaceKey: string;
+    targetComponentId: string;
+    targetComponentName: string;
+    targetInterfaceUuid: string;
+    targetInterfaceKey: string;
+    targetInterfaceType: string;
+    direction: 'source_to_target' | 'target_to_source' | 'bidirectional' | 'unknown';
+    multiplicity: 'point_to_point' | 'bus_multi_drop' | 'unknown';
+    source: 'imported_cmodel' | 'user_selected' | 'backend_resolved';
+    sourceRefs: string[];
+    diagnostics: Diagnostic[];
+}
+
+export interface FunctionEndpoint {
+    kind: 'component' | 'interface' | 'connection' | 'ability' | 'literal';
+    ref: string;
+    role?: string;
+    desc?: string;
+}
+
+export interface FunctionProcess {
+    id: string;
+    type: string;
+    desc: string;
+    trigger?: string;
+    inputs: FunctionEndpoint[];
+    outputs: FunctionEndpoint[];
+    relatedAbilities: string[];
+    relatedComponents: string[];
+    relatedConnections: string[];
+    source: 'imported_func_desc' | 'user_created' | 'template';
+    raw?: unknown;
+    editableLevel: 'readonly' | 'mapped_edit' | 'full_edit';
+    diagnostics: Diagnostic[];
+}
+
 // ━━━ Top-Level Robot Config ━━━
 export interface RobotConfig {
     identity: RobotIdentity;
     components: ComponentConfig[];
     abilities: ControllerAbility;
+    functionProcesses?: FunctionProcess[];
+    rawCompDescMeta?: any;
+    rawAbiSet?: any;
+    rawFuncDesc?: any;
 }
 
 // ━━━ Project & Validation ━━━
@@ -289,6 +356,19 @@ export interface ValidationIssue {
     severity: 'ERROR' | 'WARNING';
     message: string;
     nodeId?: string;
+}
+
+export interface Diagnostic {
+    severity: 'error' | 'warning' | 'info' | 'trace';
+    code: string;
+    message: string;
+    path?: string;
+    componentId?: string;
+    interfaceUuid?: string;
+    connectionId?: string;
+    abilityType?: string;
+    functionId?: string;
+    source?: string;
 }
 
 // Removed legacy hardcoded CATEGORY_ATTRIBUTE_TEMPLATES to enforce strict CModel Schema inheritance.

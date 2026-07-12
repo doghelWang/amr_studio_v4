@@ -7,15 +7,36 @@ import {
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { RobotConfig, ComponentConfig, ValidationIssue } from '../../store/types';
+import { buildElectricalConnections, countInterfaces, summarizeElectricalConnections } from '../../store/domain/electrical';
+import { summarizeFunctionProcesses } from '../../store/domain/functions';
 
 const { Text } = Typography;
 
 function runAudit(config: RobotConfig): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
     const components = config.components;
+    const connections = buildElectricalConnections(components);
+    const connectionSummary = summarizeElectricalConnections(connections);
+    const functionSummary = summarizeFunctionProcesses(config.functionProcesses, config.rawFuncDesc);
 
     if (components.length === 0) {
         issues.push({ severity: 'WARNING', message: '未添加任何组件', nodeId: '' });
+    }
+
+    if (connectionSummary.errorCount > 0) {
+        issues.push({
+            severity: 'ERROR',
+            message: `电气连接存在 ${connectionSummary.errorCount} 个错误，请在“接口连线 > 连接清单”中处理。`,
+            nodeId: '',
+        });
+    }
+
+    if (connections.length === 0) {
+        issues.push({
+            severity: 'WARNING',
+            message: '当前没有可审计的电气连接实体；如果模型需要真实接线，请先建立接口连接。',
+            nodeId: '',
+        });
     }
 
     // 1. Component Audits
@@ -114,6 +135,22 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         });
     }
 
+    if (!config.abilities?.componentAbility?.length) {
+        issues.push({
+            severity: 'WARNING',
+            message: 'componentAbility 为空或未加载；如原始模型包含组件能力，需要确认导入/导出链路是否保留。',
+            nodeId: 'ability_warning',
+        });
+    }
+
+    if (functionSummary.processCount === 0 && functionSummary.rawFunctionCount === 0) {
+        issues.push({
+            severity: 'WARNING',
+            message: 'FuncDesc 功能过程未加载；前端不会自动猜测生成功能过程。',
+            nodeId: 'function_warning',
+        });
+    }
+
     // 3. Topology Validation Rules (§10, §11)
     const wheels = components.filter(c => c.category === 'DRIVEWHEEL');
     const steerWheels = wheels.filter(w => (w.type || '').toLowerCase().includes('steer'));
@@ -207,6 +244,10 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
     
     // Derived state via useMemo
     const issues = useMemo(() => runAudit(config), [config]);
+    const connections = useMemo(() => buildElectricalConnections(config.components), [config.components]);
+    const connectionSummary = useMemo(() => summarizeElectricalConnections(connections), [connections]);
+    const functionSummary = useMemo(() => summarizeFunctionProcesses(config.functionProcesses, config.rawFuncDesc), [config.functionProcesses, config.rawFuncDesc]);
+    const interfaceCount = useMemo(() => countInterfaces(config.components), [config.components]);
 
     const handleExport = () => {
         const dataStr = JSON.stringify(config, null, 4);
@@ -236,8 +277,8 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
             </div>
 
             {/* Stats Row */}
-            <Row gutter={24} style={{ marginBottom: 32 }}>
-                <Col span={8}>
+            <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+                <Col span={6}>
                     <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${isClean ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: isClean ? '#52c41a' : '#ff4d4f' }}>
                             {config.components.length}
@@ -245,7 +286,23 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                         <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>组件总数</div>
                     </div>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 32, fontWeight: 700, color: 'var(--accent)' }}>
+                            {interfaceCount}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>接口总数</div>
+                    </div>
+                </Col>
+                <Col span={6}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className={`stat-value ${connectionSummary.errorCount === 0 ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: connectionSummary.errorCount === 0 ? '#52c41a' : '#ff4d4f' }}>
+                            {connections.length}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>电气连接</div>
+                    </div>
+                </Col>
+                <Col span={6}>
                     <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${errors.length === 0 ? 'success' : 'danger'}`} style={{ fontSize: 32, fontWeight: 700, color: errors.length === 0 ? '#52c41a' : '#ff4d4f' }}>
                             {errors.length}
@@ -253,12 +310,36 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                         <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>错误</div>
                     </div>
                 </Col>
-                <Col span={8}>
+                <Col span={6}>
                     <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
                         <div className={`stat-value ${warnings.length === 0 ? 'success' : 'warning'}`} style={{ fontSize: 32, fontWeight: 700, color: warnings.length === 0 ? '#52c41a' : '#faad14' }}>
                             {warnings.length}
                         </div>
                         <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>警告</div>
+                    </div>
+                </Col>
+                <Col span={6}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 32, fontWeight: 700, color: 'var(--accent)' }}>
+                            {config.abilities?.componentAbility?.length || 0}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>组件能力</div>
+                    </div>
+                </Col>
+                <Col span={6}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className="stat-value" style={{ fontSize: 32, fontWeight: 700, color: 'var(--accent)' }}>
+                            {config.abilities?.functionAbility?.length || 0}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>功能能力</div>
+                    </div>
+                </Col>
+                <Col span={6}>
+                    <div className="glass-card stat-card" style={{ padding: '24px', textAlign: 'center', background: 'var(--bg-hover)', borderRadius: 12 }}>
+                        <div className={`stat-value ${functionSummary.processCount ? 'success' : 'warning'}`} style={{ fontSize: 32, fontWeight: 700, color: functionSummary.processCount ? '#52c41a' : '#faad14' }}>
+                            {functionSummary.processCount || functionSummary.rawFunctionCount}
+                        </div>
+                        <div className="stat-label" style={{ color: 'var(--text-muted)', marginTop: 8 }}>功能过程</div>
                     </div>
                 </Col>
             </Row>

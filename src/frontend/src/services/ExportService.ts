@@ -129,11 +129,12 @@ export class ExportService {
    * 使用专用映射器，与 component 属性映射分离
    */
   static exportAbilities(abilities: ControllerAbility | undefined): any {
-    if (!abilities?.functionAbility?.length) return undefined;
+    if (!abilities?.functionAbility?.length && !abilities?.componentAbility?.length) return undefined;
 
     return {
       version: abilities.version || 'V1.0',
-      functionAbility: abilities.functionAbility.map(func => ({
+      componentAbility: abilities.componentAbility || [],
+      functionAbility: (abilities.functionAbility || []).map(func => ({
         type: func.type,
         desc: func.desc,
         childFunction: (func.childFunction || []).map(cf => ({

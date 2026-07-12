@@ -16,11 +16,12 @@ import {
 import { useProjectStore } from '../../store/useProjectStore';
 import {
   Collapse, Card, Select, Space, Tag, Empty, Typography,
-  Divider, Row, Col, Alert
+  Divider, Row, Col, Alert, Statistic
 } from 'antd';
 import type { AbilityCommonAttr, AbilityAttribute } from '../../store/types';
 import { normalizeToSmartAttribute, extractSubElements } from '../../store/abilityGuards';
 import { RecursiveAttributeEditor } from './RecursiveAttributeEditor';
+import { summarizeFunctionProcesses } from '../../store/domain/functions';
 
 const { Panel } = Collapse;
 const { Text, Title } = Typography;
@@ -91,8 +92,9 @@ function createAttributeUpdater(
  */
 export const AbilityStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
   const { config, updateAbilityAttribute } = useProjectStore();
-  const { functionAbility } = config.abilities;
+  const { functionAbility, componentAbility } = config.abilities;
   const components = config.components;
+  const functionSummary = summarizeFunctionProcesses(config.functionProcesses, config.rawFuncDesc);
 
   const handleAttributeUpdate = useCallback((
     funcType: string,
@@ -109,11 +111,6 @@ export const AbilityStep: React.FC<{ onExport?: () => void }> = ({ onExport }) =
       updateAbilityAttribute(funcType, childKey, commonKey, attrKey, value);
     }
   }, [updateAbilityAttribute]);
-
-  // §SIMPLIFY: 空状态处理移到顶层
-  if (!functionAbility?.length) {
-    return <Empty description="未定义功能列表" />;
-  }
 
   return (
     <div className="ability-step-container" style={{ padding: '0 8px' }}>
@@ -136,9 +133,94 @@ export const AbilityStep: React.FC<{ onExport?: () => void }> = ({ onExport }) =
         style={{ marginBottom: 24, borderRadius: 8 }}
       />
 
+      <Row gutter={[16, 16]} style={{ marginBottom: 24 }}>
+        <Col span={6}>
+          <Card size="small" style={{ background: 'var(--bg-hover)', borderRadius: 12 }}>
+            <Statistic title="组件能力 componentAbility" value={componentAbility?.length || 0} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card size="small" style={{ background: 'var(--bg-hover)', borderRadius: 12 }}>
+            <Statistic title="功能能力 functionAbility" value={functionAbility?.length || 0} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card size="small" style={{ background: 'var(--bg-hover)', borderRadius: 12 }}>
+            <Statistic title="功能过程 FuncDesc" value={functionSummary.processCount || functionSummary.rawFunctionCount} />
+          </Card>
+        </Col>
+        <Col span={6}>
+          <Card size="small" style={{ background: 'var(--bg-hover)', borderRadius: 12 }}>
+            <Statistic title="只读过程" value={functionSummary.readonlyCount} />
+          </Card>
+        </Col>
+      </Row>
+
+      <Alert
+        message="功能过程状态"
+        description={
+          functionSummary.processCount > 0
+            ? `已从 FuncDesc 加载 ${functionSummary.processCount} 个功能过程；当前前端提供只读摘要，暂不自动生成或改写功能过程。`
+            : '当前前端未加载 FuncDesc 功能过程。新建项目或缺少 FuncDesc 时，需要用户或后端模板显式提供，前端不会猜测生成。'
+        }
+        type={functionSummary.processCount > 0 ? 'success' : 'warning'}
+        showIcon
+        style={{ marginBottom: 24, borderRadius: 8 }}
+      />
+
+      {componentAbility?.length > 0 && (
+        <Card
+          size="small"
+          title="组件能力 componentAbility 摘要"
+          style={{ marginBottom: 20, background: 'var(--bg-hover)', borderRadius: 12 }}
+        >
+          <Space wrap>
+            {componentAbility.map((ability: any, index: number) => (
+              <Tag key={`${ability.type || 'componentAbility'}-${index}`} color="geekblue">
+                {ability.desc || ability.type || `componentAbility_${index + 1}`}
+              </Tag>
+            ))}
+          </Space>
+        </Card>
+      )}
+
+      {config.functionProcesses?.length ? (
+        <Card
+          size="small"
+          title="FuncDesc 功能过程只读摘要"
+          style={{ marginBottom: 20, background: 'var(--bg-hover)', borderRadius: 12 }}
+        >
+          <Space direction="vertical" style={{ width: '100%' }}>
+            {config.functionProcesses.map((process) => (
+              <div
+                key={process.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  padding: '8px 12px',
+                  border: '1px solid var(--border-default)',
+                  borderRadius: 8
+                }}
+              >
+                <Space>
+                  <Tag color="purple">{process.type}</Tag>
+                  <Text>{process.desc}</Text>
+                </Space>
+                <Tag>{process.editableLevel}</Tag>
+              </div>
+            ))}
+          </Space>
+        </Card>
+      ) : null}
+
+      {!functionAbility?.length && (
+        <Empty description="未定义 functionAbility 功能能力列表；前端不会自动创造能力模板。" />
+      )}
+
       {/* Cards Grid */}
       <div className="ability-cards-grid">
-        {functionAbility.map((func) => (
+        {(functionAbility || []).map((func) => (
           <Card
             key={func.type}
             size="small"

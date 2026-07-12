@@ -23,6 +23,7 @@ import axios from 'axios';
 
 import { 
     apiFetchAbilities, 
+    apiFetchFunctions,
     apiUpdateAbilities, 
     apiUpdateComponent,
     apiFetchComponentDetails,
@@ -76,7 +77,7 @@ const BACKEND_URL = getBackendUrl();
 export default function App() {
     const { 
         config, isDirty, loadProject, resetProject, projectId, setProjectId, fetchSchemas,
-        saveProject, listSavedProjects, loadProjectByName 
+        saveProject, listSavedProjects, loadProjectByName, materializeConnectionsToInterfaces
     } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
@@ -162,9 +163,19 @@ export default function App() {
                 printAudit(`Import [${pId}]`, res.data.audit);
                 const abilitiesRaw = await apiFetchAbilities(pId);
                 const abilities = ImportService.parseAbilities(abilitiesRaw);
+                const funcDescRaw = await apiFetchFunctions(pId);
+                const functionProcesses = ImportService.parseFuncDesc(funcDescRaw);
                 const { schemaRegistry } = useProjectStore.getState();
                 const parsed = ImportService.parseCompDesc(res.data.full_json, schemaRegistry);
-                const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
+                const fullConfig: any = {
+                    identity: parsed.identity,
+                    components: parsed.components,
+                    abilities,
+                    rawCompDescMeta: (parsed as any).rawCompDescMeta,
+                    rawAbiSet: abilitiesRaw,
+                    functionProcesses,
+                    rawFuncDesc: funcDescRaw
+                };
                 setProjectId(pId);
                 loadProject(fullConfig);
                 messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
@@ -227,42 +238,52 @@ export default function App() {
         console.group('%c 🚀 Starting Cloud Build Process', 'color: #1890ff; font-weight: bold; font-size: 12px;');
         console.log('[DEBUG] Target Project ID:', currentProjectId);
         console.log('[DEBUG] Current Config:', config);
+        const exportConfig = { ...config, components: materializeConnectionsToInterfaces() };
+        const isImportedProject = currentProjectId.startsWith('import_');
 
         try {
             messageApi.loading({ content: '正在初始化构建环境...', key: 'export', duration: 0 });
-            const initRes = await apiInitSandbox(currentProjectId, config);
+            const initRes = await apiInitSandbox(currentProjectId, exportConfig);
             console.log('[DEBUG] 1. Init Sandbox Response:', initRes);
 
             messageApi.loading({ content: '正在同步配置...', key: 'export', duration: 0 });
             
             // Sync Abilities
-            if (config.abilities?.functionAbility?.length > 0) {
-                const mappedAbilities = ExportService.exportAbilities(config.abilities);
+            if (!isImportedProject && (exportConfig.abilities?.functionAbility?.length > 0 || exportConfig.abilities?.componentAbility?.length > 0)) {
+                const mappedAbilities = ExportService.exportAbilities(exportConfig.abilities);
                 const abiRes = await apiUpdateAbilities(currentProjectId, mappedAbilities);
-                console.error('2. Ability Sync Response:', abiRes);
+                console.log('[DEBUG] 2. Ability Sync Response:', abiRes);
+            } else if (isImportedProject) {
+                console.log('[DEBUG] 2. Imported project: using frontend raw AbiSet model');
             }
             
             // Sync Chassis
-            const chassis = config.components.find(c => c.category === 'CHASSIS');
-            if (chassis) {
+            const chassis = exportConfig.components.find(c => c.category === 'CHASSIS');
+            if (!isImportedProject && chassis) {
                 const chassisUpdate = {
                     general_attr: { 
-                        module_name: { string_value: config.identity.robotName },
-                        module_shape: { shape_type: 'ENUM_BOX', box: { size_len: config.identity.chassisLength, size_width: config.identity.chassisWidth, size_height: config.identity.chassisHeight } }
+                        module_name: { string_value: exportConfig.identity.robotName },
+                        module_shape: { shape_type: 'ENUM_BOX', box: { size_len: exportConfig.identity.chassisLength, size_width: exportConfig.identity.chassisWidth, size_height: exportConfig.identity.chassisHeight } }
                     }
                 };
                 const chassisRes = await apiUpdateComponent(currentProjectId, chassis.id, chassisUpdate);
                 console.log('[DEBUG] 3. Chassis Sync Response:', chassisRes);
+            } else if (isImportedProject) {
+                console.log('[DEBUG] 3. Imported project: composing chassis from frontend raw module model');
             }
 
             // Sync All Components (Positions)
-            console.error('4. Syncing component positions...');
-            await Promise.all(config.components.map(c => apiUpdateComponent(currentProjectId, c.id, {
-                struct_param: { extend_params: [
-                    { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
-                    { key: 'locCoordROLL', double_value: c.mountRoll }, { key: 'locCoordPITCH', double_value: c.mountPitch }, { key: 'locCoordYAW', double_value: c.mountYaw }
-                ]}
-            })));
+            if (!isImportedProject) {
+                console.log('[DEBUG] 4. Syncing component positions...');
+                await Promise.all(exportConfig.components.map(c => apiUpdateComponent(currentProjectId, c.id, {
+                    struct_param: { extend_params: [
+                        { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
+                        { key: 'locCoordROLL', double_value: c.mountRoll }, { key: 'locCoordPITCH', double_value: c.mountPitch }, { key: 'locCoordYAW', double_value: c.mountYaw }
+                    ]}
+                })));
+            } else {
+                console.log('[DEBUG] 4. Imported project: composing components from frontend raw module model');
+            }
 
             // Trigger Binary Build
             messageApi.loading({ content: '云端构建 CModel 中...', key: 'export', duration: 0 });

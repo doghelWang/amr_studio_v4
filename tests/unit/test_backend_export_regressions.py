@@ -63,9 +63,22 @@ class BackendExportRegressionTests(unittest.TestCase):
                 data_manager.DB_DIR = old_db_dir
 
             self.assertEqual(result["status"], "success")
+            self.assertIn("diagnostics", result)
+            self.assertIsInstance(result["diagnostics"], list)
+            self.assertIn("debug_artifacts_path", result)
+            self.assertIn("debug_artifacts_url", result)
+            self.assertTrue(any(line.startswith("DIAGNOSTIC[") for line in result["audit"]))
             csv_text = (project_dir / f"{project_id}_module_list.csv").read_text(encoding="utf-8-sig")
             self.assertIn("LIVE_BLUEPRINT_NAME", csv_text)
             self.assertNotIn("STALE_COMP_DESC_NAME", csv_text)
+
+            debug_dir = project_dir / result["debug_artifacts_path"]
+            self.assertTrue((debug_dir / "01_resolved_CompDesc.json").exists())
+            self.assertTrue((debug_dir / "02_diagnostics.json").exists())
+            self.assertTrue((debug_dir / "03_audit.json").exists())
+            self.assertTrue((debug_dir / "05_module_list.csv").exists())
+            self.assertTrue((debug_dir / "06_final_packed.cmodel").exists())
+            self.assertTrue((debug_dir / "07_ModelFileDesc.json").exists())
 
     def test_compile_requires_blueprint(self):
         with tempfile.TemporaryDirectory() as td:

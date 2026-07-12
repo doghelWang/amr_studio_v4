@@ -1,0 +1,982 @@
+{
+  "total_files": 196,
+  "unique_models": 130,
+  "models": [
+    {
+      "sha256": "a5c2d192abe869caebbd22a2a6506e46e224de77767862502d1e27942a014f8f",
+      "size": 587,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed.cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (4).cmodel",
+        "/Users/wangfeifei/Downloads/proj_robot01_packed.cmodel",
+        "/Users/wangfeifei/Downloads/proj_12345_packed (5).cmodel"
+      ]
+    },
+    {
+      "sha256": "56278da3b97424f575f0874f4996760cbb66a7791740011fb1155ae9bfe99273",
+      "size": 22682,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_990c9e2f_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "b8e2dc36ffdaf6660e27ca2535e0c288c829d5a3bdba9aa531235d615c2f3c05",
+      "size": 8270,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (4).cmodel"
+      ]
+    },
+    {
+      "sha256": "3d7254564f9cc6f54fc5804a03279d35ec8c21339285ca7ac28a9d6fca53a88c",
+      "size": 7920,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed_1.cmodel"
+      ]
+    },
+    {
+      "sha256": "74aabb4efbd9603c8f27acbb0aec800a3138f24cd03957408a97a718d1510410",
+      "size": 22683,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_500d130d_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "0577e50005d2efd9fad8423d745b06eb7e027bf89cf754fde4abafdad934f049",
+      "size": 6347,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1234_packed (5).cmodel"
+      ]
+    },
+    {
+      "sha256": "dce87ad9459077a8c148bb7af97c7a7f80fd4ca63f6b0f67ff81d0188cc2bd35",
+      "size": 22698,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_2c6f8136_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "63ec3908412e1b60426882097b5f6461e883d87b126dc0ef5dc4f4dd1e26af16",
+      "size": 19214,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_38a0e8f7_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "b66b4f95f0c375c351054f6f7852fefd5b9951de3c7199e37bd44cf48438760b",
+      "size": 603,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed (1).cmodel"
+      ]
+    },
+    {
+      "sha256": "519671388a31bb95fff4a54ec4a26dc8ee3bfcfd679f572ca73e08f2b919354d",
+      "size": 8336,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (5).cmodel"
+      ]
+    },
+    {
+      "sha256": "5c51f1f1703c05602e507b77c963add1af44a2dc7525fed21a5f227571027d42",
+      "size": 22713,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_7f617f18_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "e88df03530cbec46c4eaa65bc1bd90c5873d626ab50835b3078afa765144c30d",
+      "size": 22727,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1d29c4df_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "2dfb80b351de0c855f4e02f048e583ba0308fada2de8e7cb671bece64f3e196f",
+      "size": 19427,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_8b800f1b_packed.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/proj_8b800f1b/proj_8b800f1b_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "2052975e418c1d3c89475912b0d148c4bd8bc8d19287ab360cbe6ebac95750f3",
+      "size": 22732,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_57fd760b_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "c953bc1e1c6a21d0bdaf6a46aee3072a53fc1fc2c9e69e0df165ab96fee8aa46",
+      "size": 13854,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1234_packed (7).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (6).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (10).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (9).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (8).cmodel"
+      ]
+    },
+    {
+      "sha256": "3c9d41b113bbcca9eead19ba5ac19a587e3ce9423eedbb2bdcf401224fb6e980",
+      "size": 19223,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_c578be69_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "d538de19af8c3208e31ba4ba21fbfaa362d081fcff1c023f2003d5b40609092b",
+      "size": 8332,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (7).cmodel"
+      ]
+    },
+    {
+      "sha256": "9078de3403e0fd0fa6644a2dc4828618ede17348e942a12c3482915be8dc0fec",
+      "size": 19221,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_070ce3fc_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "a7daa855d198b78a94bfc1be8bfa3a9c1f82e37d9c755bd28232c093ea58c742",
+      "size": 14741,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed (3).cmodel",
+        "/Users/wangfeifei/Downloads/proj_12345_packed (4).cmodel"
+      ]
+    },
+    {
+      "sha256": "829726d103b44c5d2d4378f666cf2d0b7d312478a2993fcc26c2a9d247f56405",
+      "size": 19438,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_ea4dc53c_packed.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/proj_ea4dc53c/proj_ea4dc53c_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "c4b26516a29be1c6fa1a71f74603afdf599235192377cc59f4f2ec29ce2c1657",
+      "size": 8336,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (6).cmodel"
+      ]
+    },
+    {
+      "sha256": "22c8010ddce3577f6d056244c7ea70095eda1f43ecb46f6f79445727cf8355ab",
+      "size": 14780,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed (2).cmodel"
+      ]
+    },
+    {
+      "sha256": "54a6425a75cf9c3068401e7510aba39448e08631a4d2b10efe3de6132aa8e57d",
+      "size": 8071,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_15kfuy5_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "9e79ef84d86420d0c95121c6c2cf76a730973f4334b4ad68621bec5c510727d2",
+      "size": 19218,
+      "paths": [
+        "/Users/wangfeifei/Downloads/1234.cmodel"
+      ]
+    },
+    {
+      "sha256": "5023bcf30bc5ca056df60a9df31e155e94f19e9679c76310fc6a204fa9b2f725",
+      "size": 8071,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_15kfuy5_packed (1).cmodel",
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/new_proj_15kfuy5/new_proj_15kfuy5_packed.cmodel",
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/new_proj_15kfuy5/debug_artifacts/compile_20260423_130251_553362/06_final_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "2db9d108adb689dff5d74836c9e95547f2c15d227ab26988c4680a6db22fa6c1",
+      "size": 10040,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_2osj9dz_packed.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/new_proj_2osj9dz/new_proj_2osj9dz_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "ac85a3fdc9b92f2e12e2007c98b633ec81120e52fd0b3386d6370c0091b1ac1f",
+      "size": 14231,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed_12.cmodel"
+      ]
+    },
+    {
+      "sha256": "f05893881b1fb7a51f7f26dd1f51b2ed94277bc90854a5af473def4125c313cf",
+      "size": 19203,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_579b8c68_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "598bcb3980e9e0c1d27ba1c38d46c45904095aac95562b5502a75961cc007451",
+      "size": 22667,
+      "paths": [
+        "/Users/wangfeifei/Downloads/测试车模型(1).cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/测试车模型.cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/20260324.cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/测试车模型(1).cmodel"
+      ]
+    },
+    {
+      "sha256": "98153f54e2fa71510e6fd33609487a85305dcb15c31446b85dd5c29e336b65f6",
+      "size": 19223,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1cad053c_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "85f021f5b07101bb41a4f9808276fdbc4814a687d28013f0eada617c52081cf6",
+      "size": 10175,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_5f40dd56_packed.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/proj_5f40dd56/proj_5f40dd56_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "d70ba254c4b0590a6f110e3d251d8ede24b2f3bc2c831db7dca7df247a1ce2d0",
+      "size": 8270,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (3).cmodel"
+      ]
+    },
+    {
+      "sha256": "b0fe281968e9f3cf13849530a923ccfb61c6fa9a27223349b6fdd7cdeca41f6d",
+      "size": 10359,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_89190f0a_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "96d48bb3193ad90a3f56239d236a08570ed87435dd297c17ec4b5c50edbaf104",
+      "size": 22703,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_17307d02_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "6393be99506ca4edbb507991a89e9a720bb9822b1984de7fb3977810ad6637d3",
+      "size": 8376,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (10).cmodel"
+      ]
+    },
+    {
+      "sha256": "fc0aa98fa210d3ab945e74f6d3a1e677cf59e29cf78ba5a97dbf8d4b560eef22",
+      "size": 17885,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_8397240b_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "cab3d7fe4f1abae602b93de1df83c21d27f931f09024cadae14036b32a3511cc",
+      "size": 603,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1234_packed (3).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (2).cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed (1).cmodel"
+      ]
+    },
+    {
+      "sha256": "1da5ef9946bb600641d16749488e065d8c54aa5aa6f937402bae1fe7fd7c0d38",
+      "size": 8198,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (2).cmodel"
+      ]
+    },
+    {
+      "sha256": "97bb3ba59f52c73cff342b7b6f37652d93c3a9de203f4dbe6c8cbf53ad96cec4",
+      "size": 13874,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1234_packed (11).cmodel"
+      ]
+    },
+    {
+      "sha256": "10eca465bef4b60d2bcb94626a8a2275cc674845ee398eaab501475f3836aca7",
+      "size": 22719,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_32164c60_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "8f9627fa6286e156c021a3649ca38a4164523a17e615eac44ad2e9ebeccb74bd",
+      "size": 8365,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (11).cmodel"
+      ]
+    },
+    {
+      "sha256": "2624c14153431d784213cda103f6ab0b6fffc9a501b0006a93c0b4cadc838da5",
+      "size": 14314,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_12345_packed (6).cmodel"
+      ]
+    },
+    {
+      "sha256": "ae866912fb2b48599b895fc25aae91329fa5cd23e4b7f54b8377a31963634aa2",
+      "size": 32910,
+      "paths": [
+        "/Users/wangfeifei/Downloads/AOBO.cmodel555.cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/AOBO.cmodel555.cmodel"
+      ]
+    },
+    {
+      "sha256": "bbe516c9dc88e6911d701611482c07874ac216c080beec1c450a4d041a75158a",
+      "size": 19205,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_4bd913ce_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "c80fe497e141d1dbdb71bea38b9cb922f0149a9e9aa9ffe93ec7c3100d1f4c41",
+      "size": 6393,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "22cc8d7117d6059f5347f3e19c4de12a65688251fea5a8ce692ff2964d60cb16",
+      "size": 22682,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_df3aa7ef_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "1d2a47a2a91ebf31ab98b8171070d06dc6eeaaffd896c1d6b0c1eeaea0cbf34c",
+      "size": 22680,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_9bec45be_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "8326fcf045235f7e42ab2f6ab5515a7670082c025289a0422a7e978fe3abd599",
+      "size": 19196,
+      "paths": [
+        "/Users/wangfeifei/Downloads/0323.cmodel"
+      ]
+    },
+    {
+      "sha256": "63a9fb9dc3b53af3a4766d835bc1206a4a983e0ed40a01acd096948b9ce319e8",
+      "size": 603,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_cxe9emu_packed.cmodel",
+        "/Users/wangfeifei/Downloads/proj_1234_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "8a48ce6f5dd92511e0112adc4652e9b4b40abb75c10cb05b14283534eb07a544",
+      "size": 10359,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_89190f0a_packed (1).cmodel"
+      ]
+    },
+    {
+      "sha256": "2b4c023d0d9b105674c8a233aa2b6658b0e59f171b568350c32e7d5aa7613e39",
+      "size": 22721,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_f957aada_packed1.cmodel"
+      ]
+    },
+    {
+      "sha256": "f0e45c7eb28d01ba8e720937638dc12ead3ba1ccbfdc155cf2044a5a0273f0f4",
+      "size": 8329,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (9).cmodel"
+      ]
+    },
+    {
+      "sha256": "e94fcaa8f6c358530b33f388fc7206ca778b37633799c186f17545fdfcb5e43d",
+      "size": 19221,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_ee75f199_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "b98e5d56f5975010e86411af955058b31b02e009fb51b6b559b6d73c50199d14",
+      "size": 8332,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (8).cmodel"
+      ]
+    },
+    {
+      "sha256": "146a48bc5ce599468c0e3fef0dcab9b9455d9257a4b7e01aa0475206af8aff08",
+      "size": 17107,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_016267c0_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "a957819daa9907b192332c8128e96efadaae323a29d0403d355a22521392d8d6",
+      "size": 13920,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_1234_packed (12).cmodel"
+      ]
+    },
+    {
+      "sha256": "3d4b015493f11887c14ff7c54c4b55edb48062ea3a189a2cbf18efb82d46cbef",
+      "size": 12008,
+      "paths": [
+        "/Users/wangfeifei/Downloads/new_proj_khwcs9e_packed (1).cmodel"
+      ]
+    },
+    {
+      "sha256": "e98841825fb172827d51f96e6ea80c7e03424b32dcbdb9cb60f7224d32ad464a",
+      "size": 22707,
+      "paths": [
+        "/Users/wangfeifei/Downloads/proj_f957aada_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "7414828e5385a798cdeab73fd95e1cc780d4353de37bfc27389c169e6e0ae4f7",
+      "size": 18552,
+      "paths": [
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/proj_8b800f1b/proj_8b800f1b_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "f13349918a4d758b97d33bf042bf16db9037dacd918e0d9d425b991ab8e98225",
+      "size": 28037,
+      "paths": [
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/proj_edc87f80/proj_edc87f80_packed.cmodel",
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/proj_edc87f80/debug_artifacts/compile_20260613_142606_523889/06_final_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "add0f2cef2f7a2ff6cc11008b95524d219130cbe317556c0f5d3bd583889fe1b",
+      "size": 8071,
+      "paths": [
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/new_proj_15kfuy5/debug_artifacts/compile_20260423_130016_115742/06_final_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "4de8938d67b01ffd6022b6b7ca255a9318c656101f67712c4c49db81cbe5076e",
+      "size": 8071,
+      "paths": [
+        "/Users/wangfeifei/.codex/worktrees/2655/amr_studio_v4/src/backend/saved_projects/new_proj_15kfuy5/debug_artifacts/compile_20260423_130047_066281/06_final_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "18b247f4f6283f7b6a5177edb8ce87a2ca463e439ded4d58505bbcd0638dc8e1",
+      "size": 30489,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/attach/a2bb66211e4900e42a336b860f35050a/2026-03/Rec/4b6d08a2ecfd117c/F/17/ModelSetError.cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSetError.cmodel"
+      ]
+    },
+    {
+      "sha256": "6869793bbd50c1116632b65eae760032f0429568b7fe1fc06f55a1f721812fda",
+      "size": 34745,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/ModelSet---ok(1).cmodel"
+      ]
+    },
+    {
+      "sha256": "aee95c5ac0f32ef79c7f0d348bf655069239b3d8f6b9df52c38c0d31fd326d63",
+      "size": 34801,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/ModelSet0511.cmodel"
+      ]
+    },
+    {
+      "sha256": "056bc914cd9bf3c54053dfc173523d7327f89a2aa09476d808a32e93f9d72bf3",
+      "size": 22521,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/磁吸车组态建模.cmodel"
+      ]
+    },
+    {
+      "sha256": "7f4029ed18cc4a5f14a90b50df5452fa465aa46fc376f926d542e2b5712e502c",
+      "size": 25502,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/5.12_src.cmodel"
+      ]
+    },
+    {
+      "sha256": "09e6d9651673ed5ab228330f996db1c81fb578d9c949764adb857de4cf81257b",
+      "size": 34729,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/ModelSet-lift-ok.cmodel"
+      ]
+    },
+    {
+      "sha256": "6cb1480429079ad5fa47a3f886bd11b492c6a527c83faaa606ca3401827a42f1",
+      "size": 22762,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/校验模型.cmodel"
+      ]
+    },
+    {
+      "sha256": "7765f9339536135cfac22d7e5d81a3017b2858ffb9b245eeb6dd4e0fa0eaad5c",
+      "size": 34752,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/ModelSet---ok.cmodel"
+      ]
+    },
+    {
+      "sha256": "5f18057f56bcec2aa1ecd8173745ca1429a12fee29dd7f85d22fb5f31286d746",
+      "size": 20467,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/两驱差速对脚.cmodel"
+      ]
+    },
+    {
+      "sha256": "8ceee286384f2b3b4ea939009b96dec01f2e90c7ba318fe11d0ea017934d4d1c",
+      "size": 34744,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/5_11_ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "de5ca3c0b4465e5502e3aa72313e12999e9773acbf6e174147126715d87bc1c9",
+      "size": 24070,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-05/ModelSet1.cmodel"
+      ]
+    },
+    {
+      "sha256": "4e258ca4882920ec02b1a23ee965f7dad72337f42edae61fe0487fa172e01ce5",
+      "size": 19484,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2025-12/ModelSet3.cmodel"
+      ]
+    },
+    {
+      "sha256": "64f4b9dbbe4c59a12f23afc79ed27acf5df2e6fbdc74116db461904f808fea78",
+      "size": 34205,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/Q7MZD.cmodel"
+      ]
+    },
+    {
+      "sha256": "505c6193bb0c27c5b1a9db450191f30560f3fc5ba45696f8089cb90e74a525c9",
+      "size": 32064,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/7米四舵轮_260418.cmodel"
+      ]
+    },
+    {
+      "sha256": "83336b28580bfceada5be4d04a22e3031227a520b402f4a7be3f27e592615b44",
+      "size": 10276,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/proj_robot01_mocmdhzf_packed (4).cmodel"
+      ]
+    },
+    {
+      "sha256": "df62270446d7d151acaa7cba942ae4b35423f7365acb1a9f139112bf2003c86e",
+      "size": 34588,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/AoBo1.cmodel"
+      ]
+    },
+    {
+      "sha256": "0853ac13ad818bab1e814d6d47da572b19dedcc5dcd627d38dd3b1cf377d90c8",
+      "size": 22818,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/zshy_AMR7.cmodel"
+      ]
+    },
+    {
+      "sha256": "41fd29445b69eee20827d93aba9ff810e8f7ca8724b56b365be2671ab19becbf",
+      "size": 34959,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/AoBo3.cmodel"
+      ]
+    },
+    {
+      "sha256": "3efdb4ae6573640d1361c8ca29abe8aca4b2b016a7c6ed800fdeab83eac0d61d",
+      "size": 32064,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/BackupTemp.cmodel"
+      ]
+    },
+    {
+      "sha256": "eec05c91121863d5037542f7632733eed952f8f8bf0f62b56a965078ad22c298",
+      "size": 22677,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/zshy_AMR20260430.cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/zshy_AMR20260430(1).cmodel"
+      ]
+    },
+    {
+      "sha256": "4c7a478f55c6a54033cd96d168de5a4d19226ba400dccf7ca0402c63621d326e",
+      "size": 22873,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/zshy_AMR7(1).cmodel"
+      ]
+    },
+    {
+      "sha256": "e8dae49b0c58edbd179343b8a67071034a52acce9a7a6b4974c9a3cb4eb77cf6",
+      "size": 9998,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/proj_robot01_mocmdhzf_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "cf73814b1bf961d91bc222b5fa39f69d3b67be6f5458f8e91a0181d831b0a6a0",
+      "size": 10266,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/proj_robot01_mocmdhzf_packed (3).cmodel"
+      ]
+    },
+    {
+      "sha256": "2949beff1156a2c7580d77926077e9c22e9baba64364de352fdd94f070bd017a",
+      "size": 10282,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/proj_robot01_mocmdhzf_packed (2)(1).cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/proj_robot01_mocmdhzf_packed (2).cmodel"
+      ]
+    },
+    {
+      "sha256": "e1a3115ad43dbca3aae96e34db9792749e06637145445baa6dc9c6709aadecb7",
+      "size": 32064,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/新ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "ed764f301c4154563c15ef727e1eee564c499a4a4db48e443690f8d1e7a28d0b",
+      "size": 22818,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/zshy_AMR8.cmodel"
+      ]
+    },
+    {
+      "sha256": "c753e590528d3673642b52ae1494fbcf03d752c46c2ddeaddc8067c870640624",
+      "size": 22900,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-04/ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "6d94a00897baa534ffa4f3f31854d09c99197e49abf8f61d52931b39f00208a0",
+      "size": 22407,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet39.cmodel"
+      ]
+    },
+    {
+      "sha256": "6bba4f66657a181c19b4c8596570a34f1b2d08d2b93411bede97bb3173c617ff",
+      "size": 40309,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/0311新ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "89ca01cc21de062099ad861e807922fdd120f5ceb39b0894f1e6ca2eee8dfe3d",
+      "size": 22020,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet(4).cmodel"
+      ]
+    },
+    {
+      "sha256": "4a831dea91eea52e51bb57f8c3ee9b396a0dbb1d735f58fa94d2728b57d35358",
+      "size": 21670,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/20260316.cmodel"
+      ]
+    },
+    {
+      "sha256": "7db321d72fa167696ed3b9ba64f8b10109806763a1551f9f4149b1c4c5e6e4ad",
+      "size": 22985,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet_new_3_27.cmodel"
+      ]
+    },
+    {
+      "sha256": "956dab3bddb6e268de9f553d303e89e4e84b432b34d7c3f01735112b4288247a",
+      "size": 36633,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/0308新款307302440.cmodel"
+      ]
+    },
+    {
+      "sha256": "e5d973b5a6b1359342f822f5257f039615363276222cb0e408e42703185d119b",
+      "size": 35607,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/0309 第一款车模型ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "2092adbd990043ff1aa7f93629db9fb7062557943184d9cc89c17fb07aaaeb50",
+      "size": 39603,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/传感器校验中报错 ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "2b9a602c453c9cee4f4680a414286b583f3de66160e163674e13f7eac603b03e",
+      "size": 35597,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/0311ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "994d81c5379097c37bb4198f76e11eb8c18bf6e48b90a33d48e1e1fc462c1ffc",
+      "size": 27180,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/清畅3T（1.2版本）.cmodel"
+      ]
+    },
+    {
+      "sha256": "f673fb72d8ff187016dbd4a1f319e5f969b6e511753d9cf61b98433f390c0181",
+      "size": 36019,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/最终ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "9849107adcf7353a71acdf07edbca92396a1aafeafae873ff7df8da7d29b1f6e",
+      "size": 18675,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet(5).cmodel"
+      ]
+    },
+    {
+      "sha256": "f190c118a72d8415085d1e853ed063638ba0d97dab1fb88f3050b35215024e75",
+      "size": 21654,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet(1).cmodel",
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet(3).cmodel"
+      ]
+    },
+    {
+      "sha256": "5eef969e04d5210e3580a55ee2fe03f602ec810a735e1a4162e5e339e7324039",
+      "size": 22407,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet39(1).cmodel"
+      ]
+    },
+    {
+      "sha256": "1bc3e56f6de9bb4b1c78d9beb1e905bc216594e75d7c3bf934f778cb2f0a07bf",
+      "size": 22528,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet312.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/e8575454-bb07-4858-9532-1fe32e5de480.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/828df12d-eb75-4c58-9819-c62821755ca7.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/3c89d90f-5567-4f88-a771-b5d99f48d259.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/ae47d4ca-77bb-49a2-bee0-e1d2814b0a0d.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/00a179a4-8609-4401-be2f-1470d31cd420.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/f5ead0aa-4189-4840-b288-38e8c6f7f439.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/0f52e239-8613-402c-8a12-dd860549e682.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/9e65b015-5ad4-49da-98f6-d82a62e397bb.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/9046c173-8ad9-43b4-8484-26c72d77ce01.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/15d1e23a-d1bb-45dd-8533-abbab0d54b39.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/bb36f030-6988-4e1d-8af5-9fe1c22830ca.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/f785f7ec-95ce-45e3-8701-400af7e3fec4.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/ccdab9f0-4ac2-44a8-8a28-213a0a406a5d.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/4f2a50d6-2fa1-40fe-90fd-73e64a3b1e8b.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/e910e7e9-9859-40f5-a2ac-537205e24806.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/56d124b6-0e46-4904-aae7-530fe02fd87d.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/27650782-2a96-4f58-8481-5fe46e0a2602.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/d0cbbafe-ac86-4fb3-8e7f-45944ce6cf5c.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/5c9894f2-7f3e-4af0-9a6a-bccec869260f.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/960bf45c-8469-4e12-bb7a-871c39e9a31b.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/a3ee31a6-3852-47f2-bbe0-e7106261b2ed.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/41879e8b-ae79-46b1-abb0-2e2a4b565238.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/72f4ba80-215f-4333-a703-48b77dd147ae.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/3fb6737e-352b-4d51-bfe5-8c0e75f8a83b.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/d0f5736e-dbd9-47da-ab36-746ba07c936f.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/6bd51d75-5749-4760-937c-a55d45955a6b.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/4a888859-6942-4c14-a6f1-8653de70565c.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/45f8a1f4-5620-4a57-afc9-db926bc26160.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/4e15d8a0-cf54-4a85-83e2-b4842ab5fc61.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/e26fc9ab-46fe-47d1-9893-1c10a6f2e477.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/48bba91a-d57b-4d50-bdca-a244f5b9185e.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/90a42fb5-8fc5-4c1f-b8fc-6da015b36c42.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/6a574ca2-e8a4-4b2f-b84e-2d1d7243d533.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/40bb0f3c-72a0-45b3-8309-202ed6bb0eea.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/eb33f9c8-0738-4593-87dd-bed7abb55609.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/09cd8021-2211-4501-a00b-fd0b10dd7ec9.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/8ebecbc6-ab63-43ed-a34d-c3855a499961.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/09cec1ae-d129-4ca2-88cd-f2f24a1911ee.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/project_bases/a14d6070-ce8c-419b-898c-f9bd0ba225e3.base.cmodel",
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/skills/model_deserializer/files/ModelSet312.cmodel"
+      ]
+    },
+    {
+      "sha256": "2073e4e5dae40409c9c76e0f1f9e289f16ccea44532c5bc9e80c1f4b38448728",
+      "size": 22413,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-03/ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "b14e59cd9fb6b0e893966efed9986bdb622a3bac9c767eb8080d9d08a704c799",
+      "size": 28062,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-06/20260612.cmodel"
+      ]
+    },
+    {
+      "sha256": "1855d08bf5ec12271fb3b8ed68461d8a2e4193982beec75924b1a5a1aa878b41",
+      "size": 34874,
+      "paths": [
+        "/Users/wangfeifei/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/doghell_aeda/msg/file/2026-06/ModelSet.cmodel"
+      ]
+    },
+    {
+      "sha256": "65b9fd0dfc94128a73d6e8e194019c78fd685e31b648e941df55f882d208433f",
+      "size": 28470,
+      "paths": [
+        "/Users/wangfeifei/Library/CloudStorage/GoogleDrive-wangrunxi30@gmail.com/我的云端硬盘/清畅3T（1.2版本）.cmodel"
+      ]
+    },
+    {
+      "sha256": "f8d552b8ba762e2c82fd5a95239a0761faa43c832b7a1b46a1240cf041c3e6b9",
+      "size": 12630,
+      "paths": [
+        "/Users/wangfeifei/Library/CloudStorage/GoogleDrive-wangrunxi30@gmail.com/我的云端硬盘/test111.cmodel"
+      ]
+    },
+    {
+      "sha256": "7d8828c38e448a90cd92bbdb3f6e6008027161ba79bd8ce54a08bde105bb5a97",
+      "size": 28046,
+      "paths": [
+        "/Users/wangfeifei/Library/CloudStorage/GoogleDrive-wangrunxi30@gmail.com/我的云端硬盘/test111_repro.cmodel"
+      ]
+    },
+    {
+      "sha256": "56be74eabb4b0437d1fa7258206483d8bd292453568ca91b2b0b99faa6cfcf34",
+      "size": 8616,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/proj_1234_fixed.cmodel"
+      ]
+    },
+    {
+      "sha256": "330b353113c1b4af973aeef31ae6614c1338ca33fc1793cc544a183767759b07",
+      "size": 13745,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/proj_1234.cmodel"
+      ]
+    },
+    {
+      "sha256": "86cc7a5fa8ce5d4f3a14ebb8b5498fcaf54468437fb699932f63eeb1bda2f84f",
+      "size": 13566,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/proj_1234_packed (8)_调整.cmodel"
+      ]
+    },
+    {
+      "sha256": "29f35fd7f741f385b4ea602c220ae6f24e4bb05448a17ead7235dc72566cda70",
+      "size": 22389,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/skills/model_deserializer/files/ModelSet39_reconstructed.cmodel"
+      ]
+    },
+    {
+      "sha256": "919827c37876d814be01c9477740fbd2edf20426913985d67fa07ad5ae310429",
+      "size": 2331,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/new_proj_qupxzl9/new_proj_qupxzl9_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "a8fe37d212c55706a09e436d2f8957ec3498a2af3755f3a06deb41f1193588af",
+      "size": 28037,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/proj_6a41f0b3/proj_6a41f0b3_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "23e5809c857a99ebb9276f4b8ae84b6bcd073ca8e94cf8cbf00aff036b50eebf",
+      "size": 8383,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/proj_7c5fa442/proj_7c5fa442_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "cf8b0a993ce8ae24e17b49dd2f987e7213c1fbb1e1e577b49ba00017146678dc",
+      "size": 2445,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/new_proj_0qp5k0e/new_proj_0qp5k0e_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "982526606e0ad010b81d7a00a5e0da64e40a2acb5689ed4426e202df8af7a197",
+      "size": 2462,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/src/backend/saved_projects/new_proj_lj1bxbw/new_proj_lj1bxbw_packed.cmodel"
+      ]
+    },
+    {
+      "sha256": "688beed1f5e73031a294ede0d5d222a730b37778c5c2600f73a52b68815df6c2",
+      "size": 8200,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/tests/full_pipeline_audit/audit_results_12345/12345_audit.cmodel"
+      ]
+    },
+    {
+      "sha256": "e25eb6fa2f993ffd73aee313980793b124bd246c61048d409c95aef0244a32d6",
+      "size": 8200,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/audits/FINAL_PIPELINE_VALIDATION_20260404/12345_audit.cmodel"
+      ]
+    },
+    {
+      "sha256": "caebfb5ff0fbf6eaa278d55426f9f8d6d4f16d5ee8c2e5fef6bb2116c1d58242",
+      "size": 8200,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/audits/PIPELINE_VERIFICATION_REPORT_20260404/12345_audit.cmodel"
+      ]
+    },
+    {
+      "sha256": "fe3abb528c2e98211799e2af5763559422e933ab11bf8f4ea7e181081f76c4b5",
+      "size": 5804,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/空白/空白.cmodel"
+      ]
+    },
+    {
+      "sha256": "c7aecbf39e71467ce5a508e4ab754aed07ae8d62593d5dc3694cab9a3f6cc430",
+      "size": 28286,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/MQ-Q3-600LE-D(T)/MQ-Q3-600LE-D(T).cmodel"
+      ]
+    },
+    {
+      "sha256": "094420a1e003e4008c7e625fa310c3b8a116174bbaec052069b401617ac71e20",
+      "size": 32002,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/MR-HL8-2000LH-C1(M)/MR-HL8-2000LH-C1(M).cmodel"
+      ]
+    },
+    {
+      "sha256": "c3c20a3364d041468aa7be2bc53ae669b4c3acf8520440d9b449890fdf151da9",
+      "size": 22996,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/同毅立式舵轮_对角双舵轮车/同毅立式舵轮_对角双舵轮车.cmodel"
+      ]
+    },
+    {
+      "sha256": "a726cebdce9678a6d151501878b8f3d3d4ff38777e908dfcd2d4dc7600531d19",
+      "size": 35337,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/MQ-Q3-600LE-D(T)-ACTUATOR/MQ-Q3-600LE-D(T)-ACTUATOR.cmodel"
+      ]
+    },
+    {
+      "sha256": "e72fb73bbf07812b0dc96043fc9c13abad006c1e8331d6bf4e611cdfaa3511a2",
+      "size": 35008,
+      "paths": [
+        "/Users/wangfeifei/code/amr_studio_v4/specifications/ModuleLibrary/AmrModelTem/四舵轮/四舵轮.cmodel"
+      ]
+    },
+    {
+      "sha256": "7c7278663dc38b754de39a920d685cc7a7abb1fc4cd49d65c7ae9c225c39b807",
+      "size": 28522,
+      "paths": [
+        "/Users/wangfeifei/code/rcs-lite/offline/wiki-amrcontroller/assets/wiki.rms.hikrobotics.com/0c070e22bf-sop.cmodel"
+      ]
+    },
+    {
+      "sha256": "5bf6a11213ee437073a893117d19e8c565e6cdb84d9fc043567b4928f8a42c8b",
+      "size": 26282,
+      "paths": [
+        "/Users/wangfeifei/code/rcs-lite/offline/wiki-amrcontroller/assets/wiki.rms.hikrobotics.com/f18b72ece9-sop_.cmodel"
+      ]
+    }
+  ]
+}

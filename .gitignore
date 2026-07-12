@@ -5,7 +5,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+.venv/
+.venv*/
 .env
+.wrangler/
+.server-kv/
 
 # Model Artifacts (Local Only)
 backend/saved_projects/*/
@@ -27,7 +31,9 @@ frontend/frontend_runtime.log
 *FuncDesc*.proto
 
 # Frontend
+node_modules/
 frontend/node_modules/
+src/frontend/node_modules/
 frontend/dist/
 .DS_Store
 /src/frontend/dist/
