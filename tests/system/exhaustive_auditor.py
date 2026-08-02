@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Add backend to path to import the newly compiled proto
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent / "src" / "backend"))
-from skills_v2.schemas_pb import controller_model_comp_desc_pb2
+from app.infrastructure.protobuf.generated import controller_model_comp_desc_pb2
 
 def flatten_proto_dict(d, prefix=""):
     """

@@ -16,14 +16,24 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 import main as backend_main
-from core import data_manager
-from skills_v2.schemas_pb import controller_model_comp_desc_pb2
+from app.infrastructure.projects import data_manager
+from app.infrastructure.protobuf import encode_cmodel
+from app.infrastructure.protobuf.generated import controller_model_comp_desc_pb2
 
 
 SAMPLE_PROJECT = REPO_ROOT / "src" / "backend" / "saved_projects" / "proj_8b800f1b"
 SAMPLE_CMODEL = SAMPLE_PROJECT / "proj_8b800f1b_packed.cmodel"
 TARGET_UUID = "1393d6e420b447efb2b74dec43fc8857"
 TARGET_NAME = "E2E_HTTP_PATCHED_NAME"
+
+
+def ensure_sample_cmodel() -> Path:
+    if SAMPLE_CMODEL.exists():
+        return SAMPLE_CMODEL
+
+    generated_path = SAMPLE_PROJECT / "proj_8b800f1b_packed.cmodel"
+    encode_cmodel(str(SAMPLE_PROJECT), str(generated_path))
+    return generated_path
 
 
 def iter_module_names(node):
@@ -50,7 +60,8 @@ class BackendApiE2ETests(unittest.TestCase):
             try:
                 client = TestClient(backend_main.app)
 
-                with open(SAMPLE_CMODEL, "rb") as f:
+                sample_cmodel = ensure_sample_cmodel()
+                with open(sample_cmodel, "rb") as f:
                     response = client.post(
                         "/api/v1/models/upload",
                         files={"file": ("sample.cmodel", f, "application/octet-stream")},

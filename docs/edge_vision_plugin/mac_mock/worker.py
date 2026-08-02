@@ -4,11 +4,83 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import json
 import sys
 import time
+from pathlib import Path
 
 from protocol import build_envelope, loads_message, summarize_progress
+
+
+class AlgoCore:
+    """Thin ctypes wrapper over the compiled algorithm core."""
+
+    def __init__(self, library_path: str) -> None:
+        self.library_path = str(Path(library_path).resolve())
+        self.lib = ctypes.CDLL(self.library_path)
+        self.lib.algo_authorize.argtypes = [
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_size_t,
+        ]
+        self.lib.algo_authorize.restype = ctypes.c_int
+        self.lib.algo_get_required_steps.argtypes = [ctypes.c_char_p]
+        self.lib.algo_get_required_steps.restype = ctypes.c_int
+        self.lib.algo_process_step.argtypes = [
+            ctypes.c_char_p,
+            ctypes.c_int,
+            ctypes.c_char_p,
+            ctypes.c_size_t,
+        ]
+        self.lib.algo_process_step.restype = ctypes.c_int
+        self.lib.algo_finalize.argtypes = [
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_char_p,
+            ctypes.c_size_t,
+        ]
+        self.lib.algo_finalize.restype = ctypes.c_int
+
+    def _call_json(self, func: Any, *parts: str | int) -> tuple[int, dict]:
+        buffer = ctypes.create_string_buffer(2048)
+        encoded_args = []
+        for part in parts:
+            if isinstance(part, int):
+                encoded_args.append(part)
+            else:
+                encoded_args.append(str(part).encode("utf-8"))
+        status = func(*encoded_args, buffer, ctypes.sizeof(buffer))
+        payload = json.loads(buffer.value.decode("utf-8"))
+        return status, payload
+
+    def authorize(
+        self,
+        license_path: str,
+        expected_product: str,
+        expected_fingerprint: str,
+        required_feature: str,
+    ) -> tuple[int, dict]:
+        return self._call_json(
+            self.lib.algo_authorize,
+            license_path,
+            expected_product,
+            expected_fingerprint,
+            required_feature,
+        )
+
+    def get_required_steps(self, scenario_name: str) -> int:
+        return int(self.lib.algo_get_required_steps(str(scenario_name).encode("utf-8")))
+
+    def process_step(self, scenario_name: str, step_index: int) -> tuple[int, dict]:
+        return self._call_json(self.lib.algo_process_step, scenario_name, step_index)
+
+    def finalize(self, scenario_name: str, task_id: str, object_id: str) -> tuple[int, dict]:
+        return self._call_json(self.lib.algo_finalize, scenario_name, task_id, object_id)
 
 
 def emit(event: dict) -> None:
@@ -66,90 +138,85 @@ def emit_progress(request_id: str, task_id: str, frame_index: int, elapsed_ms: i
     )
 
 
-def run_success(request: dict) -> int:
+def emit_auth_result(request_id: str, task_id: str, auth_payload: dict) -> None:
+    event_type = "task.auth.valid" if auth_payload.get("status") == "valid" else "task.auth.failed"
+    emit(build_envelope(event_type, "worker", request_id, task_id, auth_payload))
+
+
+def authorize_with_algo_core(request: dict) -> tuple[bool, dict, AlgoCore]:
+    license_info = request["license"]
+    algo_core = AlgoCore(license_info["algorithm_library_path"])
+    status, payload = algo_core.authorize(
+        license_info["license_path"],
+        license_info["product"],
+        license_info["device_fingerprint"],
+        license_info["required_feature"],
+    )
+    payload["license_path"] = license_info["license_path"]
+    payload["fingerprint"] = license_info["device_fingerprint"]
+    return status == 0, payload, algo_core
+
+
+def run_with_algo_core(request: dict, algo_core: AlgoCore) -> int:
     request_id = request["request_id"]
     task = request["task"]
     runtime = request["runtime"]
-    scenario = request["scenario"]
+    scenario_name = request["scenario"]["name"]
     heartbeat_interval = runtime["heartbeat_interval_ms"] / 1000.0
-    work_duration = float(scenario["work_duration_seconds"])
     start = time.monotonic()
-    heartbeat_count = 0
+    required_steps = algo_core.get_required_steps(scenario_name)
 
-    while True:
-        elapsed = time.monotonic() - start
-        if elapsed >= work_duration:
-            break
-
-        heartbeat_count += 1
-        emit_progress(request_id, task["task_id"], heartbeat_count, int(elapsed * 1000))
-        time.sleep(heartbeat_interval)
-
-    result = dict(scenario["result"])
-    result.update(
-        {
-            "status": "success",
+    if required_steps <= 0:
+        error = {
+            "status": "failed",
             "task_id": task["task_id"],
             "object_id": task["object_id"],
-            "elapsed_ms": int((time.monotonic() - start) * 1000),
+            "confidence": 0.0,
+            "elapsed_ms": 0,
+            "message": "compiled core rejected scenario",
+            "error_code": "E5002",
         }
-    )
-    emit(build_envelope("task.result", "worker", request_id, task["task_id"], {"result": result}))
-    return 0
+        emit(build_envelope("task.error", "worker", request_id, task["task_id"], {"error": error}))
+        return 1
 
+    for step_index in range(required_steps):
+        _, payload = algo_core.process_step(scenario_name, step_index)
+        emit_progress(request_id, task["task_id"], step_index + 1, int((time.monotonic() - start) * 1000))
+        if scenario_name == "timeout":
+            time.sleep(heartbeat_interval)
+        if payload.get("status") == "failed":
+            error = {
+                "status": "failed",
+                "task_id": task["task_id"],
+                "object_id": task["object_id"],
+                "confidence": 0.0,
+                "elapsed_ms": int((time.monotonic() - start) * 1000),
+                "message": payload["message"],
+                "error_code": payload["error_code"],
+                "license": payload.get("license"),
+            }
+            emit(build_envelope("task.error", "worker", request_id, task["task_id"], {"error": error}))
+            return 1
+        if scenario_name != "timeout":
+            time.sleep(heartbeat_interval)
 
-def run_fail(request: dict) -> int:
-    request_id = request["request_id"]
-    task = request["task"]
-    runtime = request["runtime"]
-    scenario = request["scenario"]
-    heartbeat_interval = runtime["heartbeat_interval_ms"] / 1000.0
-    fail_after = float(scenario["fail_after_seconds"])
-    start = time.monotonic()
-    heartbeat_count = 0
-
-    while True:
-        elapsed = time.monotonic() - start
-        if elapsed >= fail_after:
-            break
-
-        heartbeat_count += 1
-        emit_progress(request_id, task["task_id"], heartbeat_count, int(elapsed * 1000))
-        time.sleep(heartbeat_interval)
+    _, payload = algo_core.finalize(scenario_name, task["task_id"], task["object_id"])
+    payload["elapsed_ms"] = int((time.monotonic() - start) * 1000)
+    if payload.get("status") == "success":
+        emit(build_envelope("task.result", "worker", request_id, task["task_id"], {"result": payload}))
+        return 0
 
     error = {
         "status": "failed",
         "task_id": task["task_id"],
         "object_id": task["object_id"],
         "confidence": 0.0,
-        "elapsed_ms": int((time.monotonic() - start) * 1000),
-        "message": scenario["message"],
-        "error_code": scenario["error_code"],
+        "elapsed_ms": payload["elapsed_ms"],
+        "message": payload["message"],
+        "error_code": payload["error_code"],
     }
     emit(build_envelope("task.error", "worker", request_id, task["task_id"], {"error": error}))
     return 1
-
-
-def run_timeout(request: dict) -> int:
-    request_id = request["request_id"]
-    task = request["task"]
-    runtime = request["runtime"]
-    scenario = request["scenario"]
-    heartbeat_interval = runtime["heartbeat_interval_ms"] / 1000.0
-    work_duration = float(scenario["work_duration_seconds"])
-    start = time.monotonic()
-    heartbeat_count = 0
-
-    while True:
-        elapsed = time.monotonic() - start
-        if elapsed >= work_duration:
-            break
-
-        heartbeat_count += 1
-        emit_progress(request_id, task["task_id"], heartbeat_count, int(elapsed * 1000))
-        time.sleep(heartbeat_interval)
-
-    return 0
 
 
 def main() -> int:
@@ -161,11 +228,23 @@ def main() -> int:
     emit_task_accepted(request["request_id"], request["task"]["task_id"], scenario_name)
     emit_resource_snapshot(request)
 
-    if scenario_name == "success":
-        return run_success(request)
-    if scenario_name == "fail":
-        return run_fail(request)
-    return run_timeout(request)
+    authorized, auth_payload, algo_core = authorize_with_algo_core(request)
+    emit_auth_result(request["request_id"], request["task"]["task_id"], auth_payload)
+    if not authorized:
+        error = {
+            "status": "failed",
+            "task_id": request["task"]["task_id"],
+            "object_id": request["task"]["object_id"],
+            "confidence": 0.0,
+            "elapsed_ms": 0,
+            "message": auth_payload["message"],
+            "error_code": auth_payload["code"],
+            "license": auth_payload,
+        }
+        emit(build_envelope("task.error", "worker", request["request_id"], request["task"]["task_id"], {"error": error}))
+        return 1
+
+    return run_with_algo_core(request, algo_core)
 
 
 if __name__ == "__main__":

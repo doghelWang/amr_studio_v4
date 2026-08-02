@@ -11,6 +11,29 @@ export { getBackendBase } from './backendConfig';
 
 const getModelApiBase = () => `${getBackendBase()}/api/v1/models`;
 
+export interface CompileResponse {
+    status: 'success' | string;
+    download_url?: string;
+    module_list_url?: string;
+    audit?: string[];
+    diagnostics?: any[];
+    detail?: string;
+}
+
+export const resolveBackendAssetUrl = (pathOrUrl: string) => {
+    if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+    return `${getBackendBase()}${pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`}`;
+};
+
+export const triggerBrowserDownload = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+};
+
 /** 获取单组件的二进制展开详情 (用于数据一致性校验) */
 export const apiFetchComponentDetails = async (projectId: string, uuid: string) => {
     const res = await axios.get(`${getModelApiBase()}/${projectId}/components/${uuid}`);
@@ -29,7 +52,7 @@ export const apiFetchAbilities = async (projectId: string) => {
     return res.data;
 };
 
-/** 获取项目的全量 Functions (功能过程) 配置 */
+/** 获取项目的 FuncDesc 功能过程配置 */
 export const apiFetchFunctions = async (projectId: string) => {
     const res = await axios.get(`${getModelApiBase()}/${projectId}/functions`);
     return res.data;
@@ -47,16 +70,19 @@ export const apiInitSandbox = async (projectId: string, config: any) => {
     return res.data;
 };
 
-/** 触发 CModel 编译并处理下载流 */
-export const apiCompileAndDownload = async (projectId: string) => {
-    const res = await axios.post(`${getModelApiBase()}/${projectId}/compile`, {}, { responseType: 'blob' });
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${projectId}_packed.cmodel`);
-    document.body.appendChild(link);
-    link.click();
-    return res;
+/** 触发 CModel 编译；后端返回 JSON，其中 download_url 指向真实 .cmodel artifact */
+export const apiCompileProject = async (projectId: string): Promise<CompileResponse> => {
+    const res = await axios.post(`${getModelApiBase()}/${projectId}/compile`);
+    return res.data;
+};
+
+/** 触发 CModel 编译并按后端返回的 artifact URL 下载，避免把 compile JSON 误保存为 .cmodel */
+export const apiCompileAndDownload = async (projectId: string): Promise<CompileResponse> => {
+    const data = await apiCompileProject(projectId);
+    if (data.status === 'success' && data.download_url) {
+        triggerBrowserDownload(resolveBackendAssetUrl(data.download_url), `${projectId}_packed.cmodel`);
+    }
+    return data;
 };
 
 /** 获取所有组件类型的 XML 定义注册表 (Schema Registry) */

@@ -78,6 +78,31 @@ function validateExport(identity: any, warnings: string[] = []): boolean {
 }
 
 export class ExportService {
+  private static clone<T>(value: T): T {
+    if (value === undefined || value === null) return value;
+    return JSON.parse(JSON.stringify(value));
+  }
+
+  /** Merge modeled values into an imported proto-json object without dropping unknown fields. */
+  private static mergeDefined(raw: any, modeled: any): any {
+    if (modeled === undefined) return this.clone(raw);
+    if (modeled === null || typeof modeled !== 'object' || Array.isArray(modeled)) {
+      return modeled;
+    }
+
+    const result: any = raw && typeof raw === 'object' && !Array.isArray(raw)
+      ? this.clone(raw)
+      : {};
+    Object.entries(modeled).forEach(([key, value]) => {
+      if (value !== undefined) result[key] = this.mergeDefined(result[key], value);
+    });
+    return result;
+  }
+
+  private static rawField(raw: any, camelKey: string, snakeKey: string): any {
+    return raw?.[camelKey] ?? raw?.[snakeKey];
+  }
+
   /**
    * §NO_PARTIAL_EXPORT: 主导出入口，导出完整 RobotConfig
    */
@@ -129,11 +154,12 @@ export class ExportService {
    * 使用专用映射器，与 component 属性映射分离
    */
   static exportAbilities(abilities: ControllerAbility | undefined): any {
-    if (!abilities?.functionAbility?.length) return undefined;
+    if (!abilities?.functionAbility?.length && !abilities?.componentAbility?.length) return undefined;
 
     return {
       version: abilities.version || 'V1.0',
-      functionAbility: abilities.functionAbility.map(func => ({
+      componentAbility: abilities.componentAbility || [],
+      functionAbility: (abilities.functionAbility || []).map(func => ({
         type: func.type,
         desc: func.desc,
         childFunction: (func.childFunction || []).map(cf => ({
@@ -210,12 +236,21 @@ export class ExportService {
       boolNoeditable: a.boolNoeditable
     };
 
+    if (a.fixedSource !== undefined) base.fixedSource = a.fixedSource;
+
     if (a.value !== undefined && a.value !== null) {
       switch (a.type) {
         case 'DATA_DOUBLE': base.doubleValue = Number(a.value); break;
+        case 'DATA_FLOAT': base.floatValue = Number(a.value); break;
         case 'DATA_INT32': base.int32Value = Math.floor(Number(a.value)); break;
+        case 'DATA_UINT32': base.uint32Value = Math.floor(Number(a.value)); break;
+        case 'DATA_INT64': base.int64Value = String(a.value); break;
+        case 'DATA_UINT64': base.uint64Value = String(a.value); break;
         case 'DATA_BOOL': base.boolValue = Boolean(a.value); break;
         case 'DATA_STRING': base.stringValue = String(a.value); break;
+        case 'DATA_IP': base.ipValue = String(a.value); break;
+        case 'DATA_BYTES': base.bytesValue = a.value; break;
+        case 'DATA_FIXED_E': base.stringFix = String(a.value); break;
       }
     }
 
@@ -249,48 +284,89 @@ export class ExportService {
   }
 
   private static mapComponentToCModel(c: ComponentConfig): any {
-    return {
+    const raw = this.clone(c.rawCmodelComponent || {});
+    const rawGeneralAttr = this.rawField(raw, 'generalAttr', 'general_attr') || {};
+    const rawPrivateAttr = this.rawField(raw, 'privateAttr', 'private_attr') || {};
+    const rawInterfaceParams = this.rawField(raw, 'interfaceParams', 'interface_params') || {};
+    const rawStructParam = this.rawField(raw, 'structParam', 'struct_param') || {};
+    const rawExtendParams = this.rawField(rawStructParam, 'extendParams', 'extend_params') || [];
+
+    const modeledGeneralAttr = {
+      moduleName: { type: 'DATA_STRING', stringValue: c.name, boolParse: true },
+      moduleUuid: { type: 'DATA_STRING', stringValue: c.id, boolParse: true },
+      moduleShape: c.shape ? {
+        shapeType: c.shape.type === 'BOX' ? 'ENUM_BOX' : c.shape.type === 'SPHERE' ? 'ENUM_SPHERE' : 'ENUM_CYLINDER',
+        box: c.shape.type === 'BOX' ? { sizeLen: c.shape.length, sizeWidth: c.shape.width, sizeHeight: c.shape.height } : undefined,
+        cylinder: c.shape.type === 'CYLINDER' ? { diameter: c.shape.diameter, height: c.shape.height } : undefined,
+        sphere: c.shape.type === 'SPHERE' ? { diameter: c.shape.diameter } : undefined
+      } : undefined
+    };
+
+    const rawGroups = this.rawField(rawPrivateAttr, 'privateAttrs', 'private_attrs') || [];
+    const modeledGroups = c.privateAttrs.map(g => {
+      const rawGroup = rawGroups.find((item: any) => item.key === g.key) || {};
+      const rawElements = this.rawField(rawGroup, 'arrayBaseEle', 'array_base_ele') || [];
+      const modeledElements = g.elements.map(e => {
+        const rawElement = rawElements.find((item: any) => item.key === e.key) || {};
+        return this.mergeDefined(rawElement, this.mapAttributeToCModelSimple(e));
+      });
+      return this.mergeDefined(rawGroup, {
+        key: g.key,
+        desc: g.desc,
+        arrayBaseEle: modeledElements
+      });
+    });
+
+    const rawInterfaces = this.rawField(rawInterfaceParams, 'interfaceGroup', 'interface_Group') || [];
+    const modeledInterfaces = c.interfaces.map(i => {
+      const rawInterface = rawInterfaces.find((item: any) =>
+        (item.interfaceUuid || item.interface_uuid) === i.interfaceUuid
+      ) || {};
+      const modeledInterface = {
+        key: i.key,
+        type: i.type,
+        path: i.path,
+        desc: i.desc,
+        interfaceUuid: i.interfaceUuid,
+        linkedInterfaceUuid: i.linkedInterfaceUuid || []
+      } as any;
+      for (const key of ['linkAttrs', 'interfaceAttrs', 'interfaceParams']) {
+        if ((i as any)[key] !== undefined) modeledInterface[key] = (i as any)[key];
+      }
+      return this.mergeDefined(rawInterface, modeledInterface);
+    });
+
+    const modeledExtendParams = [
+      { key: 'locCoordX', type: 'DATA_DOUBLE', doubleValue: c.mountX },
+      { key: 'locCoordY', type: 'DATA_DOUBLE', doubleValue: c.mountY },
+      { key: 'locCoordZ', type: 'DATA_DOUBLE', doubleValue: c.mountZ },
+      { key: 'locCoordROLL', type: 'DATA_DOUBLE', doubleValue: c.mountRoll },
+      { key: 'locCoordPITCH', type: 'DATA_DOUBLE', doubleValue: c.mountPitch },
+      { key: 'locCoordYAW', type: 'DATA_DOUBLE', doubleValue: c.mountYaw },
+      { key: 'parentNodeUuid', type: 'DATA_COMBOX', comboType: { typeKey: c.parentNodeUuid || '' } }
+    ].map(param => {
+      const rawParam = rawExtendParams.find((item: any) => item.key === param.key) || {};
+      return this.mergeDefined(rawParam, param);
+    });
+
+    const interfaceKey = Array.isArray((rawInterfaceParams as any).interface_Group) ? 'interface_Group' : 'interfaceGroup';
+    return this.mergeDefined(raw, {
       generalAttr: {
-        moduleName: { type: 'DATA_STRING', stringValue: c.name, boolParse: true },
-        moduleUuid: { type: 'DATA_STRING', stringValue: c.id, boolParse: true },
-        moduleShape: c.shape ? {
-          shapeType: c.shape.type === 'BOX' ? 'ENUM_BOX' : 'ENUM_CYLINDER',
-          box: c.shape.type === 'BOX' ? { sizeLen: c.shape.length, sizeWidth: c.shape.width, sizeHeight: c.shape.height } : undefined,
-          cylinder: c.shape.type === 'CYLINDER' ? { diameter: c.shape.diameter, sizeHeight: c.shape.height } : undefined
-        } : undefined
+        ...this.mergeDefined(rawGeneralAttr, modeledGeneralAttr)
       },
       privateAttr: {
-        privateAttrs: c.privateAttrs.map(g => ({
-          key: g.key,
-          desc: g.desc,
-          arrayBaseEle: g.elements.map(e => this.mapAttributeToCModelSimple(e))
-        }))
+        ...this.mergeDefined(rawPrivateAttr, { privateAttrs: modeledGroups })
       },
       interfaceAbility: c.interfaceAbility,
       interfaceParams: {
-        interfaceGroup: c.interfaces.map(i => ({
-          key: i.key,
-          type: i.type,
-          path: i.path,
-          desc: i.desc,
-          interfaceUuid: i.interfaceUuid,
-          linkedInterfaceUuid: i.linkedInterfaceUuid || []
-        }))
+        ...this.mergeDefined(rawInterfaceParams, { [interfaceKey]: modeledInterfaces })
       },
       structParam: {
-        extendParams: [
-          { key: 'locCoordX', type: 'DATA_DOUBLE', doubleValue: c.mountX },
-          { key: 'locCoordY', type: 'DATA_DOUBLE', doubleValue: c.mountY },
-          { key: 'locCoordZ', type: 'DATA_DOUBLE', doubleValue: c.mountZ },
-          { key: 'locCoordROLL', type: 'DATA_DOUBLE', doubleValue: c.mountRoll },
-          { key: 'locCoordPITCH', type: 'DATA_DOUBLE', doubleValue: c.mountPitch },
-          { key: 'locCoordYAW', type: 'DATA_DOUBLE', doubleValue: c.mountYaw },
-          { key: 'parentNodeUuid', type: 'DATA_COMBOX', comboType: { typeKey: c.parentNodeUuid || '' } }
-        ],
+        ...this.mergeDefined(rawStructParam, { extendParams: modeledExtendParams }),
         segmentedLimitsParams: c.rawStructParam
       },
       boolDisable: c.disabled,
       boolDeprecated: c.deprecated
-    };
+    });
   }
 }

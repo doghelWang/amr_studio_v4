@@ -8,7 +8,8 @@ import {
   CheckCircleOutlined
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
-import { ComponentConfig, InterfaceConfig, buildConnections } from '../../store/types';
+import { ComponentConfig, InterfaceConfig } from '../../store/types';
+import { buildElectricalConnections } from '../../store/domain/electrical';
 
 const { Text, Title } = Typography;
 
@@ -31,7 +32,7 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
   const [selectedRowKey, setSelectedRowKey] = useState<string | undefined>();
 
   // Get all connections to check link status
-  const connections = useMemo(() => buildConnections(components), [components]);
+  const connections = useMemo(() => buildElectricalConnections(components), [components]);
 
   // Map of interfaceUuid -> connected count
   const connectionMap = useMemo(() => {

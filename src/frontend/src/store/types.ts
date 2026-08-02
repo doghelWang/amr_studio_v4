@@ -141,6 +141,10 @@ export interface ComponentConfig {
 
     // Raw generalAttr preserved for lossless round-trip
     generalAttr?: any;
+    rawCmodelComponent?: any;
+    rawModuleGroup?: any;
+    rawModuleGroupIndex?: number;
+    rawComponentIndex?: number;
     // Raw structParam segments (e.g. segmented_limits_params)
     rawStructParam?: any;
 
@@ -198,14 +202,14 @@ export interface RobotIdentity {
     maxDecel?: number;
     maxRotSpeed?: number;
     maxRotAccel?: number;
-
+    
     // Full Load variants
     maxSpeedFull?: number;
     maxAccelFull?: number;
     maxDecelFull?: number;
   maxRotSpeedFull?: number;
   maxRotAccelFull?: number;
-
+    
     // Avoidance
     avoidMaxDec?: number;
     avoidMaxDecFull?: number;
@@ -267,32 +271,13 @@ export interface ControllerAbility {
     componentAbility?: any[]; // To preserve radar/motor entity lists
 }
 
-// ━━━ Top-Level Robot Config ━━━
-export interface RobotConfig {
-    identity: RobotIdentity;
-    components: ComponentConfig[];
-    abilities: ControllerAbility;
-    functions?: any;
-}
-
-// ━━━ Project & Validation ━━━
-export interface ProjectMeta {
-    projectId: string;
-    projectName: string;
-    createdAt: string;
-    modifiedAt: string;
-    author: string;
-    templateOrigin: string;
-    formatVersion: '1.0';
-}
-
-export interface ValidationIssue {
-    severity: 'ERROR' | 'WARNING';
-    message: string;
-    nodeId?: string;
-}
-
-// Removed legacy hardcoded CATEGORY_ATTRIBUTE_TEMPLATES to enforce strict CModel Schema inheritance.
+// ━━━ Electrical Connection Domain Model ━━━
+export type FieldSource =
+    | 'imported_cmodel'
+    | 'module_library'
+    | 'user_input'
+    | 'backend_registry'
+    | 'unknown';
 
 export type ElectricalConnectionKind =
     | 'communication_bus'
@@ -314,109 +299,76 @@ export interface ElectricalConnection {
     targetComponentName: string;
     targetInterfaceUuid: string;
     targetInterfaceKey: string;
+    targetInterfaceType: string;
     direction: 'source_to_target' | 'target_to_source' | 'bidirectional' | 'unknown';
-    diagnostics: string[];
+    multiplicity: 'point_to_point' | 'bus_multi_drop' | 'unknown';
+    source: 'imported_cmodel' | 'user_selected' | 'backend_resolved';
+    sourceRefs: string[];
+    diagnostics: Diagnostic[];
 }
 
-export const getInterfaceKind = (type: string): ElectricalConnectionKind => {
-    const upper = (type || '').toUpperCase();
-    if (['CAN', 'RS485', 'RS232', 'UART', 'ETH', 'ETHERNET', 'NETWORK'].includes(upper)) {
-        return 'communication_bus';
-    }
-    if (['DI', 'DO', 'AI', 'AO'].includes(upper)) {
-        return 'io_signal';
-    }
-    if (['BAT', 'POWER'].includes(upper)) {
-        return 'power';
-    }
-    if (['SPI'].includes(upper)) {
-        return 'onboard';
-    }
-    if (['SPK', 'LVDS', 'SMA'].includes(upper)) {
-        return 'audio_video';
-    }
-    return 'unknown';
-};
+export interface FunctionEndpoint {
+    kind: 'component' | 'interface' | 'connection' | 'ability' | 'literal';
+    ref: string;
+    role?: string;
+    desc?: string;
+}
 
-export const buildConnections = (components: ComponentConfig[]): ElectricalConnection[] => {
-    const connections: ElectricalConnection[] = [];
-    const processed = new Set<string>();
+export interface FunctionProcess {
+    id: string;
+    type: string;
+    desc: string;
+    trigger?: string;
+    inputs: FunctionEndpoint[];
+    outputs: FunctionEndpoint[];
+    relatedAbilities: string[];
+    relatedComponents: string[];
+    relatedConnections: string[];
+    source: 'imported_func_desc' | 'user_created' | 'template';
+    raw?: unknown;
+    editableLevel: 'readonly' | 'mapped_edit' | 'full_edit';
+    diagnostics: Diagnostic[];
+}
 
-    const ifaceMap = new Map<string, { comp: ComponentConfig; iface: InterfaceConfig }>();
-    components.forEach(c => {
-        (c.interfaces || []).forEach(i => {
-            ifaceMap.set(i.interfaceUuid, { comp: c, iface: i });
-        });
-    });
+// ━━━ Top-Level Robot Config ━━━
+export interface RobotConfig {
+    identity: RobotIdentity;
+    components: ComponentConfig[];
+    abilities: ControllerAbility;
+    functionProcesses?: FunctionProcess[];
+    rawCompDescMeta?: any;
+    rawAbiSet?: any;
+    rawFuncDesc?: any;
+}
 
-    components.forEach(c => {
-        (c.interfaces || []).forEach(i => {
-            (i.linkedInterfaceUuid || []).forEach(targetUuid => {
-                const target = ifaceMap.get(targetUuid);
-                if (!target) {
-                    const connId = `conn_missing_${i.interfaceUuid}_${targetUuid}`;
-                    if (!processed.has(connId)) {
-                        processed.add(connId);
-                        connections.push({
-                            id: connId,
-                            kind: getInterfaceKind(i.type),
-                            interfaceType: i.type,
-                            sourceComponentId: c.id,
-                            sourceComponentName: c.alias || c.name,
-                            sourceInterfaceUuid: i.interfaceUuid,
-                            sourceInterfaceKey: i.key,
-                            targetComponentId: '',
-                            targetComponentName: '未知/已丢失',
-                            targetInterfaceUuid: targetUuid,
-                            targetInterfaceKey: '未知',
-                            direction: 'unknown',
-                            diagnostics: [`连接的目标接口已丢失: ${targetUuid}`]
-                        });
-                    }
-                    return;
-                }
+// ━━━ Project & Validation ━━━
+export interface ProjectMeta {
+    projectId: string;
+    projectName: string;
+    createdAt: string;
+    modifiedAt: string;
+    author: string;
+    templateOrigin: string;
+    formatVersion: '1.0';
+}
 
-                const connId = [i.interfaceUuid, targetUuid].sort().join('_');
-                if (processed.has(connId)) return;
-                processed.add(connId);
+export interface ValidationIssue {
+    severity: 'ERROR' | 'WARNING';
+    message: string;
+    nodeId?: string;
+}
 
-                let direction: 'source_to_target' | 'target_to_source' | 'bidirectional' | 'unknown' = 'bidirectional';
-                const typeUpper = i.type.toUpperCase();
-                if (typeUpper === 'DO') {
-                    direction = 'source_to_target';
-                } else if (typeUpper === 'DI') {
-                    direction = 'target_to_source';
-                } else if (['BAT', 'POWER'].includes(typeUpper)) {
-                    direction = 'source_to_target';
-                }
+export interface Diagnostic {
+    severity: 'error' | 'warning' | 'info' | 'trace';
+    code: string;
+    message: string;
+    path?: string;
+    componentId?: string;
+    interfaceUuid?: string;
+    connectionId?: string;
+    abilityType?: string;
+    functionId?: string;
+    source?: string;
+}
 
-                const diagnostics: string[] = [];
-                if (i.type.toUpperCase() !== target.iface.type.toUpperCase()) {
-                    const isCompatIO = (typeUpper === 'DI' && target.iface.type.toUpperCase() === 'DO') ||
-                                       (typeUpper === 'DO' && target.iface.type.toUpperCase() === 'DI');
-                    if (!isCompatIO) {
-                        diagnostics.push(`接口类型不兼容: ${i.type} 和 ${target.iface.type}`);
-                    }
-                }
-
-                connections.push({
-                    id: connId,
-                    kind: getInterfaceKind(i.type),
-                    interfaceType: i.type,
-                    sourceComponentId: c.id,
-                    sourceComponentName: c.alias || c.name,
-                    sourceInterfaceUuid: i.interfaceUuid,
-                    sourceInterfaceKey: i.key,
-                    targetComponentId: target.comp.id,
-                    targetComponentName: target.comp.alias || target.comp.name,
-                    targetInterfaceUuid: target.iface.interfaceUuid,
-                    targetInterfaceKey: target.iface.key,
-                    direction,
-                    diagnostics
-                });
-            });
-        });
-    });
-
-    return connections;
-};
+// Removed legacy hardcoded CATEGORY_ATTRIBUTE_TEMPLATES to enforce strict CModel Schema inheritance.

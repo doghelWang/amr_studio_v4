@@ -9,7 +9,18 @@ import uuid
 from typing import Any
 
 
-PROTOCOL_VERSION = "1.0"
+PROTOCOL_VERSION = "1.1"
+
+EVENT_TYPES = {
+    "worker.ready",
+    "task.accepted",
+    "task.resource_snapshot",
+    "task.auth.valid",
+    "task.auth.failed",
+    "task.progress",
+    "task.result",
+    "task.error",
+}
 
 
 def now_ms() -> int:
@@ -23,6 +34,8 @@ def build_envelope(
     task_id: str | None,
     payload: dict[str, Any],
 ) -> dict[str, Any]:
+    if event_type not in EVENT_TYPES:
+        raise ValueError(f"unsupported event_type: {event_type}")
     return {
         "protocol_version": PROTOCOL_VERSION,
         "event_id": str(uuid.uuid4()),
@@ -60,6 +73,8 @@ def build_request(config: dict[str, Any], mode: str, timeout_seconds: float) -> 
             "poll_interval_ms": int(runtime["poll_interval_seconds"] * 1000),
         },
         "resource_contract": config["resource_contract"],
+        "compiled_core": config["compiled_core"],
+        "license": {},
         "scenario": {
             "name": mode,
             **scenario,

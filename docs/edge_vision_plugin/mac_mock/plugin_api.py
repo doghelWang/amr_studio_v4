@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import importlib
 import json
 import queue
 import subprocess
@@ -25,10 +26,30 @@ def load_config(config_path: Path) -> dict[str, Any]:
     return json.loads(config_path.read_text(encoding="utf-8"))
 
 
+def load_host_runtime() -> Any | None:
+    try:
+        return importlib.import_module("host_runtime")
+    except ModuleNotFoundError:
+        return None
+
+
+def resolve_device_fingerprint(config: dict[str, Any]) -> str:
+    host_runtime = load_host_runtime()
+    if host_runtime is not None and hasattr(host_runtime, "get_device_fingerprint"):
+        return str(host_runtime.get_device_fingerprint())
+    return str(config["license"]["device_fingerprint"])
+
+
+def resolve_license_path(config: dict[str, Any], mode: str) -> Path:
+    scenario_paths = config["license"].get("scenario_license_paths", {})
+    candidate = scenario_paths.get(mode, config["license"]["default_license_path"])
+    return (BASE_DIR / candidate).resolve()
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="mac mock plugin api")
     parser.add_argument("--config", default=str(DEFAULT_CONFIG_PATH))
-    parser.add_argument("--mode", choices=["success", "fail", "timeout"], default="success")
+    parser.add_argument("--mode", choices=["success", "fail", "timeout", "license_invalid"], default="success")
     parser.add_argument("--timeout", type=float, default=None)
     return parser
 
@@ -44,8 +65,22 @@ def _reader_thread(stdout: Any, event_queue: queue.Queue[dict[str, Any]]) -> Non
         event_queue.put({"type": "_stream_closed"})
 
 
+def resolve_python_executable() -> str:
+    candidates = [
+        getattr(sys, "_base_executable", ""),
+        getattr(sys, "executable", ""),
+        "python3",
+    ]
+    for candidate in candidates:
+        if not candidate:
+            continue
+        if "python" in Path(candidate).name.lower():
+            return candidate
+    return "python3"
+
+
 def build_worker_command() -> list[str]:
-    return [sys.executable, str(WORKER_PATH)]
+    return [resolve_python_executable(), str(WORKER_PATH)]
 
 
 def log_event(event: dict[str, Any]) -> None:
@@ -66,6 +101,18 @@ def log_progress(event: dict[str, Any]) -> None:
     )
 
 
+def notify_host_worker_event(event: dict[str, Any]) -> None:
+    host_runtime = load_host_runtime()
+    if host_runtime is not None and hasattr(host_runtime, "notify_worker_event"):
+        host_runtime.notify_worker_event(json.dumps(event, ensure_ascii=True))
+
+
+def emit_host_callback(result: dict[str, Any]) -> None:
+    host_runtime = load_host_runtime()
+    if host_runtime is not None and hasattr(host_runtime, "notify_plugin_result"):
+        host_runtime.notify_plugin_result(json.dumps(result, ensure_ascii=True))
+
+
 def build_timeout_result(
     task: dict[str, Any],
     scenario: dict[str, Any],
@@ -74,8 +121,9 @@ def build_timeout_result(
     timeout_seconds: float,
     heartbeat_count: int,
     stderr_text: str,
+    auth_payload: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    return {
+    result = {
         "status": "timeout",
         "task_id": task["task_id"],
         "object_id": task["object_id"],
@@ -88,6 +136,9 @@ def build_timeout_result(
         "mode": mode,
         "worker_stderr": stderr_text,
     }
+    if auth_payload is not None:
+        result["license"] = auth_payload
+    return result
 
 
 def build_internal_failure_result(
@@ -99,8 +150,9 @@ def build_internal_failure_result(
     message: str,
     stderr_text: str,
     returncode: int | None,
+    auth_payload: dict[str, Any] | None,
 ) -> dict[str, Any]:
-    return {
+    result = {
         "status": "failed",
         "task_id": task["task_id"],
         "object_id": task["object_id"],
@@ -114,6 +166,9 @@ def build_internal_failure_result(
         "worker_stderr": stderr_text,
         "worker_returncode": returncode,
     }
+    if auth_payload is not None:
+        result["license"] = auth_payload
+    return result
 
 
 def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dict[str, Any]:
@@ -123,6 +178,15 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
     start = time.monotonic()
     task = config["task"]
     timeout_scenario = config["scenarios"]["timeout"]
+    auth_payload: dict[str, Any] | None = None
+
+    request["license"] = {
+        "product": config["license"]["product"],
+        "required_feature": config["license"]["required_feature"],
+        "device_fingerprint": resolve_device_fingerprint(config),
+        "license_path": str(resolve_license_path(config, mode)),
+        "algorithm_library_path": str((BASE_DIR / config["compiled_core"]["algorithm_library_path"]).resolve()),
+    }
 
     process = subprocess.Popen(
         build_worker_command(),
@@ -160,6 +224,7 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
                 timeout_seconds=timeout_seconds,
                 heartbeat_count=heartbeat_count,
                 stderr_text=stderr_text,
+                auth_payload=auth_payload,
             )
 
         try:
@@ -176,6 +241,7 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
                     message="worker exited before sending a terminal event",
                     stderr_text=stderr_text,
                     returncode=process.returncode,
+                    auth_payload=auth_payload,
                 )
             continue
 
@@ -183,10 +249,14 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
         if event_type == "task.progress":
             heartbeat_count += 1
             log_progress(event)
+            notify_host_worker_event(event)
             continue
 
-        if event_type in {"worker.ready", "task.accepted", "task.resource_snapshot"}:
+        if event_type in {"worker.ready", "task.accepted", "task.resource_snapshot", "task.auth.valid", "task.auth.failed"}:
             log_event(event)
+            notify_host_worker_event(event)
+            if event_type in {"task.auth.valid", "task.auth.failed"}:
+                auth_payload = dict(event["payload"])
             continue
 
         if event_type == "task.result":
@@ -197,6 +267,8 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
             result["request_id"] = request_id
             result["mode"] = mode
             result["worker_stderr"] = stderr_text
+            if auth_payload is not None:
+                result["license"] = auth_payload
             return result
 
         if event_type == "task.error":
@@ -207,9 +279,11 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
             result["request_id"] = request_id
             result["mode"] = mode
             result["worker_stderr"] = stderr_text
+            if auth_payload is not None:
+                result["license"] = auth_payload
             return result
 
-        if event["type"] == "_stream_closed" and process.poll() is not None:
+        if event.get("type") == "_stream_closed" and process.poll() is not None:
             stderr_text = process.stderr.read().strip() if process.stderr else ""
             return build_internal_failure_result(
                 task=task,
@@ -220,28 +294,21 @@ def run_plugin(config: dict[str, Any], mode: str, timeout_seconds: float) -> dic
                 message="worker closed its event stream unexpectedly",
                 stderr_text=stderr_text,
                 returncode=process.returncode,
+                auth_payload=auth_payload,
             )
-
-
-def emit_host_callback(result: dict[str, Any], enabled: bool) -> None:
-    if not enabled:
-        return
-
-    print(
-        f"[plugin_api] host_callback task_id={result.get('task_id')} "
-        f"status={result.get('status')}",
-        file=sys.stderr,
-        flush=True,
-    )
 
 
 def main() -> int:
     args = build_parser().parse_args()
-    config_path = Path(args.config)
-    config = load_config(config_path)
-    timeout_seconds = args.timeout or config["runtime"]["default_timeout_seconds"]
+    config = load_config(Path(args.config))
+    timeout_seconds = float(args.timeout or config["runtime"]["default_timeout_seconds"])
+    host_runtime = load_host_runtime()
+
+    if host_runtime is not None and hasattr(host_runtime, "notify_plugin_started"):
+        host_runtime.notify_plugin_started(config["task"]["task_id"], args.mode)
+
     result = run_plugin(config, args.mode, timeout_seconds)
-    emit_host_callback(result, bool(config["runtime"].get("simulate_host_callback", True)))
+    emit_host_callback(result)
     print(json.dumps(result, ensure_ascii=True))
     return 0 if result["status"] == "success" else 1
 

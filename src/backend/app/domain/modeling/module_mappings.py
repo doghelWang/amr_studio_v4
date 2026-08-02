@@ -1,0 +1,75 @@
+"""Static module mapping tables used during frontend-to-cmodel conversion."""
+
+CHASSIS_GENERAL_ATTR_TEMPLATE = {
+    "moduleName": {"key": "module_name", "type": "DATA_STRING", "desc": "模块名称", "boolParse": True},
+    "moduleDesc": {"key": "module_desc", "type": "DATA_STRING", "stringValue": "通用底盘", "desc": "模块描述", "boolParse": True},
+    "moduleUuid": {"key": "module_uuid", "type": "DATA_STRING", "desc": "模块Uuid", "boolParse": True, "boolHide": True},
+    "moduleDscType": {"key": "module_dsc_type", "type": "DATA_UINT32", "uint32Value": 0, "desc": "模块描述类型", "boolParse": True, "boolHide": True},
+    "versionInfo": {"key": "version_info", "type": "DATA_STRING", "stringValue": "1.0.0", "desc": "版本信息", "boolParse": True},
+    "module3dIcon": {"key": "module_3d_icon", "type": "DATA_STRING", "stringValue": "chassis.png", "desc": "3D图标", "boolParse": True, "boolHide": True},
+    "subSysType": {
+        "key": "sub_sys_type",
+        "type": "DATA_COMBOX",
+        "comboType": {"typeKey": "ChassisSys", "typeDesc": "底盘系统"},
+        "desc": "子系统",
+        "boolParse": True,
+    },
+    "mainModuleType": {
+        "key": "main_module_type",
+        "type": "DATA_COMBOX",
+        "comboType": {"typeKey": "chassis", "typeDesc": "底盘"},
+        "desc": "主类型",
+        "boolParse": True,
+    },
+    "subModuleType": {
+        "key": "sub_module_type",
+        "type": "DATA_COMBOX",
+        "comboType": {"typeKey": "steerChassis", "typeDesc": "舵轮底盘"},
+        "desc": "子类型",
+        "boolParse": True,
+    },
+    "moduleType": {"key": "module_type", "type": "DATA_STRING", "stringValue": "CHASSIS", "desc": "模块型号", "boolParse": True},
+    "moduleSupplier": {"key": "module_supplier", "type": "DATA_STRING", "stringValue": "Standard", "desc": "供应商", "boolParse": True},
+    "moduleWeight": {"key": "module_weight", "type": "DATA_DOUBLE", "doubleValue": 50.0, "desc": "质量(kg)", "boolParse": True},
+    "modulePower": {"key": "module_power", "type": "DATA_DOUBLE", "doubleValue": 100.0, "desc": "功率(W)", "boolParse": True},
+    "moduleShape": {
+        "key": "module_shape",
+        "shapeType": "ENUM_BOX",
+        "box": {"sizeLen": 100, "sizeWidth": 100, "sizeHeight": 100},
+        "desc": "底盘形状",
+        "boolParse": True,
+    },
+}
+
+CATEGORY_TO_TYPE_KEY = {
+    "CHASSIS": {"key": "chassis", "desc": "底盘"},
+    "DRIVEWHEEL": {"key": "driveWheel", "desc": "驱动轮"},
+    "DRIVER": {"key": "driver", "desc": "驱动器"},
+    "MOTOR": {"key": "PMSMMotor", "desc": "永磁同步电机"},
+    "MAINCPU": {"key": "mainCPU", "desc": "核心主控"},
+    "INTERGRATEDCONTROLLER": {"key": "mainCPU", "desc": "核心主控"},
+    "SENSOR": {"key": "sensor", "desc": "感知传感器"},
+    "BATTERY": {"key": "battery", "desc": "能量电池"},
+    "BUTTON": {"key": "button", "desc": "交互按钮"},
+    "LIGHT": {"key": "light", "desc": "指示灯光"},
+    "IO": {"key": "extendedlnterface", "desc": "接口扩展模块"},
+    "IO_BOARD": {"key": "extendedlnterface", "desc": "接口扩展模块"},
+    "EXTENDEDLNTERFACE": {"key": "extendedlnterface", "desc": "接口扩展模块"},
+    "EXTENDEDINTERFACE": {"key": "extendedlnterface", "desc": "接口扩展模块"},
+}
+
+CATEGORY_TO_SUBSYS = {
+    "CHASSIS": {"key": "ChassisSys", "desc": "底盘系统"},
+    "DRIVEWHEEL": {"key": "ChassisSys", "desc": "底盘系统"},
+    "DRIVER": {"key": "DriverSys", "desc": "驱动系统"},
+    "MOTOR": {"key": "DriverSys", "desc": "驱动系统"},
+    "MAINCPU": {"key": "ControlSys", "desc": "控制系统"},
+    "INTERGRATEDCONTROLLER": {"key": "ControlSys", "desc": "控制系统"},
+    "SENSOR": {"key": "SensorSys", "desc": "传感器系统"},
+    "BATTERY": {"key": "EnergySys", "desc": "能量系统"},
+    "BUTTON": {"key": "InteractiveSys", "desc": "交互系统"},
+    "LIGHT": {"key": "InteractiveSys", "desc": "交互系统"},
+    "IO": {"key": "ControlSys", "desc": "控制系统"},
+    "IO_BOARD": {"key": "ControlSys", "desc": "控制系统"},
+    "EXTENDEDLNTERFACE": {"key": "ControlSys", "desc": "控制系统"},
+}

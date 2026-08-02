@@ -94,27 +94,27 @@ export interface EngineeringConstraint {
 
 const ENGINEERING_CONSTRAINTS: Record<string, EngineeringConstraint> = {
     diffSteerWheel: {
-        hiddenComboOptions: {
-            angleSensorType: ['GROUP_CALI_INC_EXTERNAL']
-        },
         defaultOverrides: {
             angleSensorType: 'GROUP_CALI_ABS_EXTERNAL'
         },
         // Motor references are auto-bound at creation — hide from user
         visibilityOverrides: {
             relateLeftMotor: false,
-            relateRightMotor: false
+            relateRightMotor: false,
+            gearRatio: true
         }
     },
     horizontalSteerWheel: {
         defaultOverrides: {
             angleSensorType: 'GROUP_CALI_ABS_INTERNAL'
-        }
+        },
+        visibilityOverrides: { gearRatio: true }
     },
     verticalSteerWheel: {
         defaultOverrides: {
             angleSensorType: 'GROUP_CALI_ABS_INTERNAL'
-        }
+        },
+        visibilityOverrides: { gearRatio: true }
     },
   subDriver: {
     defaultOverrides: {

@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message } from 'antd';
+import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message, Select } from 'antd';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
+import { projectDriveRatio } from '../../store/domain/driveRatio';
 import { 
     ThunderboltOutlined, SettingOutlined, 
     BuildOutlined, DeploymentUnitOutlined,
@@ -30,6 +31,9 @@ export const PowerSystemStep: React.FC = () => {
         updateStructuralParam
     } = useProjectStore();
     const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
+    const [wheelChainType, setWheelChainType] = useState<'diffWheel' | 'horizontalSteerWheel' | 'verticalSteerWheel' | 'diffSteerWheel'>(
+        config.identity.driveType?.includes('STEER') ? 'horizontalSteerWheel' : 'diffWheel'
+    );
 
     // ━━━ 1. Pure Power Filter ━━━
     const powerComponents = useMemo(() => config.components.filter(c => {
@@ -59,7 +63,7 @@ export const PowerSystemStep: React.FC = () => {
         return children.map(c => ({
             title: (
                 <Space size={4}>
-                    <span style={{ fontSize: 12, fontWeight: selectedUuid === c.id ? 700 : 400 }}>{c.name}</span>
+                        <span style={{ fontSize: 12, fontWeight: selectedUuid === c.id ? 700 : 400 }}>{c.alias || c.name}</span>
                     <Tag color={ROLE_COLOR[c.category] || 'default'} bordered={false} style={{ fontSize: 8, margin: 0, padding: '0 4px' }}>
                         {c.category === 'SENSOR' ? 'ENCODER' : c.category}
                     </Tag>
@@ -76,6 +80,13 @@ export const PowerSystemStep: React.FC = () => {
     const activeComp = useMemo(() => 
         config.components.find(c => c.id === selectedUuid), 
     [config.components, selectedUuid]);
+
+    const steeringRatio = useMemo(() => {
+        if (!activeComp || activeComp.category !== 'DRIVEWHEEL' || !['horizontalSteerWheel', 'verticalSteerWheel'].includes(activeComp.type)) {
+            return null;
+        }
+        return projectDriveRatio(config, activeComp);
+    }, [activeComp, config.components]);
 
     const getWheelGroupAndKey = (componentId: string, attrKey: string) => {
         const component = useProjectStore.getState().config.components.find(c => c.id === componentId);
@@ -102,32 +113,67 @@ export const PowerSystemStep: React.FC = () => {
         }
     };
 
-    const nextPowerIndex = (category: string) =>
-        config.components.filter(c => c.category === category).length + 1;
-
     const addPowerChain = () => {
-        const isSteerDrive = config.identity.driveType?.includes('STEER');
-        const wheelType = isSteerDrive ? 'horizontalSteerWheel' : 'diffWheel';
-        const wheelId = addComponent('DRIVEWHEEL', wheelType as any);
+        const isDiffSteer = wheelChainType === 'diffSteerWheel';
+        const isSteerWheel = wheelChainType === 'horizontalSteerWheel' || wheelChainType === 'verticalSteerWheel';
+        const chainIndex = config.components.filter(c => c.category === 'DRIVEWHEEL').length + 1;
+        const chainLabel = isDiffSteer
+            ? `差速舵轮组 ${chainIndex}`
+            : isSteerWheel
+                ? `${wheelChainType === 'verticalSteerWheel' ? '立式' : '卧式'}舵轮组 ${chainIndex}`
+                : `差速驱动轮组 ${chainIndex}`;
+        const wheelId = addComponent('DRIVEWHEEL', wheelChainType as any);
         if (!wheelId) return;
 
         updateComponent(wheelId, {
-            alias: isSteerDrive ? `舵轮组 ${nextPowerIndex('DRIVEWHEEL')}` : `驱动轮 ${nextPowerIndex('DRIVEWHEEL')}`,
-            functionalRole: isSteerDrive ? 'steer' : 'walk'
+            alias: chainLabel,
+            functionalRole: isSteerWheel ? 'steer' : 'walk'
         });
 
-        if (!isSteerDrive) {
+        if (!isSteerWheel && !isDiffSteer) {
             const driverId = addComponent('DRIVER', 'subDriver');
             const motorId = addComponent('MOTOR', 'PMSMMotor');
 
             if (driverId) {
-                updateComponent(driverId, { alias: `行走驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'walk' });
+                updateComponent(driverId, { alias: `${chainLabel} - 驱动器`, functionalRole: 'walk' });
                 updateStructuralParam(driverId, { parentNodeUuid: wheelId });
             }
             if (motorId && driverId) {
-                updateComponent(motorId, { alias: `行走电机 ${nextPowerIndex('MOTOR')}`, functionalRole: 'walk' });
+                updateComponent(motorId, { alias: `${chainLabel} - 电机`, functionalRole: 'walk' });
                 updateStructuralParam(motorId, { parentNodeUuid: driverId });
                 bindWheelAttr(wheelId, 'relateMotor', motorId);
+            }
+        } else if (isDiffSteer) {
+            const leftDriverId = addComponent('DRIVER', 'subDriver');
+            const rightDriverId = addComponent('DRIVER', 'subDriver');
+            const leftMotorId = addComponent('MOTOR', 'PMSMMotor');
+            const rightMotorId = addComponent('MOTOR', 'PMSMMotor');
+
+            if (leftDriverId) {
+                updateComponent(leftDriverId, { alias: `${chainLabel} - 左驱动器`, functionalRole: 'walk_left' });
+                updateStructuralParam(leftDriverId, { parentNodeUuid: wheelId });
+            }
+            if (rightDriverId) {
+                updateComponent(rightDriverId, { alias: `${chainLabel} - 右驱动器`, functionalRole: 'walk_right' });
+                updateStructuralParam(rightDriverId, { parentNodeUuid: wheelId });
+            }
+            if (leftMotorId && leftDriverId) {
+                updateComponent(leftMotorId, { alias: `${chainLabel} - 左电机`, functionalRole: 'walk_left' });
+                updateStructuralParam(leftMotorId, { parentNodeUuid: leftDriverId });
+                bindWheelAttr(wheelId, 'relateLeftMotor', leftMotorId);
+            }
+            if (rightMotorId && rightDriverId) {
+                updateComponent(rightMotorId, { alias: `${chainLabel} - 右电机`, functionalRole: 'walk_right' });
+                updateStructuralParam(rightMotorId, { parentNodeUuid: rightDriverId });
+                bindWheelAttr(wheelId, 'relateRightMotor', rightMotorId);
+            }
+
+            // diffSteerWheel's reference schema requires an external encoder.
+            const encoderId = addComponent('SENSOR', 'absoluteValueEncode');
+            if (encoderId) {
+                updateComponent(encoderId, { alias: `${chainLabel} - 外置绝对值编码器` });
+                updateStructuralParam(encoderId, { parentNodeUuid: wheelId });
+                bindWheelAttr(wheelId, 'relatedEncode', encoderId);
             }
         } else {
             const steerDriverId = addComponent('DRIVER', 'subDriver');
@@ -136,20 +182,20 @@ export const PowerSystemStep: React.FC = () => {
             const walkMotorId = addComponent('MOTOR', 'PMSMMotor');
 
             if (steerDriverId) {
-                updateComponent(steerDriverId, { alias: `转向驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'steer' });
+                updateComponent(steerDriverId, { alias: `${chainLabel} - 转向驱动器`, functionalRole: 'steer' });
                 updateStructuralParam(steerDriverId, { parentNodeUuid: wheelId });
             }
             if (walkDriverId) {
-                updateComponent(walkDriverId, { alias: `行走驱动器 ${nextPowerIndex('DRIVER') + 1}`, functionalRole: 'walk' });
+                updateComponent(walkDriverId, { alias: `${chainLabel} - 行走驱动器`, functionalRole: 'walk' });
                 updateStructuralParam(walkDriverId, { parentNodeUuid: wheelId });
             }
             if (steerMotorId && steerDriverId) {
-                updateComponent(steerMotorId, { alias: `转向电机 ${nextPowerIndex('MOTOR')}`, functionalRole: 'steer' });
+                updateComponent(steerMotorId, { alias: `${chainLabel} - 转向电机`, functionalRole: 'steer' });
                 updateStructuralParam(steerMotorId, { parentNodeUuid: steerDriverId });
                 bindWheelAttr(wheelId, 'relateRotMotor', steerMotorId);
             }
             if (walkMotorId && walkDriverId) {
-                updateComponent(walkMotorId, { alias: `行走电机 ${nextPowerIndex('MOTOR') + 1}`, functionalRole: 'walk' });
+                updateComponent(walkMotorId, { alias: `${chainLabel} - 行走电机`, functionalRole: 'walk' });
                 updateStructuralParam(walkMotorId, { parentNodeUuid: walkDriverId });
                 bindWheelAttr(wheelId, 'relateWalkMotor', walkMotorId);
             }
@@ -169,9 +215,13 @@ export const PowerSystemStep: React.FC = () => {
             return;
         }
 
-        const encoderId = addComponent('SENSOR', 'incrementalEncode' as any);
+        const encoderId = addComponent('SENSOR', 'absoluteValueEncode' as any);
         if (!encoderId) return;
+        updateComponent(encoderId, { alias: `${selectedWheel.alias || selectedWheel.name} - 外置绝对值编码器` });
         updateStructuralParam(encoderId, { parentNodeUuid: selectedWheel.id });
+        if (selectedWheel.type === 'diffSteerWheel') {
+            bindWheelAttr(selectedWheel.id, 'relatedEncode', encoderId);
+        }
         setSelectedUuid(encoderId);
         setActiveComponent(encoderId);
         void message.success('已新增编码器并挂载到当前轮组');
@@ -211,6 +261,18 @@ export const PowerSystemStep: React.FC = () => {
                     title={<span style={{ color: 'var(--accent)' }}><ClusterOutlined /> 动力拓扑架构 (轮-驱-电)</span>}
                 >
                     <Space style={{ marginBottom: 12 }} wrap>
+                        <Select
+                            size="small"
+                            value={wheelChainType}
+                            style={{ minWidth: 190 }}
+                            onChange={value => setWheelChainType(value)}
+                            options={[
+                                { label: '卧式舵轮', value: 'horizontalSteerWheel' },
+                                { label: '立式舵轮', value: 'verticalSteerWheel' },
+                                { label: '差速舵轮（必须外置编码器）', value: 'diffSteerWheel' },
+                                { label: '差速驱动轮', value: 'diffWheel' }
+                            ]}
+                        />
                         <Button
                             type="primary"
                             size="small"
@@ -265,24 +327,35 @@ export const PowerSystemStep: React.FC = () => {
             {/* Right: Full Property Editor (Attributes, Interfaces, Coords) */}
             <Col span={16}>
                 {activeComp ? (
-                    <ComponentPropertyPanel 
-                        component={activeComp}
-                        onAttributeChange={(groupId, attrKey, val, subKey) => {
-                            updateAttribute(activeComp.id, groupId, attrKey, val, subKey);
-                        }}
-                        onAttributeChangeSync={syncWheelAttributes}
-                        onInterfaceChange={(ifaceUuid, data) => {
-                            const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, ...data } : i);
-                            updateComponent(activeComp.id, { interfaces: updated });
-                        }}
-                        onInterfaceParamChange={(ifaceUuid, params) => {
-                            const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, interfaceParams: params } : i);
-                            updateComponent(activeComp.id, { interfaces: updated });
-                        }}
-                        onStructuralChange={(data) => {
-                            updateComponent(activeComp.id, data);
-                        }}
-                    />
+                    <>
+                        {steeringRatio && (
+                            <Card size="small" title="转向速比（齿轮比 × 减速比）" style={{ marginBottom: 12 }}>
+                                <Space size={18} wrap>
+                                    <Text>转向齿轮比：{steeringRatio.steeringGearRatio ?? '未配置'}</Text>
+                                    <Text>转向电机减速比：{steeringRatio.motorReductionRatio ?? '未配置'}</Text>
+                                    <Text strong>转向总速比：{steeringRatio.totalSteeringRatio ?? '未配置'}</Text>
+                                </Space>
+                            </Card>
+                        )}
+                        <ComponentPropertyPanel
+                            component={activeComp}
+                            onAttributeChange={(groupId, attrKey, val, subKey) => {
+                                updateAttribute(activeComp.id, groupId, attrKey, val, subKey);
+                            }}
+                            onAttributeChangeSync={syncWheelAttributes}
+                            onInterfaceChange={(ifaceUuid, data) => {
+                                const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, ...data } : i);
+                                updateComponent(activeComp.id, { interfaces: updated });
+                            }}
+                            onInterfaceParamChange={(ifaceUuid, params) => {
+                                const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, interfaceParams: params } : i);
+                                updateComponent(activeComp.id, { interfaces: updated });
+                            }}
+                            onStructuralChange={(data) => {
+                                updateComponent(activeComp.id, data);
+                            }}
+                        />
+                    </>
                 ) : (
                     <Card className="smart-card" variant="borderless" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Empty description="请在左侧选择动力节点进行配置" image={Empty.PRESENTED_IMAGE_SIMPLE} />

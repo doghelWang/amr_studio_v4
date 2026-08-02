@@ -34,6 +34,19 @@
     "object_type": "box",
     "multi_frame_count": 5
   },
+  "license": {
+    "product": "edge_vision_plugin",
+    "required_feature": "algo_basic",
+    "device_fingerprint": "MOCK-RK3588-EDGE-0001",
+    "auth_library_path": "./native/build/libauth_core.dylib",
+    "default_license_path": "./licenses/license_valid.json",
+    "scenario_license_paths": {
+      "license_invalid": "./licenses/license_invalid.json"
+    }
+  },
+  "compiled_core": {
+    "algorithm_library_path": "./native/build/libalgo_core.dylib"
+  },
   "scenarios": {
     "success": {
       "work_duration_seconds": 3,
@@ -55,6 +68,11 @@
       "work_duration_seconds": 8,
       "error_code": "E4001",
       "message": "worker exceeded the timeout budget"
+    },
+    "license_invalid": {
+      "work_duration_seconds": 1,
+      "error_code": "E1002",
+      "message": "license validation failed"
     }
   }
 }

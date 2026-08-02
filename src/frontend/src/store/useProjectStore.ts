@@ -18,6 +18,7 @@ import {
 } from '../services/api_v2';
 
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+import { getConnectionMultiplicity, findInterfaceRef, validateInterfaceConnection } from './domain/electrical';
 
 const createDefaultIdentity = (): RobotIdentity => ({
   robotName: '',
@@ -77,8 +78,7 @@ const createDefaultProjectConfig = (): RobotConfig => {
   return syncChassisAttributes({
     identity,
     components: [createDefaultChassis(identity)],
-    abilities: abilityRegistry as any,
-    functions: { version: 'V1.0', function: [] }
+    abilities: abilityRegistry as any
   });
 };
 
@@ -256,6 +256,18 @@ const updateNestedAttributeValue = (
   subKey?: string
 ): any => {
   if (attribute.key === attrKey) {
+    if (!subKey && (attribute.comboType?.typeGroups || attribute.combo_type?.type_groups)) {
+      return {
+        ...attribute,
+        value,
+        ...(attribute.comboType ? {
+          comboType: { ...attribute.comboType, typeKey: value }
+        } : {}),
+        ...(attribute.combo_type ? {
+          combo_type: { ...attribute.combo_type, type_key: value }
+        } : {})
+      };
+    }
     if (subKey && attribute.comboType?.typeGroups) {
       return {
         ...attribute,
@@ -317,6 +329,9 @@ interface ProjectState {
 
   // --- Interfaces & Topology ---
   linkInterface: (sourceUuid: string, sourceIfaceUuid: string, targetIfaceUuid: string | null) => void;
+  createConnection: (sourceComponentId: string, sourceIfaceUuid: string, targetComponentId: string, targetIfaceUuid: string) => { ok: boolean; message?: string };
+  removeConnection: (sourceIfaceUuid: string, targetIfaceUuid: string) => void;
+  materializeConnectionsToInterfaces: () => ComponentConfig[];
   updateInterfaceParams: (componentId: string, interfaceUuid: string, params: Record<string, any>) => void;
 
   // --- Attributes ---
@@ -429,7 +444,10 @@ export const useProjectStore = create<ProjectState>()(
           }));
 
           // Map based on categories natively mapped from SchemaEngine
-          if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(category as string)) {
+          // Build every schema-backed module from the same source of truth.
+          // SENSOR was previously omitted, leaving newly created encoders with
+          // an empty privateAttrs array even though their schemas are present.
+          if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR', 'SENSOR'].includes(category as string)) {
             let subType = type;
             // [FIX 2026-04-04] Proper subType selection based on category
             if ((category as string) === 'CHASSIS') {
@@ -564,22 +582,108 @@ export const useProjectStore = create<ProjectState>()(
 
         setActiveComponent: (id) => set({ activeComponentId: id }),
 
-        linkInterface: (sourceUuid, sourceIfaceUuid, targetIfaceUuid) => set((state) => ({
+        createConnection: (sourceComponentId, sourceIfaceUuid, targetComponentId, targetIfaceUuid) => {
+          const state = get();
+          const source = findInterfaceRef(state.config.components, sourceIfaceUuid);
+          const target = findInterfaceRef(state.config.components, targetIfaceUuid);
+
+          if (!source || source.component.id !== sourceComponentId) {
+            return { ok: false, message: '源接口不存在或不属于所选组件。' };
+          }
+          if (!target || target.component.id !== targetComponentId) {
+            return { ok: false, message: '目标接口不存在或不属于所选组件。' };
+          }
+
+          const diagnostics = validateInterfaceConnection(source, target);
+          const blocking = diagnostics.find(diagnostic => diagnostic.severity === 'error');
+          if (blocking) {
+            return { ok: false, message: blocking.message };
+          }
+
+          const isInterfaceOccupied = (interfaceUuid: string) => state.config.components.some(component =>
+            component.interfaces.some(iface =>
+              (iface.interfaceUuid === interfaceUuid && (iface.linkedInterfaceUuid || []).length > 0) ||
+              (iface.linkedInterfaceUuid || []).includes(interfaceUuid)
+            )
+          );
+          if (getConnectionMultiplicity(source.iface.type) === 'point_to_point' && isInterfaceOccupied(sourceIfaceUuid)) {
+            return { ok: false, message: '源接口是点对点接口，已存在连接。' };
+          }
+          if (getConnectionMultiplicity(target.iface.type) === 'point_to_point' && isInterfaceOccupied(targetIfaceUuid)) {
+            return { ok: false, message: '目标接口是点对点接口，已存在连接。' };
+          }
+
+          set((current) => ({
+            config: {
+              ...current.config,
+              components: current.config.components.map(component => {
+                if (component.id !== sourceComponentId) return component;
+                return {
+                  ...component,
+                  interfaces: component.interfaces.map(iface => {
+                    if (iface.interfaceUuid !== sourceIfaceUuid) return iface;
+                    const existing = iface.linkedInterfaceUuid || [];
+                    return existing.includes(targetIfaceUuid)
+                      ? iface
+                      : { ...iface, linkedInterfaceUuid: [...existing, targetIfaceUuid] };
+                  })
+                };
+              })
+            },
+            isDirty: true
+          }));
+
+          return { ok: true };
+        },
+
+        removeConnection: (sourceIfaceUuid, targetIfaceUuid) => set((state) => ({
           config: {
             ...state.config,
-            components: state.config.components.map(c => {
-              if (c.id !== sourceUuid) return c;
-              return {
-                ...c,
-                interfaces: c.interfaces.map(i => i.interfaceUuid === sourceIfaceUuid
-                  ? { ...i, linkedInterfaceUuid: targetIfaceUuid ? [targetIfaceUuid] : [] }
-                  : i
-                )
-              };
-            })
+            components: state.config.components.map(component => ({
+              ...component,
+              interfaces: component.interfaces.map(iface => {
+                const linked = iface.linkedInterfaceUuid || [];
+                if (iface.interfaceUuid === sourceIfaceUuid || iface.interfaceUuid === targetIfaceUuid || linked.includes(sourceIfaceUuid) || linked.includes(targetIfaceUuid)) {
+                  return {
+                    ...iface,
+                    linkedInterfaceUuid: linked.filter(uuid => uuid !== sourceIfaceUuid && uuid !== targetIfaceUuid)
+                  };
+                }
+                return iface;
+              })
+            }))
           },
           isDirty: true
         })),
+
+        materializeConnectionsToInterfaces: () => get().config.components,
+
+        linkInterface: (sourceUuid, sourceIfaceUuid, targetIfaceUuid) => {
+          if (!targetIfaceUuid) {
+            get().removeConnection(sourceIfaceUuid, '');
+            set((state) => ({
+              config: {
+                ...state.config,
+                components: state.config.components.map(c => {
+                  if (c.id !== sourceUuid) return c;
+                  return {
+                    ...c,
+                    interfaces: c.interfaces.map(i => i.interfaceUuid === sourceIfaceUuid
+                      ? { ...i, linkedInterfaceUuid: [] }
+                      : i
+                    )
+                  };
+                })
+              },
+              isDirty: true
+            }));
+            return;
+          }
+
+          const target = findInterfaceRef(get().config.components, targetIfaceUuid);
+          if (!target) return;
+          get().createConnection(sourceUuid, sourceIfaceUuid, target.component.id, targetIfaceUuid);
+        },
 
         updateInterfaceParams: (componentId, interfaceUuid, params) => set((state) => ({
           config: {
@@ -603,9 +707,13 @@ export const useProjectStore = create<ProjectState>()(
             ...state.config,
             components: state.config.components.map(c => {
               if (c.id !== componentId) return c;
+              const hasElements = c.privateAttrs.some(group => group.elements.length > 0);
+              const sourceAttrs = hasElements
+                ? c.privateAttrs
+                : buildAttributesFromSchema(c.type || c.subModuleTypeKey || '');
               return {
                 ...c,
-                privateAttrs: c.privateAttrs.map(g => {
+                privateAttrs: sourceAttrs.map(g => {
                   if (g.key !== groupKey) return g;
                   return {
                     ...g,
