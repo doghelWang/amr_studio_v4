@@ -20,6 +20,10 @@
   ],
   "routes": [
     {
+      "pattern": "cloud-ai.work/api/v1/*",
+      "zone_name": "cloud-ai.work"
+    },
+    {
       "pattern": "cloud-ai.work/*",
       "zone_name": "cloud-ai.work"
     }

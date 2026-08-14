@@ -24,6 +24,7 @@ const MIGRATED_ENDPOINTS = [
   "GET /api/v1/models/{project_id}/functions",
   "POST /api/v1/models/upload",
   "POST /api/v1/models/{project_id}/compile",
+  "GET /api/v1/models/{project_id}/artifacts/{artifact}",
   "GET /downloads/{project_id}/{artifact}",
 ];
 
@@ -1507,13 +1508,16 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
     status: "success",
     project_id: projectId,
     runtime: "cloudflare-worker-typescript",
-    download_url: `/downloads/${projectId}/${artifactName}`,
+    // Keep the artifact under /api/v1 so the AMR-specific route wins over
+    // the shared /downloads/* route owned by another Worker.
+    download_url: `/api/v1/models/${projectId}/artifacts/${artifactName}`,
     audit,
   });
 }
 
 async function downloadArtifact(env: Env, pathname: string): Promise<Response | null> {
-  const match = pathname.match(/^\/downloads\/([^/]+)\/([^/]+)$/);
+  const match = pathname.match(/^\/downloads\/([^/]+)\/([^/]+)$/)
+    || pathname.match(/^\/api\/v1\/models\/([^/]+)\/artifacts\/([^/]+)$/);
   if (!match) {
     return null;
   }
@@ -1542,6 +1546,11 @@ async function handleApi(request: Request, env: Env): Promise<Response> {
 
   if (method === "OPTIONS") {
     return optionsResponse();
+  }
+
+  const apiArtifactResponse = await downloadArtifact(env, pathname);
+  if (apiArtifactResponse) {
+    return apiArtifactResponse;
   }
 
   if (method === "GET" && pathname === "/api/v1/system/version") {
