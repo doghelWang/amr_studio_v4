@@ -361,6 +361,7 @@ interface ProjectState {
   // --- Schema Registry (Dynamic XML Metadata) ---
   schemaRegistry: Record<string, any>;
   boardInterfaces: Record<string, InterfaceConfig[]>;
+  schemaRegistrySource: 'api' | 'static-snapshot' | 'unknown';
   fetchSchemas: () => Promise<void>;
 }
 
@@ -375,6 +376,7 @@ export const useProjectStore = create<ProjectState>()(
         isDirty: false,
         schemaRegistry: {},
         boardInterfaces: {},
+        schemaRegistrySource: 'unknown',
 
         fetchSchemas: async () => {
           try {
@@ -385,10 +387,28 @@ export const useProjectStore = create<ProjectState>()(
             const { registry, boardInterfaces, ...rootRegistry } = data || {};
             set({ 
               schemaRegistry: registry || rootRegistry || {}, 
-              boardInterfaces: boardInterfaces || {}
+              boardInterfaces: boardInterfaces || {},
+              schemaRegistrySource: 'api',
             });
           } catch (e) {
-            console.error('Failed to fetch schemas:', e);
+            // The production domain may temporarily route /api to another
+            // Worker. Use the repository's generated, authoritative asset
+            // snapshot for validation, while preserving the API as primary.
+            try {
+              const response = await fetch('/worker-data/schemas.json');
+              if (!response.ok) throw new Error(`static snapshot HTTP ${response.status}`);
+              const data = await response.json();
+              const { registry, boardInterfaces, ...rootRegistry } = data || {};
+              set({
+                schemaRegistry: registry || rootRegistry || {},
+                boardInterfaces: boardInterfaces || {},
+                schemaRegistrySource: 'static-snapshot',
+              });
+              console.warn('Schema API unavailable; using generated static snapshot for validation.', e);
+            } catch (fallbackError) {
+              set({ schemaRegistrySource: 'unknown' });
+              console.error('Failed to fetch schemas and static snapshot:', { apiError: e, fallbackError });
+            }
           }
         },
 

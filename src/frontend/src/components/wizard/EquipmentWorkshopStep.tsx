@@ -94,7 +94,7 @@ const connectionCount = (component: ComponentConfig) => component.interfaces.red
 
 export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => {
   const {
-    config, schemaRegistry, activeComponentId, setActiveComponent, addComponentFromConfig,
+    config, schemaRegistry, schemaRegistrySource, activeComponentId, setActiveComponent, addComponentFromConfig,
     updateStructuralParam, createConnection, fetchSchemas,
   } = useProjectStore();
   const [messageApi, messageContextHolder] = message.useMessage();
@@ -271,6 +271,7 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
 
         <Col xs={24} lg={8}>
           <Card title={<Space><ExperimentOutlined />模块库 · {FUNCTION_GROUPS.find(group => group.key === groupKey)?.label}</Space>} className="workshop-card catalog-card">
+            {catalog.length > 0 && <Alert banner type={schemaRegistrySource === 'static-snapshot' ? 'warning' : 'success'} showIcon message={schemaRegistrySource === 'static-snapshot' ? '当前使用项目生成的模块快照进行验证；线上 API 路由恢复后会自动优先使用 API。' : '当前使用在线模块注册表。'} />}
             {visibleCatalog.length === 0 ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={catalog.length === 0 ? <Space direction="vertical"><span>schemaRegistry 尚未加载，无法安全展示模块</span><Button size="small" icon={<ApiOutlined />} onClick={() => fetchSchemas()}>重新加载模块库</Button></Space> : '当前功能组没有可用模块'} /> : <List dataSource={visibleCatalog.slice(0, 30)} renderItem={item => <List.Item className={selectedCatalogId === item.id ? 'catalog-selected' : ''} onClick={() => setSelectedCatalogId(item.id)} actions={[<Button key="install" type={selectedCatalogId === item.id ? 'primary' : 'default'} size="small" icon={<PlusOutlined />} onClick={() => setSelectedCatalogId(item.id)}>选择</Button>]}> 
               <List.Item.Meta title={item.title || 'unknown'} description={<Space size={4}><Tag>{getCategoryLabel(item.category)}</Tag><Text type="secondary">{item.type || 'unknown'}</Text></Space>} />
             </List.Item>} />}
