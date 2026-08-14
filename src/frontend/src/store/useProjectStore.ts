@@ -379,9 +379,13 @@ export const useProjectStore = create<ProjectState>()(
         fetchSchemas: async () => {
           try {
             const data = await apiFetchSchemas();
+            // The Python API currently returns the system-grouped registry at
+            // the response root, while some deployments wrap it in `registry`.
+            // Accept both envelopes without inventing or rewriting schema data.
+            const { registry, boardInterfaces, ...rootRegistry } = data || {};
             set({ 
-              schemaRegistry: data.registry || {}, 
-              boardInterfaces: data.boardInterfaces || {} 
+              schemaRegistry: registry || rootRegistry || {}, 
+              boardInterfaces: boardInterfaces || {}
             });
           } catch (e) {
             console.error('Failed to fetch schemas:', e);

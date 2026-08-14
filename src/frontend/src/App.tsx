@@ -11,7 +11,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { message } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
-    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined,
+    ThunderboltOutlined, AuditOutlined,
 } from '@ant-design/icons';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
@@ -32,9 +32,7 @@ import {
 
 import { IdentityStep } from './components/wizard/IdentityStep';
 import { ChassisStep } from './components/wizard/ChassisStep';
-import { ComponentLibraryStep } from './components/wizard/ComponentLibraryStep';
-import { MountingStep } from './components/wizard/MountingStep';
-import { WiringStep } from './components/wizard/WiringStep';
+import { EquipmentWorkshopStep } from './components/wizard/EquipmentWorkshopStep';
 import { AbilityStep } from './components/wizard/AbilityStep';
 import { AuditStep } from './components/wizard/AuditStep';
 
@@ -47,16 +45,14 @@ import { getBackendBase, subscribeBackendBaseChange } from './services/backendCo
 const STEPS = [
     { key: 'identity',   label: '身份信息',  icon: <RobotOutlined />,        desc: '机器人元数据' },
     { key: 'chassis',    label: '底盘与动力', icon: <BuildOutlined />,        desc: '尺寸 & 动力' },
-    { key: 'components', label: '电气装配',  icon: <AppstoreOutlined />,     desc: '核心 & 感知' },
-    { key: 'mounting',   label: '安装坐标',  icon: <AimOutlined />,          desc: '6-DOF 位姿' },
-    { key: 'wiring',     label: '接口连线',  icon: <ApiOutlined />,          desc: '通信连接' },
+    { key: 'assembly',   label: '装备工坊',  icon: <AppstoreOutlined />,     desc: '装配 & 连线' },
     { key: 'abilities',  label: '功能映射',  icon: <ThunderboltOutlined />,  desc: '能力配置' },
     { key: 'audit',      label: '审计导出',  icon: <AuditOutlined />,        desc: '校验 & 导出' },
 ];
 
 const STEP_COMPONENTS = [
-    IdentityStep, ChassisStep, ComponentLibraryStep,
-    MountingStep, WiringStep, AbilityStep, AuditStep,
+    IdentityStep, ChassisStep, EquipmentWorkshopStep,
+    AbilityStep, AuditStep,
 ];
 
 export default function App() {

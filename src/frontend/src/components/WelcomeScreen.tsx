@@ -132,7 +132,7 @@ export const WelcomeScreen: React.FC<Props> = ({
 
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             {[
-              '7-step guided build',
+              '5-stage guided build',
               'Schema-safe editing',
               'Cloud compile pipeline',
               'Import / round-trip ready'
