@@ -815,8 +815,21 @@ export const useProjectStore = create<ProjectState>()(
           try {
             return await apiListSavedProjects();
           } catch (e) {
-            console.error('List projects failed:', e);
-            return [];
+            // Keep the welcome page useful when the production API route is
+            // unavailable. These are read-only repository-generated samples,
+            // not a claim that the remote KV project list is reachable.
+            try {
+              const response = await fetch('/worker-data/user-saves-index.json');
+              if (!response.ok) throw new Error(`static project index HTTP ${response.status}`);
+              const projects = await response.json();
+              console.warn('Project API unavailable; showing static project snapshots for validation.', e);
+              return Array.isArray(projects)
+                ? projects.map(project => ({ ...project, source: 'static-snapshot' }))
+                : [];
+            } catch (fallbackError) {
+              console.error('List projects and static project snapshot failed:', { apiError: e, fallbackError });
+              return [];
+            }
           }
         },
 
@@ -829,8 +842,17 @@ export const useProjectStore = create<ProjectState>()(
             }
             return false;
           } catch (e) {
-            console.error('Load project failed:', e);
-            return false;
+            try {
+              const response = await fetch(`/worker-data/user-saves/${encodeURIComponent(name)}.json`);
+              if (!response.ok) throw new Error(`static project HTTP ${response.status}`);
+              const config = await response.json();
+              get().loadProject(config);
+              console.warn(`Project API unavailable; loaded static snapshot: ${name}`, e);
+              return true;
+            } catch (fallbackError) {
+              console.error('Load project and static snapshot failed:', { apiError: e, fallbackError });
+              return false;
+            }
           }
         },
 

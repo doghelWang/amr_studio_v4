@@ -264,6 +264,7 @@ export const WelcomeScreen: React.FC<Props> = ({
                         </div>
                         <div style={{ color: 'var(--text-muted)', fontSize: 10 }}>
                           {new Date(item.mtime * 1000).toLocaleString()}
+                          {item.source === 'static-snapshot' && ' · 只读验证快照'}
                         </div>
                       </div>
                       <ArrowRightOutlined className="item-arrow" style={{ fontSize: 12, opacity: 0 }} />

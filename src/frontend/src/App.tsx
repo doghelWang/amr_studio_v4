@@ -73,7 +73,10 @@ export default function App() {
             const res = await axios.get(`${activeBackend}/api/v1/system/version`);
             setBackendStatus(res.data);
         } catch (err) {
-            console.error("Failed to fetch backend status", err);
+            // A shared production route may currently serve another Worker.
+            // Keep the indicator truthful without flooding the console; API
+            // dependent actions still report their own failures explicitly.
+            console.warn("Backend status unavailable; continuing in frontend/static validation mode.", err);
             setBackendStatus(null);
         }
     }, []);
