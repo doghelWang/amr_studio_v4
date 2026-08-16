@@ -60,6 +60,11 @@ def main():
     parser.add_argument("--backend-port", type=int, default=8002, help="Backend port (default: 8002)")
     parser.add_argument("--frontend-port", type=int, default=3001, help="Frontend port (default: 3001)")
     parser.add_argument(
+        "--open-browser",
+        action="store_true",
+        help="Open the frontend URL after both health checks pass",
+    )
+    parser.add_argument(
         "--backend-runtime",
         choices=["python", "ts"],
         default=os.environ.get("AMR_BACKEND_RUNTIME", "python"),
@@ -114,22 +119,35 @@ def main():
     print(f"🚀 Launching Frontend on {args.host}:{args.frontend_port}...")
     frontend_log = open(frontend_dir / "frontend_runtime.log", "a")
     
-    # Use direct vite binary to avoid npm wrapper issues
-    vite_bin = frontend_dir / "node_modules" / ".bin" / "vite"
-    if not vite_bin.exists():
-        vite_bin = "npx vite" # Fallback
-    
     f_env = os.environ.copy()
     f_env["CI"] = "true"
-    
+
     is_win = platform.system() == "Windows"
+    npm_exe = shutil.which("npm.cmd" if is_win else "npm")
+    if not npm_exe:
+        print("🚨 CRITICAL: Node.js and npm are required to launch the frontend.")
+        backend_proc.terminate()
+        sys.exit(1)
+
+    frontend_args = [
+        npm_exe,
+        "run",
+        "dev",
+        "--",
+        "--host",
+        args.host,
+        "--port",
+        str(args.frontend_port),
+        "--no-open",
+    ]
+    frontend_command = subprocess.list2cmdline(frontend_args) if is_win else frontend_args
     frontend_proc = subprocess.Popen(
-        f"{vite_bin} --host {args.host} --port {args.frontend_port} --no-open",
+        frontend_command,
         cwd=str(frontend_dir),
         env=f_env,
         stdout=frontend_log,
         stderr=frontend_log,
-        shell=True,
+        shell=is_win,
         preexec_fn=os.setsid if not is_win else None
     )
 
@@ -158,6 +176,10 @@ def main():
         print(f"Frontend: http://localhost:{args.frontend_port}")
         print(f"Backend:  http://localhost:{args.backend_port}")
         print(f"Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        if args.open_browser:
+            import webbrowser
+
+            webbrowser.open(f"http://127.0.0.1:{args.frontend_port}")
     else:
         print("\n🚨 CRITICAL: Service stability check failed.")
         sys.exit(1)
