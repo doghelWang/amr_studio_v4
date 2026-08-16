@@ -356,6 +356,9 @@ export interface ValidationIssue {
     severity: 'ERROR' | 'WARNING';
     message: string;
     nodeId?: string;
+    interfaceUuid?: string;
+    connectionId?: string;
+    source?: string;
 }
 
 export interface Diagnostic {

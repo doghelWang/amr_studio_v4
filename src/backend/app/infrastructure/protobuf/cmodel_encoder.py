@@ -22,6 +22,9 @@ ABI_TYPE_STRING_TO_INT = {
     "FLOAT_E": 9, "DOUBLE_E": 10, "FIXED_E": 11, "DATA_COMBOX_E": 12,
     # Backward-compatibility for pre-fix JSON payloads still stored on disk.
     "DATA_FIXED_E": 11, "DATA_COMBOX": 12,
+    # COMMON_ATTR_TYPE aliases used by the frontend ability editor. These
+    # are distinct from MESSAGE_ATTRIBUTE_TYPE but share the JSON key `type`.
+    "COMBOX": 0, "COMBOX_E": 0, "ARRAY": 1, "ARRAY_E": 1,
 }
 
 ABI_DESC_TYPE_STRING_TO_INT = {
@@ -29,6 +32,7 @@ ABI_DESC_TYPE_STRING_TO_INT = {
     "INT32_E": 5, "UINT32_E": 6, "INT64_E": 7, "UINT64_E": 8,
     "FLOAT_E": 9, "DOUBLE_E": 10, "FIXED_E": 11, "DATA_COMBOX_E": 12,
     "DATA_FIXED_E": 11, "DATA_COMBOX": 12,
+    "COMBOX": 0, "COMBOX_E": 0, "ARRAY": 1, "ARRAY_E": 1,
 }
 
 # Domain metadata used by the UI/CSV views, but not declared by the current
@@ -135,7 +139,10 @@ def proto_final_sync(data, type_mapping=COMP_DESC_TYPE_STRING_TO_INT, strict=Fal
             "doubleMinvalue": "double_minvalue"
         }
         for k, v in data.items():
-            if k == "type" and isinstance(v, str) and v.startswith(("DATA_", "STRING_", "BOOL_", "INT", "UINT", "FLOAT_", "DOUBLE_", "FIXED_", "BYTES_", "IP_")):
+            if k == "type" and isinstance(v, str) and (
+                v.startswith(("DATA_", "STRING_", "BOOL_", "INT", "UINT", "FLOAT_", "DOUBLE_", "FIXED_", "BYTES_", "IP_"))
+                or v in type_mapping
+            ):
                 if v not in type_mapping:
                     if strict:
                         raise ValueError(f"Unknown protobuf enum value: {v}")

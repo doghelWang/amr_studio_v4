@@ -48,6 +48,7 @@ type SandboxRecord = {
   abilities: unknown;
   functions: unknown;
   rawFuncDesc?: unknown;
+  rawModelFileDesc?: unknown;
   fullJson?: unknown;
   importAudit?: string[];
   createdAt: string;
@@ -384,12 +385,68 @@ function extractFunctions(config: Record<string, unknown>): unknown {
   return {};
 }
 
+const ABI_ATTRIBUTE_TYPE_MAP: Record<string, string> = {
+  DATA_BYTES: "BYTES_E",
+  DATA_STRING: "STRING_E",
+  DATA_IP: "IP_E",
+  DATA_BOOL: "BOOL_E",
+  DATA_INT32: "INT32_E",
+  DATA_UINT32: "UINT32_E",
+  DATA_INT64: "INT64_E",
+  DATA_UINT64: "UINT64_E",
+  DATA_FLOAT: "FLOAT_E",
+  DATA_DOUBLE: "DOUBLE_E",
+  DATA_FIXED_E: "FIXED_E",
+  DATA_COMBOX: "DATA_COMBOX_E",
+};
+
+function mapAbilityArrayParam(arrayInput: unknown): Record<string, unknown> | undefined {
+  const arrayParam = asRecord(arrayInput);
+  if (!Object.keys(arrayParam).length) return undefined;
+  return {
+    groupKey: getString(arrayParam, "groupKey"),
+    groupName: getString(arrayParam, "groupName"),
+    attrParams: (Array.isArray(arrayParam.attrParams) ? arrayParam.attrParams : []).map((item) => mapAttributeToCmodel(item, true)),
+  };
+}
+
+function mapAbilityComboParam(attribute: Record<string, unknown>): Record<string, unknown> | undefined {
+  const combo = asRecord(attribute.comboxParam ?? attribute.combox_param);
+  if (!Object.keys(combo).length) return undefined;
+  const options = Array.isArray(combo.options) ? combo.options : [];
+  return {
+    key: getString(combo, "key"),
+    desc: getString(combo, "desc"),
+    tips: getString(combo, "tips"),
+    comboxSource: getString(combo, "comboxSource", "CUSTOM_E"),
+    customCombox: {
+      element: options.map((optionInput) => {
+        const option = asRecord(optionInput);
+        const attrs = Array.isArray(option.arrayAttr) ? option.arrayAttr : [];
+        return {
+          key: getString(option, "key"),
+          desc: getString(option, "desc"),
+          arrayAttr: attrs.length ? [{
+            groupKey: getString(attribute, "key"),
+            groupName: getString(combo, "desc"),
+            attrParams: attrs.map((item) => mapAttributeToCmodel(item, true)),
+          }] : [],
+          comboxAttr: [],
+        };
+      }),
+      defaultSelect: getString(combo, "value"),
+    },
+  };
+}
+
 function mapAttributeToCmodel(attributeInput: unknown, isAbility = false): Record<string, unknown> {
   const attribute = asRecord(attributeInput);
-  let attrType = getString(attribute, "type");
+  const rawType = getString(attribute, "type");
+  let attrType = rawType;
   if (isAbility) {
-    if (attrType === "DATA_FIXED_E") attrType = "FIXED_E";
-    if (attrType === "DATA_COMBOX") attrType = "DATA_COMBOX_E";
+    if (rawType === "ARRAY" || rawType === "ARRAY_E") attrType = "ARRAY_E";
+    else if (rawType === "COMBOX" || rawType === "COMBOX_E") attrType = "COMBOX_E";
+    else attrType = ABI_ATTRIBUTE_TYPE_MAP[rawType] || rawType;
   }
 
   const base: Record<string, unknown> = {};
@@ -402,19 +459,30 @@ function mapAttributeToCmodel(attributeInput: unknown, isAbility = false): Recor
   }
   if (attribute.fixedSource !== undefined) base.fixedSource = attribute.fixedSource;
 
+  if (isAbility && (rawType === "ARRAY" || rawType === "ARRAY_E")) {
+    const arrayParam = mapAbilityArrayParam(attribute.arrayParam ?? attribute.array_param);
+    if (arrayParam) base.arrayParam = arrayParam;
+    return base;
+  }
+  if (isAbility && (rawType === "COMBOX" || rawType === "COMBOX_E")) {
+    const comboParam = mapAbilityComboParam(attribute);
+    if (comboParam) base.comboxParam = comboParam;
+    return base;
+  }
+
   const value = attribute.value;
   if (value !== undefined && value !== null) {
-    if (attrType === "DATA_DOUBLE") base.doubleValue = Number(value);
-    else if (attrType === "DATA_FLOAT") base.floatValue = Number(value);
-    else if (attrType === "DATA_INT32") base.int32Value = Math.trunc(Number(value));
-    else if (attrType === "DATA_UINT32") base.uint32Value = Math.trunc(Number(value));
-    else if (attrType === "DATA_INT64") base.int64Value = String(value);
-    else if (attrType === "DATA_UINT64") base.uint64Value = String(value);
-    else if (attrType === "DATA_BOOL") base.boolValue = Boolean(value);
-    else if (attrType === "DATA_STRING" || attrType === "FIXED_E") base.stringValue = String(value);
-    else if (attrType === "DATA_FIXED_E") base.stringFix = String(value);
-    else if (attrType === "DATA_IP") base.ipValue = String(value);
-    else if (attrType === "DATA_BYTES") base.bytesValue = value;
+    if (rawType === "DATA_DOUBLE") base.doubleValue = Number(value);
+    else if (rawType === "DATA_FLOAT") base.floatValue = Number(value);
+    else if (rawType === "DATA_INT32") base.int32Value = Math.trunc(Number(value));
+    else if (rawType === "DATA_UINT32") base.uint32Value = Math.trunc(Number(value));
+    else if (rawType === "DATA_INT64") base.int64Value = String(value);
+    else if (rawType === "DATA_UINT64") base.uint64Value = String(value);
+    else if (rawType === "DATA_BOOL") base.boolValue = Boolean(value);
+    else if (rawType === "DATA_STRING") base.stringValue = String(value);
+    else if (rawType === "DATA_FIXED_E") base.stringFix = String(value);
+    else if (rawType === "DATA_IP") base.ipValue = String(value);
+    else if (rawType === "DATA_BYTES") base.bytesValue = value;
   }
 
   const combo = asRecord(attribute.comboType ?? attribute.combo_type);
@@ -429,7 +497,9 @@ function mapAttributeToCmodel(attributeInput: unknown, isAbility = false): Recor
             key: getString(group, "key"),
             desc: getString(group, "desc"),
           };
-          const source = isAbility ? group.arrayAttr : group.arrayCmobEle ?? group.array_cmob_ele;
+          const source = isAbility && Array.isArray(group.arrayAttr)
+            ? group.arrayAttr
+            : group.arrayCmobEle ?? group.array_cmob_ele;
           if (Array.isArray(source)) {
             mappedGroup[isAbility ? "arrayAttr" : "arrayCmobEle"] = source.map((item) => mapAttributeToCmodel(item, isAbility));
           }
@@ -988,6 +1058,7 @@ function buildSandboxRecord(projectId: string, configInput: unknown, previous?: 
     abilities,
     functions,
     rawFuncDesc: config.rawFuncDesc !== undefined ? config.rawFuncDesc : previous?.rawFuncDesc,
+    rawModelFileDesc: config.rawModelFileDesc !== undefined ? config.rawModelFileDesc : previous?.rawModelFileDesc,
     fullJson,
     createdAt: previous?.createdAt || now,
     updatedAt: now,
@@ -1037,6 +1108,35 @@ function encodeFuncDesc(payload: unknown): Uint8Array {
 
 function md5Hex(bytes: Uint8Array): string {
   return md5(bytes);
+}
+
+function buildModelFileDesc(
+  rawInput: unknown,
+  generatedFiles: Array<Record<string, unknown>>,
+): Record<string, unknown> {
+  const raw = cloneJson(asRecord(rawInput));
+  const rawEntries = Array.isArray(raw.ModelFileDesc) ? (raw.ModelFileDesc as Record<string, unknown>[]) : [];
+  if (rawEntries.length === 0) {
+    return { ...raw, ModelFileDesc: generatedFiles };
+  }
+
+  const generatedByName = new Map(generatedFiles.map((entry) => [getString(entry, "name"), entry]));
+  const used = new Set<string>();
+  const merged: Record<string, unknown>[] = rawEntries.map((rawEntryInput) => {
+    const rawEntry = asRecord(rawEntryInput);
+    const name = getString(rawEntry, "name");
+    const generated = generatedByName.get(name);
+    if (!generated) {
+      throw new Error(`UNPRESERVED_MANIFEST_ENTRY: ${name || "<empty-name>"}`);
+    }
+    used.add(name);
+    return { ...cloneJson(rawEntry), md5: generated.md5 };
+  });
+  for (const generated of generatedFiles) {
+    const name = getString(generated, "name");
+    if (!used.has(name)) merged.push(generated);
+  }
+  return { ...raw, ModelFileDesc: merged };
 }
 
 function getZipEntry(entries: Record<string, Uint8Array>, name: string): Uint8Array | null {
@@ -1361,6 +1461,25 @@ async function uploadCmodel(request: Request, env: Env): Promise<Response> {
     audit.push("WARN: FuncDesc.model not found");
   }
 
+  let rawModelFileDesc: unknown = {};
+  const modelFileDescBytes = getZipEntry(entries, "ModelFileDesc.json");
+  if (modelFileDescBytes) {
+    try {
+      rawModelFileDesc = JSON.parse(new TextDecoder().decode(modelFileDescBytes));
+      audit.push("  - Preserved ModelFileDesc.json metadata");
+    } catch (error) {
+      return jsonResponse(
+        {
+          status: "error",
+          error: "MODEL_FILE_DESC_PARSE_FAILED",
+          detail: error instanceof Error ? error.message : String(error),
+          audit,
+        },
+        { status: 400 },
+      );
+    }
+  }
+
   const projectId = makeImportedProjectId(file.name);
   const now = new Date().toISOString();
   const sandbox: SandboxRecord = {
@@ -1371,6 +1490,7 @@ async function uploadCmodel(request: Request, env: Env): Promise<Response> {
     abilities,
     functions,
     rawFuncDesc: functions,
+    rawModelFileDesc,
     fullJson,
     importAudit: audit,
     createdAt: now,
@@ -1490,7 +1610,20 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
     audit.push(`FuncDesc.model built by Worker TS: ${funcModel.byteLength} bytes`);
   }
 
-  const manifest = new TextEncoder().encode(JSON.stringify({ ModelFileDesc: manifestFiles }, null, 2));
+  let manifestPayload: Record<string, unknown>;
+  try {
+    manifestPayload = buildModelFileDesc(sandbox.rawModelFileDesc, manifestFiles);
+  } catch (error) {
+    return jsonResponse(
+      {
+        status: "error",
+        error: "MODEL_FILE_DESC_PRESERVATION_FAILED",
+        detail: error instanceof Error ? error.message : String(error),
+      },
+      { status: 422 },
+    );
+  }
+  const manifest = new TextEncoder().encode(JSON.stringify(manifestPayload, null, 2));
   files["ModelFileDesc.json"] = manifest;
 
   const archive = zipSync(files, { level: 6 });

@@ -19,6 +19,7 @@ import {
 
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
 import { getConnectionMultiplicity, findInterfaceRef, validateInterfaceConnection } from './domain/electrical';
+import { updateInterfaceParams as updateInterfaceParamsValue } from './domain/interfaceParams';
 
 const createDefaultIdentity = (): RobotIdentity => ({
   robotName: '',
@@ -80,6 +81,51 @@ const createDefaultProjectConfig = (): RobotConfig => {
     components: [createDefaultChassis(identity)],
     abilities: abilityRegistry as any
   });
+};
+
+const isUsableRobotConfig = (value: unknown): value is RobotConfig => {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Partial<RobotConfig>;
+  return Boolean(candidate.identity && typeof candidate.identity === 'object' && Array.isArray(candidate.components));
+};
+
+/**
+ * Create an instance boundary for catalog/imported component data.
+ * A catalog entry may carry a source module UUID and interface UUIDs. Those
+ * identifiers are not safe to reuse when the same module is installed twice.
+ * Preserve the first ID when it is unused; otherwise create a new instance ID
+ * and remap interface references that belong to this component instance.
+ */
+const materializeComponentInstance = (input: ComponentConfig, usedIds: Set<string>): ComponentConfig => {
+  const componentId = input.id && !usedIds.has(input.id) ? input.id : uuidGen();
+  const interfaceUuidMap = new Map<string, string>();
+  (input.interfaces || []).forEach(iface => {
+    if (iface.interfaceUuid) interfaceUuidMap.set(iface.interfaceUuid, uuidGen());
+  });
+
+  const interfaces = (input.interfaces || []).map(iface => ({
+    ...iface,
+    interfaceUuid: interfaceUuidMap.get(iface.interfaceUuid) || uuidGen(),
+    linkedInterfaceUuid: (iface.linkedInterfaceUuid || []).map(uuid => interfaceUuidMap.get(uuid) || uuid),
+  }));
+
+  const generalAttr = input.generalAttr
+    ? {
+      ...input.generalAttr,
+      moduleUuid: {
+        ...(input.generalAttr.moduleUuid || {}),
+        type: input.generalAttr.moduleUuid?.type || 'DATA_STRING',
+        stringValue: componentId,
+      },
+    }
+    : input.generalAttr;
+
+  return {
+    ...input,
+    id: componentId,
+    generalAttr,
+    interfaces,
+  };
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -563,15 +609,27 @@ export const useProjectStore = create<ProjectState>()(
           return id;
         },
 
-        addComponentFromConfig: (config) => set((state) => ({
-          config: { ...state.config, components: [...state.config.components, config] },
-          isDirty: true
-        })),
+        addComponentFromConfig: (config) => set((state) => {
+          const usedIds = new Set(state.config.components.map(component => component.id));
+          const instance = materializeComponentInstance(config, usedIds);
+          return {
+            config: { ...state.config, components: [...state.config.components, instance] },
+            isDirty: true
+          };
+        }),
 
-        addComponents: (components) => set((state) => ({
-          config: { ...state.config, components: [...state.config.components, ...components] },
-          isDirty: true
-        })),
+        addComponents: (components) => set((state) => {
+          const usedIds = new Set(state.config.components.map(component => component.id));
+          const instances = components.map(component => {
+            const instance = materializeComponentInstance(component, usedIds);
+            usedIds.add(instance.id);
+            return instance;
+          });
+          return {
+            config: { ...state.config, components: [...state.config.components, ...instances] },
+            isDirty: true
+          };
+        }),
 
         updateComponent: (id, data) => set((state) => ({
           config: {
@@ -595,10 +653,25 @@ export const useProjectStore = create<ProjectState>()(
             });
           }
 
+          const removedInterfaceUuids = new Set(
+            state.config.components
+              .filter(component => toRemove.has(component.id))
+              .flatMap(component => (component.interfaces || []).map(iface => iface.interfaceUuid))
+          );
+
           return {
             config: {
               ...state.config,
-              components: state.config.components.filter(component => !toRemove.has(component.id))
+              components: state.config.components
+                .filter(component => !toRemove.has(component.id))
+                .map(component => ({
+                  ...component,
+                  interfaces: (component.interfaces || []).map(iface => ({
+                    ...iface,
+                    linkedInterfaceUuid: (iface.linkedInterfaceUuid || [])
+                      .filter(uuid => !removedInterfaceUuids.has(uuid))
+                  }))
+                }))
             },
             isDirty: true
           };
@@ -717,7 +790,7 @@ export const useProjectStore = create<ProjectState>()(
               return {
                 ...c,
                 interfaces: c.interfaces.map(i => i.interfaceUuid === interfaceUuid
-                  ? { ...i, ...params }
+                  ? { ...i, interfaceParams: updateInterfaceParamsValue(i.interfaceParams || {}, params) }
                   : i
                 )
               };
@@ -794,7 +867,7 @@ export const useProjectStore = create<ProjectState>()(
         }),
 
         loadProject: (config) => set({
-          config,
+          config: isUsableRobotConfig(config) ? config : createDefaultProjectConfig(),
           isDirty: false,
           activeComponentId: null
         }),
@@ -888,7 +961,17 @@ export const useProjectStore = create<ProjectState>()(
         partialize: (state) => ({
           projectId: state.projectId,
           config: state.config
-        })
+        }),
+        // Older browser storage entries can contain a partial/undefined config.
+        // Never let persisted state replace the valid in-memory defaults.
+        merge: (persistedState, currentState) => {
+          const persisted = (persistedState || {}) as Partial<ProjectState>;
+          return {
+            ...currentState,
+            ...persisted,
+            config: isUsableRobotConfig(persisted.config) ? persisted.config : currentState.config,
+          };
+        }
       }
     )
   )

@@ -7,17 +7,45 @@ import {
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import type { RobotConfig, ComponentConfig, ValidationIssue } from '../../store/types';
-import { buildElectricalConnections, countInterfaces, summarizeElectricalConnections } from '../../store/domain/electrical';
+import { auditBusTopology, auditInterfaceParameters, buildElectricalConnections, countInterfaces, summarizeElectricalConnections } from '../../store/domain/electrical';
 import { summarizeFunctionProcesses } from '../../store/domain/functions';
 import { buildAttributesFromSchema } from '../../store/SchemaEngine';
+import { auditModelIntegrity } from '../../store/domain/integrity';
 
 const { Text } = Typography;
 
 function runAudit(config: RobotConfig): ValidationIssue[] {
     const issues: ValidationIssue[] = [];
     const components = config.components;
+    auditModelIntegrity(config).forEach(issue => {
+        issues.push({
+            severity: issue.severity,
+            message: `[${issue.code}] ${issue.message}`,
+            nodeId: issue.nodeId || '',
+            source: 'domain/integrity',
+        });
+    });
     const connections = buildElectricalConnections(components);
     const connectionSummary = summarizeElectricalConnections(connections);
+    auditInterfaceParameters(components).forEach(diagnostic => {
+        issues.push({
+            severity: diagnostic.severity === 'error' ? 'ERROR' : 'WARNING',
+            message: `[${diagnostic.code}] ${diagnostic.message}`,
+            nodeId: diagnostic.componentId || '',
+            interfaceUuid: diagnostic.interfaceUuid,
+            source: diagnostic.source,
+        });
+    });
+    auditBusTopology(components).forEach(diagnostic => {
+        issues.push({
+            severity: diagnostic.severity === 'error' ? 'ERROR' : 'WARNING',
+            message: `[${diagnostic.code}] ${diagnostic.message}`,
+            nodeId: diagnostic.componentId || '',
+            interfaceUuid: diagnostic.interfaceUuid,
+            connectionId: diagnostic.connectionId,
+            source: diagnostic.source,
+        });
+    });
     const functionSummary = summarizeFunctionProcesses(config.functionProcesses, config.rawFuncDesc);
 
     if (components.length === 0) {
@@ -27,17 +55,19 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
     if (connectionSummary.errorCount > 0) {
         issues.push({
             severity: 'ERROR',
-            message: `电气连接存在 ${connectionSummary.errorCount} 个错误，请在“接口连线 > 连接清单”中处理。`,
-            nodeId: '',
-        });
-    }
+                message: `电气连接存在 ${connectionSummary.errorCount} 个错误，请在“接口连线 > 连接清单”中处理。`,
+                nodeId: '',
+                source: 'electrical/summary',
+            });
+        }
 
     if (connections.length === 0) {
-        issues.push({
-            severity: 'WARNING',
-            message: '当前没有可审计的电气连接实体；如果模型需要真实接线，请先建立接口连接。',
-            nodeId: '',
-        });
+            issues.push({
+                severity: 'WARNING',
+                message: '当前没有可审计的电气连接实体；如果模型需要真实接线，请先建立接口连接。',
+                nodeId: '',
+                source: 'electrical/summary',
+            });
     }
 
     // 1. Component Audits
@@ -53,6 +83,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                     severity: 'ERROR',
                     message: `[${comp.alias || comp.name}] 必填属性 "${attr.desc || attr.key}" 未设置`,
                     nodeId: comp.id,
+                    source: 'component/privateAttrs',
                 });
             }
 
@@ -63,6 +94,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                         severity: 'ERROR',
                         message: `[${comp.alias || comp.name}] 属性 "${attr.desc || attr.key}" 低于最小值 (${attr.minValue})`,
                         nodeId: comp.id,
+                        source: 'component/privateAttrs',
                     });
                 }
                 if (attr.maxValue !== undefined && val > attr.maxValue) {
@@ -70,6 +102,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                         severity: 'ERROR',
                         message: `[${comp.alias || comp.name}] 属性 "${attr.desc || attr.key}" 高于最大值 (${attr.maxValue})`,
                         nodeId: comp.id,
+                        source: 'component/privateAttrs',
                     });
                 }
             }
@@ -97,6 +130,8 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                     severity: 'WARNING',
                     message: `[${comp.alias || comp.name}] 通信接口 "${iface.key}" (${iface.type}) 尚未物理连线`,
                     nodeId: comp.id,
+                    interfaceUuid: iface.interfaceUuid,
+                    source: 'component/interfaces',
                 });
             }
         }
@@ -104,13 +139,23 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
     // 2. Ability Mapping Audits (Recursive check for deep mappings)
     const checkAbilityAttr = (attr: any, path: string) => {
-        if (attr.key.startsWith('related') && attr.value) {
-            const targetComp = components.find(c => c.id === attr.value);
-            if (!targetComp) {
+        if (attr.key.startsWith('related')) {
+            if (attr.value) {
+                const targetComp = components.find(c => c.id === attr.value);
+                if (!targetComp) {
+                    issues.push({
+                        severity: 'ERROR',
+                        message: `功能映射 [${path}]：关联的组件已丢失`,
+                        nodeId: 'ability_error',
+                        source: 'abilities/functionAbility',
+                    });
+                }
+            } else if (attr.boolParse || attr.boolMustfill) {
                 issues.push({
-                    severity: 'ERROR',
-                    message: `功能映射 [${path}]：关联的组件已丢失`,
-                    nodeId: 'ability_error'
+                    severity: 'WARNING',
+                    message: `功能映射 [${path}]：关联字段“${attr.desc || attr.key}”尚未绑定组件`,
+                    nodeId: 'ability_error',
+                    source: 'abilities/functionAbility',
                 });
             }
         }
@@ -119,8 +164,10 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         if (attr.type === 'DATA_COMBOX' || attr.type === 'COMBOX') {
             const combo = attr.comboType || attr.comboxParam;
             const groups = combo?.typeGroups || combo?.options || [];
-            const activeGroup = groups.find((g: any) => g.key === attr.value);
-            activeGroup?.arrayCmobEle?.forEach((sub: any) => checkAbilityAttr(sub, `${path} > ${activeGroup.desc || activeGroup.key}`));
+            const selectedValue = attr.value ?? attr.comboxParam?.value ?? combo?.typeKey;
+            const activeGroup = groups.find((g: any) => g.key === selectedValue);
+            const nested = activeGroup?.arrayCmobEle || activeGroup?.arrayAttr || [];
+            nested.forEach((sub: any) => checkAbilityAttr(sub, `${path} > ${activeGroup.desc || activeGroup.key}`));
         }
         
         if (attr.type === 'ARRAY' && attr.arrayParam) {
@@ -141,6 +188,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
             severity: 'WARNING',
             message: 'componentAbility 为空或未加载；如原始模型包含组件能力，需要确认导入/导出链路是否保留。',
             nodeId: 'ability_warning',
+            source: 'abilities/componentAbility',
         });
     }
 
@@ -149,6 +197,17 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
             severity: 'WARNING',
             message: 'FuncDesc 功能过程未加载；前端不会自动猜测生成功能过程。',
             nodeId: 'function_warning',
+            source: 'FuncDesc.json',
+        });
+    }
+    if (functionSummary.processCount > 0 && (config.functionProcesses || []).every(process =>
+        process.relatedComponents.length === 0 && process.relatedConnections.length === 0 && process.relatedAbilities.length === 0
+    )) {
+        issues.push({
+            severity: 'WARNING',
+            message: 'FuncDesc 功能过程已加载但未解析出组件、连接或能力引用；功能绑定状态为 unresolved。',
+            nodeId: 'function_relation_warning',
+            source: 'FuncDesc.json',
         });
     }
 
@@ -180,6 +239,35 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
         return undefined;
     };
 
+    // Wiki/ModuleLibrary wheel parameters: validate only fields explicitly
+    // defined by the selected wheel template. Runtime calibration values remain
+    // unresolved unless the source model provides them.
+    wheels.forEach(wheel => {
+        const radius = readWheelAttribute(wheel, 'wheelRadius');
+        if (!radius || radius.value === undefined || radius.value === null || radius.value === '') {
+            issues.push({ severity: 'ERROR', message: `[${wheel.alias || wheel.name}] 轮半径 wheelRadius 未配置。`, nodeId: wheel.id });
+        } else if (typeof radius.value === 'number') {
+            if (radius.minValue !== undefined && radius.value < radius.minValue) {
+                issues.push({ severity: 'ERROR', message: `[${wheel.alias || wheel.name}] 轮半径低于模板最小值 ${radius.minValue}${radius.unit || ''}。`, nodeId: wheel.id });
+            }
+            if (radius.maxValue !== undefined && radius.value > radius.maxValue) {
+                issues.push({ severity: 'ERROR', message: `[${wheel.alias || wheel.name}] 轮半径高于模板最大值 ${radius.maxValue}${radius.unit || ''}。`, nodeId: wheel.id });
+            }
+        }
+
+        if (wheel.type === 'diffWheel') {
+            const relatedMotor = readWheelAttribute(wheel, 'relateMotor');
+            if (!relatedMotor?.value) {
+                issues.push({ severity: 'ERROR', message: `[${wheel.alias || wheel.name}] 差速轮未关联行走电机 relateMotor。`, nodeId: wheel.id });
+            } else {
+                const motor = components.find(component => component.id === relatedMotor.value);
+                if (!motor || motor.category !== 'MOTOR') {
+                    issues.push({ severity: 'ERROR', message: `[${wheel.alias || wheel.name}] relateMotor 未指向有效 MOTOR 组件。`, nodeId: wheel.id });
+                }
+            }
+        }
+    });
+
     wheels.filter(w => w.type === 'diffSteerWheel').forEach(wheel => {
         const angleSensor = readWheelAttribute(wheel, 'angleSensorType');
         const angleType = angleSensor?.comboType?.typeKey || angleSensor?.value;
@@ -198,6 +286,15 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
                 message: `[${wheel.alias || wheel.name}] 外置编码器未关联，无法完成差速舵轮转向反馈配置`,
                 nodeId: wheel.id,
             });
+        } else {
+            const encoder = components.find(component => component.id === relatedEncoder.value);
+            if (!encoder || encoder.category !== 'SENSOR') {
+                issues.push({
+                    severity: 'ERROR',
+                    message: `[${wheel.alias || wheel.name}] relatedEncode 未指向有效 SENSOR 组件。`,
+                    nodeId: wheel.id,
+                });
+            }
         }
     });
 
@@ -286,6 +383,7 @@ function runAudit(config: RobotConfig): ValidationIssue[] {
 
 export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => {
     const { config } = useProjectStore();
+    const [auditExportedName, setAuditExportedName] = useState<string | null>(null);
     
     // Derived state via useMemo
     const issues = useMemo(() => runAudit(config), [config]);
@@ -293,6 +391,82 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
     const connectionSummary = useMemo(() => summarizeElectricalConnections(connections), [connections]);
     const functionSummary = useMemo(() => summarizeFunctionProcesses(config.functionProcesses, config.rawFuncDesc), [config.functionProcesses, config.rawFuncDesc]);
     const interfaceCount = useMemo(() => countInterfaces(config.components), [config.components]);
+
+    const handleAuditReportExport = () => {
+        const generatedAt = new Date().toISOString();
+        const report = {
+            schema: 'amr-studio.audit-report.v1',
+            generatedAt,
+            source: {
+                kind: 'frontend-derived-audit',
+                projectId: config.identity.robotName || 'unknown',
+                robotName: config.identity.robotName || 'unknown',
+                evidence: [
+                    'current frontend RobotConfig',
+                    'Proto-aligned interfaceParams/interfaceParamsArray',
+                    'module template constraints',
+                ],
+            },
+            summary: {
+                componentCount: config.components.length,
+                interfaceCount,
+                connectionCount: connections.length,
+                connectionErrors: connectionSummary.errorCount,
+                errorCount: errors.length,
+                warningCount: warnings.length,
+                componentAbilityCount: config.abilities?.componentAbility?.length || 0,
+                functionAbilityCount: config.abilities?.functionAbility?.length || 0,
+                functionProcessCount: functionSummary.processCount || functionSummary.rawFunctionCount,
+            },
+            issues: issues.map((issue, index) => ({
+                index,
+                severity: issue.severity,
+                message: issue.message,
+                nodeId: issue.nodeId || null,
+                interfaceUuid: issue.interfaceUuid || null,
+                connectionId: issue.connectionId || null,
+                source: issue.source || 'unknown',
+                componentRef: issue.nodeId
+                    ? config.components.find(component => component.id === issue.nodeId)?.id || null
+                    : null,
+            })),
+            componentIndex: config.components.map(component => ({
+                id: component.id,
+                name: component.name,
+                alias: component.alias,
+                category: component.category,
+                type: component.type,
+                parentNodeUuid: component.parentNodeUuid,
+                pose: {
+                    x: component.mountX,
+                    y: component.mountY,
+                    z: component.mountZ,
+                    roll: component.mountRoll,
+                    pitch: component.mountPitch,
+                    yaw: component.mountYaw,
+                },
+            })),
+            interfaceIndex: config.components.flatMap(component => component.interfaces.map(iface => ({
+                componentId: component.id,
+                interfaceUuid: iface.interfaceUuid,
+                key: iface.key,
+                type: iface.type,
+                linkedInterfaceUuid: iface.linkedInterfaceUuid || [],
+            }))),
+            electricalConnections: connections,
+            functionSummary,
+        };
+        const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json;charset=utf-8' });
+        const objectUrl = URL.createObjectURL(blob);
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', objectUrl);
+        const fileName = `${config.identity.robotName || 'amr'}_audit_${generatedAt.slice(0, 10)}.json`;
+        linkElement.setAttribute('download', fileName);
+        linkElement.click();
+        linkElement.remove();
+        window.setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+        setAuditExportedName(fileName);
+    };
 
     const handleExport = () => {
         const dataStr = JSON.stringify(config, null, 4);
@@ -389,6 +563,12 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                 </Col>
             </Row>
 
+            {auditExportedName && (
+                <div style={{ marginBottom: 16, padding: '10px 14px', borderRadius: 8, background: 'rgba(82,196,26,0.08)', border: '1px solid rgba(82,196,26,0.25)', color: 'var(--text-primary)' }}>
+                    审计报告已生成：<code>{auditExportedName}</code>
+                </div>
+            )}
+
             {/* Issues */}
             {issues.length === 0 ? (
                 <div className="glass-card" style={{ textAlign: 'center', padding: '60px 40px', background: 'var(--bg-hover)', borderRadius: 16, border: '1px solid var(--success)' }}>
@@ -403,6 +583,14 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                             style={{ background: 'var(--accent-soft)', color: '#58a6ff', border: '1px solid rgba(88,166,255,0.2)', height: 48, borderRadius: 8 }}
                         >
                             仅导出本地 JSON
+                        </Button>
+                        <Button
+                            size="large"
+                            icon={<AuditOutlined />}
+                            onClick={handleAuditReportExport}
+                            style={{ height: 48, borderRadius: 8 }}
+                        >
+                            导出审计报告
                         </Button>
                         <Button 
                             type="primary" 
@@ -451,6 +639,13 @@ export const AuditStep: React.FC<{ onExport?: () => void }> = ({ onExport }) => 
                             style={{ background: 'var(--accent-soft)', color: 'var(--accent)', border: '1px solid var(--border-accent)', height: 40, borderRadius: 6 }}
                         >
                             仅导出本地 JSON
+                        </Button>
+                        <Button
+                            icon={<AuditOutlined />}
+                            onClick={handleAuditReportExport}
+                            style={{ height: 40, borderRadius: 6 }}
+                        >
+                            导出审计报告
                         </Button>
                         <Button 
                             type="primary" 

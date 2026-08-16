@@ -93,6 +93,22 @@ export default function App() {
         refreshBackendStatus();
         return subscribeBackendBaseChange(handleBackendChange);
     }, [fetchSchemas, handleBackendChange, refreshBackendStatus]);
+
+    // Support direct links such as /?project=robot01. This also prevents a
+    // blank page when the browser opens a project URL before the welcome UI.
+    useEffect(() => {
+        const requestedProject = new URLSearchParams(window.location.search).get('project');
+        if (!requestedProject) return;
+        let active = true;
+        (async () => {
+            const ok = await loadProjectByName(requestedProject);
+            if (active && ok) {
+                setShowWelcome(false);
+                setStep(0);
+            }
+        })();
+        return () => { active = false; };
+    }, [loadProjectByName, setStep]);
     const importRef = useRef<HTMLInputElement>(null);
     
     // 欢迎屏幕控制：首屏加载或主动切换时显示

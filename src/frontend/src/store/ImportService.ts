@@ -347,6 +347,9 @@ export class ImportService {
     if (type === 'FIXED_E' || type === 'DATA_FIXED_E') {
       return {
         ...baseAttr,
+        // ABI Proto stores the selected hardware reference in stringFix.
+        // The editor/auditor use the canonical frontend value field.
+        value: attr.stringFix ?? attr.string_fix ?? '',
         fixedSource: attr.fixedSource || [],
         boolParse: true
       };

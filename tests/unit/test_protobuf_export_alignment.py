@@ -123,6 +123,21 @@ class ProtobufExportAlignmentTests(unittest.TestCase):
                 ParseDict(synced, msg, ignore_unknown_fields=False)
                 self.assertEqual(msg.type, expected_enum)
 
+    def test_abi_common_attribute_aliases_map_to_proto_enum(self):
+        for raw_type, expected_enum in [
+            ("ARRAY", controller_model_abi_set_pb2.ARRAY_E),
+            ("ARRAY_E", controller_model_abi_set_pb2.ARRAY_E),
+            ("COMBOX", controller_model_abi_set_pb2.COMBOX_E),
+            ("COMBOX_E", controller_model_abi_set_pb2.COMBOX_E),
+        ]:
+            with self.subTest(raw_type=raw_type):
+                raw = {"key": "attr", "type": raw_type, "arrayParam": {"groupKey": "g"}}
+                synced = proto_final_sync(raw, ABI_TYPE_STRING_TO_INT)
+                self.assertEqual(synced["type"], expected_enum)
+                msg = controller_model_abi_set_pb2.Message_CommonAttr()
+                ParseDict(synced, msg, ignore_unknown_fields=False)
+                self.assertEqual(msg.type, expected_enum)
+
 
 if __name__ == "__main__":
     unittest.main()

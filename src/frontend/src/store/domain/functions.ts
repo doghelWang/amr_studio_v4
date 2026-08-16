@@ -25,6 +25,13 @@ export function parseFunctionProcesses(rawFuncDesc: any): FunctionProcess[] {
         functionId: item.id || item.key || item.type || `func_${index}`,
         source: 'FuncDesc.json',
       },
+      {
+        severity: 'warning',
+        code: 'FUNC_RELATIONS_UNRESOLVED',
+        message: 'FuncDesc 原始过程未提供可解析的组件/连接/能力引用，关系保持 unresolved。',
+        functionId: item.id || item.key || item.type || `func_${index}`,
+        source: 'FuncDesc.json',
+      },
     ],
   }));
 }

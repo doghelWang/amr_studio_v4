@@ -8,7 +8,7 @@ const sourcePath = process.env.AMR_TEST_CMODEL || '/Users/wangfeifei/Downloads/0
 
 async function uploadBytes(bytes: Uint8Array, filename: string): Promise<any> {
   const body = new FormData();
-  body.append('file', new Blob([bytes]), filename);
+  body.append('file', new Blob([bytes.buffer as ArrayBuffer]), filename);
   const response = await fetch(`${baseUrl}/api/v1/models/upload`, { method: 'POST', body });
   assert.equal(response.status, 200);
   const result = await response.json() as any;

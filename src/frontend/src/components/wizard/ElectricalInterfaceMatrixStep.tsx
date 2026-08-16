@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Row, Col, Table, Card, Select, InputNumber, Input, Tag, Space, Typography, Tooltip, Empty, List } from 'antd';
+import { Row, Col, Table, Card, Select, InputNumber, Input, Tag, Space, Typography, Tooltip, Empty, List, Alert } from 'antd';
 import {
   ApiOutlined,
   SettingOutlined,
@@ -9,7 +9,8 @@ import {
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentConfig, InterfaceConfig } from '../../store/types';
-import { buildElectricalConnections } from '../../store/domain/electrical';
+import { buildElectricalConnections, summarizeElectricalBusNetworks } from '../../store/domain/electrical';
+import { readInterfaceParams } from '../../store/domain/interfaceParams';
 
 const { Text, Title } = Typography;
 
@@ -33,6 +34,7 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
 
   // Get all connections to check link status
   const connections = useMemo(() => buildElectricalConnections(components), [components]);
+  const busNetworks = useMemo(() => summarizeElectricalBusNetworks(components), [components]);
 
   // Map of interfaceUuid -> connected count
   const connectionMap = useMemo(() => {
@@ -59,7 +61,7 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
           interfaceKey: iface.key,
           interfaceType: iface.type,
           linkedUuids: iface.linkedInterfaceUuid || [],
-          params: iface.interfaceParams || {}
+          params: readInterfaceParams(iface.interfaceParams || {})
         });
       });
     });
@@ -143,11 +145,11 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
         let complete = true;
 
         if (upperType === 'CAN') {
-          complete = params.canId !== undefined && params.baudRate !== undefined;
+          complete = params.nodeId !== undefined && params.baudrate !== undefined;
         } else if (upperType === 'RS485') {
-          complete = params.stationId !== undefined && params.baudRate !== undefined;
+          complete = params.baudrate !== undefined;
         } else if (upperType === 'ETH') {
-          complete = params.ipAddress !== undefined && params.ipAddress !== '';
+          complete = params.ip !== undefined && params.ip !== '';
         }
 
         return complete ? (
@@ -170,14 +172,46 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
             <Title level={2} style={{ margin: 0, fontSize: 20, fontFamily: 'var(--font-display)' }}>
               5. 电气接口矩阵
             </Title>
-            <Text type="secondary">
-              在组网连接前对所有端口进行参数化配置。在此处统一设定各接口的总线波特率、CAN 节点 ID、串口站号或以太网 IP 地址。
+              <Text type="secondary">
+              按模块模板配置接口参数；CAN 使用 nodeId/baudrate，ETH 使用 ip。RS485 当前模板未定义站号字段，不能由界面擅自补充。
             </Text>
           </div>
         </div>
       </div>
 
       <Row gutter={[20, 20]}>
+        <Col span={24}>
+          <Card
+            title={<Space><ApiOutlined /><span>总线 / 网络状态</span><Tag>{busNetworks.length} 个显式网络记录</Tag></Space>}
+            style={{ borderRadius: 16, background: 'var(--bg-card)', border: '1px solid var(--border-default)' }}
+          >
+            <Text type="secondary" style={{ display: 'block', marginBottom: 12 }}>
+              状态只来自模型中明确记录的 linkedInterfaceUuid。CAN/RS485 展示总线成员、波特率和节点；ETH 展示点对点连接。没有显式连接时不会按接口名称自动拼接总线。
+            </Text>
+            {busNetworks.length === 0 ? (
+              <Alert type="warning" showIcon message="当前没有可确认的总线/网络拓扑" description="请先在下方接口连线或装备工坊中建立真实接口连接；仅填写 CAN/RS485/ETH 参数不等于已经连线。" />
+            ) : (
+              <Row gutter={[12, 12]}>
+                {busNetworks.map(network => {
+                  const color = network.status === 'connected' ? 'success' : network.status === 'parameter_error' ? 'error' : 'warning';
+                  const statusLabel = network.status === 'connected' ? '已连接' : network.status === 'parameter_error' ? '参数异常' : network.status === 'incomplete' ? '连接不完整' : '未形成显式拓扑';
+                  return <Col xs={24} md={12} xl={8} key={network.id}>
+                    <Card size="small" title={<Space><Tag color={network.type === 'CAN' ? 'blue' : network.type === 'RS485' ? 'cyan' : 'purple'}>{network.type}</Tag><Text ellipsis style={{ maxWidth: 190 }}>{network.type === 'ETH' ? 'ETH 点对点连接' : `${network.type} 总线`}</Text></Space>} extra={<Tag color={color}>{statusLabel}</Tag>}>
+                      <Space direction="vertical" size={4} style={{ width: '100%' }}>
+                        <Text type="secondary">成员：{network.members.length} · 拓扑连接：{network.connections.length}</Text>
+                        <Text type="secondary">接口：{network.members.map(item => item.iface.key || item.iface.interfaceUuid).join('、') || 'unknown'}</Text>
+                        {network.type !== 'ETH' && <Text type="secondary">baudrate：{network.baudrates.length ? network.baudrates.join(' / ') : 'unknown'}</Text>}
+                        {network.type === 'CAN' && <Text type="secondary">nodeId：{network.nodeIds.length ? network.nodeIds.map(item => `${item.value}(${item.interfaceKey || item.componentName})`).join('、') : 'unknown'}</Text>}
+                        {network.type !== 'ETH' && <Text type="warning">终端电阻 / 协议：模型当前未提供可确认字段，需按实际接线与 Wiki 原理图现场确认</Text>}
+                        <Text type={network.reasons.length ? 'warning' : 'success'}>{network.reasons.length ? network.reasons.join('；') : '参数与显式拓扑暂未发现异常'}</Text>
+                      </Space>
+                    </Card>
+                  </Col>;
+                })}
+              </Row>
+            )}
+          </Card>
+        </Col>
         {/* Left Side: Component Filters */}
         <Col xs={24} md={6}>
           <Card
@@ -259,13 +293,13 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
                       <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>波特率</Text>
                       <Select
                         style={{ width: '100%' }}
-                        value={selectedRow.params.baudRate || 500000}
-                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ...selectedRow.params, baudRate: value })}
+                        value={selectedRow.params.baudrate || '500K'}
+                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { baudrate: value })}
                         options={[
-                          { label: '125 kbps', value: 125000 },
-                          { label: '250 kbps', value: 250000 },
-                          { label: '500 kbps', value: 500000 },
-                          { label: '1 Mbps', value: 1000000 },
+                          { label: '125 kbps', value: '125K' },
+                          { label: '250 kbps', value: '250K' },
+                          { label: '500 kbps', value: '500K' },
+                          { label: '1 Mbps', value: '1M' },
                         ]}
                       />
                     </div>
@@ -273,10 +307,10 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
                       <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>节点 ID (canId)</Text>
                       <InputNumber
                         style={{ width: '100%' }}
-                        value={selectedRow.params.canId ?? 0}
-                        min={0}
-                        max={2047}
-                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ...selectedRow.params, canId: value ?? 0 })}
+                        value={selectedRow.params.nodeId ?? 1}
+                        min={1}
+                        max={127}
+                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { nodeId: value ?? 1 })}
                       />
                     </div>
                   </>
@@ -289,25 +323,19 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
                       <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>波特率</Text>
                       <Select
                         style={{ width: '100%' }}
-                        value={selectedRow.params.baudRate || 115200}
-                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ...selectedRow.params, baudRate: value })}
+                        value={selectedRow.params.baudrate || '9600'}
+                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { baudrate: value })}
                         options={[
-                          { label: '9600 bps', value: 9600 },
-                          { label: '19200 bps', value: 19200 },
-                          { label: '38400 bps', value: 38400 },
-                          { label: '115200 bps', value: 115200 },
+                          { label: '9600 bps', value: '9600' },
+                          { label: '19200 bps', value: '19200' },
+                          { label: '38400 bps', value: '38400' },
+                          { label: '115200 bps', value: '115200' },
                         ]}
                       />
                     </div>
                     <div>
-                      <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>Modbus 从站站号 (stationId)</Text>
-                      <InputNumber
-                        style={{ width: '100%' }}
-                        value={selectedRow.params.stationId ?? 1}
-                        min={1}
-                        max={247}
-                        onChange={value => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ...selectedRow.params, stationId: value ?? 1 })}
-                      />
+                        <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>站号</Text>
+                        <Text type="warning">当前 RS485 模板未定义站号字段，保持 unresolved。</Text>
                     </div>
                   </>
                 )}
@@ -317,9 +345,9 @@ export const ElectricalInterfaceMatrixStep: React.FC<{ onExport?: () => void }> 
                   <div>
                     <Text type="secondary" style={{ display: 'block', marginBottom: 6, fontSize: 11 }}>IP 地址</Text>
                     <Input
-                      value={selectedRow.params.ipAddress || ''}
+                      value={selectedRow.params.ip || ''}
                       placeholder="例如 192.168.192.10"
-                      onChange={event => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ...selectedRow.params, ipAddress: event.target.value })}
+                      onChange={event => updateInterfaceParams(selectedRow.componentId, selectedRow.interfaceUuid, { ip: event.target.value })}
                     />
                   </div>
                 )}

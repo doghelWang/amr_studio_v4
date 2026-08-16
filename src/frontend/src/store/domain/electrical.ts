@@ -5,6 +5,7 @@ import type {
   ElectricalConnectionKind,
   InterfaceConfig,
 } from '../types';
+import { readInterfaceParams } from './interfaceParams';
 
 type InterfaceRef = {
   component: ComponentConfig;
@@ -229,6 +230,226 @@ export function summarizeElectricalConnections(connections: ElectricalConnection
     errorCount: diagnostics.filter(item => item.severity === 'error').length,
     warningCount: diagnostics.filter(item => item.severity === 'warning').length,
   };
+}
+
+/**
+ * Validate only parameters explicitly described by the current module
+ * templates. Project-specific bus rules remain unresolved until a project
+ * specification supplies them.
+ */
+export function auditInterfaceParameters(components: ComponentConfig[]): Diagnostic[] {
+  const diagnostics: Diagnostic[] = [];
+  const canNodesByBus = new Map<string, Map<number, string>>();
+  const canAllowedBaudrates = new Set(['1M', '500K', '250K', '125K', '100K']);
+  const rs485AllowedBaudrates = new Set(['9600', '4800', '19200', '38400', '115200', '921600']);
+
+  components.forEach(component => (component.interfaces || []).forEach(iface => {
+    const type = normalizeInterfaceType(iface.type);
+    const params = readInterfaceParams(iface.interfaceParams || {});
+    const source = 'Interface_Prarm template';
+    if (type === 'CAN') {
+      const bus = iface.key || iface.interfaceUuid;
+      const nodeId = Number(params.nodeId);
+      const baudrate = params.baudrate;
+      if (!Number.isInteger(nodeId) || nodeId < 1 || nodeId > 127) {
+        diagnostics.push({ severity: 'error', code: 'CAN_NODE_ID_INVALID_OR_MISSING', message: 'CAN nodeId 缺失或不在模板规定的 1..127 范围内。', componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+      } else {
+        const nodes = canNodesByBus.get(bus) || new Map<number, string>();
+        const previous = nodes.get(nodeId);
+        if (previous) {
+          diagnostics.push({ severity: 'error', code: 'CAN_NODE_ID_DUPLICATE', message: `同一接口键 ${bus} 下 CAN nodeId=${nodeId} 重复。`, componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+        } else nodes.set(nodeId, component.id);
+        canNodesByBus.set(bus, nodes);
+      }
+      if (!canAllowedBaudrates.has(String(baudrate))) {
+        diagnostics.push({ severity: 'error', code: 'CAN_BAUDRATE_INVALID_OR_MISSING', message: `CAN baudrate 缺失或不在模板选项中：${String(baudrate)}`, componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+      }
+    } else if (type === 'RS485') {
+      if (!rs485AllowedBaudrates.has(String(params.baudrate))) {
+        diagnostics.push({ severity: 'error', code: 'RS485_BAUDRATE_INVALID_OR_MISSING', message: `RS485 baudrate 缺失或不在模板选项中：${String(params.baudrate)}`, componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+      }
+      diagnostics.push({ severity: 'warning', code: 'RS485_STATION_ID_UNRESOLVED', message: '当前 RS485 模板未定义 stationId 字段，站号规则 unresolved。', componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+    } else if (type === 'ETH') {
+      if (typeof params.ip !== 'string' || params.ip.trim() === '') {
+        diagnostics.push({ severity: 'error', code: 'ETH_IP_MISSING', message: 'ETH 接口缺少模板字段 ip。', componentId: component.id, interfaceUuid: iface.interfaceUuid, source });
+      }
+    }
+  }));
+
+  return diagnostics;
+}
+
+/**
+ * Audit only the topology that is explicitly represented by linkedInterfaceUuid.
+ * CAN/RS485 are treated as multi-drop buses, but no implicit links are created.
+ */
+export function auditBusTopology(components: ComponentConfig[]): Diagnostic[] {
+  const diagnostics: Diagnostic[] = [];
+  const index = buildInterfaceIndex(components);
+  const visited = new Set<string>();
+
+  for (const component of components) {
+    for (const iface of component.interfaces || []) {
+      const type = normalizeInterfaceType(iface.type);
+      if ((type !== 'CAN' && type !== 'RS485') || !iface.interfaceUuid || visited.has(iface.interfaceUuid)) continue;
+
+      const members: InterfaceRef[] = [];
+      const queue = [iface.interfaceUuid];
+      visited.add(iface.interfaceUuid);
+      while (queue.length) {
+        const uuid = queue.shift()!;
+        const ref = index.get(uuid);
+        if (!ref) continue;
+        members.push(ref);
+        for (const linkedUuid of ref.iface.linkedInterfaceUuid || []) {
+          const linked = index.get(linkedUuid);
+          if (!linked || visited.has(linkedUuid)) continue;
+          const linkedType = normalizeInterfaceType(linked.iface.type);
+          if (linkedType === type) {
+            visited.add(linkedUuid);
+            queue.push(linkedUuid);
+          }
+        }
+      }
+
+      // A single represented interface is not enough evidence to invent a bus
+      // network, so only compare parameters when at least two interfaces are linked.
+      if (members.length < 2) continue;
+      const parameterValues = members.map(ref => ({
+        ref,
+        params: readInterfaceParams(ref.iface.interfaceParams || {}),
+      }));
+      const baudrates = new Set(parameterValues
+        .map(item => item.params.baudrate)
+        .filter(value => value !== undefined && value !== null && String(value).trim() !== '')
+        .map(String));
+      if (baudrates.size > 1) {
+        diagnostics.push({
+          severity: 'error',
+          code: 'BUS_BAUDRATE_MISMATCH',
+          message: `${type} 已连接接口的 baudrate 不一致：${Array.from(baudrates).join(', ')}`,
+          componentId: members[0].component.id,
+          interfaceUuid: members[0].iface.interfaceUuid,
+          source: 'interfaceParams/interfaceParamsArray',
+        });
+      }
+
+      if (type === 'CAN') {
+        const nodeOwners = new Map<number, InterfaceRef>();
+        for (const item of parameterValues) {
+          const nodeId = Number(item.params.nodeId);
+          if (!Number.isInteger(nodeId)) continue;
+          const previous = nodeOwners.get(nodeId);
+          if (previous) {
+            diagnostics.push({
+              severity: 'error',
+              code: 'BUS_CAN_NODE_ID_DUPLICATE',
+              message: `同一已连接 CAN 总线中 nodeId=${nodeId} 重复。`,
+              componentId: item.ref.component.id,
+              interfaceUuid: item.ref.iface.interfaceUuid,
+              source: 'interfaceParams/interfaceParamsArray',
+            });
+          } else {
+            nodeOwners.set(nodeId, item.ref);
+          }
+        }
+      }
+    }
+  }
+  return diagnostics;
+}
+
+export type ElectricalBusNetwork = {
+  id: string;
+  type: 'CAN' | 'RS485' | 'ETH';
+  topology: 'explicit' | 'point_to_point' | 'unresolved';
+  members: InterfaceRef[];
+  connections: ElectricalConnection[];
+  baudrates: string[];
+  nodeIds: Array<{ value: number; componentName: string; interfaceKey?: string }>;
+  status: 'connected' | 'incomplete' | 'parameter_error' | 'unresolved';
+  reasons: string[];
+};
+
+/**
+ * Build the UI-level bus/network status from explicit model relations only.
+ * This is intentionally separate from auditBusTopology: the UI needs a
+ * network summary, while the audit still owns the authoritative diagnostics.
+ */
+export function summarizeElectricalBusNetworks(components: ComponentConfig[]): ElectricalBusNetwork[] {
+  const index = buildInterfaceIndex(components);
+  const connections = buildElectricalConnections(components);
+  const result: ElectricalBusNetwork[] = [];
+  const visited = new Set<string>();
+
+  for (const component of components) {
+    for (const iface of component.interfaces || []) {
+      const type = normalizeInterfaceType(iface.type);
+      if ((type !== 'CAN' && type !== 'RS485') || !iface.interfaceUuid || visited.has(iface.interfaceUuid)) continue;
+      const members: InterfaceRef[] = [];
+      const queue = [iface.interfaceUuid];
+      visited.add(iface.interfaceUuid);
+      while (queue.length) {
+        const uuid = queue.shift()!;
+        const ref = index.get(uuid);
+        if (!ref) continue;
+        members.push(ref);
+        for (const linkedUuid of ref.iface.linkedInterfaceUuid || []) {
+          const linked = index.get(linkedUuid);
+          if (linked && normalizeInterfaceType(linked.iface.type) === type && !visited.has(linkedUuid)) {
+            visited.add(linkedUuid);
+            queue.push(linkedUuid);
+          }
+        }
+      }
+      const memberUuids = new Set(members.map(item => item.iface.interfaceUuid));
+      const networkConnections = connections.filter(connection =>
+        connection.interfaceType === type && memberUuids.has(connection.sourceInterfaceUuid) && memberUuids.has(connection.targetInterfaceUuid),
+      );
+      const params = members.map(item => readInterfaceParams(item.iface.interfaceParams || {}));
+      const baudrates = Array.from(new Set(params.map(item => item.baudrate).filter(value => value !== undefined && value !== null && String(value) !== '').map(String)));
+      const nodeIds = members.flatMap((item, position) => {
+        const value = Number(params[position].nodeId);
+        return Number.isInteger(value) ? [{ value, componentName: item.component.alias || item.component.name, interfaceKey: item.iface.key }] : [];
+      });
+      const reasons: string[] = [];
+      if (members.length < 2 || networkConnections.length === 0) reasons.push('未形成两端以上的显式 linkedInterfaceUuid 拓扑');
+      if (baudrates.length > 1) reasons.push(`波特率不一致：${baudrates.join(' / ')}`);
+      if (type === 'CAN' && new Set(nodeIds.map(item => item.value)).size !== nodeIds.length) reasons.push('CAN nodeId 重复');
+      if (params.some(item => !item.baudrate)) reasons.push('存在接口缺少 baudrate');
+      if (type === 'CAN' && params.some(item => !Number.isInteger(Number(item.nodeId)))) reasons.push('存在接口缺少有效 nodeId');
+      result.push({
+        id: `${type}:${members.map(item => item.iface.interfaceUuid).sort().join('|')}`,
+        type: type as 'CAN' | 'RS485',
+        topology: members.length >= 2 && networkConnections.length > 0 ? 'explicit' : 'unresolved',
+        members,
+        connections: networkConnections,
+        baudrates,
+        nodeIds,
+        status: reasons.some(reason => reason.includes('不一致') || reason.includes('重复') || reason.includes('缺少')) ? 'parameter_error' : reasons.length ? 'unresolved' : 'connected',
+        reasons,
+      });
+    }
+  }
+
+  connections.filter(connection => connection.interfaceType === 'ETH').forEach(connection => {
+    const members = [
+      findInterfaceRef(components, connection.sourceInterfaceUuid),
+      findInterfaceRef(components, connection.targetInterfaceUuid),
+    ].filter(Boolean) as InterfaceRef[];
+    result.push({
+      id: connection.id,
+      type: 'ETH',
+      topology: 'point_to_point',
+      members,
+      connections: [connection],
+      baudrates: [],
+      nodeIds: [],
+      status: connection.targetComponentId && !connection.diagnostics.some(item => item.severity === 'error') ? 'connected' : 'incomplete',
+      reasons: connection.targetComponentId ? connection.diagnostics.filter(item => item.severity !== 'trace').map(item => item.message) : ['ETH 目标接口不存在'],
+    });
+  });
+  return result;
 }
 
 export function countInterfaces(components: ComponentConfig[]) {

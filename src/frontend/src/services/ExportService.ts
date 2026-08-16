@@ -178,11 +178,13 @@ export class ExportService {
    */
   private static mapAbilityAttr(a: any): any {
     // ARRAY type: e.g., { key: 'naviUniqueKey', type: 'ARRAY', arrayParam: {...} }
-    if (a.type === 'ARRAY') {
+    if (a.type === 'ARRAY' || a.type === 'ARRAY_E') {
       return {
         key: a.key,
         desc: a.desc,
-        type: a.type,
+        // controller_model_abi_set.proto COMMON_ATTR_TYPE uses ARRAY_E.
+        // ARRAY is the frontend editing alias only.
+        type: 'ARRAY_E',
         arrayParam: a.arrayParam ? {
           groupKey: a.arrayParam.groupKey,
           groupName: a.arrayParam.groupName,
@@ -194,11 +196,13 @@ export class ExportService {
     }
 
     // COMBOX type: e.g., { key: 'naviType', type: 'COMBOX', comboxParam: {...} }
-    if (a.type === 'COMBOX') {
+    if (a.type === 'COMBOX' || a.type === 'COMBOX_E') {
       return {
         key: a.key,
         desc: a.desc,
-        type: a.type,
+        // controller_model_abi_set.proto COMMON_ATTR_TYPE uses COMBOX_E.
+        // COMBOX is the frontend editing alias only.
+        type: 'COMBOX_E',
         comboxParam: a.comboxParam ? {
           key: a.comboxParam.key,
           desc: a.comboxParam.desc,
