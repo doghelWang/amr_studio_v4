@@ -6,9 +6,9 @@
   "scripts": {
     "test": "npm run build && npm run test:run",
     "build": "tsc",
-    "test:run": "node dist/cmodel_test_runner.js ../CompDesc.json",
-    "test:detailed": "node dist/cmodel_comprehensive_test.js ../CompDesc.json",
-    "test:file": "node dist/cmodel_comprehensive_test.js",
+    "test:run": "node dist/tests/cmodel_test_runner.js ../CompDesc.json",
+    "test:detailed": "node dist/tests/cmodel_comprehensive_test.js ../CompDesc.json",
+    "test:file": "node dist/tests/cmodel_comprehensive_test.js",
     "test:watch": "tsc --watch & npm run test:run",
     "clean": "rm -rf dist"
   },

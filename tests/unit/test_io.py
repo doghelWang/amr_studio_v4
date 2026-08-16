@@ -1,29 +1,21 @@
-from backend.core.model_parser import ModelParser, PureProtoDecoder, collapse_parsed_protobuf
+import sys
 import zipfile
-import json
-import os
+from pathlib import Path
 
-def test():
-    zip_path = '/Users/wangfeifei/code/amr_studio_v4/docs/ModelSet312.cmodel'
-    with zipfile.ZipFile(zip_path, 'r') as zf:
-        comp_data = zf.read('CompDesc.model')
-        
-    raw_parsed = PureProtoDecoder.parse_protobuf_generic(comp_data)
-    json_data = collapse_parsed_protobuf(raw_parsed)
 
-    modules = json_data.get("5", [])
-    if not isinstance(modules, list): modules = [modules]
+BACKEND_DIR = Path(__file__).resolve().parents[2] / "src" / "backend"
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
 
-    print(f"Total modules: {len(modules)}")
-    for i, mod in enumerate(modules):
-        family = mod.get("1", "unknown")
-        if not isinstance(family, str):
-            continue
-        print(f"Mod {i}: {family}")
-        
-        # Check if it has an IO module
-        if "io" in family.lower() or "button" in family.lower() or "lamp" in family.lower():
-            print(f"  -> Found IO related! Props: {json.dumps(mod)[:200]}...")
+from app.infrastructure.protobuf.model_parser import ModelParser
 
-if __name__ == '__main__':
-    test()
+
+FIXTURE = Path(__file__).resolve().parents[1] / "full_pipeline_audit" / "audit_results_12345" / "12345_audit.cmodel"
+
+
+def test_comp_desc_binary_uses_official_proto_schema():
+    with zipfile.ZipFile(FIXTURE, "r") as archive:
+        comp_desc = ModelParser.get_comp_desc_from_binary(archive.read("CompDesc.model"))
+
+    assert "moreModuleInfo" in comp_desc
+    assert isinstance(comp_desc["moreModuleInfo"], list)

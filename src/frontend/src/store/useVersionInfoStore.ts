@@ -1,18 +1,6 @@
 import { create } from 'zustand';
 import axios from 'axios';
-
-// Backend base URL (auto-adaptive, same as api_v2.ts)
-const getBackendBase = () => {
-  if (typeof window !== 'undefined') {
-    const { hostname, protocol, port } = window.location;
-    // In dev mode (3000/3001/5173), route to backend 8002
-    if (['3000', '3001', '5173'].includes(port)) {
-      return `${protocol}//${hostname}:8002`;
-    }
-    return window.location.origin;
-  }
-  return 'http://localhost:8002';
-};
+import { getBackendBase } from '../services/backendConfig';
 
 // Version info from package.json
 const FRONTEND_VERSION = import.meta.env.VITE_APP_VERSION || '1.0.0';

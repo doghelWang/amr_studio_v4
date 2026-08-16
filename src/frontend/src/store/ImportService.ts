@@ -10,6 +10,7 @@ import {
 import abilityRegistry from './ability_registry.json';
 import { v4 as uuidv4 } from 'uuid';
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+import { parseFunctionProcesses } from './domain/functions';
 
 export class ImportService {
   // §SCHEMA-DRIVEN: All defaults now come from actual data or constants
@@ -40,7 +41,7 @@ export class ImportService {
     const infoKey = json.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
 
     if (json[infoKey] && Array.isArray(json[infoKey])) {
-      json[infoKey].forEach((group: any) => this.processModuleGroup(group, components, null, schemaRegistry));
+      json[infoKey].forEach((group: any, index: number) => this.processModuleGroup(group, components, null, schemaRegistry, index));
     }
 
     // ━━━ 1. Build Absolute ID Index (English SrcName is Truth) ━━━
@@ -159,7 +160,6 @@ export class ImportService {
           console.log(`- SUCCESS: Semantic Match [${p.key}] -> EN: ${targetSrcName} | CN: ${targetComp.alias}`);
 
           if (p.role === 'encoder') {
-            targetComp.parentNodeUuid = w.id;
             slots[`encoder_${posKey}`] = targetComp.id;
           } else {
             // Tracing Driver via Wiring (Bit-Perfect Line logic)
@@ -179,10 +179,6 @@ export class ImportService {
               const mSlot = p.role.includes('steer') ? `steerMotor_${posKey}` : `motor_${posKey}`;
               slots[dSlot] = driver.id;
               slots[mSlot] = targetComp.id;
-              driver.parentNodeUuid = w.id;
-              targetComp.parentNodeUuid = driver.id;
-            } else {
-              targetComp.parentNodeUuid = w.id;
             }
           }
         }
@@ -193,7 +189,16 @@ export class ImportService {
     identity.powerSlots = slots;
     console.groupEnd();
 
-    return { components, identity };
+    return {
+      components,
+      identity,
+      rawCompDescMeta: {
+        moduleGroupName: json.moduleGroupName || json.module_group_name || '',
+        moduleGroupUuid: json.moduleGroupUuid || json.module_group_uuid || '',
+        moduleSys: json.moduleSys || json.module_sys || '',
+        modelVersion: json.modelVersion || json.model_version || '',
+      }
+    } as any;
   }
 
   /**
@@ -242,6 +247,10 @@ export class ImportService {
         }))
       }))
     };
+  }
+
+  static parseFuncDesc(json: any) {
+    return parseFunctionProcesses(json);
   }
 
   private static findAbilityTemplateAttr(funcType: string, childKey: string, attrKey: string): any {
@@ -338,6 +347,9 @@ export class ImportService {
     if (type === 'FIXED_E' || type === 'DATA_FIXED_E') {
       return {
         ...baseAttr,
+        // ABI Proto stores the selected hardware reference in stringFix.
+        // The editor/auditor use the canonical frontend value field.
+        value: attr.stringFix ?? attr.string_fix ?? '',
         fixedSource: attr.fixedSource || [],
         boolParse: true
       };
@@ -387,20 +399,20 @@ export class ImportService {
     return mapping[type] || type;
   }
 
-  private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>) {
+  private static processModuleGroup(group: any, list: ComponentConfig[], parentUuid: string | null, schemaRegistry?: Record<string, any>, groupIndex = 0) {
     const groupName = group.moduleGroupName || group.module_group_name || '';
     const groupUuid = group.moduleGroupUuid || group.module_group_uuid || uuidv4();
     const comps = group.moduleComponets || group.module_componets || [];
     if (Array.isArray(comps)) {
-      comps.forEach((comp: any) => list.push(this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry)));
+      comps.forEach((comp: any, componentIndex: number) => list.push(this.mapToComponent(comp, groupName, groupUuid, parentUuid, schemaRegistry, group, groupIndex, componentIndex)));
     }
     const infoKey = group.moreModuleInfo ? "moreModuleInfo" : "more_module_info";
     if (group[infoKey] && Array.isArray(group[infoKey])) {
-      group[infoKey].forEach((sub: any) => this.processModuleGroup(sub, list, null, schemaRegistry));
+      group[infoKey].forEach((sub: any, childIndex: number) => this.processModuleGroup(sub, list, null, schemaRegistry, groupIndex + childIndex / 1000));
     }
   }
 
-  private static mapToComponent(comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>): ComponentConfig {
+  private static mapToComponent(comp: any, groupName: string, groupUuid: string, parentUuid: string | null, schemaRegistry?: Record<string, any>, rawGroup?: any, rawModuleGroupIndex?: number, rawComponentIndex?: number): ComponentConfig {
     const gen = comp.generalAttr || comp.general_attr || {};
     const struct = comp.structParam || comp.struct_param || {};
     const structExtend = struct.extendParams || struct.extend_params || [];
@@ -415,6 +427,9 @@ export class ImportService {
       key: inf.key, type: inf.type, path: inf.path, desc: inf.desc || inf.key,
       interfaceUuid: inf.interfaceUuid || inf.interface_uuid || uuidv4(),
       linkedInterfaceUuid: inf.linkedInterfaceUuid || inf.linked_interface_uuid || [],
+      linkAttrs: inf.linkAttrs || inf.link_attrs,
+      interfaceAttrs: inf.interfaceAttrs || inf.interface_attrs,
+      interfaceParams: inf.interfaceParams || inf.interface_params,
     }));
 
     const privateAttrs: AttributeGroup[] = (comp.privateAttr?.privateAttrs || comp.private_attr?.private_attrs || []).map((grp: any) => ({
@@ -434,7 +449,8 @@ export class ImportService {
       name: physicalName,
       alias: gen.moduleDesc?.stringValue || gen.module_desc?.string_value || physicalName,
       type: subTypeKey, category, mainModuleTypeKey: rawMainType, subModuleTypeKey: subTypeKey,
-      parentNodeUuid: parentUuid, moduleGroupName: groupName, moduleGroupUuid: groupUuid,
+      parentNodeUuid: this.findExtendCombo(structExtend, 'parentNodeUuid') || parentUuid,
+      moduleGroupName: groupName, moduleGroupUuid: groupUuid,
       mountX: this.findExtend(structExtend, 'locCoordX'),
       mountY: this.findExtend(structExtend, 'locCoordY'),
       mountZ: this.findExtend(structExtend, 'locCoordZ'),
@@ -442,12 +458,17 @@ export class ImportService {
       mountPitch: this.findExtend(structExtend, 'locCoordPITCH'),
       mountYaw: this.findExtend(structExtend, 'locCoordYAW'),
       privateAttrs, interfaces,
-      shape: gen.moduleShape?.box ? {
-        type: 'BOX', length: gen.moduleShape.box.sizeLen || gen.moduleShape.box.size_len || 0,
-        width: gen.moduleShape.box.sizeWidth || gen.moduleShape.box.size_width || 0,
-        height: gen.moduleShape.box.sizeHeight || gen.moduleShape.box.size_height || 0
-      } : undefined,
+      shape: this.mapShape(gen.moduleShape || gen.module_shape),
       generalAttr: gen,
+      rawCmodelComponent: comp,
+      rawModuleGroup: rawGroup ? {
+        moduleGroupName: rawGroup.moduleGroupName || rawGroup.module_group_name || '',
+        moduleGroupUuid: rawGroup.moduleGroupUuid || rawGroup.module_group_uuid || '',
+        moduleSys: rawGroup.moduleSys || rawGroup.module_sys || '',
+        modelVersion: rawGroup.modelVersion || rawGroup.model_version || '',
+      } : undefined,
+      rawModuleGroupIndex,
+      rawComponentIndex,
     };
   }
 
@@ -456,19 +477,60 @@ export class ImportService {
     return item?.doubleValue ?? item?.double_value ?? 0;
   }
 
+  private static findExtendCombo(extend: any[], key: string): string | null {
+    const item = extend?.find((param: any) => param.key === key);
+    const combo = item?.comboType || item?.combo_type;
+    return combo?.typeKey || combo?.type_key || null;
+  }
+
+  private static mapShape(shape: any): ComponentConfig['shape'] {
+    if (!shape || typeof shape !== 'object') return undefined;
+    if (shape.box) {
+      return { type: 'BOX', length: shape.box.sizeLen ?? shape.box.size_len, width: shape.box.sizeWidth ?? shape.box.size_width, height: shape.box.sizeHeight ?? shape.box.size_height };
+    }
+    if (shape.cylinder) {
+      return { type: 'CYLINDER', diameter: shape.cylinder.diameter, height: shape.cylinder.height ?? shape.cylinder.sizeHeight ?? shape.cylinder.size_height };
+    }
+    if (shape.sphere) return { type: 'SPHERE', diameter: shape.sphere.diameter };
+    return undefined;
+  }
+
   private static mapAttribute(attr: any): SmartAttribute {
     const combo = attr.comboType || attr.combo_type;
+    const rawType = attr.type ?? attr.dataType ?? attr.data_type;
+    const typeMap: Record<number, string> = {
+      0: 'DATA_BYTES', 1: 'DATA_STRING', 3: 'DATA_IP', 4: 'DATA_BOOL', 5: 'DATA_INT32',
+      6: 'DATA_UINT32', 7: 'DATA_INT64', 8: 'DATA_UINT64', 9: 'DATA_FLOAT', 10: 'DATA_DOUBLE',
+      11: 'DATA_COMBOX', 12: 'DATA_FIXED_E',
+    };
+    const type = typeof rawType === 'number' ? (typeMap[rawType] || rawType) : (rawType || 'DATA_DOUBLE');
+    let value: any;
+    switch (type) {
+      case 'DATA_BYTES': value = attr.bytesValue ?? attr.bytes_value; break;
+      case 'DATA_STRING': value = attr.stringValue ?? attr.string_value; break;
+      case 'DATA_IP': value = attr.ipValue ?? attr.ip_value; break;
+      case 'DATA_BOOL': value = attr.boolValue ?? attr.bool_value; break;
+      case 'DATA_INT32': value = attr.int32Value ?? attr.int32_value ?? attr.int_32_value; break;
+      case 'DATA_UINT32': value = attr.uint32Value ?? attr.uint32_value; break;
+      case 'DATA_INT64': value = attr.int64Value ?? attr.int64_value; break;
+      case 'DATA_UINT64': value = attr.uint64Value ?? attr.uint64_value; break;
+      case 'DATA_FLOAT': value = attr.floatValue ?? attr.float_value; break;
+      case 'DATA_DOUBLE': value = attr.doubleValue ?? attr.double_value; break;
+      case 'DATA_COMBOX': value = combo?.typeKey || combo?.type_key; break;
+      case 'DATA_FIXED_E': value = attr.stringFix ?? attr.string_fix; break;
+    }
     return {
-      key: attr.key, desc: attr.desc || attr.key, type: attr.type || 'DATA_DOUBLE',
-      value: attr.stringValue ?? attr.string_value ?? attr.stringFix ?? attr.string_fix ?? attr.doubleValue ?? attr.double_value ?? attr.boolValue ?? attr.bool_value ?? attr.int32Value ?? attr.int_32_value ?? combo?.typeKey,
-      maxValue: attr.doubleMaxvalue ?? attr.int32Maxvalue,
-      minValue: attr.doubleMinvalue ?? attr.int32Minvalue,
+      key: attr.key, desc: attr.desc || attr.key, type: type as any,
+      value,
+      maxValue: attr.doubleMaxvalue ?? attr.double_maxvalue ?? attr.floatMaxvalue ?? attr.float_maxvalue ?? attr.int32Maxvalue ?? attr.int32_maxvalue ?? attr.uint32Maxvalue ?? attr.uint32_maxvalue ?? attr.int64Maxvalue ?? attr.int64_maxvalue ?? attr.uint64Maxvalue ?? attr.uint64_maxvalue,
+      minValue: attr.doubleMinvalue ?? attr.double_minvalue ?? attr.floatMinvalue ?? attr.float_minvalue ?? attr.int32Minvalue ?? attr.int32_minvalue ?? attr.uint32Minvalue ?? attr.uint32_minvalue ?? attr.int64Minvalue ?? attr.int64_minvalue ?? attr.uint64Minvalue ?? attr.uint64_minvalue,
       unit: attr.unit,
       boolParse: attr.boolParse ?? attr.bool_parse,
       boolHide: attr.boolHide ?? attr.bool_hide,
       boolNoeditable: attr.boolNoeditable ?? attr.bool_noeditable,
       boolMustfill: attr.boolMustfill ?? attr.bool_mustfill,
-      boolBasic: true,
+      boolBasic: attr.boolBasic ?? attr.bool_basic,
+      fixedSource: attr.fixedSource ?? attr.fixed_source,
       comboType: combo ? {
         typeKey: combo.typeKey || combo.type_key,
         typeDesc: combo.typeDesc || combo.type_desc,
@@ -481,8 +543,19 @@ export class ImportService {
   }
 
   static mapEntityToComponent(entityJson: any, schemaRegistry?: Record<string, any>): ComponentConfig {
+    if (!entityJson || typeof entityJson !== 'object') {
+      throw new Error("Invalid entity: empty payload");
+    }
+
+    const directComponent = entityJson.generalAttr || entityJson.general_attr ? entityJson : null;
     const comps = entityJson.moduleComponets || entityJson.module_componets || [];
-    if (!comps[0]) throw new Error("Invalid entity");
-    return this.mapToComponent(comps[0], "LibraryGroup", uuidv4(), null, schemaRegistry);
+    const firstComponent = directComponent || comps[0];
+
+    if (!firstComponent) {
+      const groupName = entityJson.moduleGroupName || entityJson.module_group_name || 'unknown';
+      throw new Error(`Invalid entity: no module component in ${groupName}`);
+    }
+
+    return this.mapToComponent(firstComponent, "LibraryGroup", uuidv4(), null, schemaRegistry);
   }
 }

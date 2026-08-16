@@ -59,11 +59,23 @@ def main():
     parser.add_argument("--host", type=str, default="0.0.0.0", help="Binding host (default: 0.0.0.0)")
     parser.add_argument("--backend-port", type=int, default=8002, help="Backend port (default: 8002)")
     parser.add_argument("--frontend-port", type=int, default=3001, help="Frontend port (default: 3001)")
+    parser.add_argument(
+        "--open-browser",
+        action="store_true",
+        help="Open the frontend URL after both health checks pass",
+    )
+    parser.add_argument(
+        "--backend-runtime",
+        choices=["python", "ts"],
+        default=os.environ.get("AMR_BACKEND_RUNTIME", "python"),
+        help="Backend runtime to launch: python or ts (default: python; env AMR_BACKEND_RUNTIME supported)"
+    )
     args = parser.parse_args()
 
     root_dir = Path(__file__).parent.absolute()
     frontend_dir = root_dir / "src" / "frontend"
     backend_dir = root_dir / "src" / "backend"
+    backend_ts_dir = root_dir / "src" / "backend_ts"
 
     # 1. Cleanup
     print(f"🧹 Cleaning up ports {args.backend_port} and {args.frontend_port}...")
@@ -71,41 +83,71 @@ def main():
     kill_process_on_port(args.frontend_port)
 
     # 2. Start Backend
-    print(f"🚀 Launching Backend on {args.host}:{args.backend_port}...")
-    python_exe = get_python_executable(backend_dir)
+    print(f"🚀 Launching Backend ({args.backend_runtime}) on {args.host}:{args.backend_port}...")
     env = os.environ.copy()
-    env["PYTHONPATH"] = str(backend_dir)
-    
-    backend_log = open(backend_dir / "backend_runtime.log", "a")
-    backend_proc = subprocess.Popen(
-        [python_exe, "main.py", "--host", args.host, "--port", str(args.backend_port)],
-        cwd=str(backend_dir),
-        env=env,
-        stdout=backend_log,
-        stderr=backend_log,
-        preexec_fn=os.setsid if platform.system() != "Windows" else None
-    )
+    if args.backend_runtime == "ts":
+        backend_log = open(backend_ts_dir / "backend_runtime.log", "a")
+        node_bin = shutil.which("node")
+        if not node_bin:
+            print("🚨 CRITICAL: Node.js is required for --backend-runtime ts.")
+            sys.exit(1)
+        if not (backend_ts_dir / "dist" / "main.js").exists():
+            print("📦 Building TypeScript backend...")
+            subprocess.run(["npm", "run", "build"], cwd=str(backend_ts_dir), check=True)
+        backend_proc = subprocess.Popen(
+            [node_bin, "dist/main.js", "--host", args.host, "--port", str(args.backend_port)],
+            cwd=str(backend_ts_dir),
+            env=env,
+            stdout=backend_log,
+            stderr=backend_log,
+            preexec_fn=os.setsid if platform.system() != "Windows" else None
+        )
+    else:
+        python_exe = get_python_executable(backend_dir)
+        env["PYTHONPATH"] = str(backend_dir)
+        backend_log = open(backend_dir / "backend_runtime.log", "a")
+        backend_proc = subprocess.Popen(
+            [python_exe, "main.py", "--host", args.host, "--port", str(args.backend_port)],
+            cwd=str(backend_dir),
+            env=env,
+            stdout=backend_log,
+            stderr=backend_log,
+            preexec_fn=os.setsid if platform.system() != "Windows" else None
+        )
 
     # 3. Start Frontend
     print(f"🚀 Launching Frontend on {args.host}:{args.frontend_port}...")
     frontend_log = open(frontend_dir / "frontend_runtime.log", "a")
     
-    # Use direct vite binary to avoid npm wrapper issues
-    vite_bin = frontend_dir / "node_modules" / ".bin" / "vite"
-    if not vite_bin.exists():
-        vite_bin = "npx vite" # Fallback
-    
     f_env = os.environ.copy()
     f_env["CI"] = "true"
-    
+
     is_win = platform.system() == "Windows"
+    npm_exe = shutil.which("npm.cmd" if is_win else "npm")
+    if not npm_exe:
+        print("🚨 CRITICAL: Node.js and npm are required to launch the frontend.")
+        backend_proc.terminate()
+        sys.exit(1)
+
+    frontend_args = [
+        npm_exe,
+        "run",
+        "dev",
+        "--",
+        "--host",
+        args.host,
+        "--port",
+        str(args.frontend_port),
+        "--no-open",
+    ]
+    frontend_command = subprocess.list2cmdline(frontend_args) if is_win else frontend_args
     frontend_proc = subprocess.Popen(
-        f"{vite_bin} --host {args.host} --port {args.frontend_port} --no-open",
+        frontend_command,
         cwd=str(frontend_dir),
         env=f_env,
         stdout=frontend_log,
         stderr=frontend_log,
-        shell=True,
+        shell=is_win,
         preexec_fn=os.setsid if not is_win else None
     )
 
@@ -134,6 +176,10 @@ def main():
         print(f"Frontend: http://localhost:{args.frontend_port}")
         print(f"Backend:  http://localhost:{args.backend_port}")
         print(f"Start Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        if args.open_browser:
+            import webbrowser
+
+            webbrowser.open(f"http://127.0.0.1:{args.frontend_port}")
     else:
         print("\n🚨 CRITICAL: Service stability check failed.")
         sys.exit(1)

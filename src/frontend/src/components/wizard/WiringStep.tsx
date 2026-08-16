@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { Tag, Button, Select, Space, Tooltip, Empty, Divider, Typography, Badge, Card, Tabs, Row, Col, Alert } from 'antd';
+import { Tag, Button, Select, Space, Tooltip, Empty, Typography, Badge, Card, Tabs, Row, Col, Alert, Table, Statistic, message } from 'antd';
 import { 
     ApiOutlined, SwapOutlined, 
     LinkOutlined, DisconnectOutlined,
@@ -12,6 +12,7 @@ import {
 } from '@ant-design/icons';
 import { useProjectStore } from '../../store/useProjectStore';
 import { InterfaceConfig, ComponentConfig } from '../../store/types';
+import { buildElectricalConnections, getCompatibleInterfaceTargets, getConnectionMultiplicity, summarizeElectricalConnections } from '../../store/domain/electrical';
 
 const { Text, Title } = Typography;
 
@@ -29,6 +30,15 @@ const getBusTheme = (type: string) => {
     if (t === 'DI') return { color: '#1677ff', label: '数字输入', icon: <ControlOutlined /> };
     if (t === 'DO') return { color: '#52c41a', label: '数字输出', icon: <BulbOutlined /> };
     return { color: 'var(--text-muted)', label: type, icon: <ApiOutlined /> };
+};
+
+const kindLabels: Record<string, string> = {
+    communication_bus: '通信总线',
+    io_signal: 'IO 信号',
+    power: '电源/BAT',
+    onboard: '板载连接',
+    audio_video: '音视频',
+    unknown: '未知'
 };
 
 // ──────────────────────────────────────────────────────────
@@ -298,10 +308,225 @@ const IOSchematicPanel: React.FC<{
 };
 
 // ──────────────────────────────────────────────────────────
+// 子组件 C: 电气连接实体清单
+// ──────────────────────────────────────────────────────────
+const ConnectionInventoryPanel: React.FC<{
+    components: ComponentConfig[];
+    createConnection: (sourceComponentId: string, sourceIfaceUuid: string, targetComponentId: string, targetIfaceUuid: string) => { ok: boolean; message?: string };
+    removeConnection: (sourceIfaceUuid: string, targetIfaceUuid: string) => void;
+}> = ({ components, createConnection, removeConnection }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [sourceValue, setSourceValue] = useState<string>();
+    const [targetValue, setTargetValue] = useState<string>();
+    const connections = useMemo(() => buildElectricalConnections(components), [components]);
+    const summary = useMemo(() => summarizeElectricalConnections(connections), [connections]);
+    const sourceOptions = useMemo(() => components.flatMap(component =>
+        (component.interfaces || []).map(iface => ({
+            value: `${component.id}:${iface.interfaceUuid}`,
+            label: `${component.alias || component.name} / ${iface.key} (${iface.type})`,
+            componentId: component.id,
+            interfaceUuid: iface.interfaceUuid,
+        }))
+    ), [components]);
+
+    const targetOptions = useMemo(() => {
+        if (!sourceValue) return [];
+        const [sourceComponentId, sourceIfaceUuid] = sourceValue.split(':');
+        const pointToPointOccupied = new Set(
+            connections
+                .filter(connection => connection.multiplicity === 'point_to_point')
+                .flatMap(connection => [connection.sourceInterfaceUuid, connection.targetInterfaceUuid])
+        );
+        const sourceComponent = components.find(component => component.id === sourceComponentId);
+        const sourceIface = sourceComponent?.interfaces.find(iface => iface.interfaceUuid === sourceIfaceUuid);
+        if (sourceIface && getConnectionMultiplicity(sourceIface.type) === 'point_to_point' && pointToPointOccupied.has(sourceIface.interfaceUuid)) {
+            return [];
+        }
+
+        return getCompatibleInterfaceTargets(components, sourceComponentId, sourceIfaceUuid)
+            .filter(item => getConnectionMultiplicity(item.iface.type) !== 'point_to_point' || !pointToPointOccupied.has(item.iface.interfaceUuid))
+            .map(item => ({
+                value: `${item.component.id}:${item.iface.interfaceUuid}`,
+                label: `${item.component.alias || item.component.name} / ${item.iface.key} (${item.iface.type})`,
+            }));
+    }, [components, connections, sourceValue]);
+
+    const handleCreateConnection = () => {
+        if (!sourceValue || !targetValue) {
+            messageApi.warning('请选择源接口和目标接口。');
+            return;
+        }
+        const [sourceComponentId, sourceIfaceUuid] = sourceValue.split(':');
+        const [targetComponentId, targetIfaceUuid] = targetValue.split(':');
+        const result = createConnection(sourceComponentId, sourceIfaceUuid, targetComponentId, targetIfaceUuid);
+        if (!result.ok) {
+            messageApi.error(result.message || '连接创建失败。');
+            return;
+        }
+        setTargetValue(undefined);
+        messageApi.success('连接已创建。');
+    };
+
+    const columns = [
+        {
+            title: '类型',
+            dataIndex: 'kind',
+            width: 120,
+            render: (kind: string, row: any) => (
+                <Space direction="vertical" size={2}>
+                    <Tag color={row.diagnostics?.some((d: any) => d.severity === 'error') ? 'error' : 'blue'}>
+                        {kindLabels[kind] || kind}
+                    </Tag>
+                    <Text type="secondary" style={{ fontSize: 11 }}>{row.interfaceType}</Text>
+                </Space>
+            )
+        },
+        {
+            title: '源接口',
+            dataIndex: 'sourceComponentName',
+            render: (_: string, row: any) => (
+                <Space direction="vertical" size={2}>
+                    <Text strong>{row.sourceComponentName}</Text>
+                    <Text type="secondary" style={{ fontSize: 11 }}>{row.sourceInterfaceKey} / {row.sourceInterfaceUuid}</Text>
+                </Space>
+            )
+        },
+        {
+            title: '目标接口',
+            dataIndex: 'targetComponentName',
+            render: (_: string, row: any) => (
+                <Space direction="vertical" size={2}>
+                    <Text strong>{row.targetComponentName}</Text>
+                    <Text type="secondary" style={{ fontSize: 11 }}>{row.targetInterfaceKey} / {row.targetInterfaceUuid}</Text>
+                </Space>
+            )
+        },
+        {
+            title: '方向/形态',
+            width: 140,
+            render: (_: any, row: any) => (
+                <Space direction="vertical" size={2}>
+                    <Tag>{row.direction}</Tag>
+                    <Text type="secondary" style={{ fontSize: 11 }}>{row.multiplicity}</Text>
+                </Space>
+            )
+        },
+        {
+            title: '诊断',
+            width: 220,
+            render: (_: any, row: any) => {
+                const visible = (row.diagnostics || []).filter((item: any) => item.severity !== 'trace');
+                if (!visible.length) return <Tag color="success">连接有效</Tag>;
+                return (
+                    <Space direction="vertical" size={4}>
+                        {visible.map((item: any) => (
+                            <Tag key={`${row.id}-${item.code}`} color={item.severity === 'error' ? 'error' : 'warning'}>
+                                {item.code}
+                            </Tag>
+                        ))}
+                    </Space>
+                );
+            }
+        },
+        {
+            title: '操作',
+            width: 100,
+            render: (_: any, row: any) => (
+                <Button
+                    size="small"
+                    danger
+                    icon={<DisconnectOutlined />}
+                    onClick={() => removeConnection(row.sourceInterfaceUuid, row.targetInterfaceUuid)}
+                >
+                    删除
+                </Button>
+            )
+        }
+    ];
+
+    return (
+        <div className="connection-inventory-container">
+            {contextHolder}
+            <Alert
+                message="电气连接实体视图"
+                description="连接清单现在是编辑入口：创建连接会通过兼容性校验后写入 linkedInterfaceUuid；删除连接会清理相关接口引用。"
+                type="info"
+                showIcon
+                style={{ marginBottom: 16 }}
+            />
+            <Card size="small" style={{ marginBottom: 16, background: 'var(--bg-hover)', borderRadius: 12 }}>
+                <Row gutter={12} align="middle">
+                    <Col span={10}>
+                        <Select
+                            showSearch
+                            allowClear
+                            placeholder="选择源接口"
+                            value={sourceValue}
+                            onChange={(value) => {
+                                setSourceValue(value);
+                                setTargetValue(undefined);
+                            }}
+                            options={sourceOptions}
+                            optionFilterProp="label"
+                            style={{ width: '100%' }}
+                        />
+                    </Col>
+                    <Col span={10}>
+                        <Select
+                            showSearch
+                            allowClear
+                            disabled={!sourceValue}
+                            placeholder={sourceValue ? '选择兼容目标接口' : '请先选择源接口'}
+                            value={targetValue}
+                            onChange={setTargetValue}
+                            options={targetOptions}
+                            optionFilterProp="label"
+                            style={{ width: '100%' }}
+                        />
+                    </Col>
+                    <Col span={4}>
+                        <Button type="primary" icon={<LinkOutlined />} block onClick={handleCreateConnection}>
+                            创建连接
+                        </Button>
+                    </Col>
+                </Row>
+            </Card>
+            <Row gutter={16} style={{ marginBottom: 16 }}>
+                <Col span={6}><Card size="small"><Statistic title="连接实体" value={summary.total} /></Card></Col>
+                <Col span={6}><Card size="small"><Statistic title="错误" value={summary.errorCount} valueStyle={{ color: summary.errorCount ? '#ff4d4f' : '#52c41a' }} /></Card></Col>
+                <Col span={6}><Card size="small"><Statistic title="警告" value={summary.warningCount} valueStyle={{ color: summary.warningCount ? '#faad14' : '#52c41a' }} /></Card></Col>
+                <Col span={6}><Card size="small"><Statistic title="接口类型" value={Object.keys(summary.byType).length} /></Card></Col>
+            </Row>
+            {connections.length === 0 ? (
+                <Empty description="当前没有从 linkedInterfaceUuid 反建出的电气连接" />
+            ) : (
+                <Table
+                    size="small"
+                    rowKey="id"
+                    columns={columns}
+                    dataSource={connections}
+                    pagination={{ pageSize: 8 }}
+                    expandable={{
+                        expandedRowRender: row => (
+                            <div style={{ fontSize: 12 }}>
+                                <Text type="secondary">来源引用：</Text>
+                                <Space wrap style={{ marginLeft: 8 }}>
+                                    {row.sourceRefs.map(ref => <Tag key={ref}>{ref}</Tag>)}
+                                </Space>
+                            </div>
+                        )
+                    }}
+                />
+            )}
+        </div>
+    );
+};
+
+// ──────────────────────────────────────────────────────────
 // Main: WiringStep 主组件
 // ──────────────────────────────────────────────────────────
 export const WiringStep: React.FC<{ onExport?: () => void }> = () => {
-    const { config, linkInterface } = useProjectStore();
+    const { config, linkInterface, createConnection, removeConnection } = useProjectStore();
     const components = config.components as ComponentConfig[];
 
     const counts = useMemo(() => {
@@ -317,6 +542,11 @@ export const WiringStep: React.FC<{ onExport?: () => void }> = () => {
     }, [components]);
 
     const tabItems = [
+        {
+            key: 'inventory',
+            label: <Space><LinkOutlined /> 连接清单 <Badge count={buildElectricalConnections(components).length} size="small" style={{ backgroundColor: 'var(--accent)' }} /></Space>,
+            children: <ConnectionInventoryPanel components={components} createConnection={createConnection} removeConnection={removeConnection} />,
+        },
         {
             key: 'bus',
             label: <Space><BranchesOutlined /> 通信总线拓扑 <Badge count={counts.bus} size="small" style={{ backgroundColor: 'var(--warning)' }} /></Space>,
@@ -340,7 +570,7 @@ export const WiringStep: React.FC<{ onExport?: () => void }> = () => {
             </div>
 
             <Tabs
-                defaultActiveKey="bus"
+                defaultActiveKey="inventory"
                 items={tabItems}
                 className="custom-wiring-tabs"
             />

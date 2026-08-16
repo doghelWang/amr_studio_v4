@@ -190,41 +190,41 @@ export const SmartFormGrouped: React.FC<SmartFormGroupedProps> = ({
         return <Text type="secondary" style={{ padding: 16 }}>No editable attribute groups.</Text>;
     }
 
+    const collapseItems = activeGroups.map(group => {
+        const visibleAttrs = group.elements.filter(a => !a.boolHide);
+        if (visibleAttrs.length === 0) return null;
+
+        return {
+            key: group.key,
+            label: (
+                <Space>
+                    <SettingOutlined />
+                    <Text strong>{group.desc || group.key}</Text>
+                    <Text type="secondary" style={{ fontSize: 11 }}>({visibleAttrs.length})</Text>
+                </Space>
+            ),
+            children: (
+                <Form layout={layout}>
+                    {group.elements.map(attr => (
+                        <SmartField
+                            key={attr.key}
+                            attr={attr}
+                            onChange={(attrKey, value, subKey) => onGroupChange(group.key, attrKey, value, subKey)}
+                            readOnly={readOnly}
+                        />
+                    ))}
+                </Form>
+            )
+        };
+    }).filter(Boolean) as any[];
+
     return (
         <Collapse
             defaultActiveKey={activeGroups.map(g => g.key)}
             expandIconPosition="start"
             style={{ background: 'transparent' }}
-        >
-            {activeGroups.map(group => {
-                const visibleAttrs = group.elements.filter(a => !a.boolHide);
-                if (visibleAttrs.length === 0) return null;
-
-                return (
-                    <Panel
-                        key={group.key}
-                        header={
-                            <Space>
-                                <SettingOutlined />
-                                <Text strong>{group.desc || group.key}</Text>
-                                <Text type="secondary" style={{ fontSize: 11 }}>({visibleAttrs.length})</Text>
-                            </Space>
-                        }
-                    >
-                        <Form layout={layout}>
-                            {group.elements.map(attr => (
-                                <SmartField
-                                    key={attr.key}
-                                    attr={attr}
-                                    onChange={(attrKey, value, subKey) => onGroupChange(group.key, attrKey, value, subKey)}
-                                    readOnly={readOnly}
-                                />
-                            ))}
-                        </Form>
-                    </Panel>
-                );
-            })}
-        </Collapse>
+            items={collapseItems}
+        />
     );
 };
 
