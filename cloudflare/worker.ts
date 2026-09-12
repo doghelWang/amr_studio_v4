@@ -926,7 +926,18 @@ function mapComponentToCmodel(component: Record<string, unknown>): Record<string
     generalAttr: buildComponentGeneralAttr(component),
     privateAttr: buildComponentPrivateAttrs(component),
     interfaceAbility: component.interfaceAbility ?? { busInterfaceAbility: [] },
-    interfaceParams: { interfaceGroup: buildComponentInterfaceGroups(component) },
+    // NOTE: the real proto field is literally named `interface_Group` (mixed case — confirmed
+    // in cloudflare/generated/protobuf_models.js, Message_Interface_Param.prototype.interface_Group,
+    // and in protobuf_models.d.ts), not `interfaceGroup`. Message_Interface_Param.fromObject()
+    // only reads `object.interface_Group`; a camelCase `interfaceGroup` key here is silently
+    // ignored by fromObject(), which was confirmed empirically by running the real generated
+    // fromObject() code with both key spellings (see tests/audit_fixes/ts_backend/). Writing
+    // `interfaceGroup` here silently dropped ALL bus/interface wiring for every brand-new
+    // (non-imported) component at compile time. mergeRawInterfaces() (used by the raw/imported
+    // component path just above) already gets this right by resolving the key dynamically
+    // against the existing raw proto JSON — this branch has no raw JSON to resolve against, so
+    // it must use the literal proto field name directly.
+    interfaceParams: { interface_Group: buildComponentInterfaceGroups(component) },
     structParam: { extendParams: buildComponentExtendParams(component) },
   };
 }
