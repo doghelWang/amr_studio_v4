@@ -5,6 +5,11 @@ import { AMR_MODEL_NSP, MODEL_ABI, MODEL_DES } from "./generated/protobuf_models
 type Env = {
   ASSETS: Fetcher;
   AMR_PROJECTS: KVNamespace;
+  // [FEAT] Exposes the real, per-deploy Worker version id/timestamp so /api/v1/system/version
+  // (and the frontend VersionInfo/BackendSwitcher widgets that read it) can show which build is
+  // actually live, instead of the permanently-static placeholder strings this used to return.
+  // Requires "version_metadata": { "binding": "CF_VERSION_METADATA" } in wrangler.jsonc.
+  CF_VERSION_METADATA?: { id: string; tag: string; timestamp: string };
 };
 
 const SERVICE_START_TIME = "2026-07-11T00:00:00.000+08:00";
@@ -1732,11 +1737,16 @@ async function handleApi(request: Request, env: Env): Promise<Response> {
   }
 
   if (method === "GET" && pathname === "/api/v1/system/version") {
+    // [FEAT] versionMeta.id/timestamp are unique per `wrangler versions upload`, so this now
+    // reflects whichever version is actually serving the request — previously every field here
+    // was a hardcoded literal that never changed across deploys, making it impossible to tell
+    // from the UI whether a given fix had actually gone live.
+    const versionMeta = env.CF_VERSION_METADATA;
     return jsonResponse({
       backendVersion: "1.0.1-worker-ts",
-      buildDate: "2026-07-11",
-      commitHash: "worker-ts-edge",
-      serviceStartTime: SERVICE_START_TIME,
+      buildDate: versionMeta?.timestamp ?? "2026-07-11",
+      commitHash: versionMeta?.tag || versionMeta?.id || "worker-ts-edge",
+      serviceStartTime: versionMeta?.timestamp ?? SERVICE_START_TIME,
       runtime: "cloudflare-worker-typescript",
       migratedEndpoints: MIGRATED_ENDPOINTS,
     });
