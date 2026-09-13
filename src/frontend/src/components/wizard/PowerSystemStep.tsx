@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
+import { useAutoTreeHeight } from '../../hooks/useAutoTreeHeight';
 import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message, Select } from 'antd';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
 import { projectDriveRatio } from '../../store/domain/driveRatio';
+import { getValidSubType } from '../../store/SchemaEngine';
 import { 
     ThunderboltOutlined, SettingOutlined, 
     BuildOutlined, DeploymentUnitOutlined,
@@ -31,6 +33,9 @@ export const PowerSystemStep: React.FC = () => {
         updateStructuralParam
     } = useProjectStore();
     const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
+    // [FIX REQ-NF-04] see useAutoTreeHeight.ts — same virtual-scroll height fix as the
+    // hardware tree in ComponentLibraryStep.
+    const { containerRef: powerTreeContainerRef, height: powerTreeHeight } = useAutoTreeHeight(400);
     const [wheelChainType, setWheelChainType] = useState<'diffWheel' | 'horizontalSteerWheel' | 'verticalSteerWheel' | 'diffSteerWheel'>(
         config.identity.driveType?.includes('STEER') ? 'horizontalSteerWheel' : 'diffWheel'
     );
@@ -113,6 +118,15 @@ export const PowerSystemStep: React.FC = () => {
         }
     };
 
+    // §AUDIT-FIX(2026-09) / NO_HARDCODE: these subType strings used to be passed straight to
+    // addComponent(), bypassing schema validation (CLAUDE.md §2.0 names 'PMSMMotor' literals as
+    // the canonical forbidden pattern). ComponentLibraryStep.tsx/ComponentPropertyPanel.tsx
+    // already do this correctly via getValidSubType(); this brings PowerSystemStep in line.
+    // (wheelChainType itself needs no equivalent helper: it's already constrained to a valid
+    // DRIVEWHEEL subtype by the Select options below, not a free-form hardcoded literal.)
+    const DRIVER_SUBTYPE = () => getValidSubType('DRIVER', 'subDriver', []);
+    const MOTOR_SUBTYPE = () => getValidSubType('MOTOR', 'PMSMMotor', ['BLDCMotor', 'BDCMotor']);
+
     const addPowerChain = () => {
         const isDiffSteer = wheelChainType === 'diffSteerWheel';
         const isSteerWheel = wheelChainType === 'horizontalSteerWheel' || wheelChainType === 'verticalSteerWheel';
@@ -131,8 +145,8 @@ export const PowerSystemStep: React.FC = () => {
         });
 
         if (!isSteerWheel && !isDiffSteer) {
-            const driverId = addComponent('DRIVER', 'subDriver');
-            const motorId = addComponent('MOTOR', 'PMSMMotor');
+            const driverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const motorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (driverId) {
                 updateComponent(driverId, { alias: `${chainLabel} - 驱动器`, functionalRole: 'walk' });
@@ -144,10 +158,10 @@ export const PowerSystemStep: React.FC = () => {
                 bindWheelAttr(wheelId, 'relateMotor', motorId);
             }
         } else if (isDiffSteer) {
-            const leftDriverId = addComponent('DRIVER', 'subDriver');
-            const rightDriverId = addComponent('DRIVER', 'subDriver');
-            const leftMotorId = addComponent('MOTOR', 'PMSMMotor');
-            const rightMotorId = addComponent('MOTOR', 'PMSMMotor');
+            const leftDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const rightDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const leftMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+            const rightMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (leftDriverId) {
                 updateComponent(leftDriverId, { alias: `${chainLabel} - 左驱动器`, functionalRole: 'walk_left' });
@@ -176,10 +190,10 @@ export const PowerSystemStep: React.FC = () => {
                 bindWheelAttr(wheelId, 'relatedEncode', encoderId);
             }
         } else {
-            const steerDriverId = addComponent('DRIVER', 'subDriver');
-            const walkDriverId = addComponent('DRIVER', 'subDriver');
-            const steerMotorId = addComponent('MOTOR', 'PMSMMotor');
-            const walkMotorId = addComponent('MOTOR', 'PMSMMotor');
+            const steerDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const walkDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const steerMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+            const walkMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (steerDriverId) {
                 updateComponent(steerDriverId, { alias: `${chainLabel} - 转向驱动器`, functionalRole: 'steer' });
@@ -238,16 +252,53 @@ export const PowerSystemStep: React.FC = () => {
         void message.success('已移除选中的动力节点');
     };
 
-    const syncWheelAttributes = (sourceId: string, _groupKey: string, attrKey: string, value: any) => {
-        if (attrKey !== 'wheelRadius') return;
-        config.components
-            .filter(c => c.category === 'DRIVEWHEEL' && c.id !== sourceId)
-            .forEach(wheel => {
-                const target = getWheelGroupAndKey(wheel.id, attrKey);
-                if (target) {
-                    updateAttribute(wheel.id, target.groupKey, target.attrKey, value);
-                }
-            });
+    /**
+     * [FIX ISS-004] Cross-component attribute sync, scoped by functional role.
+     *
+     * History: a fuller version of this existed pre-restructuring (commit 386a9e60,
+     * "ISS-004 scope synced attributes by module functional role instead of generic
+     * type") at the old `frontend/src/components/wizard/PowerSystemStep.tsx` path, but
+     * was dropped somewhere during the frontend/ -> src/frontend/ reorganization and
+     * replaced with this function's narrower ancestor, which only handled
+     * DRIVEWHEEL.wheelRadius and ignored every other attribute/category — editing a
+     * driver or motor attribute (e.g. a gear ratio) on one wheel group silently never
+     * reached the equivalent driver/motor on any other wheel group.
+     *
+     * Restored behavior: ANY attribute edit on the active component now syncs to every
+     * sibling that shares the same category + type AND the same `functionalRole`
+     * ('walk'/'steer'/'walk_left'/'walk_right', set at creation time in addPowerChain()
+     * above) — so editing a steer-motor attribute can never leak onto a walk-motor
+     * sibling, nor a left-side motor onto a right-side one, and vice versa. Components
+     * with no functionalRole (e.g. encoders) fall back to the old unscoped behavior so
+     * they keep syncing as before.
+     *
+     * Note on the other half of the historical commit (ISS-005, symmetric coordinate
+     * mirroring via a `frontendGroupKey`-based left/right/front/rear projection): the
+     * `locCoordNX`/`locCoordNY` attributes that logic mirrored no longer exist on any
+     * wheel schema (checked every DRIVEWHEEL subtype's PrivateAttribute.json) — wheel
+     * position is now computed centrally at the chassis level (`diffChassis`/
+     * `steerChassis` templates' hidden `locCoordN*` fields, driven by
+     * `syncChassisAttributes()`), not stored per-wheel. So there is no live bug left to
+     * restore there: re-adding coordinate mirroring for attribute keys the current
+     * wheel schema doesn't have would be dead code, not a fix.
+     */
+    const syncAttributeToSiblings = (sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => {
+        const source = config.components.find(c => c.id === sourceId);
+        if (!source) return;
+
+        const siblings = config.components.filter(c =>
+            c.id !== sourceId &&
+            c.category === source.category &&
+            c.type === source.type &&
+            (!source.functionalRole || c.functionalRole === source.functionalRole)
+        );
+
+        siblings.forEach(sib => {
+            const target = getWheelGroupAndKey(sib.id, attrKey);
+            if (target) {
+                updateAttribute(sib.id, target.groupKey, target.attrKey, value, subKey);
+            }
+        });
     };
 
     return (
@@ -298,14 +349,18 @@ export const PowerSystemStep: React.FC = () => {
                         </Button>
                     </Space>
                     {treeData.length > 0 ? (
-                        <Tree
-                            showIcon
-                            defaultExpandAll
-                            className="dark-tree"
-                            treeData={treeData}
-                            onSelect={(keys) => setSelectedUuid(keys[0] as string)}
-                            selectedKeys={selectedUuid ? [selectedUuid] : []}
-                        />
+                        <div ref={powerTreeContainerRef} style={{ minHeight: 400, height: 400, overflow: 'hidden' }}>
+                            <Tree
+                                showIcon
+                                defaultExpandAll
+                                className="dark-tree"
+                                treeData={treeData}
+                                onSelect={(keys) => setSelectedUuid(keys[0] as string)}
+                                selectedKeys={selectedUuid ? [selectedUuid] : []}
+                                virtual
+                                height={powerTreeHeight}
+                            />
+                        </div>
                     ) : (
                         <Empty
                             description="未探测到动力组件"
@@ -342,7 +397,7 @@ export const PowerSystemStep: React.FC = () => {
                             onAttributeChange={(groupId, attrKey, val, subKey) => {
                                 updateAttribute(activeComp.id, groupId, attrKey, val, subKey);
                             }}
-                            onAttributeChangeSync={syncWheelAttributes}
+                            onAttributeChangeSync={syncAttributeToSiblings}
                             onInterfaceChange={(ifaceUuid, data) => {
                                 const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, ...data } : i);
                                 updateComponent(activeComp.id, { interfaces: updated });

@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { useAutoTreeHeight } from '../../hooks/useAutoTreeHeight';
 import { v4 as uuidv4 } from 'uuid';
 import { 
     Typography, Button, Space, Modal, Card, 
@@ -70,6 +71,10 @@ export const ComponentLibraryStep: React.FC<{ onExport?: () => void }> = () => {
     const [tempName, setTempName] = useState('');
     
     const [libraryData, setLibraryData] = useState<Record<string, any[]>>({});
+    // [FIX REQ-NF-04] see useAutoTreeHeight.ts — gives the hardware tree below a real,
+    // continuously-remeasured pixel height so AntD's virtual scrolling can position nodes
+    // correctly instead of stranding them off-screen.
+    const { containerRef: hwTreeContainerRef, height: hwTreeHeight } = useAutoTreeHeight(360);
     const [loadingLibrary, setLoadingLibrary] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [activeSubCategory, setActiveSubCategory] = useState('ALL');
@@ -546,8 +551,8 @@ const treeData = useMemo(() => {
                         <Divider plain style={{ margin: '24px 0' }}>
                             <Text type="secondary" style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 0.5 }}>全域硬件层级关系</Text>
                         </Divider>
-                        <div style={{ padding: '0 4px' }}>
-                            <Tree 
+                        <div ref={hwTreeContainerRef} style={{ padding: '0 4px', minHeight: 360, height: 360, overflow: 'hidden' }}>
+                            <Tree
                                 showIcon 
                                 showLine={{ showLeafIcon: false }}
                                 treeData={filteredTreeData} 
@@ -555,7 +560,9 @@ const treeData = useMemo(() => {
                                 onSelect={(keys) => keys[0] && setActiveComponent(keys[0] as string)} 
                                 blockNode 
                                 className="custom-hardware-tree-v2" 
-                                style={{ background: 'transparent', fontSize: 12 }} 
+                                style={{ background: 'transparent', fontSize: 12 }}
+                                virtual
+                                height={hwTreeHeight}
                             />
                         </div>
                         {/* P2: Navigation validation alert */}

@@ -1524,17 +1524,47 @@ async function uploadCmodel(request: Request, env: Env): Promise<Response> {
 }
 
 async function compileCmodel(env: Env, projectId: string): Promise<Response> {
+  // [FIX REQ-EX-01] Everything in this function used to run with no outer safety net: several
+  // steps below (readSandbox, buildFrontendCompDesc, zipSync, the KV put) had no try/catch at all,
+  // so any exception there propagated straight past this function, past handleApi(), and out to
+  // the Worker runtime's own default handler — which renders the raw "A Worker script ... threw an
+  // unhandled exception" page directly to the end user (REQ-EX-01's reported symptom). The
+  // encodeCompDesc/encodeAbiSet/encodeFuncDesc/buildModelFileDesc stages already had their own
+  // structured catches (kept below, since they give more specific error codes); this outer
+  // try/catch is the backstop for every other step, and for genuinely unexpected errors, per the
+  // error contract in 《后端设计》§5.2: {status, error, detail, stage}. The stack trace itself is
+  // only ever logged server-side (console.error) with a correlation id — never sent to the client.
+  try {
+    return await compileCmodelInner(env, projectId);
+  } catch (error) {
+    const requestId = crypto.randomUUID();
+    console.error(`[compileCmodel] requestId=${requestId} projectId=${projectId} unhandled error:`, error);
+    return jsonResponse(
+      {
+        status: "error",
+        error: "INTERNAL_ERROR",
+        detail: `服务器内部错误，请联系管理员并提供请求ID：${requestId}`,
+        stage: "COMPILE",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+async function compileCmodelInner(env: Env, projectId: string): Promise<Response> {
   const sandbox = await readSandbox(env, projectId);
   if (!sandbox) {
-    return jsonResponse({ status: "error", error: "PROJECT_SANDBOX_NOT_FOUND", projectId }, { status: 404 });
+    return jsonResponse({ status: "error", error: "PROJECT_SANDBOX_NOT_FOUND", projectId, stage: "VALIDATE" }, { status: 404 });
   }
   if (!sandbox.fullJson) {
     return jsonResponse(
       {
+        status: "error",
         error: "COMPILE_REQUIRES_PROTOBUF_JSON",
         message:
           "Worker compile currently requires an imported/decoded CompDesc JSON. Frontend-only config to CompDesc protobuf generation is not migrated yet.",
         migratedEndpoints: MIGRATED_ENDPOINTS,
+        stage: "VALIDATE",
       },
       { status: 501 },
     );
@@ -1554,6 +1584,7 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
         status: "error",
         error: "COMP_DESC_PROTOBUF_ENCODE_FAILED",
         detail: error instanceof Error ? error.message : String(error),
+        stage: "SERIALIZE",
       },
       { status: 500 },
     );
@@ -1582,6 +1613,7 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
           status: "error",
           error: "ABI_SET_PROTOBUF_ENCODE_FAILED",
           detail: error instanceof Error ? error.message : String(error),
+          stage: "SERIALIZE",
         },
         { status: 500 },
       );
@@ -1607,6 +1639,7 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
           status: "error",
           error: "FUNC_DESC_PROTOBUF_ENCODE_FAILED",
           detail: error instanceof Error ? error.message : String(error),
+          stage: "SERIALIZE",
         },
         { status: 500 },
       );
@@ -1630,6 +1663,7 @@ async function compileCmodel(env: Env, projectId: string): Promise<Response> {
         status: "error",
         error: "MODEL_FILE_DESC_PRESERVATION_FAILED",
         detail: error instanceof Error ? error.message : String(error),
+        stage: "PACKAGE",
       },
       { status: 422 },
     );
