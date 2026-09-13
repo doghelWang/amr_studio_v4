@@ -108,8 +108,16 @@ body {
   transition: background 220ms ease, color 220ms ease;
 }
 
+/* [FIX] Page-height bug root cause: .content-area below is already built as an internal-scroll
+   pane (flex:1; overflow-y:auto), but with .app-layout only *min*-height:100vh, the shell itself
+   just grows to fit however tall the step's content is, so the whole html/body ends up scrolling
+   instead -- that's what let a single step (see Equipment Workshop below) balloon the entire page
+   to 18,000+px. Making the shell a fixed viewport height (desktop only -- see the 900px breakpoint
+   below, where the sidebar stacks above the content and needs room to grow) lets .content-area's
+   own scrollbar do its job, so no step's page can ever exceed one viewport height again. */
 .app-layout {
   display: flex;
+  height: 100vh;
   min-height: 100vh;
   overflow: hidden;
 }
@@ -739,6 +747,9 @@ body {
 
 @media (max-width: 900px) {
   .app-layout {
+    /* Stacked mobile layout: sidebar and content take their natural heights instead of being
+       forced to share one fixed 100vh, so the sidebar's own nav/buttons never get clipped. */
+    height: auto;
     flex-direction: column;
   }
 

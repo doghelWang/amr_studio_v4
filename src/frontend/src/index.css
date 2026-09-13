@@ -78,11 +78,18 @@ textarea {
 .wiki-gate { border-radius: 12px; }
 .workshop-card { height: 100%; border-color: var(--border-default); background: var(--bg-card); }
 .workshop-card .ant-card-head { min-height: 48px; }
-.function-card { height: auto; }
+.function-card { height: auto; max-height: 360px; overflow: auto; }
 .function-item { width: 100%; display: grid; grid-template-columns: 30px 1fr auto; gap: 9px; align-items: center; padding: 10px 8px; border: 0; border-radius: 10px; color: var(--text-secondary); background: transparent; text-align: left; cursor: pointer; }
 .function-item:hover, .function-item.selected { color: var(--text-primary); background: var(--bg-active); }
-.function-item strong, .function-item small { display: block; }
-.function-item small { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
+.function-item strong, .function-item small { display: block; overflow: hidden; }
+/* [FIX] Same width-collapse text-wrap bug as the installed/catalog lists below, but on the
+   category nav buttons: at the narrow ~116px column width these render at, antd's default
+   white-space:normal made each description wrap ~1 word per line (up to 7 lines), ballooning
+   a 6-item category list from an expected ~350px to ~1130px. Title gets single-line ellipsis;
+   the short (~10 char) description gets a 2-line clamp so it still reads in full most of the
+   time, with a fixed, predictable max height either way. */
+.function-item strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.function-item small { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; color: var(--text-muted); font-size: 11px; line-height: 1.35; margin-top: 2px; }
 .function-icon { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; color: var(--text-accent); background: var(--accent-soft); }
 .function-count { min-width: 20px; padding: 1px 6px; border-radius: 10px; color: var(--text-muted); background: var(--bg-hover); font-size: 11px; text-align: center; }
 .installed-card { margin-top: 16px; height: auto; max-height: 460px; overflow: auto; }
@@ -232,7 +239,12 @@ textarea {
 .assembly-phase-step { display: inline-flex; align-items: center; gap: 5px; color: var(--text-muted); }
 .assembly-phase-step i { display: grid; place-items: center; width: 18px; height: 18px; border: 1px solid var(--border-default); border-radius: 50%; font-style: normal; font-size: 10px; }
 .assembly-phase-step.done { color: var(--success); }.assembly-phase-step.done i { border-color: var(--success); }
-.assembly-tree-card { margin-top: 16px; }
+/* [FIX] .workshop-card defaults to height:100%; every sibling card in this 3-column layout
+   explicitly opts back out with height:auto except this one, which was missed. Under the row's
+   flex align-items:stretch, that meant this card stretched to match whichever column was
+   tallest (2400+px in a 38-item test project) instead of sizing to its own ~660px of real
+   content (a note + the already-capped .assembly-tree + a coverage strip). */
+.assembly-tree-card { margin-top: 16px; height: auto; }
 .assembly-reference-note { padding: 8px 9px; border-left: 3px solid var(--accent); color: var(--text-muted); background: var(--bg-hover); font-size: 10px; line-height: 1.5; }
 .assembly-tree { max-height: 360px; overflow: auto; margin-top: 9px; }
 .assembly-node { margin-top: 3px; }
@@ -250,7 +262,10 @@ textarea {
 @media (max-width: 1000px) { .phase-track { grid-template-columns: repeat(3, 1fr); } .workshop-hero { align-items: flex-start; gap: 16px; flex-direction: column; } .workshop-progress { min-width: 0; } .scene-hud-3d { align-items: flex-start; flex-direction: column; } .scene-hud-metrics { width: 100%; justify-content: space-between; } }
 
 /* AMR workbench visual baseline: technical assembly table, not a neon card grid. */
-.chassis-card { background: #11181d !important; border-color: #2e3a40 !important; }
+/* [FIX] Same missing height:auto as .assembly-tree-card above -- without it this card also
+   stretches to match the row's tallest column instead of its own content, pushing the
+   wiring-card below it further down than necessary. */
+.chassis-card { height: auto; background: #11181d !important; border-color: #2e3a40 !important; }
 .chassis-card .ant-card-head { border-bottom-color: #2e3a40; }
 .chassis-card .scene-hud-3d { border-bottom: 1px solid #2e3a40; }
 .chassis-scene-3d { min-height: 570px; border: 1px solid #6b777a; border-radius: 6px; background-color: #c8d0d1; background-image: linear-gradient(rgba(45,61,64,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(45,61,64,.09) 1px, transparent 1px), radial-gradient(ellipse at 50% 40%, #f0f3f1 0%, #cbd2d2 58%, #aeb9ba 100%); background-size: 24px 24px, 24px 24px, 100% 100%; box-shadow: inset 0 0 0 10px rgba(255,255,255,.13), inset 0 -50px 90px rgba(48,63,66,.16), 0 12px 28px rgba(0,0,0,.22); }

@@ -52,14 +52,18 @@ export const WelcomeScreen: React.FC<Props> = ({
   return (
     <div
       style={{
-        minHeight: '100vh',
+        // [FIX] .app-layout is now a fixed 100vh shell (see themes.css) instead of min-height,
+        // so this screen's own overflow:hidden would have started clipping its lower content
+        // (e.g. the "打开 CModel 文件" card) with no way to reach it. height:100% + overflow:auto
+        // makes this screen scroll internally within the shell instead, same as every wizard step.
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '48px 24px',
         position: 'relative',
-        overflow: 'hidden',
+        overflow: 'auto',
         background: 'transparent',
       }}
     >
