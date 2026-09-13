@@ -217,8 +217,15 @@ textarea {
 .legend-dot.pending { background: var(--warning); }
 .chassis-stats { margin-top: 14px; }
 .chassis-stats .ant-statistic-title, .chassis-stats .ant-statistic-content { font-size: 12px; }
-.wiring-card { height: auto; }
-.wiring-card .ant-select { width: 100%; }
+/* [REDESIGN] .wiring-card retired -- the "建立连接" card moved out of the always-cramped
+   3-column work area and became its own full-width card on the 电气连接 phase page
+   (.electrical-connect-card below), with room for a proper source/target layout instead
+   of 5 columns squeezed into half the viewport. */
+.electrical-connect-card .connect-flow { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; }
+.electrical-connect-card .connect-group { flex: 1 1 260px; min-width: 220px; display: flex; flex-direction: column; gap: 6px; }
+.electrical-connect-card .connect-group .ant-select { width: 100%; }
+.electrical-connect-card .connect-arrow { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: 16px; flex: 0 0 auto; }
+.electrical-connect-card .connection-summary { margin-top: 12px; }
 .connect-button { margin-top: 14px; }
 .connection-summary { margin-top: 12px; padding: 8px 10px; border-radius: 8px; color: var(--text-muted); background: var(--bg-hover); font-size: 12px; }
 .catalog-card { height: auto; max-height: 460px; overflow: auto; }
@@ -263,8 +270,7 @@ textarea {
 
 /* AMR workbench visual baseline: technical assembly table, not a neon card grid. */
 /* [FIX] Same missing height:auto as .assembly-tree-card above -- without it this card also
-   stretches to match the row's tallest column instead of its own content, pushing the
-   wiring-card below it further down than necessary. */
+   stretches to match the row's tallest column instead of sizing to its own content. */
 .chassis-card { height: auto; background: #11181d !important; border-color: #2e3a40 !important; }
 .chassis-card .ant-card-head { border-bottom-color: #2e3a40; }
 .chassis-card .scene-hud-3d { border-bottom: 1px solid #2e3a40; }

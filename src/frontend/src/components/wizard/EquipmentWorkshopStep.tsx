@@ -346,6 +346,36 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
 
       {phaseKey === 'electrical' && (
         <div style={{ marginTop: 16, marginBottom: 16 }}>
+          {/* [REDESIGN] 原来挤在结构装配三栏工作区里的一张小卡片（源模块/源接口/目标模块/目标接口
+              塞进 span=6/6/1/6/5 的单行五列），现在电气连接单独成为一个阶段页面，把它放大成
+              源→目标两组竖排字段 + 中间一个连接图标，和下方的接口矩阵/参数面板组成完整的
+              电气连接工作流，不再和结构装配的 3D 装配台混在一起。 */}
+          <Card
+            title={<Space><LinkOutlined />建立接口连接 · 从“能看见”到“能通信”</Space>}
+            style={{ borderRadius: 16, marginBottom: 20 }}
+            className="electrical-connect-card"
+          >
+            <Text type="secondary" style={{ display: 'block', marginBottom: 16 }}>
+              先选源模块和源接口，再选兼容的目标模块和目标接口；目标接口已按类型和 DI/DO 方向自动过滤，总线参数一致性由下方审计检查。
+            </Text>
+            <div className="connect-flow">
+              <div className="connect-group">
+                <Text type="secondary" style={{ fontSize: 12 }}>源模块</Text>
+                <Select placeholder="选择源模块" value={sourceComponentId} onChange={value => { setSourceComponentId(value); setSourceInterfaceUuid(undefined); setTargetComponentId(undefined); setTargetInterfaceUuid(undefined); }} options={config.components.map(component => ({ value: component.id, label: componentOptionLabel(component) }))} />
+                <Text type="secondary" style={{ fontSize: 12, marginTop: 8 }}>源接口</Text>
+                <Select placeholder="选择源接口" value={sourceInterfaceUuid} onChange={value => { setSourceInterfaceUuid(value); setTargetComponentId(undefined); setTargetInterfaceUuid(undefined); }} options={ifaceOptions(sourceComponent)} />
+              </div>
+              <div className="connect-arrow"><LinkOutlined /></div>
+              <div className="connect-group">
+                <Text type="secondary" style={{ fontSize: 12 }}>目标模块</Text>
+                <Select placeholder="选择目标模块" value={targetComponentId} onChange={value => { setTargetComponentId(value); setTargetInterfaceUuid(undefined); }} options={config.components.filter(component => component.id !== sourceComponentId && (!sourceInterfaceUuid || compatibleTargetComponentIds.has(component.id))).map(component => ({ value: component.id, label: componentOptionLabel(component) }))} />
+                <Text type="secondary" style={{ fontSize: 12, marginTop: 8 }}>目标接口</Text>
+                <Select placeholder="选择目标接口" value={targetInterfaceUuid} onChange={setTargetInterfaceUuid} options={ifaceOptions(targetComponent, Boolean(sourceInterfaceUuid))} />
+              </div>
+            </div>
+            <Button type="primary" size="large" icon={<LinkOutlined />} onClick={connect} disabled={!sourceInterfaceUuid || !targetInterfaceUuid} className="connect-button">建立连接</Button>
+            <div className="connection-summary">{config.components.flatMap(component => component.interfaces.flatMap(iface => (iface.linkedInterfaceUuid || []).map(target => ({ component, iface, target })))).length === 0 ? <Text type="secondary">当前没有已记录的接口连接。连接校验仍由领域层执行。</Text> : <Text type="success"><CheckCircleOutlined /> 已有接口连接记录，可在下方接口矩阵中继续审计。</Text>}</div>
+          </Card>
           <ElectricalInterfaceMatrixStep />
         </div>
       )}
@@ -418,7 +448,7 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
         </Card>
       )}
 
-      <Row gutter={[16, 16]} className="workshop-grid">
+      {phaseKey === 'structure' && <Row gutter={[16, 16]} className="workshop-grid">
         <Col xs={24} lg={6}>
           <Card title="功能装备栏" extra={<Badge count={installed.length} showZero />} className="workshop-card function-card">
             {FUNCTION_GROUPS.map(group => <button key={group.key} className={`function-item ${group.key === groupKey ? 'selected' : ''}`} onClick={() => setGroupKey(group.key)}>
@@ -486,12 +516,6 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
             </div>
             <Row gutter={12} className="chassis-stats"><Col span={8}><Statistic title="长" value={config.identity.chassisLength || 'unknown'} suffix={config.identity.chassisLength ? '·' : ''} /></Col><Col span={8}><Statistic title="宽" value={config.identity.chassisWidth || 'unknown'} suffix={config.identity.chassisWidth ? '·' : ''} /></Col><Col span={8}><Statistic title="高" value={config.identity.chassisHeight || 'unknown'} suffix={config.identity.chassisHeight ? '·' : ''} /></Col></Row>
           </Card>
-          <Card title={<Space><ApiOutlined />电气连接 · 从“能看见”到“能通信”</Space>} className="workshop-card wiring-card">
-            <Row gutter={8} align="middle"><Col span={6}><Select placeholder="源模块" value={sourceComponentId} onChange={value => { setSourceComponentId(value); setSourceInterfaceUuid(undefined); setTargetComponentId(undefined); setTargetInterfaceUuid(undefined); }} options={config.components.map(component => ({ value: component.id, label: componentOptionLabel(component) }))} /></Col><Col span={6}><Select placeholder="源接口" value={sourceInterfaceUuid} onChange={value => { setSourceInterfaceUuid(value); setTargetComponentId(undefined); setTargetInterfaceUuid(undefined); }} options={ifaceOptions(sourceComponent)} /></Col><Col span={1}><LinkOutlined /></Col><Col span={6}><Select placeholder="目标模块" value={targetComponentId} onChange={value => { setTargetComponentId(value); setTargetInterfaceUuid(undefined); }} options={config.components.filter(component => component.id !== sourceComponentId && (!sourceInterfaceUuid || compatibleTargetComponentIds.has(component.id))).map(component => ({ value: component.id, label: componentOptionLabel(component) }))} /></Col><Col span={5}><Select placeholder="目标接口" value={targetInterfaceUuid} onChange={setTargetInterfaceUuid} options={ifaceOptions(targetComponent, Boolean(sourceInterfaceUuid))} /></Col></Row>
-            {sourceInterfaceUuid && <Text type="secondary">目标接口已按类型和 DI/DO 方向过滤；总线参数一致性由审计阶段检查。</Text>}
-            <Button type="primary" icon={<LinkOutlined />} onClick={connect} disabled={!sourceInterfaceUuid || !targetInterfaceUuid} className="connect-button">建立连接</Button>
-            <div className="connection-summary">{config.components.flatMap(component => component.interfaces.flatMap(iface => (iface.linkedInterfaceUuid || []).map(target => ({ component, iface, target })))).length === 0 ? <Text type="secondary">当前没有已记录的接口连接。连接校验仍由领域层执行。</Text> : <Text type="success"><CheckCircleOutlined /> 已有接口连接记录，可在原“接口连线”高级视图中继续审计。</Text>}</div>
-          </Card>
         </Col>
 
         <Col xs={24} lg={6}>
@@ -506,7 +530,7 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
             {selectedCatalog ? <><Tag color="cyan">待装配</Tag><Title level={4}>{selectedCatalog.title}</Title><Text type="secondary">来源：{selectedCatalog.source}</Text><Select className="full-control" value={parentId} onChange={setParentId} options={config.components.map(component => ({ value: component.id, label: `挂载到：${componentOptionLabel(component)}` }))} /><div className="slot-picker"><Text type="secondary">先选装配意图，再确认坐标（仅为尺寸推导预览）</Text><div className="slot-grid">{POSITION_SLOTS.map(slot => <Button key={slot.key} size="small" onClick={() => applyPositionSlot(slot.key)}><span>{slot.icon}</span>{slot.label}</Button>)}</div></div><div className="pose-grid">{(['mountX', 'mountY', 'mountZ', 'mountRoll', 'mountPitch', 'mountYaw'] as const).map(key => <label key={key}><span>{key.replace('mount', '')}</span><InputNumber value={draftPose[key]} onChange={value => setDraftPose(pose => ({ ...pose, [key]: Number(value || 0) }))} /></label>)}</div><Button type="primary" block icon={<PlusOutlined />} onClick={installSelected}>装配到车辆</Button></> : selectedInstalled ? <><Tag color={positionState(selectedInstalled) === '已定位' ? 'success' : 'warning'}>{positionState(selectedInstalled)}</Tag><Title level={4}>{componentOptionLabel(selectedInstalled)}</Title><Text type="secondary">{getCategoryLabel(selectedInstalled.category)} · {selectedInstalled.type || 'unknown'}</Text><Select className="full-control" value={parentId} onChange={setParentId} options={config.components.map(component => ({ value: component.id, label: `挂载到：${componentOptionLabel(component)}` }))} /><div className="slot-picker"><Text type="secondary">调整装备意图（不会覆盖坐标，点击后请确认数值）</Text><div className="slot-grid">{POSITION_SLOTS.map(slot => <Button key={slot.key} size="small" onClick={() => applyPositionSlot(slot.key)}><span>{slot.icon}</span>{slot.label}</Button>)}</div></div><div className="pose-grid">{(['mountX', 'mountY', 'mountZ', 'mountRoll', 'mountPitch', 'mountYaw'] as const).map(key => <label key={key}><span>{key.replace('mount', '')}</span><InputNumber value={draftPose[key]} onChange={value => setDraftPose(pose => ({ ...pose, [key]: Number(value || 0) }))} /></label>)}</div><Button type="primary" block icon={<AimOutlined />} onClick={applyPose}>保存结构关系与位姿</Button><div className="detail-footnote"><Text type="secondary">接口 {selectedInstalled.interfaces.length} 个 · 已连接 {connectionCount(selectedInstalled)} 个</Text></div></> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="选择一个模块进行装配或定位" />}
           </Card>
         </Col>
-      </Row>
+      </Row>}
     </div>
   );
 };
