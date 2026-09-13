@@ -76,6 +76,47 @@ export const apiFetchBoardXml = async () => {
     const res = await axios.get(`/models/v4/BoardDescriptions.xml`, { responseType: 'text' });
     return res.data;
 };
+
+/**
+ * [FIX ISS-006 / REQ-CL-05 root cause] Parses BoardDescriptions.xml into a
+ * `{ [boardTypeKey]: InterfaceConfig[] }` map keyed by <Board typeKey="...">.
+ *
+ * Root cause note: `apiFetchBoardXml()` above was defined and imported into
+ * useProjectStore.ts, but nothing ever called it or parsed its XML — the
+ * store's `boardInterfaces` state was always populated (incorrectly) from
+ * `/api/v1/schemas`'s response, which has no `boardInterfaces` field at all
+ * (that endpoint returns a flat map keyed by subsystem name, e.g. "mainCPU").
+ * So `state.boardInterfaces` was permanently `{}`, and every board-based
+ * component (mainCPU, driver, ...) silently got zero injected interfaces
+ * regardless of which board model was selected. This parses the real per-board
+ * interface catalog so `fetchSchemas()` can populate `boardInterfaces` for real.
+ */
+export const parseBoardInterfacesXml = (xmlText: string): Record<string, any[]> => {
+    const result: Record<string, any[]> = {};
+    if (typeof DOMParser === 'undefined' || !xmlText) return result;
+    try {
+        const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+        if (doc.querySelector('parsererror')) return result;
+        const boards = Array.from(doc.getElementsByTagName('Board'));
+        for (const board of boards) {
+            const typeKey = board.getAttribute('typeKey');
+            if (!typeKey) continue;
+            const ifaces = Array.from(board.getElementsByTagName('Interface')).map((el) => {
+                const name = el.getAttribute('name') || '';
+                const protocol = el.getAttribute('protocol') || '';
+                return {
+                    key: name,
+                    type: protocol,
+                    label: name,
+                };
+            });
+            result[typeKey] = ifaces;
+        }
+    } catch (e) {
+        console.error('Failed to parse BoardDescriptions.xml:', e);
+    }
+    return result;
+};
 /** 获取已保存的用户项目列表 */
 export const apiListSavedProjects = async () => {
     const res = await axios.get(`${getBackendBase()}/api/v1/projects/saved-list`);

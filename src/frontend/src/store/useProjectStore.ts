@@ -12,6 +12,7 @@ import abilityRegistry from './ability_registry.json';
 import {
   apiFetchSchemas,
   apiFetchBoardXml,
+  parseBoardInterfacesXml,
   apiSaveProject,
   apiListSavedProjects,
   apiLoadProject
@@ -436,9 +437,29 @@ export const useProjectStore = create<ProjectState>()(
         fetchSchemas: async () => {
           try {
             const data = await apiFetchSchemas();
+            // [FIX ISS-006 / REQ-CL-05 root cause] `data` is the raw `/api/v1/schemas`
+            // response, which is a flat map keyed by subsystem name (e.g. "mainCPU",
+            // "driver") — it has no `.registry` field, so `schemaRegistry` keeps its
+            // {} default here (addComponent() already has a documented fallback to
+            // the hardcoded master_registry.json for that case).
+            // `boardInterfaces` used to make the same mistake reading a nonexistent
+            // `data.boardInterfaces`, which meant it was ALWAYS {} — so
+            // addComponent()'s tryInjectInterfaces() could never find a match for
+            // ANY board-based component (mainCPU, driver, ...), regardless of which
+            // board model was selected. The real per-board interface catalog lives in
+            // the separate BoardDescriptions.xml static asset (fetched by
+            // apiFetchBoardXml(), which was defined and imported but never actually
+            // called). Fetch + parse it here so boardInterfaces is populated for real.
+            let boardInterfaces: Record<string, any[]> = {};
+            try {
+              const xmlText = await apiFetchBoardXml();
+              boardInterfaces = parseBoardInterfacesXml(xmlText);
+            } catch (boardErr) {
+              console.error('Failed to fetch/parse BoardDescriptions.xml:', boardErr);
+            }
             set({ 
               schemaRegistry: data.registry || {}, 
-              boardInterfaces: data.boardInterfaces || {} 
+              boardInterfaces
             });
           } catch (e) {
             console.error('Failed to fetch schemas:', e);
@@ -553,16 +574,40 @@ export const useProjectStore = create<ProjectState>()(
           // 1. Try matching by the component type itself (often the board model in library)
           let injected = tryInjectInterfaces(type);
 
-          // 2. Scan attributes for a board model selection (DATA_COMBOX)
+          // 2. Scan attributes for a board model selection (DATA_COMBOX).
+          // [FIX ISS-006] Previously only checked the FIRST typeGroup of the FIRST
+          // boardModel-keyed DATA_COMBOX attribute, so a component whose actual model
+          // key lived in a later typeGroup (or a later attribute) silently got zero
+          // interfaces even when boardInterfaces did have a matching entry. Now every
+          // typeGroup of every boardModel DATA_COMBOX attribute is tried until one hits.
           if (!injected) {
+            outer:
             for (const group of privateAttrs) {
               for (const attr of group.elements) {
-                if (attr.type === 'DATA_COMBOX' && attr.key === 'boardModel' && attr.comboType?.typeGroups?.[0]?.key) {
-                  injected = tryInjectInterfaces(attr.comboType.typeGroups[0].key);
-                  if (injected) break;
+                if (attr.type === 'DATA_COMBOX' && attr.key === 'boardModel' && attr.comboType?.typeGroups?.length) {
+                  for (const typeGroup of attr.comboType.typeGroups) {
+                    if (typeGroup?.key && tryInjectInterfaces(typeGroup.key)) {
+                      injected = true;
+                      break outer;
+                    }
+                  }
                 }
               }
-              if (injected) break;
+            }
+          }
+
+          // 3. Last-resort fallback: for MAINCPU-family boards with no exact model
+          // match above (e.g. a generic/default board model not yet reflected in the
+          // component's boardModel attribute), fall back to any board in
+          // BoardDescriptions.xml whose typeKey follows the mainCPU naming convention
+          // ("RA-MC-...", e.g. RA-MC-R318AT/AD/BN/CT) rather than silently leaving the
+          // component with zero interfaces. Scoped to that prefix (not "any board") so
+          // a mainCPU component never accidentally inherits an unrelated board's
+          // interface set (e.g. a driver or IO-module board).
+          if (!injected && (category as string) === 'MAINCPU') {
+            const mcBoardKey = Object.keys(state.boardInterfaces).find(k => k.startsWith('RA-MC-'));
+            if (mcBoardKey) {
+              injected = tryInjectInterfaces(mcBoardKey);
             }
           }
 
