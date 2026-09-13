@@ -17,7 +17,8 @@ import {
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
 import { SmartAttribute, AttributeGroup } from '../../store/types';
-import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource, getValidSubType } from '../../store/SchemaEngine';
+import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource, getValidSubType, isValidSubType } from '../../store/SchemaEngine';
+import { readInterfaceParams } from '../../store/domain/interfaceParams';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -217,6 +218,18 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
     const isAdvanced = ele.boolBasic === false;
     const isExplicitlyHidden = ele.boolHide === true;
     const isVisibleDimmed = isExplicitlyHidden || (isAdvanced && !showAdvanced);
+    const displayDesc = (() => {
+        if (ele.key === 'gearRatio' && selectedStoreComponent?.category === 'MOTOR') {
+            if (selectedStoreComponent.functionalRole === 'steer') return '转向电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk_left') return '左行走电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk_right') return '右行走电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk') return '行走电机减速比';
+        }
+        if (ele.key === 'gearRatio' && selectedStoreComponent?.category === 'DRIVEWHEEL') {
+            return '转向齿轮比';
+        }
+        return ele.desc || ele.key;
+    })();
 
     // ━━━ State Extraction ━━━
     const isReadOnly = isFixedHardware || ele.boolNoeditable;
@@ -319,7 +332,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
         <div key={ele.key} style={{ marginBottom: 16, marginLeft: depth * 16, opacity: isVisibleDimmed ? 0.6 : 1 }}>
             <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 500, color: isRequired ? '#ff7875' : 'inherit' }}>
-                    {ele.desc || ele.key}
+                    {displayDesc}
                     {isRequired && <span style={{ marginLeft: 4, color: '#ff4d4f' }}>*</span>}
                     {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'var(--bg-hover)' }}>锁定</Tag>}
                     {isExplicitlyHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>隐藏属性</Tag>}
@@ -423,8 +436,9 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
   });
 
   // Fallback to Category Template if both are empty (Audit-0327-2-1)
-  if (activeGroups.length === 0 && !excludeGroupKeys && !onlyGroupKeys) {
-      if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(selectedStoreComponent.category)) {
+  const hasRenderableElements = activeGroups.some(group => Array.isArray(group.elements) && group.elements.length > 0);
+  if (!hasRenderableElements && !excludeGroupKeys && !onlyGroupKeys) {
+      if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR', 'SENSOR'].includes(selectedStoreComponent.category)) {
       // Schema-driven subType selection (NO_HARDCODE rule compliance)
       const subTypeMap: Record<string, { preferred: string; fallbacks: string[] }> = {
         CHASSIS: { preferred: 'diffChassis', fallbacks: ['diffChassis', 'steerChassis'] },
@@ -433,10 +447,13 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
         MOTOR: { preferred: 'PMSMMotor', fallbacks: ['PMSMMotor', 'BLDCMotor', 'BDCMotor'] }
       };
 
+      const componentType = selectedStoreComponent.type || selectedStoreComponent.subModuleTypeKey;
       const mapping = subTypeMap[selectedStoreComponent.category];
-      const subType = mapping
-        ? getValidSubType(selectedStoreComponent.category, mapping.preferred, mapping.fallbacks)
-        : 'GENERIC';
+      const subType = componentType && isValidSubType(componentType)
+        ? componentType
+        : mapping
+          ? getValidSubType(selectedStoreComponent.category, mapping.preferred, mapping.fallbacks)
+          : 'GENERIC';
           activeGroups = buildAttributesFromSchema(subType);
       }
   }
@@ -553,6 +570,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                       dataSource={activeInterfaces}
                       renderItem={(item: any) => {
                           const linkedUuid = (item.linkedInterfaceUuid || [])[0];
+                          const itemParams = readInterfaceParams(item.interfaceParams || {});
                           
                           // Find all OTHER compatible interfaces in the project
                           const availableTargets = config.components
@@ -596,12 +614,19 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <Select 
                                                 size="small" 
                                                 style={{ width: '100%' }}
-                                                value={(item.interfaceParams as any)?.baudRate || 500000}
-                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { baudRate: v })}
-                                                options={[
-                                                    { label: '115200', value: 115200 },
-                                                    { label: '500k', value: 500000 },
-                                                    { label: '1M', value: 1000000 },
+                                                value={itemParams.baudrate || (item.type === 'CAN' ? '500K' : '9600')}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { baudrate: v })}
+                                                options={item.type === 'CAN' ? [
+                                                    { label: '125k', value: '125K' },
+                                                    { label: '250k', value: '250K' },
+                                                    { label: '500k', value: '500K' },
+                                                    { label: '1M', value: '1M' },
+                                                ] : [
+                                                    { label: '9600', value: '9600' },
+                                                    { label: '19200', value: '19200' },
+                                                    { label: '38400', value: '38400' },
+                                                    { label: '115200', value: '115200' },
+                                                    { label: '921600', value: '921600' },
                                                 ]}
                                             />
                                         </div>
@@ -612,8 +637,10 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <InputNumber 
                                                 size="small" 
                                                 style={{ width: '100%' }}
-                                                value={(item.interfaceParams as any)?.canId || 0}
-                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { canId: v })}
+                                                value={itemParams.nodeId ?? 1}
+                                                min={1}
+                                                max={127}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { nodeId: v ?? 1 })}
                                             />
                                         </div>
                                     )}
@@ -622,8 +649,8 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4 }}>IP 地址</div>
                                             <Input 
                                                 size="small" 
-                                                value={(item.interfaceParams as any)?.ipAddress || '192.168.1.10'}
-                                                onChange={e => updateInterfaceParams(selectedUuid, item.interfaceUuid, { ipAddress: e.target.value })}
+                                                value={itemParams.ip || ''}
+                                                onChange={e => updateInterfaceParams(selectedUuid, item.interfaceUuid, { ip: e.target.value })}
                                             />
                                         </div>
                                     )}

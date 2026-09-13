@@ -18,6 +18,8 @@ import {
 } from '../services/api_v2';
 
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+import { getConnectionMultiplicity, findInterfaceRef, validateInterfaceConnection } from './domain/electrical';
+import { updateInterfaceParams as updateInterfaceParamsValue } from './domain/interfaceParams';
 
 const createDefaultIdentity = (): RobotIdentity => ({
   robotName: '',
@@ -79,6 +81,51 @@ const createDefaultProjectConfig = (): RobotConfig => {
     components: [createDefaultChassis(identity)],
     abilities: abilityRegistry as any
   });
+};
+
+const isUsableRobotConfig = (value: unknown): value is RobotConfig => {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Partial<RobotConfig>;
+  return Boolean(candidate.identity && typeof candidate.identity === 'object' && Array.isArray(candidate.components));
+};
+
+/**
+ * Create an instance boundary for catalog/imported component data.
+ * A catalog entry may carry a source module UUID and interface UUIDs. Those
+ * identifiers are not safe to reuse when the same module is installed twice.
+ * Preserve the first ID when it is unused; otherwise create a new instance ID
+ * and remap interface references that belong to this component instance.
+ */
+const materializeComponentInstance = (input: ComponentConfig, usedIds: Set<string>): ComponentConfig => {
+  const componentId = input.id && !usedIds.has(input.id) ? input.id : uuidGen();
+  const interfaceUuidMap = new Map<string, string>();
+  (input.interfaces || []).forEach(iface => {
+    if (iface.interfaceUuid) interfaceUuidMap.set(iface.interfaceUuid, uuidGen());
+  });
+
+  const interfaces = (input.interfaces || []).map(iface => ({
+    ...iface,
+    interfaceUuid: interfaceUuidMap.get(iface.interfaceUuid) || uuidGen(),
+    linkedInterfaceUuid: (iface.linkedInterfaceUuid || []).map(uuid => interfaceUuidMap.get(uuid) || uuid),
+  }));
+
+  const generalAttr = input.generalAttr
+    ? {
+      ...input.generalAttr,
+      moduleUuid: {
+        ...(input.generalAttr.moduleUuid || {}),
+        type: input.generalAttr.moduleUuid?.type || 'DATA_STRING',
+        stringValue: componentId,
+      },
+    }
+    : input.generalAttr;
+
+  return {
+    ...input,
+    id: componentId,
+    generalAttr,
+    interfaces,
+  };
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -255,6 +302,18 @@ const updateNestedAttributeValue = (
   subKey?: string
 ): any => {
   if (attribute.key === attrKey) {
+    if (!subKey && (attribute.comboType?.typeGroups || attribute.combo_type?.type_groups)) {
+      return {
+        ...attribute,
+        value,
+        ...(attribute.comboType ? {
+          comboType: { ...attribute.comboType, typeKey: value }
+        } : {}),
+        ...(attribute.combo_type ? {
+          combo_type: { ...attribute.combo_type, type_key: value }
+        } : {})
+      };
+    }
     if (subKey && attribute.comboType?.typeGroups) {
       return {
         ...attribute,
@@ -316,6 +375,9 @@ interface ProjectState {
 
   // --- Interfaces & Topology ---
   linkInterface: (sourceUuid: string, sourceIfaceUuid: string, targetIfaceUuid: string | null) => void;
+  createConnection: (sourceComponentId: string, sourceIfaceUuid: string, targetComponentId: string, targetIfaceUuid: string) => { ok: boolean; message?: string };
+  removeConnection: (sourceIfaceUuid: string, targetIfaceUuid: string) => void;
+  materializeConnectionsToInterfaces: () => ComponentConfig[];
   updateInterfaceParams: (componentId: string, interfaceUuid: string, params: Record<string, any>) => void;
 
   // --- Attributes ---
@@ -345,6 +407,7 @@ interface ProjectState {
   // --- Schema Registry (Dynamic XML Metadata) ---
   schemaRegistry: Record<string, any>;
   boardInterfaces: Record<string, InterfaceConfig[]>;
+  schemaRegistrySource: 'api' | 'static-snapshot' | 'unknown';
   fetchSchemas: () => Promise<void>;
 }
 
@@ -359,16 +422,39 @@ export const useProjectStore = create<ProjectState>()(
         isDirty: false,
         schemaRegistry: {},
         boardInterfaces: {},
+        schemaRegistrySource: 'unknown',
 
         fetchSchemas: async () => {
           try {
             const data = await apiFetchSchemas();
+            // The Python API currently returns the system-grouped registry at
+            // the response root, while some deployments wrap it in `registry`.
+            // Accept both envelopes without inventing or rewriting schema data.
+            const { registry, boardInterfaces, ...rootRegistry } = data || {};
             set({ 
-              schemaRegistry: data.registry || {}, 
-              boardInterfaces: data.boardInterfaces || {} 
+              schemaRegistry: registry || rootRegistry || {}, 
+              boardInterfaces: boardInterfaces || {},
+              schemaRegistrySource: 'api',
             });
           } catch (e) {
-            console.error('Failed to fetch schemas:', e);
+            // The production domain may temporarily route /api to another
+            // Worker. Use the repository's generated, authoritative asset
+            // snapshot for validation, while preserving the API as primary.
+            try {
+              const response = await fetch('/worker-data/schemas.json');
+              if (!response.ok) throw new Error(`static snapshot HTTP ${response.status}`);
+              const data = await response.json();
+              const { registry, boardInterfaces, ...rootRegistry } = data || {};
+              set({
+                schemaRegistry: registry || rootRegistry || {},
+                boardInterfaces: boardInterfaces || {},
+                schemaRegistrySource: 'static-snapshot',
+              });
+              console.warn('Schema API unavailable; using generated static snapshot for validation.', e);
+            } catch (fallbackError) {
+              set({ schemaRegistrySource: 'unknown' });
+              console.error('Failed to fetch schemas and static snapshot:', { apiError: e, fallbackError });
+            }
           }
         },
 
@@ -428,7 +514,10 @@ export const useProjectStore = create<ProjectState>()(
           }));
 
           // Map based on categories natively mapped from SchemaEngine
-          if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(category as string)) {
+          // Build every schema-backed module from the same source of truth.
+          // SENSOR was previously omitted, leaving newly created encoders with
+          // an empty privateAttrs array even though their schemas are present.
+          if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR', 'SENSOR'].includes(category as string)) {
             let subType = type;
             // [FIX 2026-04-04] Proper subType selection based on category
             if ((category as string) === 'CHASSIS') {
@@ -520,15 +609,27 @@ export const useProjectStore = create<ProjectState>()(
           return id;
         },
 
-        addComponentFromConfig: (config) => set((state) => ({
-          config: { ...state.config, components: [...state.config.components, config] },
-          isDirty: true
-        })),
+        addComponentFromConfig: (config) => set((state) => {
+          const usedIds = new Set(state.config.components.map(component => component.id));
+          const instance = materializeComponentInstance(config, usedIds);
+          return {
+            config: { ...state.config, components: [...state.config.components, instance] },
+            isDirty: true
+          };
+        }),
 
-        addComponents: (components) => set((state) => ({
-          config: { ...state.config, components: [...state.config.components, ...components] },
-          isDirty: true
-        })),
+        addComponents: (components) => set((state) => {
+          const usedIds = new Set(state.config.components.map(component => component.id));
+          const instances = components.map(component => {
+            const instance = materializeComponentInstance(component, usedIds);
+            usedIds.add(instance.id);
+            return instance;
+          });
+          return {
+            config: { ...state.config, components: [...state.config.components, ...instances] },
+            isDirty: true
+          };
+        }),
 
         updateComponent: (id, data) => set((state) => ({
           config: {
@@ -552,10 +653,25 @@ export const useProjectStore = create<ProjectState>()(
             });
           }
 
+          const removedInterfaceUuids = new Set(
+            state.config.components
+              .filter(component => toRemove.has(component.id))
+              .flatMap(component => (component.interfaces || []).map(iface => iface.interfaceUuid))
+          );
+
           return {
             config: {
               ...state.config,
-              components: state.config.components.filter(component => !toRemove.has(component.id))
+              components: state.config.components
+                .filter(component => !toRemove.has(component.id))
+                .map(component => ({
+                  ...component,
+                  interfaces: (component.interfaces || []).map(iface => ({
+                    ...iface,
+                    linkedInterfaceUuid: (iface.linkedInterfaceUuid || [])
+                      .filter(uuid => !removedInterfaceUuids.has(uuid))
+                  }))
+                }))
             },
             isDirty: true
           };
@@ -563,22 +679,108 @@ export const useProjectStore = create<ProjectState>()(
 
         setActiveComponent: (id) => set({ activeComponentId: id }),
 
-        linkInterface: (sourceUuid, sourceIfaceUuid, targetIfaceUuid) => set((state) => ({
+        createConnection: (sourceComponentId, sourceIfaceUuid, targetComponentId, targetIfaceUuid) => {
+          const state = get();
+          const source = findInterfaceRef(state.config.components, sourceIfaceUuid);
+          const target = findInterfaceRef(state.config.components, targetIfaceUuid);
+
+          if (!source || source.component.id !== sourceComponentId) {
+            return { ok: false, message: '源接口不存在或不属于所选组件。' };
+          }
+          if (!target || target.component.id !== targetComponentId) {
+            return { ok: false, message: '目标接口不存在或不属于所选组件。' };
+          }
+
+          const diagnostics = validateInterfaceConnection(source, target);
+          const blocking = diagnostics.find(diagnostic => diagnostic.severity === 'error');
+          if (blocking) {
+            return { ok: false, message: blocking.message };
+          }
+
+          const isInterfaceOccupied = (interfaceUuid: string) => state.config.components.some(component =>
+            component.interfaces.some(iface =>
+              (iface.interfaceUuid === interfaceUuid && (iface.linkedInterfaceUuid || []).length > 0) ||
+              (iface.linkedInterfaceUuid || []).includes(interfaceUuid)
+            )
+          );
+          if (getConnectionMultiplicity(source.iface.type) === 'point_to_point' && isInterfaceOccupied(sourceIfaceUuid)) {
+            return { ok: false, message: '源接口是点对点接口，已存在连接。' };
+          }
+          if (getConnectionMultiplicity(target.iface.type) === 'point_to_point' && isInterfaceOccupied(targetIfaceUuid)) {
+            return { ok: false, message: '目标接口是点对点接口，已存在连接。' };
+          }
+
+          set((current) => ({
+            config: {
+              ...current.config,
+              components: current.config.components.map(component => {
+                if (component.id !== sourceComponentId) return component;
+                return {
+                  ...component,
+                  interfaces: component.interfaces.map(iface => {
+                    if (iface.interfaceUuid !== sourceIfaceUuid) return iface;
+                    const existing = iface.linkedInterfaceUuid || [];
+                    return existing.includes(targetIfaceUuid)
+                      ? iface
+                      : { ...iface, linkedInterfaceUuid: [...existing, targetIfaceUuid] };
+                  })
+                };
+              })
+            },
+            isDirty: true
+          }));
+
+          return { ok: true };
+        },
+
+        removeConnection: (sourceIfaceUuid, targetIfaceUuid) => set((state) => ({
           config: {
             ...state.config,
-            components: state.config.components.map(c => {
-              if (c.id !== sourceUuid) return c;
-              return {
-                ...c,
-                interfaces: c.interfaces.map(i => i.interfaceUuid === sourceIfaceUuid
-                  ? { ...i, linkedInterfaceUuid: targetIfaceUuid ? [targetIfaceUuid] : [] }
-                  : i
-                )
-              };
-            })
+            components: state.config.components.map(component => ({
+              ...component,
+              interfaces: component.interfaces.map(iface => {
+                const linked = iface.linkedInterfaceUuid || [];
+                if (iface.interfaceUuid === sourceIfaceUuid || iface.interfaceUuid === targetIfaceUuid || linked.includes(sourceIfaceUuid) || linked.includes(targetIfaceUuid)) {
+                  return {
+                    ...iface,
+                    linkedInterfaceUuid: linked.filter(uuid => uuid !== sourceIfaceUuid && uuid !== targetIfaceUuid)
+                  };
+                }
+                return iface;
+              })
+            }))
           },
           isDirty: true
         })),
+
+        materializeConnectionsToInterfaces: () => get().config.components,
+
+        linkInterface: (sourceUuid, sourceIfaceUuid, targetIfaceUuid) => {
+          if (!targetIfaceUuid) {
+            get().removeConnection(sourceIfaceUuid, '');
+            set((state) => ({
+              config: {
+                ...state.config,
+                components: state.config.components.map(c => {
+                  if (c.id !== sourceUuid) return c;
+                  return {
+                    ...c,
+                    interfaces: c.interfaces.map(i => i.interfaceUuid === sourceIfaceUuid
+                      ? { ...i, linkedInterfaceUuid: [] }
+                      : i
+                    )
+                  };
+                })
+              },
+              isDirty: true
+            }));
+            return;
+          }
+
+          const target = findInterfaceRef(get().config.components, targetIfaceUuid);
+          if (!target) return;
+          get().createConnection(sourceUuid, sourceIfaceUuid, target.component.id, targetIfaceUuid);
+        },
 
         updateInterfaceParams: (componentId, interfaceUuid, params) => set((state) => ({
           config: {
@@ -588,7 +790,7 @@ export const useProjectStore = create<ProjectState>()(
               return {
                 ...c,
                 interfaces: c.interfaces.map(i => i.interfaceUuid === interfaceUuid
-                  ? { ...i, ...params }
+                  ? { ...i, interfaceParams: updateInterfaceParamsValue(i.interfaceParams || {}, params) }
                   : i
                 )
               };
@@ -602,9 +804,13 @@ export const useProjectStore = create<ProjectState>()(
             ...state.config,
             components: state.config.components.map(c => {
               if (c.id !== componentId) return c;
+              const hasElements = c.privateAttrs.some(group => group.elements.length > 0);
+              const sourceAttrs = hasElements
+                ? c.privateAttrs
+                : buildAttributesFromSchema(c.type || c.subModuleTypeKey || '');
               return {
                 ...c,
-                privateAttrs: c.privateAttrs.map(g => {
+                privateAttrs: sourceAttrs.map(g => {
                   if (g.key !== groupKey) return g;
                   return {
                     ...g,
@@ -661,7 +867,7 @@ export const useProjectStore = create<ProjectState>()(
         }),
 
         loadProject: (config) => set({
-          config,
+          config: isUsableRobotConfig(config) ? config : createDefaultProjectConfig(),
           isDirty: false,
           activeComponentId: null
         }),
@@ -682,8 +888,21 @@ export const useProjectStore = create<ProjectState>()(
           try {
             return await apiListSavedProjects();
           } catch (e) {
-            console.error('List projects failed:', e);
-            return [];
+            // Keep the welcome page useful when the production API route is
+            // unavailable. These are read-only repository-generated samples,
+            // not a claim that the remote KV project list is reachable.
+            try {
+              const response = await fetch('/worker-data/user-saves-index.json');
+              if (!response.ok) throw new Error(`static project index HTTP ${response.status}`);
+              const projects = await response.json();
+              console.warn('Project API unavailable; showing static project snapshots for validation.', e);
+              return Array.isArray(projects)
+                ? projects.map(project => ({ ...project, source: 'static-snapshot' }))
+                : [];
+            } catch (fallbackError) {
+              console.error('List projects and static project snapshot failed:', { apiError: e, fallbackError });
+              return [];
+            }
           }
         },
 
@@ -696,8 +915,17 @@ export const useProjectStore = create<ProjectState>()(
             }
             return false;
           } catch (e) {
-            console.error('Load project failed:', e);
-            return false;
+            try {
+              const response = await fetch(`/worker-data/user-saves/${encodeURIComponent(name)}.json`);
+              if (!response.ok) throw new Error(`static project HTTP ${response.status}`);
+              const config = await response.json();
+              get().loadProject(config);
+              console.warn(`Project API unavailable; loaded static snapshot: ${name}`, e);
+              return true;
+            } catch (fallbackError) {
+              console.error('Load project and static snapshot failed:', { apiError: e, fallbackError });
+              return false;
+            }
           }
         },
 
@@ -733,7 +961,17 @@ export const useProjectStore = create<ProjectState>()(
         partialize: (state) => ({
           projectId: state.projectId,
           config: state.config
-        })
+        }),
+        // Older browser storage entries can contain a partial/undefined config.
+        // Never let persisted state replace the valid in-memory defaults.
+        merge: (persistedState, currentState) => {
+          const persisted = (persistedState || {}) as Partial<ProjectState>;
+          return {
+            ...currentState,
+            ...persisted,
+            config: isUsableRobotConfig(persisted.config) ? persisted.config : currentState.config,
+          };
+        }
       }
     )
   )
