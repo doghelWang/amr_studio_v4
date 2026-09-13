@@ -7,9 +7,8 @@ from pathlib import Path
 # Add src/backend to path
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent / "src" / "backend"))
 
-from core.resource_adapter import frontend_to_comp_desc, export_abilities
-from skills_v2.model_splitter.splitter import split_comp_desc
-from skills_v2.cmodel_encoder.encoder import encode_cmodel
+from app.application.cmodel_export import frontend_to_comp_desc, export_abilities
+from app.infrastructure.protobuf import encode_cmodel, split_comp_desc
 
 def run_audit(project_id, input_json_path):
     audit_dir = Path(__file__).resolve().parent

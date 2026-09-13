@@ -5,7 +5,7 @@ from pathlib import Path
 backend_dir = Path(__file__).parent.absolute()
 sys.path.append(str(backend_dir))
 
-from skills_v2.schemas_pb.controller_model_comp_desc_pb2 import Message_Module_Info
+from app.infrastructure.protobuf.generated.controller_model_comp_desc_pb2 import Message_Module_Info
 
 def safe_print_element(ele):
     """Helper to print Message_Base_Element content."""

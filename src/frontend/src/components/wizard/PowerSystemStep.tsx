@@ -1,7 +1,10 @@
 import React, { useState, useMemo } from 'react';
-import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message } from 'antd';
+import { useAutoTreeHeight } from '../../hooks/useAutoTreeHeight';
+import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message, Select } from 'antd';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
+import { projectDriveRatio } from '../../store/domain/driveRatio';
+import { getValidSubType } from '../../store/SchemaEngine';
 import { 
     ThunderboltOutlined, SettingOutlined, 
     BuildOutlined, DeploymentUnitOutlined,
@@ -30,6 +33,12 @@ export const PowerSystemStep: React.FC = () => {
         updateStructuralParam
     } = useProjectStore();
     const [selectedUuid, setSelectedUuid] = useState<string | null>(null);
+    // [FIX REQ-NF-04] see useAutoTreeHeight.ts — same virtual-scroll height fix as the
+    // hardware tree in ComponentLibraryStep.
+    const { containerRef: powerTreeContainerRef, height: powerTreeHeight } = useAutoTreeHeight(400);
+    const [wheelChainType, setWheelChainType] = useState<'diffWheel' | 'horizontalSteerWheel' | 'verticalSteerWheel' | 'diffSteerWheel'>(
+        config.identity.driveType?.includes('STEER') ? 'horizontalSteerWheel' : 'diffWheel'
+    );
 
     // ━━━ 1. Pure Power Filter ━━━
     const powerComponents = useMemo(() => config.components.filter(c => {
@@ -59,7 +68,7 @@ export const PowerSystemStep: React.FC = () => {
         return children.map(c => ({
             title: (
                 <Space size={4}>
-                    <span style={{ fontSize: 12, fontWeight: selectedUuid === c.id ? 700 : 400 }}>{c.name}</span>
+                        <span style={{ fontSize: 12, fontWeight: selectedUuid === c.id ? 700 : 400 }}>{c.alias || c.name}</span>
                     <Tag color={ROLE_COLOR[c.category] || 'default'} bordered={false} style={{ fontSize: 8, margin: 0, padding: '0 4px' }}>
                         {c.category === 'SENSOR' ? 'ENCODER' : c.category}
                     </Tag>
@@ -76,6 +85,13 @@ export const PowerSystemStep: React.FC = () => {
     const activeComp = useMemo(() => 
         config.components.find(c => c.id === selectedUuid), 
     [config.components, selectedUuid]);
+
+    const steeringRatio = useMemo(() => {
+        if (!activeComp || activeComp.category !== 'DRIVEWHEEL' || !['horizontalSteerWheel', 'verticalSteerWheel'].includes(activeComp.type)) {
+            return null;
+        }
+        return projectDriveRatio(config, activeComp);
+    }, [activeComp, config.components]);
 
     const getWheelGroupAndKey = (componentId: string, attrKey: string) => {
         const component = useProjectStore.getState().config.components.find(c => c.id === componentId);
@@ -102,54 +118,98 @@ export const PowerSystemStep: React.FC = () => {
         }
     };
 
-    const nextPowerIndex = (category: string) =>
-        config.components.filter(c => c.category === category).length + 1;
+    // §AUDIT-FIX(2026-09) / NO_HARDCODE: these subType strings used to be passed straight to
+    // addComponent(), bypassing schema validation (CLAUDE.md §2.0 names 'PMSMMotor' literals as
+    // the canonical forbidden pattern). ComponentLibraryStep.tsx/ComponentPropertyPanel.tsx
+    // already do this correctly via getValidSubType(); this brings PowerSystemStep in line.
+    // (wheelChainType itself needs no equivalent helper: it's already constrained to a valid
+    // DRIVEWHEEL subtype by the Select options below, not a free-form hardcoded literal.)
+    const DRIVER_SUBTYPE = () => getValidSubType('DRIVER', 'subDriver', []);
+    const MOTOR_SUBTYPE = () => getValidSubType('MOTOR', 'PMSMMotor', ['BLDCMotor', 'BDCMotor']);
 
     const addPowerChain = () => {
-        const isSteerDrive = config.identity.driveType?.includes('STEER');
-        const wheelType = isSteerDrive ? 'horizontalSteerWheel' : 'diffWheel';
-        const wheelId = addComponent('DRIVEWHEEL', wheelType as any);
+        const isDiffSteer = wheelChainType === 'diffSteerWheel';
+        const isSteerWheel = wheelChainType === 'horizontalSteerWheel' || wheelChainType === 'verticalSteerWheel';
+        const chainIndex = config.components.filter(c => c.category === 'DRIVEWHEEL').length + 1;
+        const chainLabel = isDiffSteer
+            ? `差速舵轮组 ${chainIndex}`
+            : isSteerWheel
+                ? `${wheelChainType === 'verticalSteerWheel' ? '立式' : '卧式'}舵轮组 ${chainIndex}`
+                : `差速驱动轮组 ${chainIndex}`;
+        const wheelId = addComponent('DRIVEWHEEL', wheelChainType as any);
         if (!wheelId) return;
 
         updateComponent(wheelId, {
-            alias: isSteerDrive ? `舵轮组 ${nextPowerIndex('DRIVEWHEEL')}` : `驱动轮 ${nextPowerIndex('DRIVEWHEEL')}`,
-            functionalRole: isSteerDrive ? 'steer' : 'walk'
+            alias: chainLabel,
+            functionalRole: isSteerWheel ? 'steer' : 'walk'
         });
 
-        if (!isSteerDrive) {
-            const driverId = addComponent('DRIVER', 'subDriver');
-            const motorId = addComponent('MOTOR', 'PMSMMotor');
+        if (!isSteerWheel && !isDiffSteer) {
+            const driverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const motorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (driverId) {
-                updateComponent(driverId, { alias: `行走驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'walk' });
+                updateComponent(driverId, { alias: `${chainLabel} - 驱动器`, functionalRole: 'walk' });
                 updateStructuralParam(driverId, { parentNodeUuid: wheelId });
             }
             if (motorId && driverId) {
-                updateComponent(motorId, { alias: `行走电机 ${nextPowerIndex('MOTOR')}`, functionalRole: 'walk' });
+                updateComponent(motorId, { alias: `${chainLabel} - 电机`, functionalRole: 'walk' });
                 updateStructuralParam(motorId, { parentNodeUuid: driverId });
                 bindWheelAttr(wheelId, 'relateMotor', motorId);
             }
+        } else if (isDiffSteer) {
+            const leftDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const rightDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const leftMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+            const rightMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+
+            if (leftDriverId) {
+                updateComponent(leftDriverId, { alias: `${chainLabel} - 左驱动器`, functionalRole: 'walk_left' });
+                updateStructuralParam(leftDriverId, { parentNodeUuid: wheelId });
+            }
+            if (rightDriverId) {
+                updateComponent(rightDriverId, { alias: `${chainLabel} - 右驱动器`, functionalRole: 'walk_right' });
+                updateStructuralParam(rightDriverId, { parentNodeUuid: wheelId });
+            }
+            if (leftMotorId && leftDriverId) {
+                updateComponent(leftMotorId, { alias: `${chainLabel} - 左电机`, functionalRole: 'walk_left' });
+                updateStructuralParam(leftMotorId, { parentNodeUuid: leftDriverId });
+                bindWheelAttr(wheelId, 'relateLeftMotor', leftMotorId);
+            }
+            if (rightMotorId && rightDriverId) {
+                updateComponent(rightMotorId, { alias: `${chainLabel} - 右电机`, functionalRole: 'walk_right' });
+                updateStructuralParam(rightMotorId, { parentNodeUuid: rightDriverId });
+                bindWheelAttr(wheelId, 'relateRightMotor', rightMotorId);
+            }
+
+            // diffSteerWheel's reference schema requires an external encoder.
+            const encoderId = addComponent('SENSOR', 'absoluteValueEncode');
+            if (encoderId) {
+                updateComponent(encoderId, { alias: `${chainLabel} - 外置绝对值编码器` });
+                updateStructuralParam(encoderId, { parentNodeUuid: wheelId });
+                bindWheelAttr(wheelId, 'relatedEncode', encoderId);
+            }
         } else {
-            const steerDriverId = addComponent('DRIVER', 'subDriver');
-            const walkDriverId = addComponent('DRIVER', 'subDriver');
-            const steerMotorId = addComponent('MOTOR', 'PMSMMotor');
-            const walkMotorId = addComponent('MOTOR', 'PMSMMotor');
+            const steerDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const walkDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const steerMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+            const walkMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (steerDriverId) {
-                updateComponent(steerDriverId, { alias: `转向驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'steer' });
+                updateComponent(steerDriverId, { alias: `${chainLabel} - 转向驱动器`, functionalRole: 'steer' });
                 updateStructuralParam(steerDriverId, { parentNodeUuid: wheelId });
             }
             if (walkDriverId) {
-                updateComponent(walkDriverId, { alias: `行走驱动器 ${nextPowerIndex('DRIVER') + 1}`, functionalRole: 'walk' });
+                updateComponent(walkDriverId, { alias: `${chainLabel} - 行走驱动器`, functionalRole: 'walk' });
                 updateStructuralParam(walkDriverId, { parentNodeUuid: wheelId });
             }
             if (steerMotorId && steerDriverId) {
-                updateComponent(steerMotorId, { alias: `转向电机 ${nextPowerIndex('MOTOR')}`, functionalRole: 'steer' });
+                updateComponent(steerMotorId, { alias: `${chainLabel} - 转向电机`, functionalRole: 'steer' });
                 updateStructuralParam(steerMotorId, { parentNodeUuid: steerDriverId });
                 bindWheelAttr(wheelId, 'relateRotMotor', steerMotorId);
             }
             if (walkMotorId && walkDriverId) {
-                updateComponent(walkMotorId, { alias: `行走电机 ${nextPowerIndex('MOTOR') + 1}`, functionalRole: 'walk' });
+                updateComponent(walkMotorId, { alias: `${chainLabel} - 行走电机`, functionalRole: 'walk' });
                 updateStructuralParam(walkMotorId, { parentNodeUuid: walkDriverId });
                 bindWheelAttr(wheelId, 'relateWalkMotor', walkMotorId);
             }
@@ -169,9 +229,13 @@ export const PowerSystemStep: React.FC = () => {
             return;
         }
 
-        const encoderId = addComponent('SENSOR', 'incrementalEncode' as any);
+        const encoderId = addComponent('SENSOR', 'absoluteValueEncode' as any);
         if (!encoderId) return;
+        updateComponent(encoderId, { alias: `${selectedWheel.alias || selectedWheel.name} - 外置绝对值编码器` });
         updateStructuralParam(encoderId, { parentNodeUuid: selectedWheel.id });
+        if (selectedWheel.type === 'diffSteerWheel') {
+            bindWheelAttr(selectedWheel.id, 'relatedEncode', encoderId);
+        }
         setSelectedUuid(encoderId);
         setActiveComponent(encoderId);
         void message.success('已新增编码器并挂载到当前轮组');
@@ -188,16 +252,53 @@ export const PowerSystemStep: React.FC = () => {
         void message.success('已移除选中的动力节点');
     };
 
-    const syncWheelAttributes = (sourceId: string, _groupKey: string, attrKey: string, value: any) => {
-        if (attrKey !== 'wheelRadius') return;
-        config.components
-            .filter(c => c.category === 'DRIVEWHEEL' && c.id !== sourceId)
-            .forEach(wheel => {
-                const target = getWheelGroupAndKey(wheel.id, attrKey);
-                if (target) {
-                    updateAttribute(wheel.id, target.groupKey, target.attrKey, value);
-                }
-            });
+    /**
+     * [FIX ISS-004] Cross-component attribute sync, scoped by functional role.
+     *
+     * History: a fuller version of this existed pre-restructuring (commit 386a9e60,
+     * "ISS-004 scope synced attributes by module functional role instead of generic
+     * type") at the old `frontend/src/components/wizard/PowerSystemStep.tsx` path, but
+     * was dropped somewhere during the frontend/ -> src/frontend/ reorganization and
+     * replaced with this function's narrower ancestor, which only handled
+     * DRIVEWHEEL.wheelRadius and ignored every other attribute/category — editing a
+     * driver or motor attribute (e.g. a gear ratio) on one wheel group silently never
+     * reached the equivalent driver/motor on any other wheel group.
+     *
+     * Restored behavior: ANY attribute edit on the active component now syncs to every
+     * sibling that shares the same category + type AND the same `functionalRole`
+     * ('walk'/'steer'/'walk_left'/'walk_right', set at creation time in addPowerChain()
+     * above) — so editing a steer-motor attribute can never leak onto a walk-motor
+     * sibling, nor a left-side motor onto a right-side one, and vice versa. Components
+     * with no functionalRole (e.g. encoders) fall back to the old unscoped behavior so
+     * they keep syncing as before.
+     *
+     * Note on the other half of the historical commit (ISS-005, symmetric coordinate
+     * mirroring via a `frontendGroupKey`-based left/right/front/rear projection): the
+     * `locCoordNX`/`locCoordNY` attributes that logic mirrored no longer exist on any
+     * wheel schema (checked every DRIVEWHEEL subtype's PrivateAttribute.json) — wheel
+     * position is now computed centrally at the chassis level (`diffChassis`/
+     * `steerChassis` templates' hidden `locCoordN*` fields, driven by
+     * `syncChassisAttributes()`), not stored per-wheel. So there is no live bug left to
+     * restore there: re-adding coordinate mirroring for attribute keys the current
+     * wheel schema doesn't have would be dead code, not a fix.
+     */
+    const syncAttributeToSiblings = (sourceId: string, groupKey: string, attrKey: string, value: any, subKey?: string) => {
+        const source = config.components.find(c => c.id === sourceId);
+        if (!source) return;
+
+        const siblings = config.components.filter(c =>
+            c.id !== sourceId &&
+            c.category === source.category &&
+            c.type === source.type &&
+            (!source.functionalRole || c.functionalRole === source.functionalRole)
+        );
+
+        siblings.forEach(sib => {
+            const target = getWheelGroupAndKey(sib.id, attrKey);
+            if (target) {
+                updateAttribute(sib.id, target.groupKey, target.attrKey, value, subKey);
+            }
+        });
     };
 
     return (
@@ -211,6 +312,18 @@ export const PowerSystemStep: React.FC = () => {
                     title={<span style={{ color: 'var(--accent)' }}><ClusterOutlined /> 动力拓扑架构 (轮-驱-电)</span>}
                 >
                     <Space style={{ marginBottom: 12 }} wrap>
+                        <Select
+                            size="small"
+                            value={wheelChainType}
+                            style={{ minWidth: 190 }}
+                            onChange={value => setWheelChainType(value)}
+                            options={[
+                                { label: '卧式舵轮', value: 'horizontalSteerWheel' },
+                                { label: '立式舵轮', value: 'verticalSteerWheel' },
+                                { label: '差速舵轮（必须外置编码器）', value: 'diffSteerWheel' },
+                                { label: '差速驱动轮', value: 'diffWheel' }
+                            ]}
+                        />
                         <Button
                             type="primary"
                             size="small"
@@ -236,14 +349,18 @@ export const PowerSystemStep: React.FC = () => {
                         </Button>
                     </Space>
                     {treeData.length > 0 ? (
-                        <Tree
-                            showIcon
-                            defaultExpandAll
-                            className="dark-tree"
-                            treeData={treeData}
-                            onSelect={(keys) => setSelectedUuid(keys[0] as string)}
-                            selectedKeys={selectedUuid ? [selectedUuid] : []}
-                        />
+                        <div ref={powerTreeContainerRef} style={{ minHeight: 400, height: 400, overflow: 'hidden' }}>
+                            <Tree
+                                showIcon
+                                defaultExpandAll
+                                className="dark-tree"
+                                treeData={treeData}
+                                onSelect={(keys) => setSelectedUuid(keys[0] as string)}
+                                selectedKeys={selectedUuid ? [selectedUuid] : []}
+                                virtual
+                                height={powerTreeHeight}
+                            />
+                        </div>
                     ) : (
                         <Empty
                             description="未探测到动力组件"
@@ -265,24 +382,35 @@ export const PowerSystemStep: React.FC = () => {
             {/* Right: Full Property Editor (Attributes, Interfaces, Coords) */}
             <Col span={16}>
                 {activeComp ? (
-                    <ComponentPropertyPanel 
-                        component={activeComp}
-                        onAttributeChange={(groupId, attrKey, val, subKey) => {
-                            updateAttribute(activeComp.id, groupId, attrKey, val, subKey);
-                        }}
-                        onAttributeChangeSync={syncWheelAttributes}
-                        onInterfaceChange={(ifaceUuid, data) => {
-                            const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, ...data } : i);
-                            updateComponent(activeComp.id, { interfaces: updated });
-                        }}
-                        onInterfaceParamChange={(ifaceUuid, params) => {
-                            const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, interfaceParams: params } : i);
-                            updateComponent(activeComp.id, { interfaces: updated });
-                        }}
-                        onStructuralChange={(data) => {
-                            updateComponent(activeComp.id, data);
-                        }}
-                    />
+                    <>
+                        {steeringRatio && (
+                            <Card size="small" title="转向速比（齿轮比 × 减速比）" style={{ marginBottom: 12 }}>
+                                <Space size={18} wrap>
+                                    <Text>转向齿轮比：{steeringRatio.steeringGearRatio ?? '未配置'}</Text>
+                                    <Text>转向电机减速比：{steeringRatio.motorReductionRatio ?? '未配置'}</Text>
+                                    <Text strong>转向总速比：{steeringRatio.totalSteeringRatio ?? '未配置'}</Text>
+                                </Space>
+                            </Card>
+                        )}
+                        <ComponentPropertyPanel
+                            component={activeComp}
+                            onAttributeChange={(groupId, attrKey, val, subKey) => {
+                                updateAttribute(activeComp.id, groupId, attrKey, val, subKey);
+                            }}
+                            onAttributeChangeSync={syncAttributeToSiblings}
+                            onInterfaceChange={(ifaceUuid, data) => {
+                                const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, ...data } : i);
+                                updateComponent(activeComp.id, { interfaces: updated });
+                            }}
+                            onInterfaceParamChange={(ifaceUuid, params) => {
+                                const updated = activeComp.interfaces.map(i => i.interfaceUuid === ifaceUuid ? { ...i, interfaceParams: params } : i);
+                                updateComponent(activeComp.id, { interfaces: updated });
+                            }}
+                            onStructuralChange={(data) => {
+                                updateComponent(activeComp.id, data);
+                            }}
+                        />
+                    </>
                 ) : (
                     <Card className="smart-card" variant="borderless" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                         <Empty description="请在左侧选择动力节点进行配置" image={Empty.PRESENTED_IMAGE_SIMPLE} />

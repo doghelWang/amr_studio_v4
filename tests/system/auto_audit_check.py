@@ -62,7 +62,7 @@ def run_parser_test() -> bool:
 import sys
 sys.path.insert(0, '.')
 import importlib
-import core.model_parser as mp
+import app.infrastructure.protobuf.model_parser as mp
 importlib.reload(mp)
 r = mp.parse_comp_desc('templates/CompDesc.model')
 cfg = r['config']

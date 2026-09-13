@@ -1,6 +1,6 @@
 import React from 'react';
 import { Tooltip, Button } from 'antd';
-import { UndoOutlined, RedoOutlined, SaveOutlined, BulbOutlined, SettingOutlined } from '@ant-design/icons';
+import { UndoOutlined, RedoOutlined, SaveOutlined, MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { useTheme } from '../../store/useThemeStore';
 
 interface HeaderProps {
@@ -37,7 +37,8 @@ export const Header: React.FC<HeaderProps> = ({
   onSave
 }) => {
   const [saving, setSaving] = React.useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const { theme, setTheme, toggleTheme } = useTheme();
+  const isDarkMode = theme === 'dark';
 
   const handleSave = async () => {
     setSaving(true);
@@ -57,20 +58,33 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="topbar-actions">
-        {/* Theme Toggle Button */}
-        <Tooltip title={`当前主题: ${theme === 'cyber' ? '赛博科技' : '工业经典'} (点击切换)`}>
-          <button
-            className="theme-toggle"
-            onClick={toggleTheme}
-            style={{ marginRight: 8 }}
-          >
-            <span className="theme-toggle-icon">
-              {theme === 'cyber' ? <BulbOutlined /> : <SettingOutlined />}
-            </span>
-            <span className="theme-label" style={{ fontSize: 11, fontWeight: 500 }}>
-              {theme === 'cyber' ? '赛博模式' : '工业模式'}
-            </span>
-          </button>
+        <Tooltip title={`当前模式：${isDarkMode ? '暗黑' : '明亮'}，点击快速切换`}>
+          <div className="theme-toggle" style={{ marginRight: 8 }}>
+            <button
+              className={`theme-option ${isDarkMode ? 'active' : ''}`}
+              onClick={() => setTheme('dark')}
+              type="button"
+            >
+              <span className="theme-toggle-icon"><MoonOutlined /></span>
+              <span className="theme-label">暗黑</span>
+            </button>
+            <button
+              className={`theme-option ${!isDarkMode ? 'active' : ''}`}
+              onClick={() => setTheme('light')}
+              type="button"
+            >
+              <span className="theme-toggle-icon"><SunOutlined /></span>
+              <span className="theme-label">明亮</span>
+            </button>
+            <button
+              className="theme-swap-btn"
+              onClick={toggleTheme}
+              type="button"
+              aria-label="切换主题"
+            >
+              {isDarkMode ? <SunOutlined /> : <MoonOutlined />}
+            </button>
+          </div>
         </Tooltip>
 
         <div className="topbar-divider" />
@@ -105,13 +119,7 @@ export const Header: React.FC<HeaderProps> = ({
             icon={<SaveOutlined />}
             className="topbar-btn-save"
             onClick={handleSave}
-            style={{
-              color: isDirty ? '#177ddc' : 'var(--text-muted)',
-              fontWeight: isDirty ? 700 : 400,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4
-            }}
+            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
           >
             保存
           </Button>
@@ -119,13 +127,7 @@ export const Header: React.FC<HeaderProps> = ({
 
         <div className="topbar-divider" />
 
-        <span style={{
-          color: 'var(--text-muted)',
-          fontSize: 12,
-          fontFamily: 'var(--font-mono)',
-          display: 'flex',
-          alignItems: 'center'
-        }}>
+        <span className={`project-chip ${isDirty ? 'dirty' : ''}`}>
           {robotName || '未命名机器人'}
           {isDirty && (
             <Tooltip title="存在未保存的更改">

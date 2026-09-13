@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
     Spin, Empty, InputNumber, Switch, Select, message, 
     Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert, Row, Col, Tooltip, AutoComplete
@@ -17,7 +17,8 @@ import {
 import { apiFetchComponentDetails, apiUpdateComponent } from '../../services/api_v2';
 import { useProjectStore } from '../../store/useProjectStore';
 import { SmartAttribute, AttributeGroup } from '../../store/types';
-import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource, getValidSubType } from '../../store/SchemaEngine';
+import { buildAttributesFromSchema, getEngineeringConstraints, getPresetOptions, getTooltip, parseFixedSource, getValidSubType, isValidSubType } from '../../store/SchemaEngine';
+import { readInterfaceParams } from '../../store/domain/interfaceParams';
 
 const { Text } = Typography;
 const { Panel } = Collapse;
@@ -62,6 +63,15 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
   // Direct mode: use component.id as selectedUuid
   const selectedUuid = propSelectedUuid || directComponent?.id;
   const [compData, setCompData] = useState<any>(null);
+  // [FIX REQ-NF-05] Mirrors `compData` synchronously (state updates are not guaranteed to be
+  // visible to the very next function call in the same tick). Rapid consecutive edits (e.g. holding
+  // Backspace) previously each read `compData` from a stale closure, so a fast second edit could
+  // start from a pre-edit-1 snapshot and clobber edit 1's change — the "StepStepko"-style garbled
+  // text symptom. All local mutations must read/write through this ref, not the raw `compData` var.
+  const compDataRef = useRef<any>(null);
+  // [FIX REQ-NF-05] Debounce state for syncPrivateAttrs (see below).
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncSeqRef = useRef(0);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const { config, updateAttribute, updateStructuralParam, linkInterface, updateInterfaceParams } = useProjectStore();
@@ -78,32 +88,57 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
       setLoading(true);
       apiFetchComponentDetails(projectId, selectedUuid)
         .then(data => {
+            compDataRef.current = data;
             setCompData(data);
             setLoading(false);
         })
         .catch(err => {
             console.warn('[ComponentPropertyPanel] Backend fetch failed, using store data:', err);
+            compDataRef.current = null;
             setCompData(null);
             setLoading(false);
         });
     } else {
       // No project loaded → clear any stale backend data, use store data
+      compDataRef.current = null;
       setCompData(null);
     }
   }, [projectId, selectedUuid]);
 
-  const syncPrivateAttrs = async (newFullData: any) => {
+  // [FIX REQ-NF-05] Previously this fired a full network PATCH synchronously on EVERY keystroke,
+  // unawaited — rapid typing (or holding Backspace) launched many overlapping requests that could
+  // resolve out of order, letting an early/stale request land after a newer one and silently
+  // overwrite it with older text. Debounce to one PATCH ~400ms after the user pauses, carrying only
+  // the latest snapshot, and use a monotonic sequence guard so a superseded request's callback can
+  // never show a stale success/error toast for state that's already moved on.
+  // [FIX REQ-NF-05] Clear any pending debounced sync on unmount so a stray PATCH never fires
+  // against a component the user has already navigated away from.
+  useEffect(() => {
+      return () => {
+          if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      };
+  }, []);
+
+  const syncPrivateAttrs = (newFullData: any) => {
       if (!projectId || !selectedUuid) return;
-      try {
-          messageApi.loading({ content: '保存参数...', key: 'sync', duration: 0 });
-          await apiUpdateComponent(projectId, selectedUuid, { 
-              private_attr: newFullData.private_attr, 
-              privateAttr: newFullData.privateAttr 
-          });
-          messageApi.success({ content: '配置已同步', key: 'sync' });
-      } catch (err) {
-          messageApi.error({ content: '同步失败', key: 'sync' });
-      }
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      const mySeq = ++syncSeqRef.current;
+      syncTimerRef.current = setTimeout(async () => {
+          try {
+              messageApi.loading({ content: '保存参数...', key: 'sync', duration: 0 });
+              await apiUpdateComponent(projectId, selectedUuid, {
+                  private_attr: newFullData.private_attr,
+                  privateAttr: newFullData.privateAttr
+              });
+              if (mySeq === syncSeqRef.current) {
+                  messageApi.success({ content: '配置已同步', key: 'sync' });
+              }
+          } catch (err) {
+              if (mySeq === syncSeqRef.current) {
+                  messageApi.error({ content: '同步失败', key: 'sync' });
+              }
+          }
+      }, 400);
   };
 
   /**
@@ -117,9 +152,12 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
    *    抛出事件以触发多设备的底层参数联动同步。
    */
   const handleValueUpdate = (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
-      if (compData) {
+      // [FIX REQ-NF-05] Read the base snapshot from the ref (always current), not the `compData`
+      // state variable (can be one keystroke behind within the same tick — see compDataRef above).
+      const baseCompData = compDataRef.current ?? compData;
+      if (baseCompData) {
           // ── Backend-loaded mode ──
-          const newData = JSON.parse(JSON.stringify(compData));
+          const newData = JSON.parse(JSON.stringify(baseCompData));
           
           const updateInTree = (nodes: any[]) => {
               for (let node of nodes) {
@@ -156,6 +194,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
               updateInTree(targetGroup.arrayBaseEle || targetGroup.array_base_ele || []);
           }
 
+          compDataRef.current = newData;
           setCompData(newData);
           syncPrivateAttrs(newData);
       }
@@ -217,6 +256,18 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
     const isAdvanced = ele.boolBasic === false;
     const isExplicitlyHidden = ele.boolHide === true;
     const isVisibleDimmed = isExplicitlyHidden || (isAdvanced && !showAdvanced);
+    const displayDesc = (() => {
+        if (ele.key === 'gearRatio' && selectedStoreComponent?.category === 'MOTOR') {
+            if (selectedStoreComponent.functionalRole === 'steer') return '转向电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk_left') return '左行走电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk_right') return '右行走电机减速比';
+            if (selectedStoreComponent.functionalRole === 'walk') return '行走电机减速比';
+        }
+        if (ele.key === 'gearRatio' && selectedStoreComponent?.category === 'DRIVEWHEEL') {
+            return '转向齿轮比';
+        }
+        return ele.desc || ele.key;
+    })();
 
     // ━━━ State Extraction ━━━
     const isReadOnly = isFixedHardware || ele.boolNoeditable;
@@ -319,7 +370,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
         <div key={ele.key} style={{ marginBottom: 16, marginLeft: depth * 16, opacity: isVisibleDimmed ? 0.6 : 1 }}>
             <div style={{ fontSize: 12, marginBottom: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontWeight: 500, color: isRequired ? '#ff7875' : 'inherit' }}>
-                    {ele.desc || ele.key}
+                    {displayDesc}
                     {isRequired && <span style={{ marginLeft: 4, color: '#ff4d4f' }}>*</span>}
                     {ele.boolNoeditable && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', background: 'var(--bg-hover)' }}>锁定</Tag>}
                     {isExplicitlyHidden && <Tag color="default" style={{ marginLeft: 6, fontSize: 9, padding: '0 4px', opacity: 0.6 }}>隐藏属性</Tag>}
@@ -423,8 +474,9 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
   });
 
   // Fallback to Category Template if both are empty (Audit-0327-2-1)
-  if (activeGroups.length === 0 && !excludeGroupKeys && !onlyGroupKeys) {
-      if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR'].includes(selectedStoreComponent.category)) {
+  const hasRenderableElements = activeGroups.some(group => Array.isArray(group.elements) && group.elements.length > 0);
+  if (!hasRenderableElements && !excludeGroupKeys && !onlyGroupKeys) {
+      if (['CHASSIS', 'DRIVEWHEEL', 'DRIVER', 'MOTOR', 'SENSOR'].includes(selectedStoreComponent.category)) {
       // Schema-driven subType selection (NO_HARDCODE rule compliance)
       const subTypeMap: Record<string, { preferred: string; fallbacks: string[] }> = {
         CHASSIS: { preferred: 'diffChassis', fallbacks: ['diffChassis', 'steerChassis'] },
@@ -433,10 +485,13 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
         MOTOR: { preferred: 'PMSMMotor', fallbacks: ['PMSMMotor', 'BLDCMotor', 'BDCMotor'] }
       };
 
+      const componentType = selectedStoreComponent.type || selectedStoreComponent.subModuleTypeKey;
       const mapping = subTypeMap[selectedStoreComponent.category];
-      const subType = mapping
-        ? getValidSubType(selectedStoreComponent.category, mapping.preferred, mapping.fallbacks)
-        : 'GENERIC';
+      const subType = componentType && isValidSubType(componentType)
+        ? componentType
+        : mapping
+          ? getValidSubType(selectedStoreComponent.category, mapping.preferred, mapping.fallbacks)
+          : 'GENERIC';
           activeGroups = buildAttributesFromSchema(subType);
       }
   }
@@ -553,6 +608,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                       dataSource={activeInterfaces}
                       renderItem={(item: any) => {
                           const linkedUuid = (item.linkedInterfaceUuid || [])[0];
+                          const itemParams = readInterfaceParams(item.interfaceParams || {});
                           
                           // Find all OTHER compatible interfaces in the project
                           const availableTargets = config.components
@@ -596,12 +652,19 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <Select 
                                                 size="small" 
                                                 style={{ width: '100%' }}
-                                                value={(item.interfaceParams as any)?.baudRate || 500000}
-                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { baudRate: v })}
-                                                options={[
-                                                    { label: '115200', value: 115200 },
-                                                    { label: '500k', value: 500000 },
-                                                    { label: '1M', value: 1000000 },
+                                                value={itemParams.baudrate || (item.type === 'CAN' ? '500K' : '9600')}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { baudrate: v })}
+                                                options={item.type === 'CAN' ? [
+                                                    { label: '125k', value: '125K' },
+                                                    { label: '250k', value: '250K' },
+                                                    { label: '500k', value: '500K' },
+                                                    { label: '1M', value: '1M' },
+                                                ] : [
+                                                    { label: '9600', value: '9600' },
+                                                    { label: '19200', value: '19200' },
+                                                    { label: '38400', value: '38400' },
+                                                    { label: '115200', value: '115200' },
+                                                    { label: '921600', value: '921600' },
                                                 ]}
                                             />
                                         </div>
@@ -612,8 +675,10 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <InputNumber 
                                                 size="small" 
                                                 style={{ width: '100%' }}
-                                                value={(item.interfaceParams as any)?.canId || 0}
-                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { canId: v })}
+                                                value={itemParams.nodeId ?? 1}
+                                                min={1}
+                                                max={127}
+                                                onChange={v => updateInterfaceParams(selectedUuid, item.interfaceUuid, { nodeId: v ?? 1 })}
                                             />
                                         </div>
                                     )}
@@ -622,8 +687,8 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
                                             <div style={{ fontSize: 10, color: 'var(--text-muted)', marginBottom: 4 }}>IP 地址</div>
                                             <Input 
                                                 size="small" 
-                                                value={(item.interfaceParams as any)?.ipAddress || '192.168.1.10'}
-                                                onChange={e => updateInterfaceParams(selectedUuid, item.interfaceUuid, { ipAddress: e.target.value })}
+                                                value={itemParams.ip || ''}
+                                                onChange={e => updateInterfaceParams(selectedUuid, item.interfaceUuid, { ip: e.target.value })}
                                             />
                                         </div>
                                     )}

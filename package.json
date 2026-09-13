@@ -1,5 +1,18 @@
 {
+  "scripts": {
+    "proto:generate": "bash scripts/generate_protobuf_bindings.sh",
+    "worker:server": "tsx cloudflare/node-server.ts"
+  },
   "devDependencies": {
-    "@playwright/test": "^1.59.1"
+    "@cloudflare/workers-types": "^5.20260712.1",
+    "@playwright/test": "^1.59.1",
+    "protobufjs-cli": "^2.6.0",
+    "tsx": "^4.23.0",
+    "wrangler": "^4.118.0"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "js-md5": "^0.8.3",
+    "protobufjs": "^8.7.0"
   }
 }

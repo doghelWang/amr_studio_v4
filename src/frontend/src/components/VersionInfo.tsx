@@ -9,6 +9,7 @@ import {
 } from '@ant-design/icons';
 import { VERSION_INFO } from '../version';
 import { apiFetchBackendVersion } from '../services/api_v2';
+import { subscribeBackendBaseChange } from '../services/backendConfig';
 
 interface BackendVersion {
   backendVersion: string;
@@ -37,9 +38,13 @@ export const VersionInfo: React.FC = () => {
     };
 
     fetchBackendVersion();
+    const unsubscribe = subscribeBackendBaseChange(fetchBackendVersion);
     // Refresh every 30 seconds
     const interval = setInterval(fetchBackendVersion, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      unsubscribe();
+      clearInterval(interval);
+    };
   }, []);
 
   const formatDate = (isoString: string) => {

@@ -54,8 +54,8 @@ const DRIVE_WHEEL_MAP: Record<string, { label: string; color: string; wheelHint:
     QUAD_STEER: {
         label: '四舵轮',
         color: 'purple',
-        wheelHint: '推荐轮组：4个独立舵轮，每个含行走+转向电机。',
-        wheelTemplate: 'STEER_WHEELS_QUAD(四舵轮)',
+        wheelHint: '需要从模块库配置4个独立舵轮，每个舵轮分别关联行走与转向驱动链。',
+        wheelTemplate: '4 × 独立舵轮（模块库逐个选择）',
     },
 };
 

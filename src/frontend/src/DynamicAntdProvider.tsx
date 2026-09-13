@@ -8,12 +8,12 @@ import { useTheme } from './store/useThemeStore';
  */
 export const DynamicAntdProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme: currentTheme } = useTheme();
-  const isCyber = currentTheme === 'cyber';
+  const isDark = currentTheme === 'dark';
 
   const antdTheme = useMemo(() => ({
-    algorithm: isCyber ? theme.darkAlgorithm : theme.defaultAlgorithm,
-    token: isCyber ? {
-      // Cyber Dark Theme
+    algorithm: isDark ? theme.darkAlgorithm : theme.defaultAlgorithm,
+    token: isDark ? {
+      // Dark Theme
       colorPrimary: '#58a6ff',
       colorBgContainer: '#1c2128',
       colorBgElevated: '#161b22',
@@ -28,7 +28,7 @@ export const DynamicAntdProvider: React.FC<{ children: React.ReactNode }> = ({ c
       borderRadius: 8,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     } : {
-      // Industrial Light Theme
+      // Light Theme
       colorPrimary: '#cc5200',
       colorBgContainer: '#ffffff',
       colorBgElevated: '#f5f4f0',
@@ -43,8 +43,8 @@ export const DynamicAntdProvider: React.FC<{ children: React.ReactNode }> = ({ c
       borderRadius: 6,
       fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
     },
-    components: isCyber ? {
-      // Cyber component overrides
+    components: isDark ? {
+      // Dark component overrides
       Card: {
         colorBgContainer: '#1c2128',
         colorBorderSecondary: '#30363d',
@@ -136,7 +136,7 @@ export const DynamicAntdProvider: React.FC<{ children: React.ReactNode }> = ({ c
         colorTextSecondary: '#8b949e',
       },
     } : {
-      // Industrial component overrides
+      // Light component overrides
       Card: {
         colorBgContainer: '#ffffff',
         colorBorderSecondary: '#e8e6e1',
@@ -229,7 +229,7 @@ export const DynamicAntdProvider: React.FC<{ children: React.ReactNode }> = ({ c
         colorTextSecondary: '#666666',
       },
     }
-  }), [isCyber]);
+  }), [isDark]);
 
   return (
     <ConfigProvider theme={antdTheme}>

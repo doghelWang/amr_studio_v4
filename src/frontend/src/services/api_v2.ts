@@ -5,43 +5,62 @@
  */
 
 import axios from 'axios';
+import { getBackendBase } from './backendConfig';
 
-/** 后端服务基础路径 (Auto-adaptive) */
-export const getBackendBase = () => {
-    if (typeof window !== 'undefined') {
-        const { hostname, protocol, port } = window.location;
-        // In dev mode (3000/3001/5173), route to backend 8002
-        if (['3000', '3001', '5173'].includes(port)) {
-            return `${protocol}//${hostname}:8002`;
-        }
-        return window.location.origin;
-    }
-    return 'http://localhost:8002';
+export { getBackendBase } from './backendConfig';
+
+const getModelApiBase = () => `${getBackendBase()}/api/v1/models`;
+
+export interface CompileResponse {
+    status: 'success' | string;
+    download_url?: string;
+    module_list_url?: string;
+    audit?: string[];
+    diagnostics?: any[];
+    detail?: string;
+}
+
+export const resolveBackendAssetUrl = (pathOrUrl: string) => {
+    if (/^https?:\/\//i.test(pathOrUrl)) return pathOrUrl;
+    return `${getBackendBase()}${pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`}`;
 };
 
-const API_BASE = `${getBackendBase()}/api/v1/models`;
+export const triggerBrowserDownload = (url: string, filename: string) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+};
 
 /** 获取单组件的二进制展开详情 (用于数据一致性校验) */
 export const apiFetchComponentDetails = async (projectId: string, uuid: string) => {
-    const res = await axios.get(`${API_BASE}/${projectId}/components/${uuid}`);
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/components/${uuid}`);
     return res.data;
 };
 
 /** 更新特定组件的前端配置到后端沙箱 */
 export const apiUpdateComponent = async (projectId: string, uuid: string, payload: any) => {
-    const res = await axios.patch(`${API_BASE}/${projectId}/components/${uuid}`, payload);
+    const res = await axios.patch(`${getModelApiBase()}/${projectId}/components/${uuid}`, payload);
     return res.data;
 };
 
 /** 获取项目的全量 Abilities (算法能力) 配置 */
 export const apiFetchAbilities = async (projectId: string) => {
-    const res = await axios.get(`${API_BASE}/${projectId}/abilities`);
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/abilities`);
+    return res.data;
+};
+
+/** 获取项目的 FuncDesc 功能过程配置 */
+export const apiFetchFunctions = async (projectId: string) => {
+    const res = await axios.get(`${getModelApiBase()}/${projectId}/functions`);
     return res.data;
 };
 
 /** 同步前端 Abilities 修改到后端 */
 export const apiUpdateAbilities = async (projectId: string, payload: any) => {
-    const res = await axios.patch(`${API_BASE}/${projectId}/abilities`, payload);
+    const res = await axios.patch(`${getModelApiBase()}/${projectId}/abilities`, payload);
     return res.data;
 };
 
@@ -51,16 +70,19 @@ export const apiInitSandbox = async (projectId: string, config: any) => {
     return res.data;
 };
 
-/** 触发 CModel 编译并处理下载流 */
-export const apiCompileAndDownload = async (projectId: string) => {
-    const res = await axios.post(`${API_BASE}/${projectId}/compile`, {}, { responseType: 'blob' });
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', `${projectId}_packed.cmodel`);
-    document.body.appendChild(link);
-    link.click();
-    return res;
+/** 触发 CModel 编译；后端返回 JSON，其中 download_url 指向真实 .cmodel artifact */
+export const apiCompileProject = async (projectId: string): Promise<CompileResponse> => {
+    const res = await axios.post(`${getModelApiBase()}/${projectId}/compile`);
+    return res.data;
+};
+
+/** 触发 CModel 编译并按后端返回的 artifact URL 下载，避免把 compile JSON 误保存为 .cmodel */
+export const apiCompileAndDownload = async (projectId: string): Promise<CompileResponse> => {
+    const data = await apiCompileProject(projectId);
+    if (data.status === 'success' && data.download_url) {
+        triggerBrowserDownload(resolveBackendAssetUrl(data.download_url), `${projectId}_packed.cmodel`);
+    }
+    return data;
 };
 
 /** 获取所有组件类型的 XML 定义注册表 (Schema Registry) */
@@ -75,6 +97,47 @@ export const apiFetchBoardXml = async () => {
     // Vite Dev Server / Nginx 静态目录访问
     const res = await axios.get(`/models/v4/BoardDescriptions.xml`, { responseType: 'text' });
     return res.data;
+};
+
+/**
+ * [FIX ISS-006 / REQ-CL-05 root cause] Parses BoardDescriptions.xml into a
+ * `{ [boardTypeKey]: InterfaceConfig[] }` map keyed by <Board typeKey="...">.
+ *
+ * Root cause note: `apiFetchBoardXml()` above was defined and imported into
+ * useProjectStore.ts, but nothing ever called it or parsed its XML — the
+ * store's `boardInterfaces` state was always populated (incorrectly) from
+ * `/api/v1/schemas`'s response, which has no `boardInterfaces` field at all
+ * (that endpoint returns a flat map keyed by subsystem name, e.g. "mainCPU").
+ * So `state.boardInterfaces` was permanently `{}`, and every board-based
+ * component (mainCPU, driver, ...) silently got zero injected interfaces
+ * regardless of which board model was selected. This parses the real per-board
+ * interface catalog so `fetchSchemas()` can populate `boardInterfaces` for real.
+ */
+export const parseBoardInterfacesXml = (xmlText: string): Record<string, any[]> => {
+    const result: Record<string, any[]> = {};
+    if (typeof DOMParser === 'undefined' || !xmlText) return result;
+    try {
+        const doc = new DOMParser().parseFromString(xmlText, 'application/xml');
+        if (doc.querySelector('parsererror')) return result;
+        const boards = Array.from(doc.getElementsByTagName('Board'));
+        for (const board of boards) {
+            const typeKey = board.getAttribute('typeKey');
+            if (!typeKey) continue;
+            const ifaces = Array.from(board.getElementsByTagName('Interface')).map((el) => {
+                const name = el.getAttribute('name') || '';
+                const protocol = el.getAttribute('protocol') || '';
+                return {
+                    key: name,
+                    type: protocol,
+                    label: name,
+                };
+            });
+            result[typeKey] = ifaces;
+        }
+    } catch (e) {
+        console.error('Failed to parse BoardDescriptions.xml:', e);
+    }
+    return result;
 };
 /** 获取已保存的用户项目列表 */
 export const apiListSavedProjects = async () => {

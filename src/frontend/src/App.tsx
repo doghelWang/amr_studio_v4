@@ -7,94 +7,108 @@
  * 4. 控制欢迎页 (Welcome Screen) 与主操作区之间的切换。
  */
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { message } from 'antd';
 import {
     RobotOutlined, BuildOutlined, AppstoreOutlined,
-    AimOutlined, ApiOutlined, ThunderboltOutlined, AuditOutlined,
+    ThunderboltOutlined, AuditOutlined,
 } from '@ant-design/icons';
 
 import { useProjectStore, useUndoRedo } from './store/useProjectStore';
 import { useUIStore } from './store/useUIStore';
-import { ExportService } from './services/ExportService';
 import { ImportService } from './store/ImportService';
 import { WelcomeScreen } from './components/WelcomeScreen';
 import axios from 'axios';
 
 import { 
     apiFetchAbilities, 
-    apiUpdateAbilities, 
+    apiFetchFunctions,
     apiUpdateComponent,
-    apiFetchComponentDetails,
-    apiInitSandbox
+    apiInitSandbox,
+    apiCompileProject,
+    resolveBackendAssetUrl,
+    triggerBrowserDownload
 } from './services/api_v2';
 
 import { IdentityStep } from './components/wizard/IdentityStep';
 import { ChassisStep } from './components/wizard/ChassisStep';
-import { ComponentLibraryStep } from './components/wizard/ComponentLibraryStep';
-import { MountingStep } from './components/wizard/MountingStep';
-import { WiringStep } from './components/wizard/WiringStep';
+import { EquipmentWorkshopStep } from './components/wizard/EquipmentWorkshopStep';
 import { AbilityStep } from './components/wizard/AbilityStep';
 import { AuditStep } from './components/wizard/AuditStep';
 
 // 导入布局组件
 import { Sidebar } from './components/layout/Sidebar';
 import { Header } from './components/layout/Header';
+import { getBackendBase, subscribeBackendBaseChange } from './services/backendConfig';
 
 /** 配置向导定义：定义每一步的 Key、标签、图标与描述 */
 const STEPS = [
     { key: 'identity',   label: '身份信息',  icon: <RobotOutlined />,        desc: '机器人元数据' },
     { key: 'chassis',    label: '底盘与动力', icon: <BuildOutlined />,        desc: '尺寸 & 动力' },
-    { key: 'components', label: '电气装配',  icon: <AppstoreOutlined />,     desc: '核心 & 感知' },
-    { key: 'mounting',   label: '安装坐标',  icon: <AimOutlined />,          desc: '6-DOF 位姿' },
-    { key: 'wiring',     label: '接口连线',  icon: <ApiOutlined />,          desc: '通信连接' },
+    { key: 'assembly',   label: '装备工坊',  icon: <AppstoreOutlined />,     desc: '装配 & 连线' },
     { key: 'abilities',  label: '功能映射',  icon: <ThunderboltOutlined />,  desc: '能力配置' },
     { key: 'audit',      label: '审计导出',  icon: <AuditOutlined />,        desc: '校验 & 导出' },
 ];
 
 const STEP_COMPONENTS = [
-    IdentityStep, ChassisStep, ComponentLibraryStep,
-    MountingStep, WiringStep, AbilityStep, AuditStep,
+    IdentityStep, ChassisStep, EquipmentWorkshopStep,
+    AbilityStep, AuditStep,
 ];
-
-const getBackendUrl = () => {
-  if (typeof window !== 'undefined') {
-    // If we are on a known frontend dev port, point to 8002
-    if (['3000', '3001', '5173'].includes(window.location.port)) {
-      const url = `http://${window.location.hostname}:8002`;
-      (window as any).BACKEND_URL = url;
-      return url;
-    }
-    // If we are already on 8002 or something else, use origin
-    (window as any).BACKEND_URL = window.location.origin;
-    return window.location.origin;
-  }
-  return "http://localhost:8002";
-};
-const BACKEND_URL = getBackendUrl();
 
 export default function App() {
     const { 
         config, isDirty, loadProject, resetProject, projectId, setProjectId, fetchSchemas,
-        saveProject, listSavedProjects, loadProjectByName 
+        saveProject, listSavedProjects, loadProjectByName, materializeConnectionsToInterfaces
     } = useProjectStore();
     const { undo, redo, canUndo, canRedo } = useUndoRedo();
     const { currentStep, setStep } = useUIStore();
     const [messageApi, contextHolder] = message.useMessage();
     const [backendStatus, setBackendStatus] = useState<any>(null);
+    const [backendBase, setBackendBaseState] = useState(getBackendBase());
+
+    const refreshBackendStatus = useCallback(async () => {
+        const activeBackend = getBackendBase();
+        setBackendBaseState(activeBackend);
+        try {
+            const res = await axios.get(`${activeBackend}/api/v1/system/version`);
+            setBackendStatus(res.data);
+        } catch (err) {
+            // A shared production route may currently serve another Worker.
+            // Keep the indicator truthful without flooding the console; API
+            // dependent actions still report their own failures explicitly.
+            console.warn("Backend status unavailable; continuing in frontend/static validation mode.", err);
+            setBackendStatus(null);
+        }
+    }, []);
+
+    const handleBackendChange = useCallback(() => {
+        setBackendStatus(null);
+        fetchSchemas();
+        refreshBackendStatus();
+    }, [fetchSchemas, refreshBackendStatus]);
 
     // 初始加载：获取 XML 元数据注册表 + 后端状态
     useEffect(() => {
         fetchSchemas();
-        
-        // Fetch backend status info (2026-04-04)
-        axios.get(`${BACKEND_URL}/api/v1/system/version`)
-            .then(res => {
-                console.log("[DEBUG] Backend Version Info:", res.data);
-                setBackendStatus(res.data);
-            })
-            .catch(err => console.error("Failed to fetch backend status", err));
-    }, [fetchSchemas]);
+        refreshBackendStatus();
+        return subscribeBackendBaseChange(handleBackendChange);
+    }, [fetchSchemas, handleBackendChange, refreshBackendStatus]);
+
+    // Support direct links such as /?project=robot01. This also prevents a
+    // blank page when the browser opens a project URL before the welcome UI.
+    useEffect(() => {
+        const requestedProject = new URLSearchParams(window.location.search).get('project');
+        if (!requestedProject) return;
+        let active = true;
+        (async () => {
+            const ok = await loadProjectByName(requestedProject);
+            if (active && ok) {
+                setShowWelcome(false);
+                setStep(0);
+            }
+        })();
+        return () => { active = false; };
+    }, [loadProjectByName, setStep]);
     const importRef = useRef<HTMLInputElement>(null);
     
     // 欢迎屏幕控制：首屏加载或主动切换时显示
@@ -156,15 +170,25 @@ export default function App() {
             messageApi.loading({ content: `正在解析 ${file.name}...`, key: 'import' });
             const formData = new FormData();
             formData.append('file', file);
-            const res = await axios.post(`${BACKEND_URL}/api/v1/models/upload`, formData);
+            const res = await axios.post(`${getBackendBase()}/api/v1/models/upload`, formData);
             if (res.data.status === 'success') {
                 const pId = res.data.project_id;
                 printAudit(`Import [${pId}]`, res.data.audit);
                 const abilitiesRaw = await apiFetchAbilities(pId);
                 const abilities = ImportService.parseAbilities(abilitiesRaw);
+                const funcDescRaw = await apiFetchFunctions(pId);
+                const functionProcesses = ImportService.parseFuncDesc(funcDescRaw);
                 const { schemaRegistry } = useProjectStore.getState();
                 const parsed = ImportService.parseCompDesc(res.data.full_json, schemaRegistry);
-                const fullConfig: any = { identity: parsed.identity, components: parsed.components, abilities };
+                const fullConfig: any = {
+                    identity: parsed.identity,
+                    components: parsed.components,
+                    abilities,
+                    rawCompDescMeta: (parsed as any).rawCompDescMeta,
+                    rawAbiSet: abilitiesRaw,
+                    functionProcesses,
+                    rawFuncDesc: funcDescRaw
+                };
                 setProjectId(pId);
                 loadProject(fullConfig);
                 messageApi.success({ content: `成功导入: ${file.name}`, key: 'import' });
@@ -227,76 +251,84 @@ export default function App() {
         console.group('%c 🚀 Starting Cloud Build Process', 'color: #1890ff; font-weight: bold; font-size: 12px;');
         console.log('[DEBUG] Target Project ID:', currentProjectId);
         console.log('[DEBUG] Current Config:', config);
+        const exportConfig = { ...config, components: materializeConnectionsToInterfaces() };
+        const isImportedProject = Boolean(exportConfig.rawCompDescMeta);
 
         try {
-            messageApi.loading({ content: '正在初始化构建环境...', key: 'export', duration: 0 });
-            const initRes = await apiInitSandbox(currentProjectId, config);
-            console.log('[DEBUG] 1. Init Sandbox Response:', initRes);
+            if (isImportedProject) {
+                messageApi.loading({ content: '正在校验导入模型...', key: 'export', duration: 0 });
+                console.log('[DEBUG] 1. Imported project: preserving the decoded backend sandbox');
+            } else {
+                messageApi.loading({ content: '正在初始化构建环境...', key: 'export', duration: 0 });
+                const initRes = await apiInitSandbox(currentProjectId, exportConfig);
+                console.log('[DEBUG] 1. Init Sandbox Response:', initRes);
+            }
 
             messageApi.loading({ content: '正在同步配置...', key: 'export', duration: 0 });
             
-            // Sync Abilities
-            if (config.abilities?.functionAbility?.length > 0) {
-                const mappedAbilities = ExportService.exportAbilities(config.abilities);
-                const abiRes = await apiUpdateAbilities(currentProjectId, mappedAbilities);
-                console.error('2. Ability Sync Response:', abiRes);
-            }
+            // Abilities are materialized once by init-sandbox. Imported models
+            // retain rawAbiSet; new models use the backend's ABI-aware exporter.
+            console.log(`[DEBUG] 2. Ability materialization complete (${isImportedProject ? 'imported' : 'new'} project)`);
             
             // Sync Chassis
-            const chassis = config.components.find(c => c.category === 'CHASSIS');
-            if (chassis) {
+            const chassis = exportConfig.components.find(c => c.category === 'CHASSIS');
+            if (!isImportedProject && chassis) {
                 const chassisUpdate = {
                     general_attr: { 
-                        module_name: { string_value: config.identity.robotName },
-                        module_shape: { shape_type: 'ENUM_BOX', box: { size_len: config.identity.chassisLength, size_width: config.identity.chassisWidth, size_height: config.identity.chassisHeight } }
+                        module_name: { string_value: exportConfig.identity.robotName },
+                        module_shape: { shape_type: 'ENUM_BOX', box: { size_len: exportConfig.identity.chassisLength, size_width: exportConfig.identity.chassisWidth, size_height: exportConfig.identity.chassisHeight } }
                     }
                 };
                 const chassisRes = await apiUpdateComponent(currentProjectId, chassis.id, chassisUpdate);
                 console.log('[DEBUG] 3. Chassis Sync Response:', chassisRes);
+            } else if (isImportedProject) {
+                console.log('[DEBUG] 3. Imported project: composing chassis from frontend raw module model');
             }
 
             // Sync All Components (Positions)
-            console.error('4. Syncing component positions...');
-            await Promise.all(config.components.map(c => apiUpdateComponent(currentProjectId, c.id, {
-                struct_param: { extend_params: [
-                    { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
-                    { key: 'locCoordROLL', double_value: c.mountRoll }, { key: 'locCoordPITCH', double_value: c.mountPitch }, { key: 'locCoordYAW', double_value: c.mountYaw }
-                ]}
-            })));
+            if (!isImportedProject) {
+                console.log('[DEBUG] 4. Syncing component positions...');
+                await Promise.all(exportConfig.components.map(c => apiUpdateComponent(currentProjectId, c.id, {
+                    struct_param: { extend_params: [
+                        { key: 'locCoordX', double_value: c.mountX }, { key: 'locCoordY', double_value: c.mountY }, { key: 'locCoordZ', double_value: c.mountZ },
+                        { key: 'locCoordROLL', double_value: c.mountRoll }, { key: 'locCoordPITCH', double_value: c.mountPitch }, { key: 'locCoordYAW', double_value: c.mountYaw }
+                    ]}
+                })));
+            } else {
+                console.log('[DEBUG] 4. Imported project: composing components from frontend raw module model');
+            }
 
             // Trigger Binary Build
             messageApi.loading({ content: '云端构建 CModel 中...', key: 'export', duration: 0 });
             console.log(`[DEBUG] 5. Requesting compile for: ${currentProjectId}`);
-            const res = await axios.post(`${BACKEND_URL}/api/v1/models/${currentProjectId}/compile`);
-            console.log('[DEBUG] 6. Final Compile Response:', res.data);
+            const compileData = await apiCompileProject(currentProjectId);
+            console.log('[DEBUG] 6. Final Compile Response:', compileData);
             
-            if (res.data.status === 'success') {
-                printAudit(`Export [${currentProjectId}]`, res.data.audit);
+            if (compileData.status === 'success') {
+                printAudit(`Export [${currentProjectId}]`, compileData.audit);
                 
                 // 1. Download .cmodel
-                const linkModel = document.createElement('a');
-                linkModel.href = `${BACKEND_URL}${res.data.download_url}`;
-                linkModel.setAttribute('download', `${currentProjectId}_packed.cmodel`);
-                document.body.appendChild(linkModel);
-                linkModel.click();
-                linkModel.remove();
+                if (compileData.download_url) {
+                    triggerBrowserDownload(
+                        resolveBackendAssetUrl(compileData.download_url),
+                        `${currentProjectId}_packed.cmodel`,
+                    );
+                }
 
                 // 2. Download Module List CSV (2026-04-04 Added)
-                if (res.data.module_list_url) {
+                if (compileData.module_list_url) {
                     setTimeout(() => {
-                        const linkCsv = document.createElement('a');
-                        linkCsv.href = `${BACKEND_URL}${res.data.module_list_url}`;
-                        linkCsv.setAttribute('download', `${currentProjectId}_module_list.csv`);
-                        document.body.appendChild(linkCsv);
-                        linkCsv.click();
-                        linkCsv.remove();
+                        triggerBrowserDownload(
+                            resolveBackendAssetUrl(compileData.module_list_url!),
+                            `${currentProjectId}_module_list.csv`,
+                        );
                     }, 500); // Slight delay to avoid browser blocking multiple downloads
                 }
 
                 messageApi.success({ content: '成果物与模块清单构建成功并下载！', key: 'export' });
             } else {
-                console.error('[DEBUG] Build failed with non-success status:', res.data);
-                throw new Error(res.data.detail || 'Build script returned error');
+                console.error('[DEBUG] Build failed with non-success status:', compileData);
+                throw new Error(compileData.detail || 'Build script returned error');
             }
         } catch (err: any) { 
             console.error('%c ❌ Build Error Details:', 'color: #ff4d4f; font-weight: bold;');
@@ -323,6 +355,9 @@ export default function App() {
                     onImport={handleImport}
                     onLoadSaved={handleLoadSaved}
                     listSavedProjects={listSavedProjects}
+                    backendBase={backendBase}
+                    backendStatus={backendStatus}
+                    onRefreshBackend={refreshBackendStatus}
                 />
             </div>
         );
@@ -341,6 +376,8 @@ export default function App() {
                 onImport={handleImportClick}
                 onExport={handleExport}
                 backendStatus={backendStatus}
+                backendBase={backendBase}
+                onRefreshBackend={refreshBackendStatus}
             />
 
             <main className="app-main">
