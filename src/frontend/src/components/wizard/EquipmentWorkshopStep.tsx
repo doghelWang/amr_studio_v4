@@ -419,7 +419,7 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
       )}
 
       <Row gutter={[16, 16]} className="workshop-grid">
-        <Col xs={24} lg={4}>
+        <Col xs={24} lg={6}>
           <Card title="功能装备栏" extra={<Badge count={installed.length} showZero />} className="workshop-card function-card">
             {FUNCTION_GROUPS.map(group => <button key={group.key} className={`function-item ${group.key === groupKey ? 'selected' : ''}`} onClick={() => setGroupKey(group.key)}>
               <span className="function-icon">{group.icon}</span><span><strong>{group.label}</strong><small>{group.hint}</small></span><span className="function-count">{installed.filter(item => group.categories.includes(item.category as never)).length}</span>
@@ -443,7 +443,7 @@ export const EquipmentWorkshopStep: React.FC<{ onExport?: () => void }> = () => 
           </Card>
         </Col>
 
-        <Col xs={24} lg={14}>
+        <Col xs={24} lg={12}>
           <Card className="workshop-card chassis-card" title={<Space><RobotOutlined />底盘中心 · Robot Body</Space>} extra={<Tag color={chassisReady ? 'success' : 'warning'}>{chassisReady ? '基础资料就绪' : '待填写身份/尺寸'}</Tag>}>
             <div className="scene-hud-3d">
               <div><span className="scene-kicker">AMR / {config.identity.robotName || 'unknown'}</span><strong>{DRIVE_TYPE_LABELS[config.identity.driveType] || config.identity.driveType} · 空间装配视图</strong><Text type="secondary">轮组、动力、电池与传感器按装配层级表达</Text></div>

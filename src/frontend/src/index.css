@@ -85,8 +85,21 @@ textarea {
 .function-item small { color: var(--text-muted); font-size: 11px; margin-top: 2px; }
 .function-icon { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 8px; color: var(--text-accent); background: var(--accent-soft); }
 .function-count { min-width: 20px; padding: 1px 6px; border-radius: 10px; color: var(--text-muted); background: var(--bg-hover); font-size: 11px; text-align: center; }
-.installed-card { margin-top: 16px; height: auto; }
-.installed-card .ant-list-item, .catalog-card .ant-list-item { cursor: pointer; border-radius: 8px; padding-inline: 8px; }
+.installed-card { margin-top: 16px; height: auto; max-height: 460px; overflow: auto; }
+.installed-card .ant-list-item, .catalog-card .ant-list-item { cursor: pointer; border-radius: 8px; padding-inline: 8px; gap: 8px; }
+/* [FIX] Equipment Workshop layout bug: these two lists live in narrow grid columns and can hold
+   30-40+ rows (installed components / catalog modules). Antd's default List.Item.Meta wraps long
+   titles/descriptions onto as many lines as needed instead of clipping them — in a ~120-180px-wide
+   column that meant every row wrapped one character per line (a 12-character name became a
+   176px-tall, 8-line title), so a 38-item list alone inflated the page to ~18,000px tall. Clipping
+   with an ellipsis keeps every row a fixed, predictable height regardless of column width or name
+   length; the full name is still available via the native title tooltip / on hover. */
+.installed-card .ant-list-item-meta-content, .catalog-card .ant-list-item-meta-content { min-width: 0; overflow: hidden; }
+.installed-card .ant-list-item-meta-title, .catalog-card .ant-list-item-meta-title,
+.installed-card .ant-list-item-meta-description, .catalog-card .ant-list-item-meta-description {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+}
+.installed-card .ant-list-item-meta-description .ant-space { max-width: 100%; overflow: hidden; }
 .installed-card .ant-list-item:hover, .catalog-card .ant-list-item:hover, .list-selected, .catalog-selected { background: var(--bg-active); }
 .status-dot { display: block; width: 8px; height: 8px; margin-top: 8px; border-radius: 50%; background: var(--warning); box-shadow: 0 0 8px color-mix(in srgb, var(--warning) 50%, transparent); }
 .status-dot[data-state='ok'] { background: var(--success); box-shadow: 0 0 8px color-mix(in srgb, var(--success) 50%, transparent); }
