@@ -115,6 +115,26 @@ export class ImportService {
 
       identity.selfWeight = Number(findVal('selfWeight')) || 0;
       identity.totalLoadWeight = Number(findVal('totalLoadWeight')) || 0;
+
+      // §AUDIT-FIX(2026-09): venderName/materialCode/version were never parsed here, so
+      // IdentityStep.tsx's bound form fields always showed empty after import (see
+      // audits/claude_review/frontend_audit.md, "部分解析/部分导出问题" #1) even when the
+      // source file had this data. Confirmed field locations against a real sample
+      // (repo-root CompDesc.json): both live under chassis.generalAttr, not privateAttrs.
+      // NOTE: navigationMethod and the top-level identity `alias` are intentionally left
+      // unmapped — no confirmed backend/proto field for them was found in this repo (the
+      // authoritative .proto is missing entirely, see history audit §6.1); mapping them to a
+      // guessed field would itself be a PROTO_FIRST violation. Flagged as an open item.
+      const genExtend = chassis.generalAttr?.extendParams || chassis.generalAttr?.extend_params || [];
+      identity.venderName = chassis.generalAttr?.venderName?.comboType?.typeKey
+        || chassis.generalAttr?.vender_name?.combo_type?.type_key
+        || '';
+      identity.materialCode = genExtend.find((p: any) => p.key === 'material_code')?.stringValue
+        || genExtend.find((p: any) => p.key === 'material_code')?.string_value
+        || '';
+      identity.version = chassis.generalAttr?.versionInfo?.stringValue
+        || chassis.generalAttr?.version_info?.string_value
+        || '1.0.0';
     }
 
     // ━━━ 2. Precise Topology Engine ━━━
@@ -411,10 +431,15 @@ export class ImportService {
 
     // ━━━ FIX: interfaceParams is at ROOT level, not inside generalAttr ━━━
     const ifaceRoot = comp.interfaceParams || comp.interface_params || {};
+    // [FIX REQ-NF-06] Read back the per-interface runtime params (ipAddress/baudRate/canId, etc.)
+    // that ExportService now serializes under each interfaceGroup entry's own `interfaceParams`.
+    // Without this, a reloaded project would always show the interface's params as unset, even
+    // after fixing the write/export sides, because import never carried the field forward.
     const interfaces: InterfaceConfig[] = (ifaceRoot.interfaceGroup || ifaceRoot.interface_Group || []).map((inf: any) => ({
       key: inf.key, type: inf.type, path: inf.path, desc: inf.desc || inf.key,
       interfaceUuid: inf.interfaceUuid || inf.interface_uuid || uuidv4(),
       linkedInterfaceUuid: inf.linkedInterfaceUuid || inf.linked_interface_uuid || [],
+      interfaceParams: inf.interfaceParams || inf.interface_params || undefined,
     }));
 
     const privateAttrs: AttributeGroup[] = (comp.privateAttr?.privateAttrs || comp.private_attr?.private_attrs || []).map((grp: any) => ({

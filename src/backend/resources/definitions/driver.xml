@@ -43,7 +43,7 @@
     </privateAttributes>
     <interfaces>
         <interface key="power_in" type="POWER" label="电源输入" />
-        <interface key="can_link" type="CAN" label="CAN总线控制" />
+        <interface key="can_link" type="CAN" label="CAN总线(至主控CAN2)" />
         <interface key="motor_out" type="MOTOR_OUT" label="电机三相电输出" />
     </interfaces>
 </moduleType>

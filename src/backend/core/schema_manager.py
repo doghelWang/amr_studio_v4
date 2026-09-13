@@ -1,7 +1,11 @@
 import os
+import json
+import logging
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+
+logger = logging.getLogger(__name__)
 
 class SchemaManager:
     """
@@ -16,8 +20,11 @@ class SchemaManager:
     XML 定义 -> SchemaManager 解析 -> get_registry() -> /api/v1/schemas -> 前端 Zustand Store (schemaRegistry)
     """
     
-    def __init__(self, definitions_path: str):
+    def __init__(self, definitions_path: str, modules_path: Optional[str] = None):
         self.definitions_path = Path(definitions_path)
+        # REQ-CL-01: 品牌产品目录第②数据源 (resources/modules/*.json)，用于将"类型级"Schema
+        # 与真实可采购品牌型号关联，收敛《总体设计》§5 所述的三套并行数据源。
+        self.modules_path = Path(modules_path) if modules_path else (self.definitions_path.parent / "modules")
         self.schemas: Dict[str, Any] = {}
         self.load_all()
 
@@ -32,6 +39,12 @@ class SchemaManager:
             try:
                 schema = self._parse_xml(xml_file)
                 if schema and "key" in schema:
+                    # REQ-CL-01: 为该 category 附加品牌型号清单，使前端"组件库"能展示具体可采购产品
+                    # 而不只是通用占位类型（见《后端设计》§4.1）。
+                    # 注意：经对 resources/modules/*.json 实测结构核实，品牌产品文件中标识所属大类的字段是
+                    # generalAttr.mainModuleType.comboType.typeKey，其取值与 moduleType 的 key（如 "mainCPU"）
+                    # 而非大写 category（如 "MAINCPU"）一致；因此匹配依据用 schema["key"]，不用 category。
+                    schema["brandedProducts"] = self._scan_branded_products(schema["key"])
                     new_schemas[schema["key"]] = schema
                     # print(f"Loaded schema: {schema['key']} from {xml_file.name}")
             except Exception as e:
@@ -112,6 +125,44 @@ class SchemaManager:
 
         return schema
 
+    def _scan_branded_products(self, type_key: str) -> List[Dict[str, Any]]:
+        """REQ-CL-01: 扫描 resources/modules/*.json，返回与该 moduleType key 匹配的品牌产品清单。
+
+        匹配依据：模块 JSON 内 generalAttr.mainModuleType.comboType.typeKey == type_key
+        （不使用文件名子串猜测归属，遵循 ENGINEERING_CONSTRAINTS §13"名称启发式禁令"；
+        经实测核实该字段取值为 moduleType 的 key 原始大小写形式，如 "mainCPU"，而非大写 category 枚举 "MAINCPU"）。
+        对结构不符合预期或损坏的文件采用 try/except + 日志兜底，不让单个坏文件影响整批加载
+        （沿用 §4 后端设计所建议的、与 list_boards_api() 一致的容错模式）。
+        """
+        products: List[Dict[str, Any]] = []
+        if not type_key or not self.modules_path.exists():
+            return products
+
+        for f in sorted(self.modules_path.glob("*.json")):
+            try:
+                data = json.loads(f.read_text(encoding="utf-8"))
+                comps = data.get("moduleComponets") or data.get("module_componets") or \
+                    data.get("moduleComponents") or data.get("module_components") or []
+                comp = comps[0] if comps else data
+                gen = comp.get("generalAttr") or comp.get("general_attr") or {}
+                main_type = gen.get("mainModuleType") or gen.get("main_module_type") or {}
+                combo = main_type.get("comboType") or main_type.get("combo_type") or {}
+                file_type_key = combo.get("typeKey") or combo.get("type_key")
+                if file_type_key != type_key:
+                    continue
+
+                desc_attr = gen.get("moduleDesc") or gen.get("module_desc") or {}
+                name = desc_attr.get("stringValue") or desc_attr.get("string_value") or \
+                    data.get("moduleGroupName") or f.stem
+                products.append({
+                    "productId": f.stem,
+                    "name": name,
+                    "sourceFile": f.name,
+                })
+            except Exception as e:
+                logger.warning("Skipping unreadable module template %s: %s", f, e)
+        return products
+
     def _cast_value(self, val_str: str, val_type: str) -> Any:
         if not val_str: 
             if "INT" in val_type or "DOUBLE" in val_type or "FLOAT" in val_type:
@@ -136,4 +187,7 @@ class SchemaManager:
         return self.schemas
 
 # 全局单例初始化
-schema_manager = SchemaManager(os.path.join(os.path.dirname(__file__), "..", "resources", "definitions"))
+schema_manager = SchemaManager(
+    os.path.join(os.path.dirname(__file__), "..", "resources", "definitions"),
+    os.path.join(os.path.dirname(__file__), "..", "resources", "modules"),
+)

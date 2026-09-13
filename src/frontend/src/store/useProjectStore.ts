@@ -18,30 +18,42 @@ import {
 } from '../services/api_v2';
 
 import { DEFAULT_FULL_LOAD_RATIOS } from './PerformanceConfig';
+import { getChassisSchemaDefaults } from './SchemaDefaults';
 
-const createDefaultIdentity = (): RobotIdentity => ({
-  robotName: '',
-  version: '1.0.0',
-  alias: '',
-  materialCode: '',
-  venderName: '',
-  navigationMethod: 'LASER_SLAM',
-  driveType: 'STANDARD_DIFF',
-  chassisShape: 'BOX',
-  chassisLength: 1200,
-  chassisWidth: 800,
-  chassisHeight: 100,
-  headOffset: 600,
-  tailOffset: 600,
-  leftOffset: 400,
-  rightOffset: 400,
-  maxSpeed: 600,
-  maxAccel: 200,
-  maxDecel: 200,
-  avoidMaxDec: 200,
-  selfWeight: 0,
-  totalLoadWeight: 0
-});
+// §AUDIT-FIX(2026-09) / NO_HARDCODE: previously this hardcoded 1200/800/600/400/600/200/200/200 —
+// the exact "forbidden pattern" values CLAUDE.md's own examples call out, and which
+// PerformanceConfig.ts's LEGACY_CHASSIS_DEFAULT_VALUES documents as wrong (schema default is
+// 100/100/100 and 0 offsets). SchemaDefaults.ts/getChassisSchemaDefaults() was already built to
+// replace these but was never wired in (see audits/claude_review/frontend_audit.md A3) — this
+// wires it in.
+// Exported (was private) so audit-fix regression tests can exercise the real logic directly
+// instead of standing up the full persisted zustand store (which needs a browser/localStorage).
+export const createDefaultIdentity = (): RobotIdentity => {
+  const schemaDefaults = getChassisSchemaDefaults('STANDARD_DIFF');
+  return {
+    robotName: '',
+    version: '1.0.0',
+    alias: '',
+    materialCode: '',
+    venderName: '',
+    navigationMethod: 'LASER_SLAM',
+    driveType: 'STANDARD_DIFF',
+    chassisShape: 'BOX',
+    chassisLength: schemaDefaults.shape.length,
+    chassisWidth: schemaDefaults.shape.width,
+    chassisHeight: schemaDefaults.shape.height,
+    headOffset: schemaDefaults.motionCenter.headOffset,
+    tailOffset: schemaDefaults.motionCenter.tailOffset,
+    leftOffset: schemaDefaults.motionCenter.leftOffset,
+    rightOffset: schemaDefaults.motionCenter.rightOffset,
+    maxSpeed: schemaDefaults.performance.maxSpeed,
+    maxAccel: schemaDefaults.performance.maxAccel,
+    maxDecel: schemaDefaults.performance.maxDecel,
+    avoidMaxDec: schemaDefaults.performance.avoidMaxDec,
+    selfWeight: 0,
+    totalLoadWeight: 0
+  };
+};
 
 const createDefaultChassis = (identity: RobotIdentity): ComponentConfig => ({
   id: 'chassis-root',
@@ -84,7 +96,8 @@ const createDefaultProjectConfig = (): RobotConfig => {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // Helper: Synchronize Identity fields to the root Chassis component
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
+// Exported (was private) — see createDefaultIdentity note above.
+export const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
   const { identity, components: allComponents } = config;
 
   // AUDIT-0328-2-4: Calculate Read-Only fields from topology and basic geometry
@@ -136,25 +149,85 @@ const syncChassisAttributes = (config: RobotConfig): RobotConfig => {
             if (ele.key === 'rotateMaxAngSpeed (Idle)') return { ...ele, value: identity.rotateMaxAngSpeed };
             if (ele.key === 'rotateMaxAngAcceleration (Idle)') return { ...ele, value: identity.rotateMaxAngAcceleration };
 
+            // §AUDIT-FIX(2026-09-12) / ground-truth cross-check against the real
+            // controller_model_comp_desc.proto (staged from the user's own machine — see
+            // audits/claude_review/AUDIT_AND_REFACTOR_PLAN.md addendum): RobotIdentity already
+            // tracks rotateMaxAngSpeedFull/rotateMaxAngAccelerationFull (types.ts) and a real
+            // saved project's chassisAttr group already contains "rotateMaxAngSpeed (Full Load)"
+            // / "rotateMaxAngAcceleration (Full Load)" elements, but this sync function never
+            // wrote them — a silent partial-sync gap (NO_PARTIAL_PARSE-adjacent) that meant
+            // editing the Full-Load angular speed/accel fields in the wizard never reached the
+            // component's exportable privateAttrs at all.
+            if (ele.key === 'rotateMaxAngSpeed (Full Load)') return { ...ele, value: identity.rotateMaxAngSpeedFull ?? identity.rotateMaxAngSpeed };
+            if (ele.key === 'rotateMaxAngAcceleration (Full Load)') return { ...ele, value: identity.rotateMaxAngAccelerationFull ?? identity.rotateMaxAngAcceleration };
+
+            // §AUDIT-FIX(2026-09-12): selfWeight/totalLoadWeight are parsed FROM privateAttrs on
+            // import (ImportService.ts: findVal('selfWeight')/findVal('totalLoadWeight')) and are
+            // real fields on RobotIdentity, but this sync function had no branch to write them
+            // back — the only reason this wasn't caught earlier is that App.tsx's handleExport
+            // never sent chassis.privateAttrs to the backend at all (see the addendum's
+            // "handleExport silently drops identity fields" finding), so the gap was invisible
+            // until that export path was fixed to actually use this data.
+            if (ele.key === 'selfWeight') return { ...ele, value: identity.selfWeight ?? 0 };
+            if (ele.key === 'totalLoadWeight') return { ...ele, value: identity.totalLoadWeight ?? 0 };
+
             // 4. System Calculated (Read Only)
             if (ele.key === 'wheelsNum') return { ...ele, value: wheelsCount > 0 ? wheelsCount : 1 };
             if (ele.key === 'rotateDiameter') return { ...ele, value: calculatedRotateDiameter };
 
             // 5. Metadata
-            if (ele.key === 'venderName') return { ...ele, value: identity.venderName };
-            if (ele.key === 'materialCode') return { ...ele, value: identity.materialCode };
+            // §AUDIT-FIX(2026-09): identity.venderName/materialCode default to '' and are not
+            // always populated by ImportService (see audit). Previously this unconditionally
+            // overwrote privateAttrs with '', so importing a file then editing ANY identity
+            // field (e.g. robotName) silently erased a correctly-imported vendor/material code.
+            // Only overwrite when the identity actually carries a non-empty value; otherwise
+            // preserve whatever is already in privateAttrs.
+            if (ele.key === 'venderName') return identity.venderName ? { ...ele, value: identity.venderName } : ele;
+            if (ele.key === 'materialCode') return identity.materialCode ? { ...ele, value: identity.materialCode } : ele;
 
             return ele;
           })
         };
       });
 
+      // §AUDIT-FIX(2026-09-12): identity.venderName/materialCode/version have NO home in the
+      // diffChassis/steerChassis PrivateAttribute.json schema at all (confirmed by grepping the
+      // real schema files for "venderName"/"materialCode" — zero matches), so the two branches
+      // above (`ele.key === 'venderName' | 'materialCode'`) never actually match anything and
+      // are dead code. Cross-checked against the real controller_model_comp_desc.proto (staged
+      // from the user's machine): these three fields live on generalAttr instead —
+      // Message_Module_General_Attribute.vender_name (field 10), .version_info (field 5), and a
+      // keyed entry in .extend_params (field 20) for material_code — exactly where
+      // ImportService.ts already reads them back from on import. This was a real, silent,
+      // one-way gap: import correctly populated identity.venderName/materialCode/version (see
+      // ImportService.ts §AUDIT-FIX(2026-09)), the wizard let the user edit them, but nothing
+      // ever wrote the edit back into the chassis component — so every export silently kept
+      // whatever value was present at import time (or nothing, for a newly-created robot).
+      const existingGeneralAttr = c.generalAttr || {};
+      const existingExtendParams: any[] = existingGeneralAttr.extendParams || existingGeneralAttr.extend_params || [];
+      const updatedGeneralAttr = {
+        ...existingGeneralAttr,
+        ...(identity.venderName ? {
+          venderName: { type: 'DATA_COMBOX', comboType: { typeKey: identity.venderName } }
+        } : {}),
+        ...(identity.version ? {
+          versionInfo: { type: 'DATA_STRING', stringValue: identity.version }
+        } : {}),
+        ...(identity.materialCode ? {
+          extendParams: [
+            ...existingExtendParams.filter((p: any) => p.key !== 'material_code'),
+            { key: 'material_code', type: 'DATA_STRING', stringValue: identity.materialCode }
+          ]
+        } : {})
+      };
+
       return {
         ...c,
         name: identity.robotName || 'chassis',
         alias: `底盘 (${identity.robotName || 'Robot Chassis'})`,
         type: expectedType,
-        privateAttrs: updatedPrivateAttrs
+        privateAttrs: updatedPrivateAttrs,
+        generalAttr: updatedGeneralAttr
       };
     }
     return c;
@@ -580,6 +653,13 @@ export const useProjectStore = create<ProjectState>()(
           isDirty: true
         })),
 
+        // [FIX REQ-NF-06] params (ipAddress/baudRate/canId 等) must be written INTO the nested
+        // `interfaceParams` object, not spread onto the interface at the top level: the read side
+        // (ComponentPropertyPanel.tsx) reads `item.interfaceParams?.xxx`, and ExportService's
+        // interfaceGroup mapping only serializes `interfaceParams`. Writing top-level fields here
+        // made every runtime interface param (ETH IP / CAN baud rate / CAN node ID) invisible to
+        // both the UI (masked by the hardcoded fallback default) and to export (silently dropped),
+        // which is why the value "looked fine" transiently but came back empty after reload.
         updateInterfaceParams: (componentId, interfaceUuid, params) => set((state) => ({
           config: {
             ...state.config,
@@ -588,7 +668,7 @@ export const useProjectStore = create<ProjectState>()(
               return {
                 ...c,
                 interfaces: c.interfaces.map(i => i.interfaceUuid === interfaceUuid
-                  ? { ...i, ...params }
+                  ? { ...i, interfaceParams: { ...(i.interfaceParams || {}), ...params } }
                   : i
                 )
               };

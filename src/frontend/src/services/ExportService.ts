@@ -125,6 +125,32 @@ export class ExportService {
   }
 
   /**
+   * §AUDIT-FIX(2026-09-12): builds a safe, additive PATCH (not a full replace) of a component's
+   * generalAttr + privateAttr.privateAttrs, suitable for apiUpdateComponent's deep_update-based
+   * merge (backend/core/data_manager.py — matches list items by "key" and recurses, so sending
+   * the full current privateAttrs list here does not delete anything the caller omits; sending a
+   * sparse generalAttr patch only overwrites the specific leaf fields present).
+   *
+   * Added so App.tsx's handleExport can stop hand-rolling a partial ad-hoc patch (which only
+   * ever covered module_name/module_shape — see the audit addendum's "handleExport silently
+   * drops identity fields" finding) and instead reuse the same field mapper this class already
+   * uses for full exports, now that useProjectStore.ts's syncChassisAttributes() actually keeps
+   * chassis.privateAttrs / chassis.generalAttr up to date with every RobotIdentity field that has
+   * a confirmed home in controller_model_comp_desc.proto.
+   */
+  static buildChassisSyncPatch(chassis: ComponentConfig): any {
+    return {
+      generalAttr: chassis.generalAttr || {},
+      privateAttr: {
+        privateAttrs: (chassis.privateAttrs || []).map(g => ({
+          key: g.key,
+          arrayBaseEle: (g.elements || []).map(e => this.mapAttributeToCModelSimple(e))
+        }))
+      }
+    };
+  }
+
+  /**
    * §ABILITY_EXPORT: 导出 ControllerAbility 到 Proto JSON 格式
    * 使用专用映射器，与 component 属性映射分离
    */
@@ -267,6 +293,10 @@ export class ExportService {
         }))
       },
       interfaceAbility: c.interfaceAbility,
+      // [FIX REQ-NF-06] Previously this mapping omitted `interfaceParams` entirely, so any runtime
+      // interface configuration the user entered (ETH IP address, CAN baud rate, CAN node ID —
+      // written via updateInterfaceParams) was silently dropped on export/save and never round-
+      // tripped back on import, even after the write/read nesting mismatch above is fixed.
       interfaceParams: {
         interfaceGroup: c.interfaces.map(i => ({
           key: i.key,
@@ -274,7 +304,8 @@ export class ExportService {
           path: i.path,
           desc: i.desc,
           interfaceUuid: i.interfaceUuid,
-          linkedInterfaceUuid: i.linkedInterfaceUuid || []
+          linkedInterfaceUuid: i.linkedInterfaceUuid || [],
+          ...(i.interfaceParams ? { interfaceParams: i.interfaceParams } : {})
         }))
       },
       structParam: {

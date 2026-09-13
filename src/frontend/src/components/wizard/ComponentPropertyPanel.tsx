@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
     Spin, Empty, InputNumber, Switch, Select, message, 
     Input, Card, Tag, Tabs, Divider, List, Space, Typography, Button, Collapse, Alert, Row, Col, Tooltip, AutoComplete
@@ -62,6 +62,15 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
   // Direct mode: use component.id as selectedUuid
   const selectedUuid = propSelectedUuid || directComponent?.id;
   const [compData, setCompData] = useState<any>(null);
+  // [FIX REQ-NF-05] Mirrors `compData` synchronously (state updates are not guaranteed to be
+  // visible to the very next function call in the same tick). Rapid consecutive edits (e.g. holding
+  // Backspace) previously each read `compData` from a stale closure, so a fast second edit could
+  // start from a pre-edit-1 snapshot and clobber edit 1's change — the "StepStepko"-style garbled
+  // text symptom. All local mutations must read/write through this ref, not the raw `compData` var.
+  const compDataRef = useRef<any>(null);
+  // [FIX REQ-NF-05] Debounce state for syncPrivateAttrs (see below).
+  const syncTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const syncSeqRef = useRef(0);
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const { config, updateAttribute, updateStructuralParam, linkInterface, updateInterfaceParams } = useProjectStore();
@@ -78,32 +87,57 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
       setLoading(true);
       apiFetchComponentDetails(projectId, selectedUuid)
         .then(data => {
+            compDataRef.current = data;
             setCompData(data);
             setLoading(false);
         })
         .catch(err => {
             console.warn('[ComponentPropertyPanel] Backend fetch failed, using store data:', err);
+            compDataRef.current = null;
             setCompData(null);
             setLoading(false);
         });
     } else {
       // No project loaded → clear any stale backend data, use store data
+      compDataRef.current = null;
       setCompData(null);
     }
   }, [projectId, selectedUuid]);
 
-  const syncPrivateAttrs = async (newFullData: any) => {
+  // [FIX REQ-NF-05] Previously this fired a full network PATCH synchronously on EVERY keystroke,
+  // unawaited — rapid typing (or holding Backspace) launched many overlapping requests that could
+  // resolve out of order, letting an early/stale request land after a newer one and silently
+  // overwrite it with older text. Debounce to one PATCH ~400ms after the user pauses, carrying only
+  // the latest snapshot, and use a monotonic sequence guard so a superseded request's callback can
+  // never show a stale success/error toast for state that's already moved on.
+  // [FIX REQ-NF-05] Clear any pending debounced sync on unmount so a stray PATCH never fires
+  // against a component the user has already navigated away from.
+  useEffect(() => {
+      return () => {
+          if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      };
+  }, []);
+
+  const syncPrivateAttrs = (newFullData: any) => {
       if (!projectId || !selectedUuid) return;
-      try {
-          messageApi.loading({ content: '保存参数...', key: 'sync', duration: 0 });
-          await apiUpdateComponent(projectId, selectedUuid, { 
-              private_attr: newFullData.private_attr, 
-              privateAttr: newFullData.privateAttr 
-          });
-          messageApi.success({ content: '配置已同步', key: 'sync' });
-      } catch (err) {
-          messageApi.error({ content: '同步失败', key: 'sync' });
-      }
+      if (syncTimerRef.current) clearTimeout(syncTimerRef.current);
+      const mySeq = ++syncSeqRef.current;
+      syncTimerRef.current = setTimeout(async () => {
+          try {
+              messageApi.loading({ content: '保存参数...', key: 'sync', duration: 0 });
+              await apiUpdateComponent(projectId, selectedUuid, {
+                  private_attr: newFullData.private_attr,
+                  privateAttr: newFullData.privateAttr
+              });
+              if (mySeq === syncSeqRef.current) {
+                  messageApi.success({ content: '配置已同步', key: 'sync' });
+              }
+          } catch (err) {
+              if (mySeq === syncSeqRef.current) {
+                  messageApi.error({ content: '同步失败', key: 'sync' });
+              }
+          }
+      }, 400);
   };
 
   /**
@@ -117,9 +151,12 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
    *    抛出事件以触发多设备的底层参数联动同步。
    */
   const handleValueUpdate = (groupKey: string, eleKey: string, newValue: any, typeKey: string) => {
-      if (compData) {
+      // [FIX REQ-NF-05] Read the base snapshot from the ref (always current), not the `compData`
+      // state variable (can be one keystroke behind within the same tick — see compDataRef above).
+      const baseCompData = compDataRef.current ?? compData;
+      if (baseCompData) {
           // ── Backend-loaded mode ──
-          const newData = JSON.parse(JSON.stringify(compData));
+          const newData = JSON.parse(JSON.stringify(baseCompData));
           
           const updateInTree = (nodes: any[]) => {
               for (let node of nodes) {
@@ -156,6 +193,7 @@ export const ComponentPropertyPanel: React.FC<Props> = (props) => {
               updateInTree(targetGroup.arrayBaseEle || targetGroup.array_base_ele || []);
           }
 
+          compDataRef.current = newData;
           setCompData(newData);
           syncPrivateAttrs(newData);
       }

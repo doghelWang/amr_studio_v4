@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useAutoTreeHeight } from '../../hooks/useAutoTreeHeight';
 import { Typography, Card, Row, Col, Tag, Divider, Space, Button, Tree, Empty, message } from 'antd';
 import { useProjectStore } from '../../store/useProjectStore';
 import { ComponentPropertyPanel } from './ComponentPropertyPanel';
@@ -9,6 +10,7 @@ import {
     DeleteOutlined
 } from '@ant-design/icons';
 import type { ComponentConfig } from '../../store/types';
+import { getValidSubType } from '../../store/SchemaEngine';
 
 const { Title, Text } = Typography;
 
@@ -105,9 +107,23 @@ export const PowerSystemStep: React.FC = () => {
     const nextPowerIndex = (category: string) =>
         config.components.filter(c => c.category === category).length + 1;
 
+    // §AUDIT-FIX(2026-09) / NO_HARDCODE: these subType strings used to be passed straight to
+    // addComponent(), bypassing schema validation (CLAUDE.md §2.0 names 'PMSMMotor' literals as
+    // the canonical forbidden pattern). ComponentLibraryStep.tsx/ComponentPropertyPanel.tsx
+    // already do this correctly via getValidSubType(); this brings PowerSystemStep in line.
+    const DRIVER_SUBTYPE = () => getValidSubType('DRIVER', 'subDriver', []);
+    const MOTOR_SUBTYPE = () => getValidSubType('MOTOR', 'PMSMMotor', ['BLDCMotor', 'BDCMotor']);
+    const WHEEL_SUBTYPE = (isSteerDrive: boolean | undefined) => getValidSubType(
+        'DRIVEWHEEL',
+        isSteerDrive ? 'horizontalSteerWheel' : 'diffWheel',
+        isSteerDrive
+            ? ['horizontalSteerWheel', 'verticalSteerWheel', 'diffSteerWheel', 'weakSteerWheel']
+            : ['diffWheel']
+    );
+
     const addPowerChain = () => {
         const isSteerDrive = config.identity.driveType?.includes('STEER');
-        const wheelType = isSteerDrive ? 'horizontalSteerWheel' : 'diffWheel';
+        const wheelType = WHEEL_SUBTYPE(isSteerDrive);
         const wheelId = addComponent('DRIVEWHEEL', wheelType as any);
         if (!wheelId) return;
 
@@ -117,8 +133,8 @@ export const PowerSystemStep: React.FC = () => {
         });
 
         if (!isSteerDrive) {
-            const driverId = addComponent('DRIVER', 'subDriver');
-            const motorId = addComponent('MOTOR', 'PMSMMotor');
+            const driverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const motorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (driverId) {
                 updateComponent(driverId, { alias: `行走驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'walk' });
@@ -130,10 +146,10 @@ export const PowerSystemStep: React.FC = () => {
                 bindWheelAttr(wheelId, 'relateMotor', motorId);
             }
         } else {
-            const steerDriverId = addComponent('DRIVER', 'subDriver');
-            const walkDriverId = addComponent('DRIVER', 'subDriver');
-            const steerMotorId = addComponent('MOTOR', 'PMSMMotor');
-            const walkMotorId = addComponent('MOTOR', 'PMSMMotor');
+            const steerDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const walkDriverId = addComponent('DRIVER', DRIVER_SUBTYPE());
+            const steerMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
+            const walkMotorId = addComponent('MOTOR', MOTOR_SUBTYPE());
 
             if (steerDriverId) {
                 updateComponent(steerDriverId, { alias: `转向驱动器 ${nextPowerIndex('DRIVER')}`, functionalRole: 'steer' });
@@ -188,6 +204,10 @@ export const PowerSystemStep: React.FC = () => {
         void message.success('已移除选中的动力节点');
     };
 
+    // [FIX REQ-NF-04] see useAutoTreeHeight.ts — same virtual-scroll height fix as the
+    // hardware tree in ComponentLibraryStep.
+    const { containerRef: powerTreeContainerRef, height: powerTreeHeight } = useAutoTreeHeight(400);
+
     const syncWheelAttributes = (sourceId: string, _groupKey: string, attrKey: string, value: any) => {
         if (attrKey !== 'wheelRadius') return;
         config.components
@@ -236,14 +256,18 @@ export const PowerSystemStep: React.FC = () => {
                         </Button>
                     </Space>
                     {treeData.length > 0 ? (
-                        <Tree
-                            showIcon
-                            defaultExpandAll
-                            className="dark-tree"
-                            treeData={treeData}
-                            onSelect={(keys) => setSelectedUuid(keys[0] as string)}
-                            selectedKeys={selectedUuid ? [selectedUuid] : []}
-                        />
+                        <div ref={powerTreeContainerRef} style={{ minHeight: 400, height: 400, overflow: 'hidden' }}>
+                            <Tree
+                                showIcon
+                                defaultExpandAll
+                                className="dark-tree"
+                                treeData={treeData}
+                                onSelect={(keys) => setSelectedUuid(keys[0] as string)}
+                                selectedKeys={selectedUuid ? [selectedUuid] : []}
+                                virtual
+                                height={powerTreeHeight}
+                            />
+                        </div>
                     ) : (
                         <Empty
                             description="未探测到动力组件"
