@@ -7,8 +7,7 @@
 | Unit and integration tests | `npm test` | **62 passed**, 0 failed (core 50, CLI 6, Worker 6) |
 | Type check (strict) | `npm run typecheck` | clean for core, CLI, Worker, web |
 | Production build | `npm run build` | succeeds |
-| Browser walkthrough (Vite preview) | `npm run e2e` | **21 steps passed**, no console or page errors |
-| Browser walkthrough on the real Workers runtime (workerd) | `BASE_URL=http://localhost:8799 npm run e2e` | **21 steps passed** |
+| Browser walkthrough (Vite preview, Worker running in workerd) | `npm run e2e` | **21 steps passed**, no console or page errors |
 
 ## What the tests establish
 

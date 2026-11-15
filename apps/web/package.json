@@ -1,6 +1,28 @@
 {
-  "name": "@amr/web", "private": true, "version": "5.0.0", "type": "module",
-  "scripts": { "dev": "node --import tsx ../../node_modules/vite/bin/vite.js", "build": "node --import tsx ../../node_modules/vite/bin/vite.js build", "preview": "node --import tsx ../../node_modules/vite/bin/vite.js preview", "typecheck": "tsc --noEmit" },
-  "dependencies": { "@amr/core": "*", "@amr/worker": "*", "react": "^18.3.1", "react-dom": "^18.3.1", "zustand": "^4.5.5" },
-  "devDependencies": { "@types/react": "^18.3.5", "@types/react-dom": "^18.3.0", "@vitejs/plugin-react": "^4.3.1", "vite": "^5.4.8" }
+  "name": "@amr/web",
+  "private": true,
+  "version": "5.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "cf deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@amr/core": "*",
+    "@amr/worker": "*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.5"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^2.0.0-beta.v.17",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^5.2.0",
+    "cf": "^1.0.0-beta.32",
+    "vite": "^7.3.8"
+  }
 }

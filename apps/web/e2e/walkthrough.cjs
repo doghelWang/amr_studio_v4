@@ -11,7 +11,7 @@ const assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '../../..');
 const SHOTS = path.resolve(process.argv[2] || path.join(ROOT, 'docs/screenshots'));
 const PORT = 4179;
-// BASE_URL=<deployed or wrangler-dev url> runs the same walkthrough against that server instead of a local preview.
+// BASE_URL=<deployed url> runs the same walkthrough against that server instead of a local preview.
 const EXTERNAL = process.env.BASE_URL;
 const URL_ = EXTERNAL ? EXTERNAL.replace(/\/?$/, '/') : `http://localhost:${PORT}/`;
 const FIX = (n) => path.join(ROOT, 'fixtures', n);
@@ -26,7 +26,7 @@ const step = async (name, fn) => {
   mkdirSync(SHOTS, { recursive: true });
   let server = null;
   if (!EXTERNAL) {
-    server = spawn('node', ['--import', 'tsx', path.join(ROOT, 'node_modules/vite/bin/vite.js'), 'preview', '--port', String(PORT), '--strictPort'], { cwd: path.join(ROOT, 'apps/web'), stdio: 'pipe' });
+    server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--strictPort'], { cwd: path.join(ROOT, 'apps/web'), stdio: 'pipe', detached: true });
     await new Promise((resolve, reject) => {
       server.stdout.on('data', (d) => String(d).includes('localhost') && resolve());
       server.stderr.on('data', (d) => process.stderr.write(d));
@@ -204,6 +204,7 @@ const step = async (name, fn) => {
     process.exitCode = 1;
   } finally {
     await browser.close();
-    if (server) server.kill();
+    // the preview server starts workerd as a child: stop the whole process group
+    if (server) { try { process.kill(-server.pid, 'SIGTERM'); } catch { server.kill(); } }
   }
 })();

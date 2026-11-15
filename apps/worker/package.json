@@ -1,2 +1,13 @@
-{ "name": "@amr/worker", "version": "5.0.0", "type": "module", "main": "src/worker.ts", "exports": { ".": "./src/api.ts", "./worker": "./src/worker.ts" }, "dependencies": { "@amr/core": "*" },
-  "scripts": { "dev": "wrangler dev", "deploy": "wrangler deploy" } }
+{
+  "name": "@amr/worker",
+  "version": "5.0.0",
+  "type": "module",
+  "main": "src/worker.ts",
+  "exports": {
+    ".": "./src/api.ts",
+    "./worker": "./src/worker.ts"
+  },
+  "dependencies": {
+    "@amr/core": "*"
+  }
+}

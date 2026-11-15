@@ -14,15 +14,15 @@
     "build": "npm run gen && npm -w @amr/web run build",
     "dev": "npm -w @amr/web run dev",
     "e2e": "node apps/web/e2e/walkthrough.cjs",
-    "worker:dev": "npm run build && npm -w @amr/worker run dev",
-    "deploy": "npm run build && npm -w @amr/worker run deploy",
+    "worker:dev": "npm run gen && npm -w @amr/web run dev",
+    "deploy": "npm run gen && npm -w @amr/web run deploy",
     "amr": "tsx packages/cli/src/main.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
-    "vitest": "^2.1.0",
-    "wrangler": "^4.162.0"
+    "vite": "^7.3.8",
+    "vitest": "^3.2.7"
   }
 }

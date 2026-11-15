@@ -8,3 +8,4 @@ docs/screenshots/**/exported.cmodel
 docs/screenshots/**/failure.png
 docs/screenshots/exported.cmodel
 docs/screenshots/failure.png
+.cloudflare/

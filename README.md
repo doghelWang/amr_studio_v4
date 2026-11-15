@@ -6,10 +6,10 @@ Inspect, edit, validate and compare AMR `.cmodel` files. One TypeScript core (`@
 npm install
 npm run gen          # schema + catalog from proto/ and catalog/
 npm test             # 62 tests
-npm run dev          # web UI at http://localhost:5173 (includes a local API)
+npm run dev          # web UI at http://localhost:5173, Worker running in workerd
 npm run build        # production build into apps/web/dist
 npm run e2e          # browser walkthrough against the build
-npm run deploy       # build + wrangler deploy (needs `wrangler login`); see docs/07_DEPLOY.md
+npm run deploy       # cf deploy (needs Node 22.18+ and `npx cf auth login`); see docs/07_DEPLOY.md
 npm run amr -- check fixtures/diff-2lidar.cmodel
 npm run amr -- diff  fixtures/modelset.cmodel fixtures/modelset-wide.cmodel
 ```
@@ -21,7 +21,8 @@ npm run amr -- diff  fixtures/modelset.cmodel fixtures/modelset-wide.cmodel
 | `fixtures/` | real cmodels used by the tests |
 | `packages/core` | codec, model view, edit operations, catalog, validation, diff |
 | `packages/cli` | `amr` command |
-| `apps/worker` | Cloudflare Worker: project storage API + static site |
+| `apps/worker` | Cloudflare Worker: project storage API |
+| `apps/web/cloudflare.config.ts` | deployment config for `cf` |
 | `apps/web` | React UI |
 | `docs/` | redesign, plan, stage reports, test report, progress log; `docs/legacy` holds the v4 specs |
 
