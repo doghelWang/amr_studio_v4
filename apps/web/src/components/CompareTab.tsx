@@ -1,0 +1,1 @@
+export { CompareTab } from './Tabs';

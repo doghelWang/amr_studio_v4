@@ -7,9 +7,10 @@
   "scripts": {
     "gen": "node scripts/gen-schema.mjs && node scripts/gen-catalog.mjs",
     "test": "vitest run",
-    "typecheck": "tsc -b packages/core packages/cli apps/worker && npm -w @amr/web run typecheck",
+    "typecheck": "tsc -p packages/core && tsc -p packages/cli && tsc -p apps/worker && npm -w @amr/web run typecheck",
     "build": "npm run gen && npm -w @amr/web run build",
     "dev": "npm -w @amr/web run dev",
+    "e2e": "node apps/web/e2e/walkthrough.cjs",
     "amr": "tsx packages/cli/src/main.ts"
   },
   "devDependencies": {

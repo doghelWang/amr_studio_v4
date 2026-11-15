@@ -1,0 +1,15 @@
+{
+  // Deploy with `npm run build` at the repo root, then `npm -w @amr/worker run deploy`.
+  "name": "amr-studio-v5",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-07-11",
+  "assets": {
+    "directory": "../web/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  // Same KV namespace id as v4; v5 uses its own key prefix ("cmodel:"), so v4 data is left alone.
+  "kv_namespaces": [{ "binding": "AMR_PROJECTS", "id": "7b09e5334d584ea591ec8626f6fb22b3" }],
+  "version_metadata": { "binding": "CF_VERSION_METADATA" }
+}

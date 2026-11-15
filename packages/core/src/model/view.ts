@@ -203,7 +203,9 @@ export function links(p: Project): Link[] {
       const id = [port.iface.interface_uuid, peerId].sort().join('|');
       if (seen.has(id)) continue;
       seen.add(id);
-      out.push({ a: port, b: peer, reciprocal: peer.iface.linked_interface_uuid.includes(port.iface.interface_uuid) });
+      // controller end first, so a link always reads "controller.port ↔ device.port"
+      const [a, b] = mainTypeOf(peer.module.comp) === 'mainCPU' && mainTypeOf(port.module.comp) !== 'mainCPU' ? [peer, port] : [port, peer];
+      out.push({ a, b, reciprocal: a.iface.linked_interface_uuid.includes(b.iface.interface_uuid) && b.iface.linked_interface_uuid.includes(a.iface.interface_uuid) });
     }
   }
   return out;

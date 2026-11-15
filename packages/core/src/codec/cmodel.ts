@@ -122,5 +122,6 @@ export function snapshot(p: Project): Snapshot {
 export function restore(p: Project, s: Snapshot): void {
   p.comp = decode('comp', s.comp);
   p.func = decode('func', s.func);
-  p.dirty = new Set(s.dirty);
+  // Always re-encode after a restore: `entries` may hold bytes committed from a later state.
+  p.dirty = new Set<FileKind>([...s.dirty, 'comp', 'func']);
 }

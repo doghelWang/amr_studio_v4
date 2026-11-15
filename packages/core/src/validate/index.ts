@@ -149,7 +149,7 @@ export const RULES: Rule[] = [
   },
   {
     id: 'link.reciprocal', level: 'warning', scope: 'topology', title: 'Links are recorded on both ends',
-    check: ({ p }) => links(p).filter((l) => !l.reciprocal || !l.a.iface.linked_interface_uuid.includes(l.b.iface.interface_uuid))
+    check: ({ p }) => links(p).filter((l) => !l.reciprocal)
       .map((l) => ({ module: nameOf(l.a.module.comp), path: `if/${l.a.iface.key}`, message: `${portLabel(l.a)} ↔ ${portLabel(l.b)} is recorded on one end only` })),
   },
   {

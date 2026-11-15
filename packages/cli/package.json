@@ -1,0 +1,1 @@
+{ "name": "@amr/cli", "version": "5.0.0", "type": "module", "bin": { "amr": "src/main.ts" }, "dependencies": { "@amr/core": "*" } }

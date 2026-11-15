@@ -58,6 +58,16 @@ export function setAttr(p: Project, m: ModuleRef, path: string, value: Scalar): 
   if (path === 'general/module_uuid') throw new EditError('The module UUID cannot be edited');
   const row = findRow(m.comp, path);
   if (!row) throw new EditError(`${nameOf(m.comp)} has no parameter "${path}"`);
+  if (row.key === 'parentNodeUuid' && row.el.combo_type) {
+    // The parent is a reference to another module, not a choice from a fixed list.
+    const target = modules(p).find((o) => uuidOf(o.comp) === String(value));
+    if (!target) throw new EditError('The parent must be an existing module');
+    if (target.comp === m.comp) throw new EditError('A module cannot be its own parent');
+    row.el.combo_type.type_key = String(value);
+    if (row.el.combo_type.type_groups.length === 1) row.el.combo_type.type_groups[0].key = String(value);
+    touch(p, 'comp');
+    return;
+  }
   setElementValue(row.el, value);
   touch(p, 'comp');
 }

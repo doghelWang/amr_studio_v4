@@ -187,6 +187,7 @@ describe('edit', () => {
 
   it('disable flag and undo snapshot', () => {
     const p = open('modelset');
+    const original = new Map(p.entries);
     const s = snapshot(p);
     setDisabled(p, findModule(p, 'speaker')!, true);
     setAttr(p, findModule(p, 'laser')!, 'struct/locCoordYAW', 90);
@@ -194,7 +195,9 @@ describe('edit', () => {
     restore(p, s);
     expect(findModule(p, 'speaker')!.comp.bool_disable).toBe(false);
     expect(poseOf(findModule(p, 'laser')!.comp).yaw).toBe(0);
-    expect(p.dirty.size).toBe(0);
+    // restoring after an export still writes the restored state, and it equals the original bytes
+    commit(p);
+    for (const [k, v] of original) expect(same(p.entries.get(k)!, v), k).toBe(true);
   });
 });
 
