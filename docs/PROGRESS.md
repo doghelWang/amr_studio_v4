@@ -17,3 +17,4 @@ Times are America/Los_Angeles.
 | 2026-11-14 21:27 | Stage 7 | Stage reports 04–06 and README written; branch committed locally (not pushed). |
 | 2026-11-14 21:39 | Deploy | Wang asked to deploy and test in a browser. No Cloudflare credentials in this session. Found before deploying: the Worker decoded uploads with protobufjs, which generates code at run time — not allowed on Cloudflare Workers. Fixing and testing under the real Workers runtime (workerd) locally. |
 | 2026-11-14 21:44 | Deploy | Worker fixed for the Workers runtime (no protobuf in the Worker; entry module exports handlers only). 62 tests pass; 21-step browser walkthrough passes against workerd and against Vite preview; `wrangler deploy --dry-run` bundles. `07_DEPLOY.md` written. |
+| 2026-11-14 21:45 | Deploy | Branch `rewrite/v5` pushed to GitHub (c1f7391f + this log entry). Cloudflare deploy is waiting on a logged-in terminal. |
