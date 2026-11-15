@@ -1,57 +1,6 @@
-# AMR Studio V4 Ignore Rules
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-venv/
-.venv/
-.venv*/
-.env
-.wrangler/
-.server-kv/
-
-# Model Artifacts (Local Only)
-backend/saved_projects/*/
-!backend/saved_projects/.gitkeep
-backend/backend_runtime.log
-frontend/frontend_runtime.log
-*.cmodel
-*.model
-*.debug.json
-
-# ━━━ CRITICAL: PROTOCOL ISOLATION (LOCAL ONLY) ━━━
-# These abstract source files are restricted to local environment and MUST NOT be uploaded to GitHub.
-# We explicitly only ignore .proto files so that generated Python stub files (_pb2.py) can be synced.
-*controller_model_abi*.proto
-*controller_model_comp*.proto
-*controller_model_func*.proto
-*AbiSet*.proto
-*CompDesc*.proto
-*FuncDesc*.proto
-
-# Frontend
 node_modules/
-frontend/node_modules/
-src/frontend/node_modules/
-frontend/dist/
-.DS_Store
-/src/frontend/dist/
-/src/frontend/tsconfig.tsbuildinfo
-/tests/node_modules/
-/tests/dist/
+dist/
+.wrangler/
+*.tsbuildinfo
 *.log
-__pycache__/
-*.pyc
-
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS
 .DS_Store
-**/.DS_Store
-Thumbs.db

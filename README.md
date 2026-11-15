@@ -1,34 +1,11 @@
-# AMR Studio V4
+# AMR Studio v5
 
-AMR 机器人工业级配置与模型建模平台。
+Rewrite of AMR Studio on one TypeScript core. See `docs/01_REDESIGN.md`, `docs/02_PLAN.md`, `docs/PROGRESS.md`.
 
-## 🚀 核心特性 (2026-04-04 升级)
-*   **工业级 CModel 导出**: 生成位级对标 `ModelSet312` 标准的二进制包，支持全量字段校验与单消息封装。
-*   **全链路数据一致性**: 自动同步底盘尺寸、补全属性描述、校准电机参数。
-*   **模块清单系统**: 支持同步导出包含子系统、类别及 6-DOF 位姿的中英文 CSV 清单。
-*   **实时状态监控**: 侧边栏集成服务版本与启动时刻追踪。
-
-## 🛠 快速开始
-推荐使用统一启动脚本：
-```bash
-python3 start.py
 ```
-该脚本会自动：
-1. 清理 8002 (Backend) 和 3001 (Frontend) 端口。
-2. 以持久化后台模式启动双端服务。
-3. 执行健康探测并报告启动状态。
-
-### Windows 一键部署
-
-Windows 10/11 用户可直接双击仓库根目录的 `start.bat`。首次运行会自动创建 Python 虚拟环境、安装前后端依赖、启动服务、执行健康检查并打开浏览器。
-
-完整的环境准备、使用步骤、局域网访问、安全边界和故障排查参见 [README_WINDOWS.md](README_WINDOWS.md)。
-
-## 📁 产物审计说明
-所有的转换细节、对比证据及全量对账报告均存放在 `audits/` 目录下：
-*   `audits/BIT_PERFECT_AUDIT/`: 位级 Tag 对标证据。
-*   `audits/EXHAUSTIVE_RECONCILIATION_20260404/`: 100% 字段级流转报告。
-*   `audits/FINAL_PIPELINE_VALIDATION_20260404/`: 技术产物详解清单。
-
----
-*AMR Studio V4 - 让建模更精准，让协议更严苛。*
+npm install
+npm run gen      # schema + catalog from proto/ and catalog/
+npm test
+npm run amr -- check fixtures/diff-2lidar.cmodel
+npm run dev      # web UI
+```

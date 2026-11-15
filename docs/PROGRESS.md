@@ -1,0 +1,13 @@
+# Progress log
+
+Times are America/Los_Angeles.
+
+| Time | Stage | What happened |
+|---|---|---|
+| 2026-11-14 21:01 | Audit | Cloned `main` @ 17442f7e with all branches; read CLAUDE.md, the 20260913 design and requirement set, the three backends, the frontend store/services/steps. |
+| 2026-11-14 21:04 | Audit | Findings A1–A7 written up; Wang chose: one TypeScript core, core + new UI staged, new branch with clean tree. |
+| 2026-11-14 21:06 | Setup | Branch `rewrite/v5` created; old tree removed from the branch; kept protos, 143 module templates, board descriptions, six real cmodels as fixtures. Wang asked for a document per stage and a progress entry every 10 minutes. |
+| 2026-11-14 21:08 | Stage 2 | Proved the key design assumption: protobufjs decode → encode is byte-identical on all 18 model files in the fixtures. |
+| 2026-11-14 21:07 | Stage 0–1 | `01_REDESIGN.md` and `02_PLAN.md` written and sent. |
+| 2026-11-14 21:12 | Stage 2–3 | Core codec, view and edit layers written. Catalog generator converts all 142 templates (4 of them multi-module assemblies) with no value lost; found and fixed a naming trap (`interface_Group` / `module_3d_icon` JSON names) that silently dropped interface data. |
+| 2026-11-14 21:16 | Stage 2–4 | Core complete: codec, view, edit, catalog, validator (26 rules), diff. 50 tests pass, typecheck clean. Running the rules over the four production models showed that three things flagged in the earlier manual review are vendor conventions, not faults (controller ETH ports linked to each other, RS485 dataBits = 1, e-stop NO/NC attribute); those rules were removed and CAN terminators downgraded to info. |
