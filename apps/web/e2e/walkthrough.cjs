@@ -11,7 +11,9 @@ const assert = require('node:assert/strict');
 const ROOT = path.resolve(__dirname, '../../..');
 const SHOTS = path.resolve(process.argv[2] || path.join(ROOT, 'docs/screenshots'));
 const PORT = 4179;
-const URL_ = `http://localhost:${PORT}/`;
+// BASE_URL=<deployed or wrangler-dev url> runs the same walkthrough against that server instead of a local preview.
+const EXTERNAL = process.env.BASE_URL;
+const URL_ = EXTERNAL ? EXTERNAL.replace(/\/?$/, '/') : `http://localhost:${PORT}/`;
 const FIX = (n) => path.join(ROOT, 'fixtures', n);
 const steps = [];
 const step = async (name, fn) => {
@@ -22,13 +24,16 @@ const step = async (name, fn) => {
 
 (async () => {
   mkdirSync(SHOTS, { recursive: true });
-  const server = spawn('node', ['--import', 'tsx', path.join(ROOT, 'node_modules/vite/bin/vite.js'), 'preview', '--port', String(PORT), '--strictPort'], { cwd: path.join(ROOT, 'apps/web'), stdio: 'pipe' });
-  await new Promise((resolve, reject) => {
-    server.stdout.on('data', (d) => String(d).includes('localhost') && resolve());
-    server.stderr.on('data', (d) => process.stderr.write(d));
-    server.on('exit', (c) => reject(new Error(`preview server exited (${c})`)));
-    setTimeout(() => reject(new Error('preview server did not start')), 20000);
-  });
+  let server = null;
+  if (!EXTERNAL) {
+    server = spawn('node', ['--import', 'tsx', path.join(ROOT, 'node_modules/vite/bin/vite.js'), 'preview', '--port', String(PORT), '--strictPort'], { cwd: path.join(ROOT, 'apps/web'), stdio: 'pipe' });
+    await new Promise((resolve, reject) => {
+      server.stdout.on('data', (d) => String(d).includes('localhost') && resolve());
+      server.stderr.on('data', (d) => process.stderr.write(d));
+      server.on('exit', (c) => reject(new Error(`preview server exited (${c})`)));
+      setTimeout(() => reject(new Error('preview server did not start')), 20000);
+    });
+  }
   const browser = await chromium.launch();
   const page = await browser.newPage({ viewport: { width: 1360, height: 860 }, acceptDownloads: true });
   const errors = [];
@@ -158,12 +163,17 @@ const step = async (name, fn) => {
       const info = execFileSync('npx', ['tsx', 'packages/cli/src/main.ts', 'info', exported], { cwd: ROOT }).toString();
       assert.match(info, /23 modules/);
     });
+    await step('server reports its version', async () => {
+      const v = await page.evaluate(() => fetch('/api/v1/system/version').then((r) => r.json()));
+      assert.equal(v.version, '5.0.0');
+      console.log(`    server: ${JSON.stringify(v)}`);
+    });
     await step('save to server, close, reopen from the saved list', async () => {
       await page.getByRole('button', { name: 'Save to server' }).click();
       await page.locator('.toast.ok').waitFor();
       await page.getByRole('button', { name: 'Close' }).click();
       await page.locator('.saved').waitFor();
-      await page.locator('.saved button.link').first().click();
+      await page.locator('.saved li', { hasText: '23 modules' }).locator('button.link').first().click();
       await page.locator('.bar').waitFor();
       assert.match(await page.locator('.bar').innerText(), /23 modules/);
       assert.match(await counts(), /0 errors 0 warnings/);
@@ -194,6 +204,6 @@ const step = async (name, fn) => {
     process.exitCode = 1;
   } finally {
     await browser.close();
-    server.kill();
+    if (server) server.kill();
   }
 })();

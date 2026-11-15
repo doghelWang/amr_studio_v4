@@ -31,7 +31,7 @@ WARNING lidar.forward  laser-C200      No obstacle-avoidance laser sees straight
 | GET | `/api/v1/system/version` | version and deployment id |
 | GET | `/api/v1/projects` | saved projects with module count, size, time |
 | GET | `/api/v1/projects/:name` | the stored `.cmodel` bytes |
-| PUT | `/api/v1/projects/:name` | store; the upload is opened with the core first, so only real cmodels are stored |
+| PUT | `/api/v1/projects/:name` | store; the container is checked first (zip, file description, MD5s), so only real cmodels are stored |
 | DELETE | `/api/v1/projects/:name` | delete |
 
 - Every failure is structured JSON `{error, detail}`; an unexpected exception becomes a 500 with a plain message (REQ-EX-01). Tested for six failure cases plus a simulated KV outage.
@@ -41,4 +41,4 @@ WARNING lidar.forward  laser-C200      No obstacle-avoidance laser sees straight
 
 ## Tests
 
-`packages/cli/test/cli.test.ts` (6 tests) and `apps/worker/test/worker.test.ts` (4 tests), all passing.
+`packages/cli/test/cli.test.ts` (6 tests) and `apps/worker/test/worker.test.ts` (6 tests), all passing.

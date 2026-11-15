@@ -81,7 +81,7 @@ function Header() {
   };
   const onSave = async () => {
     try {
-      await saveProject(project.name, exportBytes());
+      await saveProject(project.name, exportBytes(), modules(project).length);
       markSaved();
       notify('ok', `Saved "${project.name}" on the server`);
     } catch (err) {

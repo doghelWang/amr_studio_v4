@@ -18,7 +18,7 @@ function localApi(): Plugin {
     req.on('end', async () => {
       const body = Buffer.concat(chunks);
       const hasBody = req.method !== 'GET' && req.method !== 'HEAD' && body.length > 0;
-      const response = await handleApi(new Request(`http://local${req.url}`, { method: req.method, body: hasBody ? body : undefined }), { AMR_PROJECTS: kv });
+      const response = await handleApi(new Request(`http://local${req.url}`, { method: req.method, body: hasBody ? body : undefined, headers: req.headers as Record<string, string> }), { AMR_PROJECTS: kv });
       res.statusCode = response.status;
       response.headers.forEach((v, k) => res.setHeader(k, v));
       res.end(Buffer.from(await response.arrayBuffer()));

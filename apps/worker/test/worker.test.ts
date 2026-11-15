@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import worker, { type Env, type KV } from '../src/worker';
+import type { Env, KV } from '../src/api';
+import worker from '../src/worker';
 
 function memoryKv(): KV {
   const store = new Map<string, { value: ArrayBuffer; metadata?: unknown }>();
@@ -12,7 +13,7 @@ function memoryKv(): KV {
   };
 }
 const env = (): Env => ({ AMR_PROJECTS: memoryKv() });
-const call = (e: Env, method: string, path: string, body?: BodyInit) => worker.fetch(new Request(`https://x${path}`, { method, body }), e);
+const call = (e: Env, method: string, path: string, body?: BodyInit, headers?: Record<string, string>) => worker.fetch(new Request(`https://x${path}`, { method, body, headers }), e);
 const cmodel = new Uint8Array(readFileSync('fixtures/mq-q3.cmodel'));
 
 describe('worker API', () => {
@@ -22,7 +23,7 @@ describe('worker API', () => {
   });
   it('stores, lists, returns and deletes a project', async () => {
     const e = env();
-    const put = await call(e, 'PUT', '/api/v1/projects/MQ-Q3%20(test)', cmodel);
+    const put = await call(e, 'PUT', '/api/v1/projects/MQ-Q3%20(test)', cmodel, { 'x-amr-modules': '31' });
     expect(put.status).toBe(200);
     expect(await put.json()).toMatchObject({ name: 'MQ-Q3 (test)', modules: 31, bytes: cmodel.length });
     const list = (await (await call(e, 'GET', '/api/v1/projects')).json()) as { projects: { name: string; modules: number }[] };
@@ -49,6 +50,19 @@ describe('worker API', () => {
       expect(r.headers.get('content-type')).toContain('application/json');
       expect(await r.json()).toMatchObject({ error });
     }
+  });
+  it('refuses an archive whose contents do not match its description', async () => {
+    const { unzipSync, zipSync } = await import('fflate');
+    const z = unzipSync(cmodel);
+    z['CompDesc.model'] = z['CompDesc.model'].slice(0, 100);
+    const r = await call(env(), 'PUT', '/api/v1/projects/broken', zipSync(z));
+    expect(r.status).toBe(422);
+    expect(await r.json()).toMatchObject({ error: 'not_a_cmodel', detail: expect.stringContaining('MD5') });
+  });
+  it('does not load protobufjs (run-time code generation is forbidden on Workers)', async () => {
+    const src = (await import('node:fs')).readFileSync('apps/worker/src/api.ts', 'utf8');
+    expect(src).not.toMatch(/from '@amr\/core'/);
+    expect(src).toMatch(/from '@amr\/core\/container'/);
   });
   it('turns an unexpected exception into a structured 500', async () => {
     const broken: Env = { AMR_PROJECTS: { ...memoryKv(), list: async () => { throw new Error('kv down'); } } };

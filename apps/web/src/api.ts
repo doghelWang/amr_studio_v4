@@ -20,8 +20,8 @@ export async function loadProject(name: string): Promise<Uint8Array> {
   if (!r.ok) return fail(r);
   return new Uint8Array(await r.arrayBuffer());
 }
-export async function saveProject(name: string, bytes: Uint8Array): Promise<void> {
-  const r = await fetch(`/api/v1/projects/${encodeURIComponent(name)}`, { method: 'PUT', body: bytes as unknown as BodyInit });
+export async function saveProject(name: string, bytes: Uint8Array, moduleCount: number): Promise<void> {
+  const r = await fetch(`/api/v1/projects/${encodeURIComponent(name)}`, { method: 'PUT', body: bytes as unknown as BodyInit, headers: { 'x-amr-modules': String(moduleCount) } });
   if (!r.ok) return fail(r);
 }
 export async function deleteProject(name: string): Promise<void> {

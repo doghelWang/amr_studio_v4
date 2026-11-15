@@ -4,3 +4,7 @@ dist/
 *.tsbuildinfo
 *.log
 .DS_Store
+docs/screenshots/**/exported.cmodel
+docs/screenshots/**/failure.png
+docs/screenshots/exported.cmodel
+docs/screenshots/failure.png

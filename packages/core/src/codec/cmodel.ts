@@ -1,13 +1,11 @@
-import { unzipSync, zipSync } from 'fflate';
-import SparkMD5 from 'spark-md5';
+import { zipSync } from 'fflate';
+import { CmodelError, DESC_FILE, md5Hex, readContainer, type FileDescEntry } from './container';
+export { CmodelError, DESC_FILE, md5Hex, readContainer, type Container, type FileDescEntry } from './container';
 import { decode, encode, type FileKind, type ModuleInfo, type RobotDescription } from '../proto/index';
 
-export const DESC_FILE = 'ModelFileDesc.json';
 const KIND_OF: Record<string, FileKind> = { MODEL_COMP: 'comp', MODEL_FUNC: 'func', CAPABILITY: 'abi' };
 const DEFAULT_FILE: Record<FileKind, string> = { comp: 'CompDesc.model', func: 'FuncDesc.model', abi: 'AbiSet.model' };
 const TYPE_OF: Record<FileKind, string> = { comp: 'MODEL_COMP', func: 'MODEL_FUNC', abi: 'CAPABILITY' };
-
-export interface FileDescEntry { md5: string; name: string; type: string; version?: string; [k: string]: unknown }
 
 export interface Project {
   name: string;
@@ -24,42 +22,13 @@ export interface Project {
   loadIssues: string[];
 }
 
-export class CmodelError extends Error {}
-
-export function md5Hex(bytes: Uint8Array): string {
-  const buf = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
-  return SparkMD5.ArrayBuffer.hash(buf);
-}
-
 export function openCmodel(bytes: Uint8Array, name = 'model'): Project {
-  let zip: Record<string, Uint8Array>;
-  try {
-    zip = unzipSync(bytes);
-  } catch {
-    throw new CmodelError('Not a .cmodel file (a zip archive is expected)');
-  }
-  const descBytes = zip[DESC_FILE];
-  if (!descBytes) throw new CmodelError(`${DESC_FILE} is missing from the archive`);
-  let desc: FileDescEntry[];
-  try {
-    desc = JSON.parse(new TextDecoder().decode(descBytes)).ModelFileDesc;
-  } catch {
-    throw new CmodelError(`${DESC_FILE} is not valid JSON`);
-  }
-  if (!Array.isArray(desc)) throw new CmodelError(`${DESC_FILE} has no ModelFileDesc list`);
-
+  const { zip, desc, issues: loadIssues } = readContainer(bytes);
   const entries = new Map(Object.entries(zip));
   const files: Project['files'] = {};
-  const loadIssues: string[] = [];
   for (const e of desc) {
-    const data = zip[e.name];
-    if (!data) {
-      loadIssues.push(`${e.name} is listed in ${DESC_FILE} but missing from the archive`);
-      continue;
-    }
-    if (e.md5 && md5Hex(data) !== e.md5) loadIssues.push(`${e.name}: MD5 does not match ${DESC_FILE}`);
     const kind = KIND_OF[e.type];
-    if (kind && !files[kind]) files[kind] = e.name;
+    if (kind && zip[e.name] && !files[kind]) files[kind] = e.name;
   }
   const load = (k: FileKind): unknown => {
     const file = files[k];

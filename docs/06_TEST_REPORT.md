@@ -4,10 +4,11 @@
 
 | Check | Command | Result |
 |---|---|---|
-| Unit and integration tests | `npm test` | **60 passed**, 0 failed (core 50, CLI 6, Worker 4) |
+| Unit and integration tests | `npm test` | **62 passed**, 0 failed (core 50, CLI 6, Worker 6) |
 | Type check (strict) | `npm run typecheck` | clean for core, CLI, Worker, web |
 | Production build | `npm run build` | succeeds |
-| Browser walkthrough | `npm run e2e` | **20 steps passed**, no console or page errors |
+| Browser walkthrough (Vite preview) | `npm run e2e` | **21 steps passed**, no console or page errors |
+| Browser walkthrough on the real Workers runtime (workerd) | `BASE_URL=http://localhost:8799 npm run e2e` | **21 steps passed** |
 
 ## What the tests establish
 
@@ -40,4 +41,4 @@ Tracked files on the branch: 271 (v4 main: 24,744).
 - Tested on six cmodels (five vehicle designs). Steer-wheel vehicles and the `MR-HL8` family have not been run through it.
 - Validation rules are calibrated on four production models; a rule may still be too strict or too lax on designs unlike these. Each rule's level is one line in `packages/core/src/validate/index.ts`.
 - Byte-identity is proven for decode → encode. Files written by other tool versions with non-canonical field order would still decode correctly but would be normalised on re-encode; unedited files are always written back from their original bytes, so this only matters for files that are edited.
-- The Worker has been tested in-process, not deployed.
+- The Worker has been tested in-process and under workerd locally (see `07_DEPLOY.md`), not yet on Cloudflare itself.

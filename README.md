@@ -5,10 +5,11 @@ Inspect, edit, validate and compare AMR `.cmodel` files. One TypeScript core (`@
 ```
 npm install
 npm run gen          # schema + catalog from proto/ and catalog/
-npm test             # 60 tests
+npm test             # 62 tests
 npm run dev          # web UI at http://localhost:5173 (includes a local API)
 npm run build        # production build into apps/web/dist
 npm run e2e          # browser walkthrough against the build
+npm run deploy       # build + wrangler deploy (needs `wrangler login`); see docs/07_DEPLOY.md
 npm run amr -- check fixtures/diff-2lidar.cmodel
 npm run amr -- diff  fixtures/modelset.cmodel fixtures/modelset-wide.cmodel
 ```
